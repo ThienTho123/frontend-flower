@@ -15,15 +15,6 @@ const Footer = () => {
     <div className="footer">
       <img src={FooterImage} alt="Footer" className="footer-image" />
       <div className="footer-content">
-          <div className="footer-links">
-              <div className="footer-link">HOME</div>
-              <div className="footer-dot"></div>
-              <div className="footer-link">PRODUCT</div>
-              <div className="footer-dot"></div>
-              <div className="footer-link">SERVICES</div>
-              <div className="footer-dot"></div>
-              <div className="footer-link">CONTACT US</div>
-          </div>
           <div className="footer-info">
               <div className="footer-contact">
                   <div className="footer-contact-item">
@@ -45,15 +36,21 @@ const Footer = () => {
                   <div className="footer-logo-text">flower shop</div>
                   <div className="footer-social-icons">
                   <div className="footer">
-                      <div className="footer-social-icon">
-                          <img src={IconFacebook} alt="Facebook" />
-                      </div>
-                      <div className="footer-social-icon">
-                          <img src={IconInstagram} alt="Instagram" />
-                      </div>
-                      <div className="footer-social-icon">
-                          <img src={IconX} alt="X" />
-                      </div>
+                  <div className="footer-social-icon">
+                    <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+                      <img src={IconFacebook} alt="Facebook" />
+                    </a>
+                  </div>
+                  <div className="footer-social-icon">
+                    <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+                      <img src={IconInstagram} alt="Instagram" />
+                    </a>
+                  </div>
+                  <div className="footer-social-icon">
+                    <a href="https://x.com" target="_blank" rel="noopener noreferrer">
+                      <img src={IconX} alt="X" />
+                    </a>
+                  </div>
                   </div>
                   </div>
               </div>
