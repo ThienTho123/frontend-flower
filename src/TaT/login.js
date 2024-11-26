@@ -1,7 +1,7 @@
-// src/Login.js
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import RectangleLogin from "./UserAccount/Image/RectangleLogin.png"; 
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -56,110 +56,150 @@ const Login = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        padding: "20px",
+        fontFamily: "'Times New Roman', Times, serif", 
       }}
     >
       <div
         style={{
-          border: "1px solid #ccc",
-          padding: "20px",
-          borderRadius: "8px",
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-          width: "300px",
-          backgroundColor: "#f9f9f9",
+          display: "flex",
+          width: "80%",
+          maxWidth: "900px", 
+          justifyContent: "space-between",
+          height: "600px", 
+          marginBottom:"90px",
         }}
       >
-        <h2
+        <div
           style={{
-            textAlign: "center",
-            marginBottom: "20px",
-            fontSize: "24px",
-            color: "#333",
+            width: "50%", 
+            padding: "40px", 
+            borderRadius: "8px",
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#f9f9f9",
+            fontFamily: "'Times New Roman', Times, serif", 
+            fontSize: "20px", 
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
           }}
         >
-          Đăng Nhập
-        </h2>
-        <form onSubmit={handleLogin}>
-          <div style={{ marginBottom: "15px" }}>
-            <label style={{ display: "block", marginBottom: "5px" }}>
-              Tên người dùng:
-            </label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              style={{
-                width: "100%",
-                padding: "8px",
-                borderRadius: "4px",
-                border: "1px solid #ccc",
-              }}
-            />
-          </div>
-          <div style={{ marginBottom: "15px" }}>
-            <label style={{ display: "block", marginBottom: "5px" }}>
-              Mật khẩu:
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              style={{
-                width: "100%",
-                padding: "8px",
-                borderRadius: "4px",
-                border: "1px solid #ccc",
-              }}
-            />
-          </div>
-          <button
-            type="submit"
+          <h2
             style={{
-              width: "100%",
-              padding: "10px",
-              backgroundColor: "#007BFF",
-              color: "#fff",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
+              textAlign: "center",
+              marginBottom: "30px", 
+              fontSize: "28px",
+              color: "#E32C89", 
             }}
           >
             Đăng Nhập
-          </button>
-          {error && (
-            <p style={{ color: "red", marginTop: "10px", textAlign: "center" }}>
-              {error}
-            </p>
-          )}
-        </form>
-        <div style={{ marginTop: "20px", textAlign: "center" }}>
-          <h3 style={{ marginBottom: "10px" }}>Quên mật khẩu?</h3>
-          <button
-            onClick={handleForgotPassword}
-            style={{
-              backgroundColor: "transparent",
-              border: "none",
-              color: "#007BFF",
-              cursor: "pointer",
-            }}
-          >
-            Nhấn vào đây
-          </button>
+          </h2>
+          <form onSubmit={handleLogin}>
+            <div style={{ marginBottom: "20px" }}> 
+              <label style={{ display: "block", marginBottom: "10px" }}>
+                Tên người dùng:
+              </label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                style={{
+                  width: "100%",
+                  padding: "12px", 
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                  fontFamily: "'Times New Roman', Times, serif", 
+                  fontSize: "16px", 
+                }}
+              />
+            </div>
+            <div style={{ marginBottom: "20px" }}> 
+              <label style={{ display: "block", marginBottom: "10px" }}>
+                Mật khẩu:
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                style={{
+                  width: "100%",
+                  padding: "12px", 
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                  fontFamily: "'Times New Roman', Times, serif", 
+                  fontSize: "16px", 
+                }}
+              />
+            </div>
+            <button
+              type="submit"
+              style={{
+                width: "100%",
+                padding: "15px", 
+                backgroundColor: "#E32C89", 
+                color: "#fff",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+                fontFamily: "'Times New Roman', Times, serif", 
+                fontSize: "18px", 
+              }}
+            >
+              Đăng Nhập
+            </button>
+            {error && (
+              <p style={{ color: "red", marginTop: "15px", textAlign: "center" }}>
+                {error}
+              </p>
+            )}
+          </form>
+          <div style={{ marginTop: "20px", textAlign: "center" }}>
+            <h3 style={{ marginBottom: "15px" }}>Quên mật khẩu?</h3>
+            <button
+              onClick={handleForgotPassword}
+              style={{
+                backgroundColor: "transparent",
+                border: "none",
+                color: "#E32C89", 
+                cursor: "pointer",
+                fontFamily: "'Times New Roman', Times, serif",
+                fontSize: "19px", 
+              }}
+            >
+              Nhấn vào đây
+            </button>
+          </div>
+          <div style={{ marginTop: "20px", textAlign: "center" }}>
+            <h3 style={{ marginBottom: "15px" }}>Chưa có tài khoản?</h3>
+            <button
+              onClick={handleSignUp}
+              style={{
+                backgroundColor: "transparent",
+                border: "none",
+                color: "#E32C89", 
+                cursor: "pointer",
+                fontFamily: "'Times New Roman', Times, serif", 
+                fontSize: "16px", 
+              }}
+            >
+              Đăng Ký
+            </button>
+          </div>
         </div>
-        <div style={{ marginTop: "20px", textAlign: "center" }}>
-          <h3 style={{ marginBottom: "10px" }}>Chưa có tài khoản?</h3>
-          <button
-            onClick={handleSignUp}
+        <div style={{ width: "55%", height: "100%" }}>
+          <img
+            src={RectangleLogin}
+            alt="Rectangle Login"
             style={{
-              backgroundColor: "transparent",
-              border: "none",
-              color: "#007BFF",
-              cursor: "pointer",
+              width: "100%",
+              height: "100%", 
+              objectFit: "cover", 
+              borderRadius: "8px", 
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", 
             }}
-          >
-            Đăng Ký
-          </button>
+          />
         </div>
       </div>
     </div>
