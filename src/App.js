@@ -8,6 +8,7 @@ import VerifyOtp from './TaT/VerifyOtp';
 import Forgot from "./TaT/Forgot";
 import ProductList from "./Component/ProductList/ProductList";
 import PreBuy from "./TaT/UserAccount/PreBuy";
+import NewsList from "./TaT/NewsList";
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';  
 
@@ -25,6 +26,7 @@ function App() {
           <Route path="/prebuy" element={<PreBuy/>} /> 
           <Route path="/forgot" element={<Forgot/>} /> 
           <Route path="/verify-otp" element={<VerifyOtp/>} /> 
+          <Route path="/news" element={<NewsList/>} /> 
 
         </Routes>
         <Footer />
