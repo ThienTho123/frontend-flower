@@ -15,6 +15,7 @@ const SignUp = () => {
     address: '',
   });
   const location = useLocation();
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -30,17 +31,49 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Xóa lỗi cũ
+    setErrors({});
+  
+    // Kiểm tra lỗi frontend
+    const newErrors = {};
+  
+    if (formData.name.trim().length < 2) {
+      newErrors.name = "Tên người dùng phải có ít nhất 2 ký tự.";
+    }
+    if (formData.username.trim().length < 2 || formData.username.trim().length > 45) {
+      newErrors.username = "Tên đăng nhập phải có từ 2 đến 45 ký tự.";
+    }
+    if (formData.password.length < 8) {
+      newErrors.password = "Mật khẩu phải có ít nhất 8 ký tự.";
+    }
     if (formData.password !== formData.confirmPassword) {
-      setErrors({ confirmPassword: 'Mật khẩu xác nhận không khớp' });
+      newErrors.confirmPassword = "Mật khẩu xác nhận không khớp.";
+    }
+    if (!/^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$/.test(formData.email)) {
+      newErrors.email = "Email không đúng định dạng.";
+    }
+    if (formData.phoneNumber.length < 8) {
+      newErrors.phoneNumber = "Số điện thoại phải có ít nhất 8 ký tự.";
+    }
+    if (formData.address.trim().length < 2) {
+      newErrors.address = "Địa chỉ phải có ít nhất 2 ký tự.";
+    }
+  
+    // Nếu có lỗi, hiển thị lỗi và dừng submit
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
     try {
       const response = await axios.post('http://localhost:8080/api/v1/auth/register', formData);
       console.log('User registered:', response.data);
+      setSuccessMessage('Đăng ký thành công! Chuyển hướng tới trang đăng nhập...');
 
-      navigate('/login');
-    } catch (error) {
+      setTimeout(() => {
+        navigate('/login');
+      }, 3000);
+      } catch (error) {
       if (error.response && error.response.data.errors) {
         setErrors(error.response.data.errors);
       }
@@ -55,12 +88,29 @@ const SignUp = () => {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-      <div style={{ display: "flex", width: "80%", maxWidth: "1000px", justifyContent: "space-between", height: "80%" }}>
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "1200px" }}>
+      <div style={{ display: "flex",height: "auto",  width: "80%", maxWidth: "1000px", justifyContent: "space-between", height: "80%" }}>
         
         {/* Phần form đăng ký */}
         <div style={{ width: "50%", height: "auto", padding: "40px", borderRadius: "8px", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", backgroundColor: "#f9f9f9" }}>
           <h2 style={{ textAlign: "center", marginBottom: "20px", fontSize: "24px", color: "#E32C89", fontFamily: "Times New Roman, serif" }}>Đăng Ký</h2>
+          {/* Hiển thị thông báo thành công */}
+          {successMessage && (
+            <div
+              style={{
+                backgroundColor: '#d4edda',
+                color: '#155724',
+                padding: '10px',
+                marginBottom: '15px',
+                borderRadius: '4px',
+                border: '1px solid #c3e6cb',
+                fontFamily: 'Times New Roman, serif',
+                textAlign: 'center',
+              }}
+            >
+              {successMessage}
+            </div>
+          )}
           <form onSubmit={handleSubmit}>
             {/* Các trường nhập liệu */}
             <div style={{ marginBottom: "15px" }}>
