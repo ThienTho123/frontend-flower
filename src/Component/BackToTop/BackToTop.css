@@ -1,0 +1,29 @@
+/* BackToTop.css */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #971472;
+    color: white;
+    padding: 13px 21px;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: none; 
+    z-index: 999; 
+  }
+  
+  .back-to-top.show {
+    display: block; /* Hiển thị nút khi cần */
+  }
+  
+  .back-to-top:hover {
+    background-color: #d6366c;
+  }
+  
+  .back-to-top:focus {
+    outline: none; /* Xóa outline khi nút được nhấn */
+  }
+  

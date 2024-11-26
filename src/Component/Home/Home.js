@@ -134,7 +134,7 @@ const HomePage = () => {
       {/* News Section */}
       <div className="news">
         <div className="news-header">
-          <h1 className="newsTitle">Tin tức mới nhất</h1>
+          <h1 className="newsTitle">Khám phá vẻ đẹp của hoa qua từng lăng kính</h1>
         </div>
         <div className="row">
           <div className="col-7">

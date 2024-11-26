@@ -4,7 +4,7 @@ import axios from "axios";
 import './NewsDetail.css';
 
 export default function NewsDetail() {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [news, setNews] = useState(null);
 
   useEffect(() => {
@@ -24,12 +24,12 @@ export default function NewsDetail() {
   return (
     <div className="news-detail">
       <img
-        src={`${news.newsImage}`}
-        srcSet={`${news.newsImage} 1x, ${news.newsImage.replace('.jpg', '@2x.jpg')} 2x`}
-        alt={news.newsTitle}
+        src={`${news.image}`} 
+        srcSet={`${news.image} 1x, ${news.image.replace('.jpg', '@2x.jpg')} 2x`} 
+        alt={news.title}
         className="news-detail-image"
       />
-      <h1 className="news-title">{news.newsTitle}</h1>
+      <h1 className="news-title">{news.title}</h1> 
       <p className="news-detail-date">{new Date(news.date).toLocaleDateString()}</p>
       <div className="news-detail-content">{news.content}</div>
     </div>

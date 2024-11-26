@@ -1,6 +1,7 @@
 import './App.css';
 import Footer from './Component/Footer/footer';
 import Header from './Component/Header/header';
+import BackToTop from './Component/BackToTop/BackToTop';
 import HomePage from './Component/Home/Home';
 import SignUp from "./TaT/SignUp";
 import Login from "./TaT/login";
@@ -59,7 +60,7 @@ const AppRoutes = () => {
         <Route path="changepassword" element={<ChangePassword />} />
         <Route path="orders" element={<PurchaseHistory />} />
       </Route>
-      
+
     </Routes>
   );
 };
@@ -68,6 +69,7 @@ const App = () => {
   return (
     <Router>
       <Header />
+      <BackToTop />  
       <AppRoutes />
       <Footer />
     </Router>

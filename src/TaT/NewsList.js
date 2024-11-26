@@ -12,9 +12,9 @@ export default function NewsList() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/news");  // Đường dẫn API cho tin tức về hoa
-        setAllNews(response.data.News);  // Đảm bảo 'News' đúng tên trong dữ liệu API
-        setNewsList(response.data.News.slice(0, visibleCount));  // Lấy số lượng tin tức hiển thị
+        const response = await axios.get("http://localhost:8080/news");  
+        setAllNews(response.data.News);  
+        setNewsList(response.data.News.slice(0, visibleCount));  
       } catch (error) {
         console.error("Error fetching news:", error);
       }
@@ -33,7 +33,7 @@ export default function NewsList() {
   return (
     <div className="news-list-container">
       <div className="news-title-container">
-        <h1>Tin Tức Về Hoa</h1>
+        <h1>Chuyện hoa từ mọi ngõ ngách</h1>
       </div>
       <div className="news-grid">
         {newsList.length > 0 ? (
@@ -41,13 +41,13 @@ export default function NewsList() {
             <Link to={`/news/${news.newsID}`} key={news.newsID} className="news-link">
               <div className="news-card">
                 <img
-                  src={news.image}  // Sử dụng 'news.image' đúng tên
-                  alt={news.title}   // Dùng 'news.title' thay vì 'news.Title'
+                  src={news.image}  
+                  alt={news.title}  
                   className="new-image"
                 />
-                <h2>{news.title}</h2>  {/* Sử dụng 'news.title' thay vì 'news.newsTitle' */}
-                <p>{getShortDescription(news.content)}</p>  {/* Dùng 'news.content' thay vì 'news.Content' */}
-                <p><em>Ngày đăng: {new Date(news.date).toLocaleDateString()}</em></p>  {/* 'news.date' */}
+                <h2>{news.title}</h2>  
+                <p>{getShortDescription(news.content)}</p>  
+                <p><em>Ngày đăng: {new Date(news.date).toLocaleDateString()}</em></p> 
               </div>
             </Link>
           ))
