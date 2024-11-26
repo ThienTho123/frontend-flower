@@ -9,6 +9,9 @@ import Forgot from "./TaT/Forgot";
 import ProductList from "./Component/ProductList/ProductList";
 import PreBuy from "./TaT/UserAccount/PreBuy";
 import NewsList from "./TaT/NewsList";
+import NewsDetail from "./TaT/NewsDetail";
+import PaymentFailure from "./TaT/UserAccount/PaymentFailure";
+import PaymentSuccess from "./TaT/UserAccount/PaymentSuccess";
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';  
 
@@ -27,7 +30,10 @@ function App() {
           <Route path="/forgot" element={<Forgot/>} /> 
           <Route path="/verify-otp" element={<VerifyOtp/>} /> 
           <Route path="/news" element={<NewsList/>} /> 
-
+          <Route path="/news/:id" element={<NewsDetail />} />
+          <Route path="/PaymentFailure" element={<PaymentFailure />} />
+          <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
+          
         </Routes>
         <Footer />
       </div>
