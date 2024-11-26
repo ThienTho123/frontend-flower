@@ -45,13 +45,13 @@
   outline: none;
 }
 .flower-title {
-  font-family: 'Times New Roman', Times, serif; /* Đặt font là Times New Roman */
-  font-size: 36px; /* Kích thước chữ */
-  font-weight: bold; /* Đậm chữ */
-  text-align: center; /* Canh giữa */
-  color: #5a2d4d; /* Màu chữ đẹp (có thể tùy chỉnh theo phong cách của bạn) */
-  margin-top: 10px; /* Khoảng cách từ trên xuống */
-  margin-bottom: 10px; /* Khoảng cách từ trên xuống */
+  font-family: 'Times New Roman', Times, serif; 
+  font-size: 36px; 
+  font-weight: bold; 
+  text-align: center;
+  color: #6A1E55; 
+  margin-top: 10px;
+  margin-bottom: 10px; 
 
 }
 .product-grid {

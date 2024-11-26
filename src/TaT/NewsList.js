@@ -32,8 +32,9 @@ export default function NewsList() {
 
   return (
     <div className="news-list-container">
-      <h1>Tin Tức Về Hoa</h1>
-
+      <div className="news-title-container">
+        <h1>Tin Tức Về Hoa</h1>
+      </div>
       <div className="news-grid">
         {newsList.length > 0 ? (
           newsList.map((news) => (

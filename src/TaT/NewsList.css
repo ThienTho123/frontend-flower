@@ -5,12 +5,17 @@
   font-family: "Times New Roman", Times, serif; /* Đổi font chữ */
 }
 
-h1 {
+.news-title-container {
+  margin: 20px auto; 
+}
+
+.news-title-container h1 {
   text-align: center; /* Đặt tiêu đề vào giữa */
   font-size: 2em; /* Tăng kích thước tiêu đề */
-  color: #E32C89; /* Màu sắc tiêu đề đẹp hơn */
+  color: #6A1E55; /* Màu sắc tiêu đề đẹp hơn */
   margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
 }
+
 
 .news-grid {
   display: flex;
