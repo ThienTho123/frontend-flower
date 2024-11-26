@@ -1,8 +1,27 @@
 /* Home.css */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 
 body {
   font-family: Arial, sans-serif;
+  background: linear-gradient(45deg, #f8c9d4, #ffb6c1, #ffffff, #cd7ca4);
+  background-size: 400% 400%;
+  animation: gradientAnimation 10s ease infinite;
+  margin: 0;
+  padding: 0;
 }
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 .box{
     color: #f7f7f7;
 }
@@ -47,7 +66,35 @@ body {
   color: #f39c12;
   margin-bottom: 10px;
 }
+.banner-slider {
+  position: relative;
+  width: 100%;
+}
 
+.banner {
+  position: relative;
+  width: 100%;
+  height: 500px; 
+  overflow: hidden;
+  
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%; 
+  object-fit: cover; 
+  object-position: center; 
+  transition: transform 0.5s ease-in-out;
+}
+
+.banner:hover .banner-image {
+  transform: scale(1.1); 
+}
+.banner a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
 .banner-button {
   background-color: #f39c12;
   color: white;
@@ -139,6 +186,7 @@ body {
   color: #000000;
 }
 /* Product Section */
+/* Product Section */
 .product-container {
   display: flex;
   justify-content: center;
@@ -150,49 +198,76 @@ body {
 
 .product {
   position: relative;
-  background-color: #f9f9f9;
+  background-color: #fff;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  transition: transform 0.2s, box-shadow 0.3s ease;
   width: 250px;
   text-align: center;
   padding: 15px;
+  cursor: pointer;
+  margin: 10px;
 }
-.product a{
+
+.product a {
   text-decoration: none;
+  color: inherit;
 }
 
 .product:hover {
   transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .product img {
   width: 100%;
-  height: auto;
+  height: 250px;
+  object-fit: cover;
   border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.product img:hover {
+  transform: scale(1.1);
 }
 
 .product h3 {
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   color: #333;
   margin: 10px 0;
+  font-weight: 600;
+  font-family: 'Dancing Script', sans-serif; /* Sử dụng Dancing Script */
+
 }
 
 .product p {
-  font-size: 1rem;
-  color: #000;
+  font-size: 1.2rem;
+  color: #e32c89;
+  margin: 5px 0;
+  margin-top: 10px;
 }
 
-/* Sold Quantity */
 .sold-quantity {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: #666;
-  visibility: visible; /* Đảm bảo hiển thị ngay từ đầu */
+  font-style: italic;
+  margin-top: 10px;
 }
+
+/* Responsive cho các thiết bị di động */
+@media (max-width: 768px) {
+  .product-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .product {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+
 
 /* Error Message */
 .error {
@@ -205,12 +280,14 @@ body {
   font-size: 2rem;
   color: #333;
   text-align: center;
-  margin: 20px 0;
+  margin: 10px 0;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1px;
   padding-bottom: 10px;
   text-decoration: none;
+  font-family: 'Dancing Script', sans-serif;
+
 }
 .news {
   max-width: 1200px;
@@ -219,14 +296,15 @@ body {
   background-color: #f8f8f8;
   border-radius: 8px;
 }
-.news-item a{
+
+.news-item a {
   text-decoration: none;
   display: block;
   width: 100%;
   height: 100%;
   color: inherit;
-
 }
+
 .image-container {
   display: flex;
   justify-content: center;
@@ -235,23 +313,59 @@ body {
 
 .news-image {
   width: 400px;
-  height: auto;
-  border-radius: 8px;
+  height: 200px;
   object-fit: cover;
+  border-radius: 8px;
   transition: transform 0.3s ease;
 }
 
 .newsTitle {
-  font-size: 2rem;
-  color: #333;
+  font-size: 1.8rem;
+  color: #000;
   text-align: center;
-  margin: 20px 0;
+  margin: 0;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1px;
   padding-bottom: 10px;
-  text-decoration: none;
+  font-family: 'Dancing Script', sans-serif;
+
+  
 }
+
+.news-item .news-details .news-title {
+  font-size: 1.9rem;
+  font-weight: bold;
+  color: #65297a;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: 'Dancing Script', sans-serif;
+
+}
+
+.news-item .news-details .news-date {
+  font-size: 1rem;
+  color: #888;
+  margin-top: 5px;
+}
+
+.news-content {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 10px;
+}
+
+.news-item {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.news-details {
+  margin-left: 15px;
+}
+
 
 .row {
   display: flex;

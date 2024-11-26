@@ -1,6 +1,6 @@
 /* Header Styles */
 .header {
-  background-color: #eae7e7;
+  background-color: #ebcee0;
   padding: 10px 20px;
   width: 100%;
   text-align: center;
@@ -78,14 +78,33 @@
   gap: 20px;
   position: relative;
   margin-right: 60px;
+  border: none; 
+  background: none; 
+  padding: 0;
+  cursor: pointer; 
 }
-
+.icons-container button {
+  border: none; 
+  background: none; 
+  padding: 0; 
+  cursor: pointer; 
+}
 .icons-container .icon {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
-}
+  border: none;
 
+}
+.error-message {
+  color: red;
+  font-size: 12px;
+  position: absolute;
+  bottom: -20px; /* Đặt lỗi dưới cùng của input */
+  left: 0;
+  right: 0;
+  text-align: center;
+}
 .search-container {
   display: flex;
   align-items: center;

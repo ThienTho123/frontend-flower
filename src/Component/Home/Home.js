@@ -44,33 +44,41 @@ const HomePage = () => {
     autoplay: true,
     autoplaySpeed: 5000,
   };
+  const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ';
+  };
 
   return (
     <div className="container">
       {error && <p className="error">{error}</p>}
       
+      {banners && banners.length > 0 ? (
       <Slider {...settings} className="banner-slider">
         {banners.map((banner) => (
           <div key={banner.bannerID} className="banner">
             <a
               href={
-                banner.productID?.productID
-                  ? `/detail/${banner.productID.productID}`
-                  : banner.productTypeID?.productTypeID
-                  ? `/product?productType=${banner.productTypeID.productTypeID}`
-                  : `/product?category=${banner.categoryID?.categoryID}`
+                banner.flower?.flowerID 
+                  ? `/detail/${banner.flower.flowerID}`
+                  : banner.news?.newsID 
+                  ? `/news/${banner.news.newsID}`
+                  : banner.category?.categoryID 
+                  ? `/product?category=${banner.category.categoryID}`
+                  : `/product` 
               }
             >
               <img
-                src={banner.bannerImage}
-                alt={banner.title}
+                src={banner.image} 
+                alt={banner.title || 'Banner'} 
                 className="banner-image"
               />
             </a>
           </div>
         ))}
       </Slider>
-      
+      ) : (
+        <p>Không có banner để hiển thị</p>
+      )}
       <div className="legit-container">
         <div className="policies-box">
           <div className="policy-item">
@@ -102,12 +110,12 @@ const HomePage = () => {
 
       <h2 className="featured-title">Sản phẩm nổi bật</h2>
       <div className="product-container">
-        {SPProducts.map((product) => (
+      {SPProducts.slice(0, 9).map((product) => (
           <div key={product.productID} className="product">
             <a href={`/detail/${product.productID}`}>
               <img src={product.avatar} alt={product.title} />
               <h3>{product.title}</h3>
-              <p style={{ color: "red" }}>{product.price} đ</p>
+              <p style={{ color: "red" }}>{formatPrice(product.price)}</p>
               <p className="sold-quantity" style={{ fontSize: "0.8rem" }}>
                 Đã bán: {product.sold}
               </p>
@@ -125,30 +133,30 @@ const HomePage = () => {
 
       {/* News Section */}
       <div className="news">
-        <div className="row">
+        <div className="news-header">
           <h1 className="newsTitle">Tin tức mới nhất</h1>
         </div>
         <div className="row">
           <div className="col-7">
             {news.map((item) => (
-              <div key={item.newsID} className="news-item">
+              <div key={item.NewsID} className="news-item">
                 <a
-                  href={`/news/${item.newsID}`}
+                  href={`/news/${item.NewsID}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <div className="image-container">
                     <img
-                      src={item.newsImage}
-                      alt={item.newsTitle}
+                      src={item.image}
+                      alt={item.title}
                       className="news-image"
                     />
                   </div>
                   <div className="news-details">
-                    <h3 className="news-title">{item.newsTitle}</h3>
-                    <h4 className="news-date">{formatDate(item.date)}</h4>
-                    <h5 className="news-content">
+                    <div className="news-title">{item.title}</div>
+                    <div className="news-date">{formatDate(item.date)}</div>
+                    <div className="news-content">
                       {item.content.substring(0, 200)}...
-                    </h5>
+                    </div>
                   </div>
                 </a>
               </div>
@@ -156,6 +164,8 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+
+
 
       <div className="boxXemThem">
         <a href="/news" className="xem-them">

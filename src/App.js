@@ -12,33 +12,66 @@ import NewsList from "./TaT/NewsList";
 import NewsDetail from "./TaT/NewsDetail";
 import PaymentFailure from "./TaT/UserAccount/PaymentFailure";
 import PaymentSuccess from "./TaT/UserAccount/PaymentSuccess";
+import AccountLayout from "./TaT/UserAccount/AccountLayout";
+import Profile from "./TaT/UserAccount/Profile";
+import ChangePassword from "./TaT/UserAccount/ChangePassword";
+import PurchaseHistory from "./TaT/UserAccount/PurchaseHistory";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';  
+import React, { useEffect } from "react";
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';  
+const AppRoutes = () => {
+  const navigate = useNavigate();
 
-function App() {
+  useEffect(() => {
+    const loginTime = localStorage.getItem("loginTime");
+    const expirationTime = 86400000; 
+
+    if (loginTime) {
+      const currentTime = Date.now();
+      const timeElapsed = currentTime - loginTime;
+
+      if (timeElapsed > expirationTime) {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        localStorage.removeItem("accountID");
+        localStorage.removeItem("loginTime");
+
+        navigate("/login");
+      }
+    }
+  }, [navigate]);
+
   return (
-    <BrowserRouter> 
-      <div>
-        <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} /> 
-          <Route path="/signup" element={<SignUp />} /> 
-          <Route path="/verify-otp" element={<VerifyOtp />} /> 
-          <Route path="/product" element={<ProductList />} /> 
-          <Route path="/login" element={<Login />} /> 
-          <Route path="/prebuy" element={<PreBuy/>} /> 
-          <Route path="/forgot" element={<Forgot/>} /> 
-          <Route path="/verify-otp" element={<VerifyOtp/>} /> 
-          <Route path="/news" element={<NewsList/>} /> 
-          <Route path="/news/:id" element={<NewsDetail />} />
-          <Route path="/PaymentFailure" element={<PaymentFailure />} />
-          <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
-
-        </Routes>
-        <Footer />
-      </div>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<HomePage />} /> 
+      <Route path="/signup" element={<SignUp />} /> 
+      <Route path="/verify-otp" element={<VerifyOtp />} /> 
+      <Route path="/login" element={<Login />} /> 
+      <Route path="/forgot" element={<Forgot />} /> 
+      <Route path="/product" element={<ProductList />} /> 
+      <Route path="/prebuy" element={<PreBuy />} /> 
+      <Route path="/news" element={<NewsList />} /> 
+      <Route path="/news/:id" element={<NewsDetail />} />
+      <Route path="/PaymentFailure" element={<PaymentFailure />} />
+      <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
+      <Route path="/account" element={<AccountLayout />}>
+        <Route index element={<Profile />} />
+        <Route path="changepassword" element={<ChangePassword />} />
+        <Route path="orders" element={<PurchaseHistory />} />
+      </Route>
+      
+    </Routes>
   );
-}
+};
+
+const App = () => {
+  return (
+    <Router>
+      <Header />
+      <AppRoutes />
+      <Footer />
+    </Router>
+  );
+};
 
 export default App;

@@ -1,8 +1,11 @@
+/* Thêm font Dancing Script */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+
 .news-list-container {
   max-width: 1200px;
   margin: auto;
   padding: 20px;
-  font-family: "Times New Roman", Times, serif; /* Đổi font chữ */
+  font-family: "Arial", sans-serif; /* Đặt font chung cho phần còn lại */
 }
 
 .news-title-container {
@@ -11,11 +14,11 @@
 
 .news-title-container h1 {
   text-align: center; /* Đặt tiêu đề vào giữa */
-  font-size: 2em; /* Tăng kích thước tiêu đề */
+  font-family: 'Dancing Script', cursive; /* Dùng Dancing Script cho tiêu đề */
+  font-size: 2.5em; /* Tăng kích thước tiêu đề */
   color: #6A1E55; /* Màu sắc tiêu đề đẹp hơn */
   margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
 }
-
 
 .news-grid {
   display: flex;
@@ -26,46 +29,51 @@
 
 .news-card {
   width: 100%;
-  max-width: 250px;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
+  border-radius: 10px; /* Góc bo tròn mềm mại hơn */
+  padding: 20px;
   text-align: center;
-  min-height: 350px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  min-height: 380px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1); /* Mờ hơn để tăng độ nhẹ nhàng */
   background-color: #fff;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .news-card:hover {
   transform: scale(1.05);
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.2); /* Ánh sáng của hover mạnh mẽ hơn */
 }
 
 .new-image {
   width: 100%;
-  height: auto;
+  height: 300px; /* Đảm bảo chiều cao của hình ảnh phù hợp */
   object-fit: cover;
   image-rendering: crisp-edges;
-  border-radius: 4px;
-  margin-bottom: 12px;
+  border-radius: 8px; /* Bo tròn ảnh mềm mại */
+  margin-bottom: 16px;
   transition: transform 0.3s ease;
 }
 
 .news-card h2 {
-  font-size: 1.2em;
-  margin: 8px 0;
+  font-size: 1.3em;
+  margin: 12px 0;
+  color: #333; /* Màu sắc chữ tiêu đề bài viết */
   height: 48px;
   overflow: hidden;
+  font-family: 'Dancing Script', cursive; /* Dùng Dancing Script cho tiêu đề */
+
 }
 
 .news-card p {
-  font-size: 0.9em;
-  color: #555;
-  margin-bottom: 8px;
+  font-size: 0.95em;
+  color: #666;
+  margin-bottom: 12px;
+  line-height: 1.6; /* Giãn cách dòng cho dễ đọc */
+  
 }
 
 .news-link {
@@ -75,16 +83,18 @@
 
 .load-button {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .load-button button {
-  padding: 10px 20px;
-  background-color: #E32C89;  
+  padding: 12px 25px;
+  background-color: #E32C89;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 1.1em;
+  transition: background-color 0.3s ease;
 }
 
 .load-button button:hover {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import './header.css';
 import Logo from '../assets/logo.png';
 import SearchIcon from '../assets/Search.svg';
@@ -8,13 +8,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Header = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchTerm] = useState(''); // Sử dụng một state duy nhất
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
+  const accountId = localStorage.getItem("accountID");
+  const [cartCount, setCartCount] = useState(0); 
+  const accesstoken = localStorage.getItem("access_token");
 
   const scrollToFooter = () => {
     const footer = document.getElementById("footer");
@@ -41,17 +40,82 @@ const Header = () => {
     }
   };
 
+  const handleLoginClick = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/info", {
+        headers: {
+          "Account-ID": accountId,
+        },
+        withCredentials: true,
+      });
+
+      if (response.data.redirectUrl) {
+        window.location.href = response.data.redirectUrl;
+      }
+    } catch (error) {
+      console.log("Đăng nhập thất bại:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchCartData = async () => {
+      if (accesstoken) {
+        try {
+          const response = await axios.get("http://localhost:8080/prebuy", {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+              "Account-ID": accountId,
+            },
+            withCredentials: true,
+          });
+
+          if (response.status === 200) {
+            const { cart } = response.data;
+            setCartCount(cart.length);
+          }
+
+          if (response.data.redirectUrl) {
+            window.location.href = response.data.redirectUrl;
+          }
+        } catch (error) {
+          console.log("Có lỗi xảy ra khi lấy giỏ hàng:", error);
+        }
+      }
+    };
+
+    fetchCartData();
+  }, [accesstoken, accountId]);
+
   const handleSearch = async () => {
-    if (searchQuery.trim()) {
+    if (searchQuery.trim()) { // Sử dụng searchQuery thay vì searchTerm
       try {
         const response = await axios.get("http://localhost:8080/search", {
           params: { searchTerm: searchQuery },
+          headers: { "Account-ID": accountId },
         });
+
         navigate("/find", { state: { results: response.data } });
         setError(null);
       } catch (error) {
         setError("Không tìm thấy sản phẩm nào!");
       }
+    }
+  };
+
+  const handlePrebuy = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/cart", {
+        headers: {
+          "Account-ID": accountId,
+        },
+        withCredentials: true,
+      });
+
+      if (response.data.redirectUrl) {
+        window.location.href = response.data.redirectUrl;
+      }
+    } catch (error) {
+      console.log("Đăng nhập thất bại:", error);
     }
   };
 
@@ -71,24 +135,32 @@ const Header = () => {
           </button>
         </div>
         <div className="icons-container">
+          {/* Tìm kiếm */}
           <div className="search-container">
             <input
               type="text"
-              value={searchQuery}
-              onChange={handleSearchChange}
-              placeholder="Search..."
+              value={searchQuery} // Sử dụng searchQuery ở đây
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Tìm kiếm..."
               className="search-input"
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()} // Nhấn Enter để tìm kiếm
             />
-            <button onClick={handleSearch}>
+            <button onClick={handleSearch} className="search-button">
               <img src={SearchIcon} alt="Search" className="icon search-icon" />
             </button>
+            {error && <div className="error-message">{error}</div>}
           </div>
-          <Link to="/login">
+          {/* Đăng nhập */}
+          <button className="login-button" onClick={handleLoginClick}>
             <img src={LoginIcon} alt="Login" className="icon login-icon" />
-          </Link>
-          <Link to="/prebuy">
+          </button>
+
+          {/* Giỏ hàng */}
+          <button className="cart-button" onClick={handlePrebuy}>
             <img src={CartIcon} alt="Cart" className="icon cart-icon" />
-          </Link>
+            <span className="cart-count">{cartCount}</span> {/* Hiển thị số lượng giỏ hàng */}
+          </button>
+
         </div>
       </div>
       {error && <div className="error-message">{error}</div>}
