@@ -95,7 +95,7 @@ const HomePage = () => {
               alt="Giao quà tận nơi"
               className="legit-image"
             />
-            <span>Giao quà tận nơi</span>
+            <span>Giao hàng tận nơi</span>
           </div>
         </div>
       </div>
