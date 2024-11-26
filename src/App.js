@@ -33,7 +33,7 @@ function App() {
           <Route path="/news/:id" element={<NewsDetail />} />
           <Route path="/PaymentFailure" element={<PaymentFailure />} />
           <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
-          
+
         </Routes>
         <Footer />
       </div>

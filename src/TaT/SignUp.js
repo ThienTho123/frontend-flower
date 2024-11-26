@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import RectangleRegister from './UserAccount/Image/RectangleRegister.png'; // Đường dẫn hình ảnh
+import {useEffect } from 'react';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,15 @@ const SignUp = () => {
     phoneNumber: '',
     address: '',
   });
+  const location = useLocation();
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const emailFromQuery = queryParams.get('email');
+    if (emailFromQuery) {
+      setFormData((prev) => ({ ...prev, email: emailFromQuery }));
+    }
+  }, [location]);
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();

@@ -15,7 +15,7 @@ const PreBuy = () => {
   const [appliedDiscount, setAppliedDiscount] = useState(0);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("cash");
   const [errorMessages, setErrorMessages] = useState({});
-  const [sizeChoose, setSizeChoose] = useState(""); // Khởi tạo mặc định
+  const [sizeChoose, setSizeChoose] = useState(""); 
 
   useEffect(() => {
     if (accesstoken) {
@@ -96,7 +96,7 @@ const PreBuy = () => {
       item.cartID === cartID ? { ...item, sizeChoose: selectedSize } : item
     );
     setCartItems(updatedItems);
-    localStorage.setItem("cartItems", JSON.stringify(updatedItems)); // Lưu trữ kích thước đã chọn vào localStorage
+    localStorage.setItem("cartItems", JSON.stringify(updatedItems)); 
     updateCart(
       cartID,
       updatedItems.find((item) => item.cartID === cartID).number,
@@ -108,7 +108,6 @@ const PreBuy = () => {
     const newQuantity = parseInt(quantity, 10) || 1;
     const cartItem = cartItems.find((item) => item.cartID === cartID);
 
-    // Kiểm tra số lượng vượt quá tồn kho
     if (
       cartItem &&
       newQuantity >
@@ -128,8 +127,6 @@ const PreBuy = () => {
         return newErrors;
       });
     }
-
-    // Cập nhật số lượng trong giỏ hàng khi hợp lệ
     setCartItems((prevItems) => {
       const updatedItems = prevItems.map((item) =>
         item.cartID === cartID ? { ...item, number: newQuantity } : item

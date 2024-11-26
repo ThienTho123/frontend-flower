@@ -5,6 +5,7 @@ import Slider from "react-slick";
 import "./Home.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import ImageHome from '../assets/RectangleHome.png'; 
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -161,6 +162,40 @@ const HomePage = () => {
           Xem thêm
         </a>
       </div>
+      {/* Banner Section */}
+      <div className="image-banner-container">
+        <img src={ImageHome} alt="Beautiful Gifts" className="image-banner" />
+        <div className="image-banner-content">
+          <h2>CHÚNG TÔI CUNG CẤP <br /> MỘT BỘ QUÀ TẶNG TUYỆT VỜI <br /> CHO NHỮNG NGƯỜI THÂN YÊU CỦA BẠN.</h2>
+          <a href="/product" className="shop-now-button">Shop now</a>
+        </div>
+      </div>
+      <div className="subscribe-section">
+        <h2>Subscribe</h2>
+        <p>
+          <strong>Đăng ký</strong> ngay để cập nhật những thông tin mới nhất về khuyến mãi, sản phẩm mới và nhiều điều thú vị khác...
+        </p>
+        <form
+          className="subscribe-form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const emailInput = e.target.email.value;
+            if (emailInput) {
+              window.location.href = `/signup?email=${emailInput}`;
+            }
+          }}
+        >
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+            className="email-input"
+          />
+          <button type="submit" className="subscribe-button">Sign up</button>
+        </form>
+      </div>
+
     </div>
   );
 };
