@@ -1,0 +1,354 @@
+/* Home.css */
+
+body {
+  font-family: Arial, sans-serif;
+}
+.box{
+    color: #f7f7f7;
+}
+.container h2 {
+  font-size: 2rem;
+  margin: 20px 0;
+  color: #333;
+  text-align: center;
+}
+
+.container .banner-slider {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  position: relative;
+  margin: 20px auto;
+}
+
+.container .banner {
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+.container .banner-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.container .banner-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+}
+
+.banner h2 {
+  font-size: 2rem;
+  color: #f39c12;
+  margin-bottom: 10px;
+}
+
+.banner-button {
+  background-color: #f39c12;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.banner-button:hover {
+  background-color: #e67e22;
+}
+.container {
+    background-color: #f9f9f9;
+    padding: 10px; 
+    padding-top:1px;
+    border-radius: 8px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    margin: 0 auto; 
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.policies-box {
+  display: flex;
+  justify-content: space-around;
+  background-color: #f7f7f7; /* Màu nền nhẹ cho box */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Tạo shadow cho box */
+  width: 80%; /* Độ rộng của box */
+  max-width: 800px; /* Giới hạn độ rộng tối đa */
+}
+.legit-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 3rem;
+}
+.policy-item {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 0 10px; /* Khoảng cách giữa các item */
+}
+
+.legit-image {
+  width: 30px; /* Điều chỉnh kích thước hình ảnh */
+  height: 30px;
+  margin-right: 5px;
+}
+
+.policy-item span {
+  font-weight: 400;
+  font-size: 14px;
+  color: #333;
+}
+
+.legit-tittle-1 {
+  font-family: Quicksand;
+  font-size: 17px;
+  margin-top: -20px;
+  margin-left: 227px;
+  text-decoration: none;
+  position: absolute;
+  color: #000000;
+}
+
+.legit-tittle-2 {
+  font-family: Quicksand;
+  font-size: 17px;
+  margin-top: -20px;
+  margin-left: 500px;
+  text-decoration: none;
+  position: absolute;
+  color: #000000;
+}
+
+.legit-tittle-3 {
+  font-family: Quicksand;
+  font-size: 17px;
+  margin-top: -20px;
+  margin-left: 760px;
+  text-decoration: none;
+  position: absolute;
+  color: #000000;
+}
+/* Product Section */
+.product-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 20px auto;
+  max-width: 1200px;
+}
+
+.product {
+  position: relative;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+  width: 250px;
+  text-align: center;
+  padding: 15px;
+}
+.product a{
+  text-decoration: none;
+}
+
+.product:hover {
+  transform: scale(1.05);
+}
+
+.product img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.product h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin: 10px 0;
+}
+
+.product p {
+  font-size: 1rem;
+  color: #000;
+}
+
+/* Sold Quantity */
+.sold-quantity {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 0.8rem;
+  color: #666;
+  visibility: visible; /* Đảm bảo hiển thị ngay từ đầu */
+}
+
+/* Error Message */
+.error {
+  color: red;
+  font-size: 1.2rem;
+  text-align: center;
+  margin: 20px 0;
+}
+.featured-title {
+  font-size: 2rem;
+  color: #333;
+  text-align: center;
+  margin: 20px 0;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding-bottom: 10px;
+  text-decoration: none;
+}
+.news {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+}
+.news-item a{
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+
+}
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.news-image {
+  width: 400px;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.newsTitle {
+  font-size: 2rem;
+  color: #333;
+  text-align: center;
+  margin: 20px 0;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding-bottom: 10px;
+  text-decoration: none;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+}
+
+.col-7 {
+  display: flex;
+  flex-direction: column;
+}
+
+.news-item {
+  display: flex;
+  border: 0.5px solid #88888841;
+  padding: 10px 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden; /* Để hình ảnh không bị tràn ra ngoài */
+}
+
+
+.news-item img:hover {
+  transform: scale(1.08)
+}
+.news-details {
+  padding: 10px;
+  padding-left: 40px;
+  flex: 1; /* Phần tử chiếm hết không gian còn lại */
+}
+
+.news-title {
+  font-size: 25px;
+  font-weight: 666;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+.news-date {
+  font-size: 13px;
+  color: #999;
+  font-weight: 222;
+  margin: 0 0 10px 0;
+}
+
+.news-content {
+  font-size:18px;
+  font-weight: 500;
+  color: #666;
+}
+.xem-them {
+  text-decoration: none;
+  font-family: Quicksand, sans-serif;
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  line-height: 45px;
+  color: #666666;
+  display: block;
+  width: 100%;
+  height: 100%;
+ 
+  text-align: center;
+  margin-top: 40px;
+  width: 200px;
+  height: 50px;
+  text-align: center;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  border: 2px solid #444444;
+  box-sizing: border-box;
+}
+
+.xem-them:hover {
+  transition: background-position 0.45s ease, color 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86) 0s, border 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86) 0s;
+  background: linear-gradient(to left, #555555 50%, #fff 50%);
+  background-size: 200% 100%;
+  background-position: right;
+  color: #fff;
+}
+
+
+.boxXemThem{
+  padding-bottom: 60px;
+}
+/* Responsive cho các thiết bị di động */
+@media (max-width: 768px) {
+  .news-item {
+    flex-direction: column; /* Chuyển cột thành hàng khi trên thiết bị di động */
+  }
+
+  .news-image {
+    width: 100%; /* Đặt lại chiều rộng cho hình ảnh trên thiết bị di động */
+  }
+}
