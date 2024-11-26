@@ -10,35 +10,20 @@ export default function ProductList() {
   const location = useLocation();
   const [products, setProducts] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
-  const [flowerTypes, setFlowerTypes] = useState([]);
-  const [flowerColors, setFlowerColors] = useState([]);
-  const [sizes, setSizes] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [purposes, setPurposes] = useState([]);
   const [visibleCount, setVisibleCount] = useState(sizePage);
-  const [sortParams, setSortParams] = useState({
-    color: "",
-    flowerType: "",
-    size: "",
-    price: "",
+  const [filterParams, setFilterParams] = useState({
+    category: "",
+    purpose: "",
   });
 
-  const filteredFlowerTypes = useMemo(
-    () =>
-      sortParams.flowerType
-        ? flowerTypes.filter((ft) => ft.categoryID === parseInt(sortParams.flowerType))
-        : flowerTypes,
-    [sortParams.flowerType, flowerTypes]
-  );
-
-  const handleSortParamChange = (param, value) => {
-    const newSortParams = {
-      ...sortParams,
-      [param]: value,
-    };
-
-    setSortParams(newSortParams);
+  const handleFilterParamChange = (param, value) => {
+    const newFilterParams = { ...filterParams, [param]: value };
+    setFilterParams(newFilterParams);
 
     const filteredParams = Object.fromEntries(
-      Object.entries(newSortParams).filter(([key, val]) => val !== "")
+      Object.entries(newFilterParams).filter(([_, val]) => val !== "")
     );
 
     navigate({
@@ -47,19 +32,19 @@ export default function ProductList() {
     });
   };
 
-  const fetchProducts = async (initialSortParams) => {
+  const fetchProducts = async (initialFilterParams) => {
     try {
-      const response = await axios.get("http://localhost:8080/flowers");
-      const { products, flowerTypes, flowerColors, sizes } = response.data;
-      setFlowerTypes(flowerTypes);
-      setFlowerColors(flowerColors);
-      setSizes(sizes);
+      const response = await axios.get("http://localhost:8080/flower");
+      const { flowers, category, purpose } = response.data;
+      console.log(response.data); 
 
-      if (initialSortParams) {
-        setSortParams(initialSortParams);
-      } else {
-        setAllProducts(products);
-        setProducts(products.slice(0, visibleCount));
+      setCategories(category);
+      setPurposes(purpose);
+      setAllProducts(flowers);
+      setProducts(flowers.slice(0, visibleCount));
+
+      if (initialFilterParams) {
+        setFilterParams(initialFilterParams);
       }
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -69,142 +54,106 @@ export default function ProductList() {
   const getQueryParams = () => {
     const searchParams = new URLSearchParams(location.search);
     return {
-      color: searchParams.get("color") || "",
-      flowerType: searchParams.get("flowerType") || "",
-      size: searchParams.get("size") || "",
-      price: searchParams.get("price") || "",
+      category: searchParams.get("category") || "",
+      purpose: searchParams.get("purpose") || "",
     };
   };
 
-  const sortProducts = async () => {
+  const filterProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/flowers/sort", {
-        params: sortParams,
+      const response = await axios.get("http://localhost:8080/flower/sort", {
+        params: filterParams,
       });
-      const sortedProducts = response.data;
-      setAllProducts(sortedProducts);
-      setProducts(sortedProducts.slice(0, visibleCount));
+      setAllProducts(response.data);
+      setProducts(response.data.slice(0, visibleCount));
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error("Error filtering products:", error);
     }
   };
 
   useEffect(() => {
-    const initialSortParams = getQueryParams();
-    fetchProducts(initialSortParams);
+    const initialFilterParams = getQueryParams();
+    fetchProducts(initialFilterParams);
   }, [location.search]);
 
   useEffect(() => {
-    if (Object.values(sortParams).some((val) => val !== "")) {
-      sortProducts();
+    if (Object.values(filterParams).some((val) => val !== "")) {
+      filterProducts();
     } else {
       fetchProducts();
     }
-  }, [sortParams]);
+  }, [filterParams]);
 
   useEffect(() => {
     setProducts(allProducts.slice(0, visibleCount));
   }, [allProducts, visibleCount]);
 
   return (
-    <>
-      <div className="product-list-container">
-      <div className="flower-title">
-        Hoa
-      </div>        
+    <div className="product-list-container">
+      <div className="flower-title">Thế giới của sắc màu</div>
+
+      {/* Filter Components */}
       <div className="filters">
-          <div className="filter-group">
-            <label htmlFor="flowerType">Loại Hoa:</label>
-            <select
-              id="flowerType"
-              value={sortParams.flowerType}
-              onChange={(e) => handleSortParamChange("flowerType", e.target.value)}
-            >
-              <option value="">Tất cả</option>
-              {flowerTypes.map((ft) => (
-                <option key={ft.id} value={ft.id}>
-                  {ft.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="filter-group">
-            <label htmlFor="color">Màu Sắc:</label>
-            <select
-              id="color"
-              value={sortParams.color}
-              onChange={(e) => handleSortParamChange("color", e.target.value)}
-            >
-              <option value="">Tất cả</option>
-              {flowerColors.map((color) => (
-                <option key={color.id} value={color.id}>
-                  {color.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="filter-group">
-            <label htmlFor="size">Kích Cỡ:</label>
-            <select
-              id="size"
-              value={sortParams.size}
-              onChange={(e) => handleSortParamChange("size", e.target.value)}
-            >
-              <option value="">Tất cả</option>
-              {sizes.map((size) => (
-                <option key={size.id} value={size.id}>
-                  {size.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="filter-group">
-            <label htmlFor="price">Giá:</label>
-            <select
-              id="price"
-              value={sortParams.price}
-              onChange={(e) => handleSortParamChange("price", e.target.value)}
-            >
-              <option value="">Tất cả</option>
-              <option value="low">Giá thấp</option>
-              <option value="high">Giá cao</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="product-grid">
-          {products.length > 0 &&
-            products.map((product) => (
-              <div key={product.id} className="product-card">
-                <Link
-                  to={`/detail/${product.id}`}
-                  style={{
-                    textDecoration: "none",
-                    color: "inherit",
-                    outline: "none",
-                  }}
-                >
-                  <div className="img-wrapper">
-                    <img src={product.image} alt={product.name} />
-                  </div>
-                  <h2>{product.name}</h2>
-                  <p>Giá: {product.price.toLocaleString('vi-VN')} VNĐ</p>
-                  <p>Loại hoa: {product.flowerType.name}</p>
-                  <p>Màu sắc: {product.color.name}</p>
-                </Link>
-              </div>
+        <div className="filter-group">
+          <label htmlFor="category">Danh Mục:</label>
+          <select
+            id="category"
+            value={filterParams.category}
+            onChange={(e) => handleFilterParamChange("category", e.target.value)}
+          >
+            <option value="">Tất cả</option>
+            {categories.map((cat) => (
+              <option key={cat.categoryID} value={cat.categoryID}>
+                {cat.categoryName}
+              </option>
             ))}
+          </select>
         </div>
 
-        <div className="load-button">
-          <button onClick={() => setVisibleCount(visibleCount + sizePage)}>
-            Tải thêm
-          </button>
+        <div className="filter-group">
+          <label htmlFor="purpose">Mục Đích:</label>
+          <select
+            id="purpose"
+            value={filterParams.purpose}
+            onChange={(e) => handleFilterParamChange("purpose", e.target.value)}
+          >
+            <option value="">Tất cả</option>
+            {purposes.map((purp) => (
+              <option key={purp.purposeID} value={purp.purposeID}>
+                {purp.purposeName}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
-    </>
+
+      {/* Product Display */}
+      <div className="product-grid">
+        {products.length > 0 ? (
+          products.map((product) => (
+            <div key={product.flowerID} className="product-card">
+              <Link to={`/detail/${product.flowerID}`} className="product-link">
+                <div className="img-wrapper">
+                  <img src={product.image} alt={product.name} />
+                </div>
+                <h2>{product.name}</h2>
+                <p>Giá: {product.price ? product.price.toLocaleString('vi-VN') : 'Giá không có'}</p>
+                <p>Danh mục: {product.category.categoryName}</p>
+                <p>Mục đích: {product.purpose.purposeName}</p>
+              </Link>
+            </div>
+          ))
+        ) : (
+          <p>Không có sản phẩm nào.</p>
+        )}
+      </div>
+
+      {/* Load More Button */}
+      <div className="load-button">
+        <button onClick={() => setVisibleCount(visibleCount + sizePage)}>
+          Tải thêm
+        </button>
+      </div>
+    </div>
   );
 }

@@ -1,10 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+
 .product-list-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .filters {
@@ -44,16 +46,17 @@
   border-color: #333;
   outline: none;
 }
-.flower-title {
-  font-family: 'Times New Roman', Times, serif; 
-  font-size: 36px; 
-  font-weight: bold; 
-  text-align: center;
-  color: #6A1E55; 
-  margin-top: 10px;
-  margin-bottom: 10px; 
 
+.flower-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 48px;
+  font-weight: bold;
+  text-align: center;
+  color: #6A1E55;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
+
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -64,12 +67,12 @@
 .product-card {
   background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
-  padding: 15px;
+  padding: 20px;
 }
 
 .product-card:hover {
@@ -82,7 +85,7 @@
   height: 300px;
   overflow: hidden;
   border-radius: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .img-wrapper img {
@@ -97,9 +100,12 @@
 }
 
 .product-card h2 {
-  font-size: 1.4em;
-  margin: 10px 0;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.6em;
+  margin: 15px 0;
   font-weight: bold;
+  color: #6A1E55;
+  text-decoration: none; /* Removes any underline or decoration */
 }
 
 .product-card p {
@@ -111,20 +117,20 @@
 .product-card p:nth-of-type(1) {
   color: #e60000;
   font-weight: bold;
-  font-size: 1.1em;
+  font-size: 1.2em;
 }
 
 .load-button {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 30px 0;
+  margin: 40px 0;
 }
 
 .load-button button {
-  width: 50%;
-  padding: 12px 24px;
-  font-size: 1em;
+  width: 60%;
+  padding: 14px 28px;
+  font-size: 1.1em;
   font-weight: bold;
   color: #ffffff;
   background-color: #E32C89;
@@ -145,8 +151,20 @@
   transform: translateY(0);
   box-shadow: none;
 }
+
 @media (max-width: 768px) {
   .product-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
+
+  .product-card {
+    padding: 15px;
+  }
+
+  .load-button button {
+    width: 70%;
+  }
+}
+a {
+  text-decoration: none;
 }
