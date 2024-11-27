@@ -77,8 +77,6 @@ const Profile = () => {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
-          // withCredentials: true,  // Include cookies in the request
-
         }
       );
       console.log("data of user infor: ", response.data);

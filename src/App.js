@@ -18,6 +18,7 @@ import AccountLayout from "./TaT/UserAccount/AccountLayout";
 import Profile from "./TaT/UserAccount/Profile";
 import ChangePassword from "./TaT/UserAccount/ChangePassword";
 import PurchaseHistory from "./TaT/UserAccount/PurchaseHistory";
+import Wishlist from "./TaT/UserAccount/Wishlist";
 import Find from "./TaT/find";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';  
 import React, { useEffect } from "react";
@@ -62,7 +63,9 @@ const AppRoutes = () => {
       <Route path="/account" element={<AccountLayout />}>
         <Route index element={<Profile />} />
         <Route path="changepassword" element={<ChangePassword />} />
+        <Route path="wishlist" element={<Wishlist/>} />
         <Route path="orders" element={<PurchaseHistory />} />
+
       </Route>
 
     </Routes>
