@@ -80,6 +80,19 @@
 .thumbnail-item.active {
   border-color: #ffa5a5;
 }
+.thumbnail-item {
+  all: unset; 
+  height: 80px;
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
 
 .product-thumb__item img {
   max-width: 100%; 
