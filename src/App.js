@@ -8,6 +8,7 @@ import Login from "./TaT/login";
 import VerifyOtp from './TaT/VerifyOtp';
 import Forgot from "./TaT/Forgot";
 import ProductList from "./Component/ProductList/ProductList";
+import ProductDetail from "./TaT/ProductDetail";
 import PreBuy from "./TaT/UserAccount/PreBuy";
 import NewsList from "./TaT/NewsList";
 import NewsDetail from "./TaT/NewsDetail";
@@ -49,7 +50,8 @@ const AppRoutes = () => {
       <Route path="/verify-otp" element={<VerifyOtp />} /> 
       <Route path="/login" element={<Login />} /> 
       <Route path="/forgot" element={<Forgot />} /> 
-      <Route path="/product" element={<ProductList />} /> 
+      <Route path="/product" element={<ProductList />} />
+      <Route path="/detail/:id" element={<ProductDetail />} /> 
       <Route path="/prebuy" element={<PreBuy />} /> 
       <Route path="/news" element={<NewsList />} /> 
       <Route path="/news/:id" element={<NewsDetail />} />

@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./ProductList.css";
+import { Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 export default function ProductList() {
   const sizePage = 20;
@@ -10,8 +11,8 @@ export default function ProductList() {
   const location = useLocation();
   const [products, setProducts] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [purposes, setPurposes] = useState([]);
+  const [categories, setCategories] = useState([]); 
+  const [purposes, setPurposes] = useState([]); 
   const [visibleCount, setVisibleCount] = useState(sizePage);
   const [filterParams, setFilterParams] = useState({
     category: "",
@@ -21,110 +22,116 @@ export default function ProductList() {
   const handleFilterParamChange = (param, value) => {
     const newFilterParams = { ...filterParams, [param]: value };
     setFilterParams(newFilterParams);
-
+  
     const filteredParams = Object.fromEntries(
       Object.entries(newFilterParams).filter(([_, val]) => val !== "")
     );
-
+  
     navigate({
       pathname: location.pathname,
       search: `?${new URLSearchParams(filteredParams).toString()}`,
     });
+    
+    fetchProducts(newFilterParams);
   };
 
   const fetchProducts = async (initialFilterParams) => {
     try {
       const response = await axios.get("http://localhost:8080/flower");
-      const { flowers, category, purpose } = response.data;
-      console.log(response.data); 
+  
+      if (response.data) {
+        const { flowers, category, purpose } = response.data;
+  
+        setCategories(category || []);
+        setPurposes(purpose || []);
+        setAllProducts(flowers || []); 
+        const filteredProducts = flowers.filter(product => {
+          const matchCategory = initialFilterParams.category
+            ? product.category.categoryID === parseInt(initialFilterParams.category)
+            : true;
+          const matchPurpose = initialFilterParams.purpose
+            ? product.purpose.purposeID === parseInt(initialFilterParams.purpose)
+            : true;
+          return matchCategory && matchPurpose;
+        });
+        const sortedProducts = filteredProducts.sort((a, b) => {
+          return a.name.localeCompare(b.name); 
+        });
 
-      setCategories(category);
-      setPurposes(purpose);
-      setAllProducts(flowers);
-      setProducts(flowers.slice(0, visibleCount));
-
-      if (initialFilterParams) {
-        setFilterParams(initialFilterParams);
+        setProducts(sortedProducts.slice(0, visibleCount));
+        setAllProducts(sortedProducts); 
       }
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
-
+  
+  
+  
   const getQueryParams = () => {
     const searchParams = new URLSearchParams(location.search);
     return {
-      category: searchParams.get("category") || "",
-      purpose: searchParams.get("purpose") || "",
+      category: searchParams.get("category") || "", 
+      purpose: searchParams.get("purpose") || "", 
     };
   };
-
-  const filterProducts = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/flower/sort", {
-        params: filterParams,
-      });
-      setAllProducts(response.data);
-      setProducts(response.data.slice(0, visibleCount));
-    } catch (error) {
-      console.error("Error filtering products:", error);
-    }
-  };
-
+  
   useEffect(() => {
     const initialFilterParams = getQueryParams();
-    fetchProducts(initialFilterParams);
-  }, [location.search]);
-
-  useEffect(() => {
-    if (Object.values(filterParams).some((val) => val !== "")) {
-      filterProducts();
-    } else {
-      fetchProducts();
-    }
-  }, [filterParams]);
-
+    fetchProducts(initialFilterParams); 
+  }, [location.search]); 
   useEffect(() => {
     setProducts(allProducts.slice(0, visibleCount));
-  }, [allProducts, visibleCount]);
+  }, [allProducts, visibleCount]); 
+  
 
   return (
     <div className="product-list-container">
       <div className="flower-title">Thế giới của sắc màu</div>
 
       {/* Filter Components */}
-      <div className="filters">
-        <div className="filter-group">
-          <label htmlFor="category">Danh Mục:</label>
-          <select
-            id="category"
-            value={filterParams.category}
-            onChange={(e) => handleFilterParamChange("category", e.target.value)}
-          >
-            <option value="">Tất cả</option>
-            {categories.map((cat) => (
-              <option key={cat.categoryID} value={cat.categoryID}>
-                {cat.categoryName}
-              </option>
-            ))}
-          </select>
-        </div>
+      <div className="filters-modern">
+      <FormControl fullWidth>
+  <InputLabel id="category-label">Danh Mục</InputLabel>
+  <Select
+    labelId="category-label"
+    id="category"
+    value={filterParams.category}
+    onChange={(e) => handleFilterParamChange("category", e.target.value)}
+  >
+    <MenuItem value="">Tất cả</MenuItem>
+    {categories.length > 0 ? (
+      categories.map((cat) => (
+        <MenuItem key={cat.categoryID} value={cat.categoryID}>
+          {cat.categoryName}
+        </MenuItem>
+      ))
+    ) : (
+      <MenuItem value="">Không có danh mục</MenuItem>
+    )}
+  </Select>
+</FormControl>
 
-        <div className="filter-group">
-          <label htmlFor="purpose">Mục Đích:</label>
-          <select
-            id="purpose"
-            value={filterParams.purpose}
-            onChange={(e) => handleFilterParamChange("purpose", e.target.value)}
-          >
-            <option value="">Tất cả</option>
-            {purposes.map((purp) => (
-              <option key={purp.purposeID} value={purp.purposeID}>
-                {purp.purposeName}
-              </option>
-            ))}
-          </select>
-        </div>
+<FormControl fullWidth>
+  <InputLabel id="purpose-label">Mục Đích</InputLabel>
+  <Select
+    labelId="purpose-label"
+    id="purpose"
+    value={filterParams.purpose}
+    onChange={(e) => handleFilterParamChange("purpose", e.target.value)}
+  >
+    <MenuItem value="">Tất cả</MenuItem>
+    {purposes.length > 0 ? (
+      purposes.map((purp) => (
+        <MenuItem key={purp.purposeID} value={purp.purposeID}>
+          {purp.purposeName}
+        </MenuItem>
+      ))
+    ) : (
+      <MenuItem value="">Không có mục đích</MenuItem>
+    )}
+  </Select>
+</FormControl>
       </div>
 
       {/* Product Display */}
@@ -137,14 +144,16 @@ export default function ProductList() {
                   <img src={product.image} alt={product.name} />
                 </div>
                 <h2>{product.name}</h2>
-                <p>Giá: {product.price ? product.price.toLocaleString('vi-VN') : 'Giá không có'}</p>
+                <p>
+                  Giá: {product.price ? `${product.price.toLocaleString('vi-VN')} đ` : 'Giá không có'}
+                </p>
                 <p>Danh mục: {product.category.categoryName}</p>
                 <p>Mục đích: {product.purpose.purposeName}</p>
               </Link>
             </div>
           ))
         ) : (
-          <p>Không có sản phẩm nào.</p>
+          <p>Không có sản phẩm bạn cần tìm.</p>
         )}
       </div>
 
