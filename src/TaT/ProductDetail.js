@@ -96,6 +96,9 @@ const ProductDetail = () => {
     try {
       const token = localStorage.getItem("access_token");
       const accountID = localStorage.getItem("accountID");
+      const sizeName = productSizes[selectedSizeIndex].sizeName;  // Lấy sizeName
+      const flowerSizeID = productSizes[selectedSizeIndex].flowerSizeID;
+      const productSizeID = productSizes[selectedSizeIndex].flowerSizeID;
 
       if (!accountID) {
         // Kiểm tra nếu accountID là null hoặc không tồn tại
@@ -103,13 +106,11 @@ const ProductDetail = () => {
         return; // Dừng thực thi hàm
       }
 
-      const productSizeID = productSizes[selectedSizeIndex].productSizeID;
-
       const response = await axios.post(
         "http://localhost:8080/addToPrebuy",
         {
           productSizeID: productSizeID,
-          accountID: accountID, // Truyền accountID từ localStorage
+          accountID: accountID, 
           status: null,
           number: quantity,
         },
@@ -149,7 +150,9 @@ const ProductDetail = () => {
   const handleAddToCart = async () => {
     try {
       const token = localStorage.getItem("access_token");
-      const productSizeID = productSizes[selectedSizeIndex].productSizeID;
+      const sizeName = productSizes[selectedSizeIndex].sizeName;  // Lấy sizeName
+      const productSizeID = productSizes[selectedSizeIndex].flowerSizeID;
+      const flowerSizeID = productSizes[selectedSizeIndex].flowerSizeID;
       const accountID = localStorage.getItem("accountID");
 
       if (!accountID) {
@@ -157,6 +160,8 @@ const ProductDetail = () => {
         navigate("/login"); // Điều hướng đến trang đăng nhập
         return; // Dừng thực thi hàm
       }
+      console.log(productSizes[selectedSizeIndex]); // Kiểm tra dữ liệu ở đây
+
       const response = await axios.post(
         "http://localhost:8080/addToPrebuy",
         {
@@ -172,7 +177,6 @@ const ProductDetail = () => {
         }
       );
 
-      // Hiển thị thông báo thành công
       setSuccessMessage("Sản phẩm đã được thêm vào giỏ hàng!");
       setSuccessModalVisible(true);
 
@@ -381,7 +385,7 @@ const ProductDetail = () => {
           </Grid>
           <Grid item xs={6} className="grid-col-6">
             <div className="infoProduct">
-              <h1 className="titleProduct">{product?.title}</h1>
+              <h1 className="titleProduct">{product?.name}</h1>
               <h6>
                 <span className="avgScore">{avgScore.toFixed(1)}/5.0</span>{" "}
                 <span className="star">★</span>
@@ -389,7 +393,7 @@ const ProductDetail = () => {
                 <span className="bought">{howManyBought} Đã mua</span>
               </h6>
               <h2 className="productPrice" style={{ color: "#ff4c4c" }}>
-                {product.price.toLocaleString('vi-VN')} <span className="currency-symbol">đ</span>
+                {product.price} <span className="currency-symbol">đ</span>
               </h2>
 
 

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+
 .menu ul#main-menu {
   margin-left: -45px;
   margin-top: 5px;
@@ -8,7 +10,13 @@
   padding: 0 10px;
   color: #9ca0a3;
 }
-
+.titleProduct {
+  font-family: 'Dancing Script', cursive;
+  font-size: 40px;
+  text-align: center; /* Căn giữa theo chiều ngang */
+  margin: 0 auto; /* Đảm bảo các margin không gây lệch */
+  
+}
 .menu ul#main-menu li a {
   text-decoration: none;
   color: inherit;
