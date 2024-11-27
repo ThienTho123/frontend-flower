@@ -1,4 +1,6 @@
 /* Toàn trang */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+
 .prebuy-body {
     font-family: 'Arial', sans-serif;
     background: linear-gradient(135deg, #f0f4f8, #d9e4ec);
@@ -20,10 +22,12 @@
 
 
 .prebuy-h2 {
-    font-size: 28px;
+    font-size: 43px;
     border-bottom: 2px solid #e08804;
     padding-bottom: 5px;
     margin-left: 20px;
+    font-family: 'Dancing Script', sans-serif; 
+
 }
 
 .prebuy-h3 {
@@ -63,10 +67,12 @@
 
 /* Tiêu đề sản phẩm */
 .prebuy-product-title {
-    font-size: 26px;
+    font-size: 30px;
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
+    font-family: 'Dancing Script', sans-serif; 
+
 }
 
 /* Giá sản phẩm */
@@ -363,34 +369,182 @@
 }
 .error-popup {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 10px 20px;
-    border: 1px solid #f5c6cb;
-    border-radius: 5px;
+    top: 30px;
+    right: 30px;
+    background-color: #f8d7da; /* Màu nền đỏ nhạt */
+    color: #721c24; /* Màu chữ đỏ */
+    padding: 15px 20px; /* Thêm padding để có không gian đủ rộng */
+    border: 1px solid #f5c6cb; /* Đường viền đỏ nhạt */
+    border-radius: 5px; /* Bo góc */
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-between; /* Căn chỉnh nội dung sang hai bên */
+    align-items: center; /* Căn giữa theo chiều dọc */
     z-index: 1000;
-    width: 300px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 400px; /* Tăng độ rộng của hộp thông báo */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ nhẹ */
+    height: 30px; /* Tăng độ rộng của hộp thông báo */
+
 }
 
 .error-message {
-    font-size: 14px;
-    margin-right: 10px;
+    font-size: 14px; /* Cỡ chữ */
+    margin-right: 30px; /* Khoảng cách giữa thông báo và nút đóng */
+    flex-grow: 1; /* Làm cho phần thông báo chiếm hết không gian còn lại */
+    word-wrap: break-word; /* Đảm bảo nội dung không bị tràn ra ngoài */
+    margin-bottom: 30px;
+    width: 350px; /* Tăng độ rộng của hộp thông báo */
+    align-items: center; /* Căn giữa theo chiều dọc */
+
 }
 
 .close-btn {
-    font-size: 18px;
+    font-size: 0px; /* Cỡ chữ của nút đóng */
     cursor: pointer;
     color: #721c24;
     font-weight: bold;
     transition: color 0.3s;
+    padding: 0 5px; /* Thêm khoảng cách để nút đóng dễ bấm hơn */
 }
 
 .close-btn:hover {
-    color: #a71d2a;
+    color: #a71d2a; /* Màu đỏ đậm khi hover */
 }
+.prebuy-user-info {
+    background-color: #f9f9f9; /* Màu nền nhẹ */
+    padding: 20px; /* Khoảng cách bên trong */
+    border-radius: 10px; /* Bo góc mềm mại */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ */
+    max-width: 500px; /* Giới hạn chiều rộng */
+    margin: 20px auto; /* Căn giữa */
+    font-size: 18px; /* Cỡ chữ lớn hơn */
+    font-family: 'Times New Roman', serif; /* Font Times New Roman */
+    color: #333; /* Màu chữ tối */
+}
+
+.prebuy-user-info h3 {
+    font-size: 22px; /* Cỡ chữ tiêu đề lớn hơn */
+    color: #444; /* Màu tiêu đề */
+    margin-bottom: 15px; /* Khoảng cách dưới */
+    text-align: center; /* Căn giữa tiêu đề */
+    font-family: 'Times New Roman', serif; /* Font Times New Roman */
+}
+
+.prebuy-user-info label {
+    display: flex; /* Hiển thị dạng hàng ngang */
+    flex-direction: column; /* Sắp xếp thành cột */
+    margin-bottom: 15px; /* Khoảng cách giữa các nhãn */
+    font-weight: bold; /* Chữ đậm cho nhãn */
+}
+
+.prebuy-user-info input,
+.prebuy-user-info textarea {
+    padding: 12px; /* Khoảng cách bên trong */
+    font-size: 17px; /* Cỡ chữ lớn hơn cho input và textarea */
+    font-family: 'Times New Roman', serif; /* Font Times New Roman */
+    border: 1px solid #ccc; /* Viền nhạt */
+    border-radius: 5px; /* Bo góc nhẹ */
+    margin-top: 5px; /* Khoảng cách giữa nhãn và trường nhập */
+    outline: none; /* Loại bỏ viền khi chọn */
+    transition: border-color 0.3s; /* Hiệu ứng viền khi focus */
+}
+
+.prebuy-user-info input:focus,
+.prebuy-user-info textarea:focus {
+    border-color: #28a745; /* Màu viền khi focus */
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Hiệu ứng đổ bóng khi focus */
+}
+
+.prebuy-user-info textarea {
+    min-height: 120px; /* Chiều cao tối thiểu lớn hơn */
+    resize: vertical; /* Cho phép thay đổi chiều cao */
+}
+
+.prebuy-user-info p {
+    margin-top: 5px; /* Khoảng cách giữa input và thông báo lỗi */
+    color: red; /* Màu chữ lỗi */
+    font-size: 14px; /* Cỡ chữ lớn hơn */
+    font-family: 'Times New Roman', serif; /* Font Times New Roman */
+}
+.prebuy-quantity-label {
+    display: flex; /* Hiển thị hàng ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    margin-bottom: 10px; /* Khoảng cách dưới */
+    font-size: 18px; /* Cỡ chữ */
+    color: #333; /* Màu chữ */
+}
+
+.prebuy-quantity-label input[type="number"] {
+    width: 100px; /* Chiều rộng của ô nhập số */
+    margin-left: 10px; /* Khoảng cách giữa nhãn và ô nhập */
+    padding: 5px; /* Khoảng cách bên trong */
+    font-size: 16px; /* Cỡ chữ lớn hơn */
+    border: 1px solid #ccc; /* Viền nhạt */
+    border-radius: 5px; /* Bo góc nhẹ */
+    outline: none; /* Loại bỏ viền mặc định */
+    transition: border-color 0.3s; /* Hiệu ứng chuyển đổi khi focus */
+}
+
+.prebuy-quantity-label input[type="number"]:focus {
+    border-color: #28a745; /* Màu viền khi focus */
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Bóng mờ khi focus */
+}
+
+.prebuy-quantity-error {
+    margin-top: 18px; /* Khoảng cách trên */
+    font-size: 12px; /* Cỡ chữ nhỏ hơn */
+    color: red; /* Màu chữ lỗi */
+    margin-left: 10px;
+}
+/* Container bao quanh số lượng và nút */
+.prebuy-quantity-container {
+    display: flex; /* Hiển thị các phần tử ngang hàng */
+    align-items: center; /* Căn giữa các phần tử theo chiều dọc */
+    margin-top: 5px;
+}
+
+/* Nút cộng và trừ */
+.prebuy-quantity-btn {
+    width: 35px; /* Chiều rộng nút */
+    height: 35px; /* Chiều cao nút */
+    border: 1px solid #ccc; /* Viền nhạt */
+    background-color: #f9f9f9; /* Màu nền nhạt */
+    color: #333; /* Màu chữ */
+    font-size: 18px; /* Cỡ chữ */
+    font-family: 'Times New Roman', serif; /* Font chữ */
+    border-radius: 5px; /* Bo góc nhẹ */
+    cursor: pointer; /* Con trỏ chuột */
+    transition: all 0.3s ease; /* Hiệu ứng hover */
+    margin-left: 10px;
+    margin-right: 6px;
+
+
+}
+
+.prebuy-quantity-btn:hover {
+    background-color: #e9e9e9; /* Màu nền khi hover */
+    border-color: #28a745; /* Đổi màu viền khi hover */
+}
+
+.prebuy-quantity-btn:disabled {
+    background-color: #ddd; /* Màu nền cho nút bị vô hiệu hóa */
+    cursor: not-allowed; /* Con trỏ không cho phép bấm */
+}
+
+/* Input hiển thị số lượng */
+.prebuy-quantity-input {
+    width: 30px; /* Chiều rộng ô nhập */
+    text-align: center; /* Căn giữa số trong ô nhập */
+    font-size: 16px; /* Cỡ chữ */
+    border: 1px solid #ccc; /* Viền nhạt */
+    border-radius: 5px; /* Bo góc nhẹ */
+    margin: 0 10px; /* Khoảng cách giữa nút và ô nhập */
+    padding: 5px; /* Khoảng cách bên trong */
+    outline: none; /* Loại bỏ viền mặc định */
+    transition: border-color 0.3s; /* Hiệu ứng focus */
+}
+
+.prebuy-quantity-input:focus {
+    border-color: #28a745; /* Màu viền khi focus */
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Bóng mờ khi focus */
+}
+

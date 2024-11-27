@@ -16,6 +16,7 @@ const PreBuy = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("cash");
   const [errorMessages, setErrorMessages] = useState({});
   const [sizeChoose, setSizeChoose] = useState(""); 
+  const [account, setAccount] = useState(null);
 
   useEffect(() => {
     if (accesstoken) {
@@ -31,6 +32,15 @@ const PreBuy = () => {
           return response.json();
         })
         .then((data) => {
+          if (data.account) {
+            setAccount(data.account); 
+            setBuyInfo({
+              name: data.account.name || "",
+              phone: data.account.phoneNumber || "",
+              address: data.account.address || "",
+              note: "", 
+            });
+          }
           const itemsWithSelectedSize = data.cart.map((item) => {
             const savedItems =
               JSON.parse(localStorage.getItem("cartItems")) || [];
@@ -82,7 +92,11 @@ const PreBuy = () => {
           return response.json();
         })
         .then((data) => {
-          setDiscounts(data.discount || []);
+          if (data.discount && Array.isArray(data.discount)) {
+            setDiscounts(data.discount.filter((discount) => discount.status === "ENABLE"));
+          } else {
+            setDiscounts([]);
+          }
         })
         .catch((error) => {
           setError("Có lỗi xảy ra khi lấy dữ liệu giảm giá.");
@@ -92,17 +106,28 @@ const PreBuy = () => {
   }, [accesstoken]);
 
   const handleSizeChange = (cartID, selectedSize) => {
-    const updatedItems = cartItems.map((item) =>
-      item.cartID === cartID ? { ...item, sizeChoose: selectedSize } : item
-    );
-    setCartItems(updatedItems);
-    localStorage.setItem("cartItems", JSON.stringify(updatedItems)); 
-    updateCart(
-      cartID,
-      updatedItems.find((item) => item.cartID === cartID).number,
-      selectedSize
-    );
-  };
+    const updatedItems = cartItems.map((item) => {
+        if (item.cartID === cartID) {
+            const stockForSelectedSize =
+                item.stock[item.sizes.indexOf(selectedSize)]; // Lấy tồn kho theo kích thước mới
+            return {
+                ...item,
+                sizeChoose: selectedSize, // Cập nhật kích thước được chọn
+                selectedSize, // Đồng nhất giá trị selectedSize
+                currentStock: stockForSelectedSize, // Tồn kho theo kích thước mới
+            };
+        }
+        return item;
+    });
+
+    setCartItems(updatedItems); // Cập nhật state giỏ hàng
+    localStorage.setItem("cartItems", JSON.stringify(updatedItems)); // Lưu vào localStorage
+
+    // Gọi API cập nhật giỏ hàng
+    const updatedItem = updatedItems.find((item) => item.cartID === cartID);
+    updateCart(cartID, updatedItem.number, selectedSize);
+};
+
 
   const handleQuantityChange = (cartID, quantity) => {
     const newQuantity = parseInt(quantity, 10) || 1;
@@ -237,7 +262,54 @@ const PreBuy = () => {
     name: "",
     note: ""
   });
-
+  const [errors, setErrors] = useState({
+    name: "",
+    phone: "",
+    address: "",
+    email: "",
+  });
+  const validateInput = (field, value) => {
+    let error = "";
+  
+    switch (field) {
+      case "name":
+        if (value.trim().length <= 2) {
+          error = "Vui lòng nhập tên nhiều hơn 2 ký tự.";
+        }
+        break;
+  
+      case "phone":
+        if (!/^\d{8,}$/.test(value)) {
+          error = "Vui lòng nhập số điện thoại có ít nhất 8 chữ số.";
+        }
+        break;
+  
+      case "address":
+        if (value.trim().length <= 2) {
+          error = "Vui lòng nhập đúng địa chỉ";
+        }
+        break;
+  
+      default:
+        break;
+    }
+  
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [field]: error,
+    }));
+  
+    return error;
+  };
+  
+  const handleInputChange = (field, value) => {
+    validateInput(field, value);
+  
+    setBuyInfo((prevInfo) => ({
+      ...prevInfo,
+      [field]: value,
+    }));
+  };
   const handleBuy = () => {
     if (Object.keys(errorMessages).length > 0) {
       setError(
@@ -245,48 +317,55 @@ const PreBuy = () => {
       );
       return;
     }
-
+  
     const selectedItems = cartItems.filter((item) => item.selected);
     const cartIDs = selectedItems.map((item) => item.cartID);
-
+    const quantities = selectedItems.map((item) => item.number);
+    const prices = selectedItems.map(
+      (item) => item.productPrice * item.number * (1 - appliedDiscount / 100)
+    );
+  
     if (cartIDs.length === 0) {
       alert("Vui lòng chọn ít nhất một sản phẩm để mua.");
       return;
     }
-
+  
+    // Tạo query parameters cho cartID, quantities, và prices
     const params = new URLSearchParams();
-    cartIDs.forEach((id) => params.append("cartID", id));
-
+    cartIDs.forEach((id, index) => {
+      params.append("cartID", id);
+      params.append("quantities", quantities[index]);
+      params.append("price", prices[index]);
+    });
+  
+    // Tạo đối tượng request body cho thông tin người dùng
+    const buyInfoBody = {
+      name: buyInfo.name,
+      address: buyInfo.address,
+      phone: buyInfo.phone,
+      note: buyInfo.note,
+    };
+  
     const url = `http://localhost:8080/prebuy/buy?${params.toString()}`;
-
+  
     console.log("POST URL:", url);
-
+    console.log("Body JSON gửi đến API:", buyInfoBody);
+  
     fetch(url, {
       method: "POST",
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${accesstoken}`,
       },
+      body: JSON.stringify(buyInfoBody), // Gửi thông tin người dùng trong body
     })
-      .then((response) => {
-        if (!response.ok) {
-          return response.text().then((text) => {
-            console.error("Error response:", text);
-            throw new Error("Could not complete the purchase.");
-          });
-        }
-
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) {
-          return response.json();
-        } else {
-          return response.text().then((text) => {
-            console.log("Response text:", text);
-            return text;
-          });
-        }
-      })
-      .then((data) => {
-        alert(data);
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Could not complete the purchase.");
+      }
+      return response.text(); 
+    })
+      .then(() => {
         if (selectedDiscount) {
           deleteDiscount(selectedDiscount);
         }
@@ -300,6 +379,7 @@ const PreBuy = () => {
         console.error(error);
       });
   };
+  
 
   const handleBuyVNPay = () => {
     if (Object.keys(errorMessages).length > 0) {
@@ -395,65 +475,76 @@ const PreBuy = () => {
 
   const handleApplyDiscount = () => {
     if (!selectedDiscount) {
-      alert("Vui lòng chọn mã giảm giá.");
+      setError("Vui lòng chọn mã giảm giá.");
       return;
     }
-
+  
     const selectedDiscountObj = discounts.find(
       (discount) => discount.discountID === selectedDiscount
     );
-
-    console.log(
-      "Selected Discount CategoryID:",
-      selectedDiscountObj.categoryID
-    );
-    console.log(
-      "Selected Discount ProductTypeID:",
-      selectedDiscountObj.productTypeID
-    );
-
+  
+    if (!selectedDiscountObj) {
+      setError("Mã giảm giá không hợp lệ.");
+      return;
+    }
+  
+    console.log("Selected Discount Details:", selectedDiscountObj);
+  
     const selectedItems = cartItems.filter((item) => item.selected);
-
-    selectedItems.forEach((item) => {
-      console.log(
-        `Product ID: ${item.productID}, CategoryID: ${item.categoryID}, ProductTypeID: ${item.productTypeID}`
-      );
-    });
-
-    const isApplicable = selectedItems.some((item) => {
+  
+    if (selectedItems.length === 0) {
+      setError("Vui lòng chọn ít nhất một sản phẩm.");
+      return;
+    }
+  
+    const accountTypeID = account?.type?.typeID; // Lấy typeID từ tài khoản người dùng
+  
+    // Kiểm tra toàn bộ sản phẩm và điều kiện typeID
+    const allItemsMatch = selectedItems.every((item) => {
       const isCategoryMatch =
+        selectedDiscountObj.categoryID &&
         item.categoryID === selectedDiscountObj.categoryID.categoryID;
-
-      const isProductTypeMatch =
-        item.productTypeID === selectedDiscountObj.productTypeID;
-
-      return isCategoryMatch || isProductTypeMatch;
+  
+      const isTypeMatch =
+        selectedDiscountObj.type &&
+        accountTypeID === selectedDiscountObj.type.typeID; // So sánh typeID
+  
+      const isPurposeMatch =
+        selectedDiscountObj.purposeID &&
+        item.purposeID === selectedDiscountObj.purposeID;
+  
+      // Kiểm tra tất cả điều kiện
+      return isCategoryMatch || isTypeMatch || isPurposeMatch;
     });
-
-    if (!isApplicable) {
-      setError("Khuyến mãi không áp dụng cho sản phẩm này.");
+  
+    if (!allItemsMatch) {
+      setError(
+        "Khuyến mãi không áp dụng vì có sản phẩm hoặc thông tin tài khoản không thỏa mãn điều kiện."
+      );
       setAppliedDiscount(0);
       setTimeout(() => {
         setError("");
       }, 5000);
       return;
     }
-
-    if (selectedDiscountObj) {
-      const totalPrice = selectedItems.reduce(
-        (total, item) => total + item.productPrice * item.number,
-        0
-      );
-      const discountAmount = totalPrice * selectedDiscountObj.discountPercent;
-      setAppliedDiscount(discountAmount);
-      setError(null);
-    } else {
-      alert("Vui lòng chọn mã giảm giá hợp lệ.");
-    }
+  
+    const totalPrice = selectedItems.reduce(
+      (total, item) => total + item.productPrice * item.number,
+      0
+    );
+    const discountAmount = totalPrice * (selectedDiscountObj.discountPercent / 100);
+  
+    setAppliedDiscount(discountAmount);
+    setError(null);
   };
+  
+  
 
   const handleDiscountChange = (event) => {
-    setSelectedDiscount(Number(event.target.value)); // Chuyển đổi sang số
+    setSelectedDiscount(Number(event.target.value));
+  };
+  const calculatePrice = (productPrice, quantity) => {
+    return (productPrice * quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
   const totalPrice = calculateTotalPrice();
   const discountAmount = calculateDiscountAmount(totalPrice);
@@ -461,9 +552,8 @@ const PreBuy = () => {
   return (
     <div className="prebuy-container">
       <h2 className="prebuy-h2">
-        Giỏ hàng của bạn: <span>({cartItems.length} sản phẩm)</span>
+      Giỏ hoa của bạn: <span>({cartItems.length} bó hoa)</span>
       </h2>
-      {error && <p>{error}</p>}
       {cartItems.length > 0 ? (
         <div style={{ display: "flex" }}>
           <div style={{ flex: 1 }}>
@@ -492,18 +582,16 @@ const PreBuy = () => {
                       </p>
                       <p className="prebuy-product-price">
                         Giá:{" "}
-                        {(item.productPrice * item.number)
-                          .toString()
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
-                        VNĐ
+                        {calculatePrice(item.productPrice, item.number)} VNĐ
                       </p>
                       <label className="prebuy-product-size-label">
                         Kích thước:
                         <select
                           value={item.sizeChoose || ""}
-                          onChange={(e) =>
-                            handleSizeChange(item.cartID, e.target.value)
-                          }
+                          onChange={(e) => {
+                            handleSizeChange(item.cartID, e.target.value);
+                            window.location.reload(); 
+                          }}
                           className="prebuy-product-size-select"
                           style={{ marginLeft: "5px" }}
                         >
@@ -525,26 +613,37 @@ const PreBuy = () => {
                         Tồn kho:{" "}
                         {item.stock[item.sizes.indexOf(item.selectedSize)]}
                       </p>
-                      <label
-                        className="prebuy-label"
-                        style={{ marginLeft: "10px" }}
-                      >
-                        Số lượng:
+                      <label className="prebuy-quantity-label">
+                      Số lượng:
+                      <div className="prebuy-quantity-container">
+                        <button
+                          type="button"
+                          className="prebuy-quantity-btn"
+                          onClick={() => handleQuantityChange(item.cartID, item.number - 1)}
+                          disabled={item.number <= 1} // Vô hiệu hóa khi số lượng <= 1
+                        >
+                          -
+                        </button>
                         <input
                           type="number"
                           min="1"
                           value={item.number}
-                          onChange={(e) =>
-                            handleQuantityChange(item.cartID, e.target.value)
-                          }
-                          style={{ width: "80px", marginLeft: "5px" }}
+                          onChange={(e) => handleQuantityChange(item.cartID, e.target.value)}
+                          className="prebuy-quantity-input"
                         />
-                        {errorMessages[item.cartID] && (
-                          <p style={{ color: "red" }}>
-                            {errorMessages[item.cartID]}
-                          </p>
-                        )}
-                      </label>
+                        <button
+                          type="button"
+                          className="prebuy-quantity-btn"
+                          onClick={() => handleQuantityChange(item.cartID, item.number + 1)}
+                        >
+                          +
+                        </button>
+                      </div>
+                      {errorMessages[item.cartID] && (
+                        <p className="prebuy-quantity-error">{errorMessages[item.cartID]}</p>
+                      )}
+                    </label>
+
                     </div>
                     <img
                       src={deleteicon}
@@ -567,38 +666,41 @@ const PreBuy = () => {
           </div>
           <div style={{ flex: 1, paddingLeft: "20px" }}>
           <div className="prebuy-user-info">
-              <h3>Thông tin khách hàng</h3>
-              <label>
-                Tên:
-                <input
-                  type="text"
-                  value={buyInfo.name}
-                  onChange={(e) => setBuyInfo({ ...buyInfo, name: e.target.value })}
-                />
-              </label>
-              <label>
-                Số điện thoại:
-                <input
-                  type="text"
-                  value={buyInfo.phone}
-                  onChange={(e) => setBuyInfo({ ...buyInfo, phone: e.target.value })}
-                />
-              </label>
-              <label>
-                Địa chỉ:
-                <input
-                  type="text"
-                  value={buyInfo.address}
-                  onChange={(e) => setBuyInfo({ ...buyInfo, address: e.target.value })}
-                />
-              </label>
-              <label>
-                Ghi chú:
-                <textarea
-                  value={buyInfo.note}
-                  onChange={(e) => setBuyInfo({ ...buyInfo, note: e.target.value })}
-                ></textarea>
-              </label>
+          <h3>Thông tin khách hàng</h3>
+          <label>
+            Tên:
+            <input
+              type="text"
+              value={buyInfo.name}
+              onChange={(e) => handleInputChange("name", e.target.value)}
+            />
+            {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
+          </label>
+          <label>
+            Số điện thoại:
+            <input
+              type="text"
+              value={buyInfo.phone}
+              onChange={(e) => handleInputChange("phone", e.target.value)}
+            />
+            {errors.phone && <p style={{ color: "red" }}>{errors.phone}</p>}
+          </label>
+          <label>
+            Địa chỉ:
+            <input
+              type="text"
+              value={buyInfo.address}
+              onChange={(e) => handleInputChange("address", e.target.value)}
+            />
+            {errors.address && <p style={{ color: "red" }}>{errors.address}</p>}
+          </label>
+          <label>
+            Ghi chú:
+            <textarea
+              value={buyInfo.note}
+              onChange={(e) => handleInputChange("note", e.target.value)}
+            ></textarea>
+          </label>
             </div>
 
             <div className="prebuy-price-summary">
@@ -622,14 +724,13 @@ const PreBuy = () => {
               className="prebuy-discount-select"
             >
               <option value="">Chọn mã giảm giá</option>
-              {discounts
-                .filter((discount) => discount.status === "Enable")
-                .map((discount) => (
-                  <option key={discount.discountID} value={discount.discountID}>
-                    Giảm giá {discount.discountPercent * 100}% (ID:{" "}
-                    {discount.discountID})
-                  </option>
-                ))}
+              {discounts.map((discount) => (
+                <option key={discount.discountID} value={discount.discountID}>
+                  {discount.categoryID
+                    ? `Giảm ${discount.discountPercent}% cho ${discount.categoryID.categoryName}`
+                    : `Giảm ${discount.discountPercent}% (${discount.type.typeName})`}
+                </option>
+              ))}
             </select>
             <button onClick={handleApplyDiscount} className="prebuy-button">
               Áp dụng

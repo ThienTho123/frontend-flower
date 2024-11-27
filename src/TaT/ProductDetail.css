@@ -685,3 +685,87 @@ h5 {
   opacity: 0;                /* Ẩn toast dần */
   transition: opacity 0.5s ease-in;  /* Hiệu ứng ẩn */
 }
+.success-popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #d4edda; /* Màu nền xanh nhạt */
+  color: #155724; /* Màu chữ xanh đậm */
+  padding: 15px 20px; /* Padding để có không gian */
+  border: 1px solid #c3e6cb; /* Đường viền xanh nhạt */
+  border-radius: 5px; /* Bo góc */
+  display: flex;
+  justify-content: space-between; /* Căn chỉnh nội dung sang hai bên */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  z-index: 1000;
+  width: 320px; /* Độ rộng hộp thông báo */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ nhẹ */
+}
+
+.success-message {
+  font-size: 14px; /* Cỡ chữ thông báo */
+  margin-right: 15px; /* Khoảng cách giữa thông báo và nút đóng */
+  flex-grow: 1; /* Làm cho thông báo chiếm không gian còn lại */
+  word-wrap: break-word; /* Đảm bảo nội dung không bị tràn ra ngoài */
+}
+
+.close-btn {
+  font-size: 18px; /* Cỡ chữ nút đóng */
+  cursor: pointer;
+  color: #155724; /* Màu chữ giống màu thông báo */
+  font-weight: bold;
+  transition: color 0.3s;
+  padding: 0 5px; /* Khoảng cách để nút đóng dễ bấm */
+}
+
+.close-btn:hover {
+  color: #117a41; /* Màu khi hover, thay đổi sang xanh đậm hơn */
+}
+/* Style cho overlay của modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Màu nền mờ */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Đảm bảo modal hiển thị trên các phần tử khác */
+}
+
+/* Style cho container của modal */
+.modal-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ cho modal */
+  text-align: center;
+}
+
+/* Tạo lớp riêng cho nút đóng */
+.modal-close-btn {
+  background-color: #9142ad; /* Màu xanh dương cho nút */
+  color: white; /* Màu chữ trắng */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu khi hover */
+  margin-top: 20px; /* Khoảng cách trên */
+}
+
+/* Khi hover vào nút đóng */
+.modal-close-btn:hover {
+  background-color: #5a1d70; /* Màu xanh đậm hơn khi hover */
+}
+
+/* Khi nút đóng bị nhấn */
+.modal-close-btn:active {
+  background-color: #5a1d70; /* Màu đậm khi nhấn */
+  transform: scale(0.98); /* Hiệu ứng thu nhỏ nhẹ khi nhấn */
+}

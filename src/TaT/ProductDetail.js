@@ -147,7 +147,7 @@ const ProductDetail = () => {
         <div className="modal-container">
           <h3>Thông báo</h3>
           <p>{message}</p>
-          <button onClick={onClose}>Đóng</button>
+          <button className="modal-close-btn" onClick={onClose}>Đóng</button>
         </div>
       </div>
     );
@@ -503,7 +503,7 @@ const ProductDetail = () => {
                   value={quantity}
                   min="1"
                   onChange={handleChange}
-                  onBlur={() => setQuantity(Math.min(quantity, maxStock))} // Điều chỉnh số lượng khi người dùng rời khỏi ô nhập
+                  onBlur={() => setQuantity(Math.min(quantity, maxStock))} 
                 />
                 <button
                   onClick={handleIncrease}
