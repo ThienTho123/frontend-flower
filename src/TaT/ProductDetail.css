@@ -274,6 +274,8 @@ input[type="number"] {
   font-weight: normal;
   color: #555;
   padding-right: 20px; /* Giảm padding bên phải */
+  display: flex;               /* Sử dụng flexbox */
+
 }
 
 .infodetail {
@@ -618,7 +620,7 @@ h5 {
 }
 
 .titleProduct {
-  font-size: 2rem;
+  font-size: 4rem;
   font-weight: bold;
 }
 
@@ -637,8 +639,8 @@ h5 {
   background-color: #e63939; /* Màu nền khi hover */
 }
 .product-info {
-  display: flex; /* Dùng Flexbox để căn chỉnh ngang */
-  align-items: left; /* Căn giữa theo chiều dọc */
+  display: flex !important;              /* Dùng !important để ghi đè các quy tắc khác */
+  align-items: center !important;         /* Căn giữa các phần tử theo chiều dọc */
   gap: 10px; /* Khoảng cách giữa các phần tử */
   font-size: 14px; /* Kích thước chữ */
   position: relative; /* Đảm bảo các phần tử con sẽ không xung đột */
@@ -651,10 +653,35 @@ h5 {
   background: none; /* Loại bỏ nền */
   cursor: pointer; /* Hiển thị con trỏ trỏ chuột */
   padding: 0; /* Loại bỏ padding */
-  right: 0 !important;/* Đẩy trái tim ra sát lề phải */
   transition: color 0.3s ease; /* Hiệu ứng mượt khi đổi màu */
-}
+  margin-left: 10px !important; /* Đẩy phần tử này sang bên phải */
+  margin-bottom: 10px !important; /* Đẩy phần tử này sang bên phải */
 
+
+}
 .heart-icon:hover {
   color: red; /* Màu trái tim khi hover */
+}
+.heart-icon.heart-filled {
+  color: red; /* Màu đỏ khi thêm vào wishlist */
+}
+/* Toast Notification */
+.toast {
+  position: fixed;
+  bottom: 20px;              /* Đặt vị trí ở phía dưới */
+  left: 50%;                 /* Căn giữa theo chiều ngang */
+  transform: translateX(-50%); /* Căn giữa chính xác */
+  background-color: #4CAF50;   /* Màu nền xanh */
+  color: white;               /* Màu chữ trắng */
+  padding: 10px 20px;         /* Padding xung quanh thông báo */
+  border-radius: 5px;         /* Bo góc */
+  font-size: 16px;            /* Kích thước chữ */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Hiệu ứng bóng đổ */
+  opacity: 1;
+  transition: opacity 0.5s ease-out; /* Hiệu ứng mờ dần */
+}
+
+.toast.hide {
+  opacity: 0;                /* Ẩn toast dần */
+  transition: opacity 0.5s ease-in;  /* Hiệu ứng ẩn */
 }

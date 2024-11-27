@@ -9,6 +9,7 @@ import Grid from "@mui/material/Grid";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
+
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -31,7 +32,9 @@ const ProductDetail = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [howManyBought, setHowManyBought] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [wishlist, setWishlist] = useState([]); // Lưu danh sách yêu thích
+  const [isInWishlist, setIsInWishlist] = useState(false);  // Trạng thái để theo dõi có trong wishlist khônghandleAddToWishlist 
+  const [isToastVisible, setIsToastVisible] = useState(false); // Điều khiển hiển thị thông báo
+  const [toastMessage, setToastMessage] = useState('');  // Lưu thông báo
 
   const commentsPerPage = 5;
   useEffect(() => {
@@ -307,39 +310,42 @@ const ProductDetail = () => {
     return stars;
   };
   const handleAddToWishlist = async () => {
+  
     try {
-      // Lấy token và kiểm tra đăng nhập
       const token = localStorage.getItem("access_token");
       if (!token) {
-        navigate("/login"); // Điều hướng đến trang đăng nhập nếu chưa đăng nhập
+        navigate("/login"); 
         return;
       }
   
-      // Giả sử `flowerID` được chọn hoặc lấy từ product hiện tại
-      const flowerID = product.flowerID; // Hoặc lấy từ state hoặc props
+      const flowerID = product.flowerID;
+      setIsInWishlist(!isInWishlist);
   
-      // Gửi request POST đến API
       const response = await axios.post(
-        "http://localhost:8080/addToWishlist",  // Endpoint API
-        { flowerID: flowerID },                 // Payload gửi đi
+        "http://localhost:8080/addToWishlist", 
+        { flowerID: flowerID },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,  // Thêm token vào header
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
   
-      // Xử lý khi thêm thành công
+      // Hiển thị thông báo
+      setToastMessage("Sản phẩm đã được thêm vào danh sách yêu thích!");
+      setIsToastVisible(true);  
+      // Ẩn thông báo sau 3 giây
+      setTimeout(() => {
+        setIsToastVisible(false);
+      }, 3000); // Toast tự động ẩn sau 3 giây
+  
       console.log("Added to wishlist:", response.data);
-      alert("Sản phẩm đã được thêm vào danh sách yêu thích!");
     } catch (error) {
-      // Xử lý lỗi khi request thất bại
+      // Hiển thị thông báo lỗi
       if (error.response) {
         console.error("Error adding to wishlist:", error.response.data);
-        alert(`Lỗi: ${error.response.data.message || "Không thể thêm vào wishlist."}`);
+        setIsToastVisible(true);  // Hiển thị thông báo lỗi
       } else {
         console.error("Network or server error:", error.message);
-        alert("Lỗi kết nối đến server.");
+        setIsToastVisible(true);  // Hiển thị thông báo lỗi
       }
     }
   };
@@ -433,9 +439,17 @@ const ProductDetail = () => {
                 <span className="star">★</span>
                 <span className="reviewLength">{reviews.length} Đánh giá</span>
                 <span className="bought">{howManyBought} Đã mua</span>
-                <button className="heart-icon" onClick={handleAddToWishlist}>
+                <button
+                  className={`heart-icon ${isInWishlist ? 'heart-filled' : ''}`}
+                  onClick={handleAddToWishlist}
+                >
                   &#9825;
                 </button>
+                {isToastVisible && (
+        <div className="toast">
+          {toastMessage}
+        </div>
+      )}
               </h6>
               <h2 className="productPrice" style={{ color: "#ff4c4c" }}>
                 {product.price} <span className="currency-symbol">đ</span>
