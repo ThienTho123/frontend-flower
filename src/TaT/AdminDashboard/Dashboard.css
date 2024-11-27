@@ -1,0 +1,459 @@
+.admin-dashboard body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f2f2f9;
+    margin: 0;
+    padding: 0;
+}
+
+.admin-dashboard h2 {
+    color: #1E5128;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 28px;
+}
+
+.admin-dashboard button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #191A19;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.admin-dashboard button:hover {
+    background-color: #4E9F3D;
+}
+
+.admin-dashboard h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.admin-dashboard input {
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.admin-dashboard label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.admin-dashboard table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+}
+
+.admin-dashboard th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.admin-dashboard th {
+    background-color: #4E9F3D;
+    color: white;
+}
+
+.admin-dashboard tr:hover {
+    background-color: #D8E9A8;
+}
+
+.admin-dashboard .error {
+    color: red;
+    margin-top: 10px;
+}
+
+.admin-dashboard .dashboard {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    background-color: #D8E9A8;
+}
+
+.admin-dashboard .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #191A19;
+    color: white;
+    padding: 10px;
+}
+
+.admin-dashboard .dashboard-header h2 {
+    margin: 0;
+    font-size: 32px;
+    letter-spacing: 1px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    color: #D8E9A8;
+}
+
+.admin-dashboard .dashboard-header .shop-name {
+    font-size: 36px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    font-family: 'Lobster', cursive;
+    color: #ffffff;
+}
+
+.admin-dashboard .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+}
+
+.admin-dashboard .admin-icon {
+    width: 60px;
+    height: auto;
+    position: relative;
+    top: 20px;
+    margin-right: 10px;
+}
+
+.admin-dashboard .logout-button {
+    background-color: #1E5128;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 20px;
+}
+
+.admin-dashboard .logout-button:hover {
+    background-color: #4E9F3D;
+}
+
+.admin-dashboard .dashboard-container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+}
+
+.dashboard-container {
+    display: flex;
+}
+
+.admin-buttons-container {
+    flex: 0 0 200px;
+    height: calc(100vh - 80px);
+    overflow: auto;
+    margin-right: 20px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.account-info-container {
+    flex: 1;
+    height: calc(100vh - 80px);
+    overflow: auto;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-buttons-container::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+.admin-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.admin-buttons button {
+    display: flex;
+    align-items: center;
+    padding: 20px 30px;
+    font-size: 20px;
+    font-family: 'Arial', sans-serif;
+    color: white;
+    background-color: #309244;
+    border: none;
+    border-radius: 0px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
+
+.admin-buttons button:hover {
+    background-color: #4E9F3D;
+}
+
+.admin-buttons button img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.admin-buttons button {
+    justify-content: flex-start;
+    text-align: left;
+}
+
+.account-info-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    overflow: hidden;
+    overflow: auto;
+}
+
+.account-info {
+    background: linear-gradient(135deg, #D8E9A8, #ffffff);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    transition: transform 0.3s;
+    margin-top: 20px;
+    overflow: auto;
+}
+
+.account-info:hover {
+    transform: scale(1.02);
+}
+
+.info-row {
+    display: flex;
+    justify-content: flex-start;
+    margin: 10px 0;
+}
+
+.account-info p {
+    font-size: 20px;
+    line-height: 1.5;
+    color: #333;
+    margin: 0;
+}
+
+.account-info .label {
+    font-weight: bold;
+    color: #1E5128;
+    font-size: 22px;
+}
+
+.account-info h3 {
+    font-size: 28px;
+    color: #FF6347;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.info-row {
+    margin-top: 15px;
+}
+
+.info-row span:last-child {
+    margin-left: 10px;
+    font-size: 20px;
+}
+
+.account-info p.error {
+    color: red;
+    font-weight: bold;
+}
+
+.account-info p:hover {
+    color: #1E5128;
+}
+
+.admin-ql-container {
+    padding: 20px;
+    background-color: #D8E9A8;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.admin-ql-container button {
+    background-color: #ce9b4f;
+    color: white;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.admin-ql-container button:hover {
+    background-color: #a57328;
+}
+
+.admin-ql-container input {
+    padding: 16px; /* Tăng padding */
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%; /* Hoặc điều chỉnh theo ý muốn */
+    font-size: 15px; /* Tăng kích thước font chữ */
+    box-sizing: border-box;
+}
+.large-input {
+    width: 300px; /* Kích thước bạn muốn */
+    font-size: 16px; /* Kích thước chữ */
+}
+.admin-ql-container input:hover {
+    border-color: #1E5128;
+}
+
+.admin-ql-container table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.admin-ql-container th,
+.admin-ql-container td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.admin-ql-container th {
+    background-color: #4E9F3D;
+    color: white;
+}
+
+.admin-ql-container tr:hover {
+    background-color: #D8E9A8;
+}
+
+.admin-ql-container label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #1E5128;
+}
+.title-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding: 0 20px; 
+    position: relative; 
+    margin-bottom: 40px; 
+
+}
+
+.title-container h2 {
+    font-size: 36px;
+    font-weight: bold;
+    font-family: 'Arial', cursive; 
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #edecec;
+    padding: 10px 20px; 
+    border-radius: 10px; 
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.return-button {
+    width: 60px; 
+    height: auto;
+    cursor: pointer;
+}
+.chart-container {
+    width: 80%; /* Kích thước biểu đồ */
+    margin: 0 auto; /* Căn giữa biểu đồ */
+    padding: 20px; /* Khoảng cách bên trong */
+    border: 2px solid #04a52c; /* Đường viền */
+    border-radius: 10px; /* Bo góc */
+    background-color: #f8f9fa; /* Màu nền */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    margin-right: 20px;
+}
+
+.chart-title {
+    text-align: center; /* Căn giữa tiêu đề */
+    font-size: 24px; /* Kích thước chữ tiêu đề */
+    color: #343a40; /* Màu chữ tiêu đề */
+    margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
+}
+
+.chart {
+    position: relative; /* Để điều chỉnh vị trí của biểu đồ */
+    height: 400px; /* Chiều cao của biểu đồ */
+}
+
+.axis-label {
+    font-size: 14px; /* Kích thước chữ cho nhãn trục */
+    color: #495057; /* Màu chữ cho nhãn trục */
+}
+
+.bar {
+    background-color: #28a745; /* Màu của các cột */
+    border-radius: 5px; /* Bo góc cho các cột */
+    transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu khi hover */
+}
+
+.bar:hover {
+    background-color: #218838; /* Màu cột khi hover */
+}
+
+.legend {
+    display: flex; /* Sắp xếp các mục theo hàng */
+    justify-content: center; /* Căn giữa legend */
+    margin-top: 20px; /* Khoảng cách trên legend */
+}
+
+.legend-item {
+    margin: 0 10px; /* Khoảng cách giữa các mục legend */
+    display: flex; /* Hiển thị flex cho item */
+    align-items: center; /* Căn giữa item theo chiều dọc */
+}
+
+.legend-color {
+    width: 20px; /* Chiều rộng cho màu sắc của legend */
+    height: 20px; /* Chiều cao cho màu sắc của legend */
+    margin-right: 5px; /* Khoảng cách bên phải */
+}
+.pie-chart-container {
+    text-align: center; /* Căn giữa tiêu đề và biểu đồ */
+    margin: 20px; /* Khoảng cách bên ngoài */
+  }
+  
+  .pie-chart {
+    width: 200px; /* Kích thước chiều rộng của biểu đồ */
+    height: 200px; /* Kích thước chiều cao của biểu đồ */
+    margin: 0 auto; /* Căn giữa biểu đồ */
+    position: relative; /* Để có thể điều chỉnh vị trí các thành phần khác bên trong */
+  }
+  
+  .pie-chart h2 {
+    font-size: 1.5rem; /* Kích thước font tiêu đề */
+    margin-bottom: 10px; /* Khoảng cách giữa tiêu đề và biểu đồ */
+    color: #333; /* Màu sắc tiêu đề */
+  }
+  
+  /* Thêm kiểu dáng cho biểu đồ Pie nếu cần */
+  .pie-chart canvas {
+    border: 2px solid #ddd; /* Đường viền cho biểu đồ */
+    border-radius: 10px; /* Bo góc biểu đồ */
+  }
+  label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  input[type="file"],
+  select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
+  }

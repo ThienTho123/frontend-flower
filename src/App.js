@@ -1,4 +1,11 @@
 import './App.css';
+
+import Dashboard from "./TaT/AdminDashboard/giaodien";
+import AdminOder from "./TaT/AdminDashboard/AdminOder";
+import AdminBanner from "./TaT/AdminDashboard/AdminBanner";
+import AdminAccount from "./TaT/AdminDashboard/AdminAccount";
+import AdminBillInfo from "./TaT/AdminDashboard/AdminBillInfo";
+
 import Footer from './Component/Footer/footer';
 import Header from './Component/Header/header';
 import BackToTop from './Component/BackToTop/BackToTop';
@@ -20,11 +27,18 @@ import ChangePassword from "./TaT/UserAccount/ChangePassword";
 import PurchaseHistory from "./TaT/UserAccount/PurchaseHistory";
 import Wishlist from "./TaT/UserAccount/Wishlist";
 import Find from "./TaT/find";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';  
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';  
 import React, { useEffect } from "react";
 
 const AppRoutes = () => {
   const navigate = useNavigate();
+  const location = useLocation(); // Get the current location
+  
+  // List of admin routes where Header and Footer should be hidden
+  const adminRoutes = ["/dashboard", "/AdminOder", "/AdminBanner", "/AdminAccount", "/AdminBillInfo"];  
+
+  // Check if the current route is an admin route
+  const isAdminRoute = adminRoutes.includes(location.pathname);  
 
   useEffect(() => {
     const loginTime = localStorage.getItem("loginTime");
@@ -46,39 +60,50 @@ const AppRoutes = () => {
   }, [navigate]);
 
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} /> 
-      <Route path="/signup" element={<SignUp />} /> 
-      <Route path="/verify-otp" element={<VerifyOtp />} /> 
-      <Route path="/find" element={<Find />} />
-      <Route path="/login" element={<Login />} /> 
-      <Route path="/forgot" element={<Forgot />} /> 
-      <Route path="/product" element={<ProductList />} />
-      <Route path="/detail/:id" element={<ProductDetail />} /> 
-      <Route path="/prebuy" element={<PreBuy />} /> 
-      <Route path="/news" element={<NewsList />} /> 
-      <Route path="/news/:id" element={<NewsDetail />} />
-      <Route path="/PaymentFailure" element={<PaymentFailure />} />
-      <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
-      <Route path="/account" element={<AccountLayout />}>
-        <Route index element={<Profile />} />
-        <Route path="changepassword" element={<ChangePassword />} />
-        <Route path="wishlist" element={<Wishlist/>} />
-        <Route path="orders" element={<PurchaseHistory />} />
+    <>
+      {/* Only render Header and Footer if it's not an admin route */}
+      {!isAdminRoute && <Header />}
+      <BackToTop />  
+      <Routes>
+        <Route path="/" element={<HomePage />} /> 
+        <Route path="/signup" element={<SignUp />} /> 
+        <Route path="/verify-otp" element={<VerifyOtp />} /> 
+        <Route path="/find" element={<Find />} />
+        <Route path="/login" element={<Login />} /> 
+        <Route path="/forgot" element={<Forgot />} /> 
 
-      </Route>
+        {/* Admin routes */}
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/AdminOder" element={<AdminOder />} />
+        <Route path="/AdminBanner" element={<AdminBanner />} />
+        <Route path="/AdminAccount" element={<AdminAccount />} />
+        <Route path="/AdminBillInfo" element={<AdminBillInfo />} />
 
-    </Routes>
+        {/* Other Routes */}
+        <Route path="/product" element={<ProductList />} />
+        <Route path="/detail/:id" element={<ProductDetail />} /> 
+        <Route path="/prebuy" element={<PreBuy />} /> 
+        <Route path="/news" element={<NewsList />} /> 
+        <Route path="/news/:id" element={<NewsDetail />} />
+        <Route path="/PaymentFailure" element={<PaymentFailure />} />
+        <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
+        <Route path="/account" element={<AccountLayout />}>
+          <Route index element={<Profile />} />
+          <Route path="changepassword" element={<ChangePassword />} />
+          <Route path="wishlist" element={<Wishlist />} />
+          <Route path="orders" element={<PurchaseHistory />} />
+        </Route>
+      </Routes>
+      {/* Only render Footer if it's not an admin route */}
+      {!isAdminRoute && <Footer />}
+    </>
   );
 };
 
 const App = () => {
   return (
     <Router>
-      <Header />
-      <BackToTop />  
       <AppRoutes />
-      <Footer />
     </Router>
   );
 };
