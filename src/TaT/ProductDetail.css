@@ -534,3 +534,49 @@ h5 {
   font-size: 13px;
   color: #777777;
 }
+.comment_content {
+  display: flex;
+  flex-direction: column; /* Sắp xếp các phần tử theo cột */
+  gap: 10px; /* Khoảng cách giữa các phần tử */
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0; /* Đường kẻ dưới mỗi bình luận */
+  padding-bottom: 15px;
+}
+
+.reviewer-section {
+  display: flex;
+  align-items: center; /* Căn giữa avatar và thông tin người dùng */
+  gap: 15px; /* Khoảng cách giữa avatar và thông tin */
+}
+
+.avatar-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; /* Bo tròn avatar */
+  object-fit: cover;
+}
+
+.reviewer-info {
+  display: flex;
+  flex-direction: column; /* Căn thông tin người dùng theo cột */
+  align-items: flex-start; /* Căn trái thông tin */
+}
+.comment_text {
+  font-size: 16px; 
+  color: #555;
+  line-height: 1.5;
+  margin-left: 68px;
+  margin-bottom: 10px;
+}
+.comment-image {
+  margin-top: 10px; /* Khoảng cách giữa nội dung bình luận và ảnh */
+  text-align: left; /* Căn giữa ảnh */
+}
+
+.attached-image {
+  max-width: 600px; /* Giới hạn chiều rộng ảnh để không vượt khung */
+  max-height: 400px; /* Giới hạn chiều cao ảnh */
+  border-radius: 8px; /* Bo góc ảnh */
+  object-fit: cover; /* Đảm bảo ảnh hiển thị phù hợp */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Đổ bóng nhẹ */
+}

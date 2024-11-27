@@ -609,21 +609,43 @@ const ProductDetail = () => {
         <h5>({reviews.length} đánh giá)</h5>
 
         <div className="comment-overview">
-          <div className="cmt-view collapsed">
-            {sortedReviews.map((comment, index) => (
-              <div className="comment_content" key={index}>
-                <div className="reviewer">{comment.accountID.name}</div>
-                <div className="time">
-                  {new Date(comment.date).toLocaleDateString("vi-VN")}
+        <div className="cmt-view collapsed">
+          {sortedReviews.map((comment, index) => (
+            <div className="comment_content" key={index}>
+              {/* Avatar và thông tin người dùng */}
+              <div className="reviewer-section">
+                <img
+                  src={comment.accountID.avatar}
+                  alt={comment.accountID.name}
+                  className="avatar-image"
+                />
+                <div className="reviewer-info">
+                  <div className="reviewer">{comment.accountID.name}</div>
+                  <div className="time">
+                    {new Date(comment.date).toLocaleDateString("vi-VN")}
+                  </div>
+                  <div className="rating-comment">{commentStars(comment.rating)}</div>
                 </div>
-                <div className="rating-comment">
-                  {commentStars(comment.rating)}
-                </div>
-
-                <div className="comment_text">{comment.comment}</div>
               </div>
-            ))}
-          </div>
+
+              {/* Nội dung bình luận */}
+              <div className="comment_text">{comment.comment}</div>
+
+              {/* Hình ảnh bình luận nếu có */}
+              {comment.image && (
+                <div className="comment-image">
+                  <img
+                    src={comment.image}
+                    alt="Comment attachment"
+                    className="attached-image"
+                  />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+
 
           <div className="pagination">
             <button onClick={goToPreviousPage} disabled={currentPage === 1}>
@@ -672,7 +694,6 @@ const ProductDetail = () => {
           <h1 className="other1">Có thể bạn thích</h1>
 
           {productSimilar.map((product) => (
-            console.log(product.price),
             <div key={product.flowerID} className="product">
               <a href={`/detail/${product.flowerID}`}>
                 <img
