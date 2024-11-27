@@ -127,3 +127,19 @@
   width: 100%;
   border-radius: 20px;
 }
+.cart-count {
+  position: absolute; /* Đặt vị trí tuyệt đối để dễ căn chỉnh */
+  top: -5px; /* Điều chỉnh vị trí dọc */
+  right: -5px; /* Điều chỉnh vị trí ngang */
+  background-color: red; /* Màu nền đỏ */
+  color: white; /* Màu chữ trắng */
+  border-radius: 50%; /* Tạo hình tròn */
+  width: 20px; /* Kích thước ngang của vòng tròn */
+  height: 20px; /* Kích thước dọc của vòng tròn */
+  display: flex; /* Sử dụng flex để căn giữa số */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  font-size: 12px; /* Kích thước chữ */
+  font-weight: bold; /* In đậm chữ */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Tạo bóng để nổi bật */
+}

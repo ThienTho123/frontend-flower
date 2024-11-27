@@ -609,3 +609,52 @@ h5 {
   object-fit: cover; /* Đảm bảo ảnh hiển thị phù hợp */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Đổ bóng nhẹ */
 }
+
+.title-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Khoảng cách giữa tiêu đề và nút */
+  gap: 1rem; /* Khoảng cách giữa các phần tử */
+}
+
+.titleProduct {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.add-to-wishlist {
+  background-color: #ff4c4c; /* Màu nền */
+  color: white; /* Màu chữ */
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-to-wishlist:hover {
+  background-color: #e63939; /* Màu nền khi hover */
+}
+.product-info {
+  display: flex; /* Dùng Flexbox để căn chỉnh ngang */
+  align-items: left; /* Căn giữa theo chiều dọc */
+  gap: 10px; /* Khoảng cách giữa các phần tử */
+  font-size: 14px; /* Kích thước chữ */
+  position: relative; /* Đảm bảo các phần tử con sẽ không xung đột */
+}
+
+.heart-icon {
+  font-size: 50px; /* Kích thước trái tim */
+  color: #ccc; /* Màu mặc định */
+  border: none; /* Loại bỏ viền */
+  background: none; /* Loại bỏ nền */
+  cursor: pointer; /* Hiển thị con trỏ trỏ chuột */
+  padding: 0; /* Loại bỏ padding */
+  right: 0 !important;/* Đẩy trái tim ra sát lề phải */
+  transition: color 0.3s ease; /* Hiệu ứng mượt khi đổi màu */
+}
+
+.heart-icon:hover {
+  color: red; /* Màu trái tim khi hover */
+}

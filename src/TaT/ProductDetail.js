@@ -31,6 +31,8 @@ const ProductDetail = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [howManyBought, setHowManyBought] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [wishlist, setWishlist] = useState([]); // Lưu danh sách yêu thích
+
   const commentsPerPage = 5;
   useEffect(() => {
     const fetchData = async () => {
@@ -304,6 +306,44 @@ const ProductDetail = () => {
     }
     return stars;
   };
+  const handleAddToWishlist = async () => {
+    try {
+      // Lấy token và kiểm tra đăng nhập
+      const token = localStorage.getItem("access_token");
+      if (!token) {
+        navigate("/login"); // Điều hướng đến trang đăng nhập nếu chưa đăng nhập
+        return;
+      }
+  
+      // Giả sử `flowerID` được chọn hoặc lấy từ product hiện tại
+      const flowerID = product.flowerID; // Hoặc lấy từ state hoặc props
+  
+      // Gửi request POST đến API
+      const response = await axios.post(
+        "http://localhost:8080/addToWishlist",  // Endpoint API
+        { flowerID: flowerID },                 // Payload gửi đi
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,  // Thêm token vào header
+          },
+        }
+      );
+  
+      // Xử lý khi thêm thành công
+      console.log("Added to wishlist:", response.data);
+      alert("Sản phẩm đã được thêm vào danh sách yêu thích!");
+    } catch (error) {
+      // Xử lý lỗi khi request thất bại
+      if (error.response) {
+        console.error("Error adding to wishlist:", error.response.data);
+        alert(`Lỗi: ${error.response.data.message || "Không thể thêm vào wishlist."}`);
+      } else {
+        console.error("Network or server error:", error.message);
+        alert("Lỗi kết nối đến server.");
+      }
+    }
+  };
+  
   return (
     <>
       <div className="container">
@@ -385,12 +425,17 @@ const ProductDetail = () => {
           </Grid>
           <Grid item xs={6} className="grid-col-6">
             <div className="infoProduct">
-              <h1 className="titleProduct">{product?.name}</h1>
+            <div class="title-container">
+              <h1 class="titleProduct">{product?.name}</h1>
+            </div>
               <h6>
                 <span className="avgScore">{avgScore.toFixed(1)}/5.0</span>{" "}
                 <span className="star">★</span>
                 <span className="reviewLength">{reviews.length} Đánh giá</span>
                 <span className="bought">{howManyBought} Đã mua</span>
+                <button className="heart-icon" onClick={handleAddToWishlist}>
+                  &#9825;
+                </button>
               </h6>
               <h2 className="productPrice" style={{ color: "#ff4c4c" }}>
                 {product.price} <span className="currency-symbol">đ</span>
@@ -697,6 +742,7 @@ const ProductDetail = () => {
 
         <div className="product-container">
           <h1 className="other1">Có thể bạn thích</h1>
+          {console.log("Danh sách sản phẩm tương tự:", productSimilar)} {/* In danh sách sản phẩm ra console */}
 
           {productSimilar.map((product) => (
             <div key={product.flowerID} className="product">
