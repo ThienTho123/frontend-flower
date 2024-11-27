@@ -115,7 +115,7 @@ const HomePage = () => {
             <a href={`/detail/${product.productID}`}>
               <img src={product.avatar} alt={product.title} />
               <h3>{product.title}</h3>
-              <p style={{ color: "red" }}>{formatPrice(product.price)}</p>
+              <p style={{ color: "red", fontWeight: "bold" }}>{formatPrice(product.price)}</p>
               <p className="sold-quantity" style={{ fontSize: "0.8rem" }}>
                 Đã bán: {product.sold}
               </p>
@@ -139,9 +139,9 @@ const HomePage = () => {
         <div className="row">
           <div className="col-7">
             {news.map((item) => (
-              <div key={item.NewsID} className="news-item">
+              <div key={item.newsID} className="news-item">
                 <a
-                  href={`/news/${item.NewsID}`}
+                  href={`/news/${item.newsID}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <div className="image-container">

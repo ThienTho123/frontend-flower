@@ -18,6 +18,7 @@ import AccountLayout from "./TaT/UserAccount/AccountLayout";
 import Profile from "./TaT/UserAccount/Profile";
 import ChangePassword from "./TaT/UserAccount/ChangePassword";
 import PurchaseHistory from "./TaT/UserAccount/PurchaseHistory";
+import Find from "./TaT/find";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';  
 import React, { useEffect } from "react";
 
@@ -48,6 +49,7 @@ const AppRoutes = () => {
       <Route path="/" element={<HomePage />} /> 
       <Route path="/signup" element={<SignUp />} /> 
       <Route path="/verify-otp" element={<VerifyOtp />} /> 
+      <Route path="/find" element={<Find />} />
       <Route path="/login" element={<Login />} /> 
       <Route path="/forgot" element={<Forgot />} /> 
       <Route path="/product" element={<ProductList />} />

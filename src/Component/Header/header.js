@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Header = () => {
-  const [searchQuery, setSearchTerm] = useState(''); // Sử dụng một state duy nhất
+  const [searchTerm, setSearchTerm] = useState(""); // Đồng bộ tên state là searchTerm
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const accountId = localStorage.getItem("accountID");
@@ -87,17 +87,21 @@ const Header = () => {
   }, [accesstoken, accountId]);
 
   const handleSearch = async () => {
-    if (searchQuery.trim()) { // Sử dụng searchQuery thay vì searchTerm
+    if (searchTerm.trim()) {
       try {
         const response = await axios.get("http://localhost:8080/search", {
-          params: { searchTerm: searchQuery },
+          params: { searchTerm }, // Truyền searchTerm đến backend
           headers: { "Account-ID": accountId },
         });
-
-        navigate("/find", { state: { results: response.data } });
-        setError(null);
+  
+        navigate("/find", { state: { results: response.data } }); // Chuyển hướng với kết quả
+        setError(null); // Xóa lỗi nếu có
       } catch (error) {
         setError("Không tìm thấy sản phẩm nào!");
+        // Tự động xóa lỗi sau 3 giây
+        setTimeout(() => {
+          setError(null);
+        }, 3000);
       }
     }
   };
@@ -137,19 +141,19 @@ const Header = () => {
         <div className="icons-container">
           {/* Tìm kiếm */}
           <div className="search-container">
-            <input
-              type="text"
-              value={searchQuery} // Sử dụng searchQuery ở đây
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Tìm kiếm..."
-              className="search-input"
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()} // Nhấn Enter để tìm kiếm
-            />
-            <button onClick={handleSearch} className="search-button">
-              <img src={SearchIcon} alt="Search" className="icon search-icon" />
-            </button>
-            {error && <div className="error-message">{error}</div>}
-          </div>
+          <input
+            type="text"
+            value={searchTerm} // Sử dụng searchTerm ở đây
+            onChange={(e) => setSearchTerm(e.target.value)} // Cập nhật state
+            placeholder="Tìm kiếm..."
+            className="search-input"
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()} // Nhấn Enter để tìm kiếm
+          />
+          <button onClick={handleSearch} className="search-button">
+            <img src={SearchIcon} alt="Search" className="icon search-icon" />
+          </button>
+          {error && <div className="error-message">{error}</div>} {/* Hiển thị lỗi nếu có */}
+        </div>
           {/* Đăng nhập */}
           <button className="login-button" onClick={handleLoginClick}>
             <img src={LoginIcon} alt="Login" className="icon login-icon" />

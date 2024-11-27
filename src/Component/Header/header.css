@@ -100,7 +100,7 @@
   color: red;
   font-size: 12px;
   position: absolute;
-  bottom: -20px; /* Đặt lỗi dưới cùng của input */
+  bottom: -55px; /* Đặt lỗi dưới cùng của input */
   left: 0;
   right: 0;
   text-align: center;

@@ -227,13 +227,36 @@
     margin-right: 15px;
 }
 
+/* Kiểu dáng chung cho radio button */
+/* Kiểu dáng chung cho radio button */
 .prebuy-payment-option input[type="radio"] {
-    width: 20px; 
-    height: 20px;
+    appearance: none; /* Loại bỏ giao diện mặc định */
+    width: 20px; /* Chiều rộng */
+    height: 20px; /* Chiều cao */
+    border: 2px solid #ccc; /* Viền mặc định */
+    border-radius: 50%; /* Tạo hình tròn */
+    background-color: white; /* Nền trắng */
+    outline: none; /* Bỏ viền mặc định khi focus */
+    cursor: pointer; /* Hiển thị con trỏ pointer */
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1); /* Vòng tròn mỏng bên ngoài */
+    transition: all 0.3s ease; /* Hiệu ứng mượt */
     margin-right: 10px;
-    cursor: pointer;
-}
-
+  }
+  
+  /* Khi được chọn */
+  .prebuy-payment-option input[type="radio"]:checked {
+    background-color: #ff69b4; /* Nền màu hồng */
+    border-color: #ff1493; /* Viền đậm hơn */
+    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.5); /* Vòng tròn màu hồng */
+  }
+  
+  /* Khi hover */
+  .prebuy-payment-option input[type="radio"]:hover {
+    border-color: #ff69b4; /* Viền hồng nhạt */
+    box-shadow: 0 0 0 4px rgba(255, 105, 180, 0.3); /* Vòng tròn hồng đậm hơn khi hover */
+  }
+  
+  
 /* Dropdown mã giảm giá */
 .prebuy-discount-select {
     padding: 10px;
@@ -277,13 +300,13 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    background-color: #2980b9;
+    background-color: #E32C89;
     color: white;
     transition: transform 0.3s, background-color 0.3s;
 }
 
 .prebuy-buy-button:hover, .prebuy-payment-button:hover {
-    background-color: #1a5276;
+    background-color: #8b1d54;
     transform: scale(1.05);
 }
 
@@ -300,6 +323,7 @@
     height: 30px;
     margin-right: 35px;
     margin-left: 25px;
+    
 }
 
 .prebuy-custom-checkbox {
@@ -345,7 +369,7 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    background-color: #2980b9;
+    background-color: #E32C89;
     color: white;
     transition: transform 0.3s, background-color 0.3s;
 }

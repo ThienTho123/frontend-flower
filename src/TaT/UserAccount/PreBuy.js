@@ -326,7 +326,10 @@ const PreBuy = () => {
     );
   
     if (cartIDs.length === 0) {
-      alert("Vui lòng chọn ít nhất một sản phẩm để mua.");
+      setError("Vui lòng chọn ít nhất một sản phẩm để mua.");
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
       return;
     }
   
