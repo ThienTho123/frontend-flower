@@ -240,17 +240,6 @@ const AdminBanner = () => {
         <button onClick={handleUploadImage}>Tải ảnh lên</button>
         {imageUrl && <img src={imageUrl} alt="Banner Avatar" style={{ width: 100 }} />}
 
-        <label>Trạng Thái: </label>
-        <select
-          value={newBanner.status}
-          onChange={(e) =>
-            setNewBanner((prev) => ({ ...prev, status: e.target.value }))
-          }
-        >
-          <option value="ENABLE">Enable</option>
-          <option value="DISABLE">Disable</option>
-        </select>
-
         <label>Chọn Flower ID:</label>
         <input
           type="number"
@@ -298,6 +287,16 @@ const AdminBanner = () => {
             }))
           }
         />
+                <label>Trạng Thái: </label>
+        <select
+          value={newBanner.status}
+          onChange={(e) =>
+            setNewBanner((prev) => ({ ...prev, status: e.target.value }))
+          }
+        >
+          <option value="ENABLE">Enable</option>
+          <option value="DISABLE">Disable</option>
+        </select>
 
         <button onClick={handleCreate}>Tạo Banner</button>
       </div>
