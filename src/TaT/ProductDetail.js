@@ -389,8 +389,9 @@ const ProductDetail = () => {
                 <span className="bought">{howManyBought} Đã mua</span>
               </h6>
               <h2 className="productPrice" style={{ color: "#ff4c4c" }}>
-                {product.price} <span className="currency-symbol">đ</span>
+                {product.price.toLocaleString('vi-VN')} <span className="currency-symbol">đ</span>
               </h2>
+
 
               <h3 className="Size">
                 Size:
