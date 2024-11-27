@@ -35,6 +35,7 @@ const ProductDetail = () => {
   const [isInWishlist, setIsInWishlist] = useState(false);  // Trạng thái để theo dõi có trong wishlist khônghandleAddToWishlist 
   const [isToastVisible, setIsToastVisible] = useState(false); // Điều khiển hiển thị thông báo
   const [toastMessage, setToastMessage] = useState('');  // Lưu thông báo
+  const totalPrice = productSizes[selectedSizeIndex]?.price * quantity || 0;
 
   const commentsPerPage = 5;
   useEffect(() => {
@@ -446,16 +447,14 @@ const ProductDetail = () => {
                   &#9825;
                 </button>
                 {isToastVisible && (
-        <div className="toast">
-          {toastMessage}
-        </div>
-      )}
+                  <div className="toast">
+                    {toastMessage}
+                  </div>
+                )}
               </h6>
-              <h2 className="productPrice" style={{ color: "#ff4c4c" }}>
-                {product.price} <span className="currency-symbol">đ</span>
+              <h2 className="totalPrice" style={{ color: "#ff4c4c" }}>
+              {totalPrice.toLocaleString()} <span className="currency-symbol">đ</span>
               </h2>
-
-
               <h3 className="Size">
                 Size:
                 <ul className="productSizes">
@@ -746,7 +745,9 @@ const ProductDetail = () => {
                   />
                   <div className="product-overlay">
                     <h3>{product.name}</h3>
-                    <p style={{ color: "red" }}>{product.price} đ</p>
+                    <p style={{ color: "red" }}>
+                      {product.price.toLocaleString("vi-VN")} đ
+                    </p>
                   </div>
                 </div>
               </a>
@@ -771,7 +772,9 @@ const ProductDetail = () => {
                   alt={product.name}
                 />
                 <h3>{product.name}</h3>
-                <p style={{ color: "red" }}>{product.price} đ</p>
+                <p style={{ color: "red" }}>
+                  {product.price.toLocaleString("vi-VN")} đ
+                </p>
               </a>
             </div>
           ))}

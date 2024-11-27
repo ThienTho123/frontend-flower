@@ -231,6 +231,12 @@ const PreBuy = () => {
         setError("Có lỗi xảy ra khi xóa mã giảm giá.");
       });
   };
+  const [buyInfo, setBuyInfo] = useState({
+    address: "",
+    phone: "",
+    name: "",
+    note: ""
+  });
 
   const handleBuy = () => {
     if (Object.keys(errorMessages).length > 0) {
@@ -302,35 +308,58 @@ const PreBuy = () => {
       );
       return;
     }
-
+  
     const selectedItems = cartItems.filter((item) => item.selected);
     const cartIDs = selectedItems.map((item) => item.cartID);
-
+    const quantities = selectedItems.map((item) => item.number);
+    const prices = selectedItems.map(
+      (item) => item.productPrice * item.number * (1 - appliedDiscount / 100)
+    );
+  
     if (cartIDs.length === 0) {
       alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
       return;
     }
-
+  
+    // Tạo query parameters từ cartID, quantities, và prices
     const queryParams = selectedItems
-      .map((item) => `cartID=${item.cartID}&quantities=${item.number}`)
+      .map(
+        (item, index) =>
+          `cartID=${cartIDs[index]}&quantities=${quantities[index]}&price=${prices[index]}`
+      )
       .join("&");
-
+  
+    // Tạo đối tượng request body cho thông tin người dùng
+    const buyInfoBody = {
+      name: buyInfo.name,
+      address: buyInfo.address,
+      phone: buyInfo.phone,
+      note: buyInfo.note,
+    };
+  
+    // In ra query params và body để kiểm tra
+    console.log("Query Parameters:", queryParams);
+    console.log("Body JSON gửi đến API /setCart:", buyInfoBody);
+  
+    // Gửi yêu cầu đến API với query params và body
     fetch(`http://localhost:8080/setCart?${queryParams}`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${accesstoken}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accesstoken}`,  // Đảm bảo token hợp lệ
       },
+      body: JSON.stringify(buyInfoBody), // Gửi thông tin người dùng trong body
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Could not update cart.");
+          throw new Error("Không thể cập nhật giỏ hàng.");
         }
         return response.text();
       })
       .then(() => {
         const totalPayment =
-          calculateTotalPrice() -
-          calculateDiscountAmount(calculateTotalPrice());
+          calculateTotalPrice() - calculateDiscountAmount(calculateTotalPrice());
+        console.log("Tổng thanh toán:", totalPayment); // Kiểm tra tổng thanh toán
         return fetch(`http://localhost:8080/pay?totalPayment=${totalPayment}`, {
           method: "GET",
           headers: {
@@ -340,23 +369,21 @@ const PreBuy = () => {
       })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Could not initiate payment.");
+          throw new Error("Không thể khởi tạo thanh toán.");
         }
         return response.text();
       })
       .then((vnpayUrl) => {
+        console.log("VNPay URL:", vnpayUrl); // Kiểm tra URL thanh toán VNPay
         window.location.href = vnpayUrl;
-        window.addEventListener("beforeunload", () => {
-          const updatedCartItems = cartItems.filter((item) => !item.selected);
-          setCartItems(updatedCartItems);
-          localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-        });
       })
       .catch((error) => {
         setError("Có lỗi xảy ra khi thực hiện thanh toán qua VNPay.");
         console.error(error);
       });
   };
+  
+  
 
   const handleCheckboxChange = (cartID) => {
     const updatedItems = cartItems.map((item) =>
@@ -539,6 +566,41 @@ const PreBuy = () => {
             </ul>
           </div>
           <div style={{ flex: 1, paddingLeft: "20px" }}>
+          <div className="prebuy-user-info">
+              <h3>Thông tin khách hàng</h3>
+              <label>
+                Tên:
+                <input
+                  type="text"
+                  value={buyInfo.name}
+                  onChange={(e) => setBuyInfo({ ...buyInfo, name: e.target.value })}
+                />
+              </label>
+              <label>
+                Số điện thoại:
+                <input
+                  type="text"
+                  value={buyInfo.phone}
+                  onChange={(e) => setBuyInfo({ ...buyInfo, phone: e.target.value })}
+                />
+              </label>
+              <label>
+                Địa chỉ:
+                <input
+                  type="text"
+                  value={buyInfo.address}
+                  onChange={(e) => setBuyInfo({ ...buyInfo, address: e.target.value })}
+                />
+              </label>
+              <label>
+                Ghi chú:
+                <textarea
+                  value={buyInfo.note}
+                  onChange={(e) => setBuyInfo({ ...buyInfo, note: e.target.value })}
+                ></textarea>
+              </label>
+            </div>
+
             <div className="prebuy-price-summary">
               <h3 className="prebuy-total-price">
                 Tổng tiền: {calculateTotalPrice().toLocaleString("vi-VN")} VND
@@ -627,5 +689,4 @@ const PreBuy = () => {
     </div>
   );
 };
-
 export default PreBuy;
