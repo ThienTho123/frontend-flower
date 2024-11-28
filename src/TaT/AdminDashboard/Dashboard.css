@@ -478,6 +478,7 @@
 .pie-chart-container {
     text-align: center; /* Căn giữa tiêu đề và biểu đồ */
     margin: 20px; /* Khoảng cách bên ngoài */
+    margin-left: 70px;
   }
   
   .pie-chart {
@@ -537,3 +538,61 @@
     margin-left: 10px;
     margin-top: 10px;
   }
+
+.pie-chart-container h2,
+.revenue-chart-container h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.revenue-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 800px; /* Tăng chiều cao biểu đồ */
+  width: 700px; /* Tăng chiều cao biểu đồ */
+
+}
+
+.chart-wrapper {
+  width: 100%;
+  height: 100%;
+}
+.total-revenue {
+    margin-bottom: 20px;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #bb1313;
+  }
+  /* CSS cho phần chứa biểu đồ review */
+.review-chart-container {
+    width: 100%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+  
+  /* Tiêu đề của biểu đồ */
+  .review-chart-container h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Phần hiển thị biểu đồ */
+  .review-chart {
+    width: 100%;
+    height: 300px; /* Điều chỉnh chiều cao của biểu đồ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  

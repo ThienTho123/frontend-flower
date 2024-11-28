@@ -302,10 +302,10 @@ const AdminComment = () => {
           <option value="DISABLE">Disable</option>
         </select>
 
-        <button onClick={handleCreate}>Create Comment</button>
+        <button onClick={handleCreate}>Tạo bình luận</button>
       </div>
 
-      <h3>Comments List</h3>
+      <h3>Danh sách bình luận</h3>
       {commentList.length === 0 ? (
         <p>No comments available.</p>
       ) : (
@@ -313,14 +313,14 @@ const AdminComment = () => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Title</th>
-              <th>Text</th>
+              <th>Tiêu đề</th>
+              <th>Nội dung</th>
               <th>Account ID</th>
               <th>Comment Type ID</th>
               <th>Date</th>
-              <th>Stative</th>
-              <th>Image</th>
-              <th>Status</th>
+              <th>Xử lý</th>
+              <th>Hình ảnh</th>
+              <th>Trạng thái</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -347,8 +347,8 @@ const AdminComment = () => {
                 <td>
                   {editingCommentId === comment.commentID ? (
                     <>
-                      <button onClick={() => handleSave(comment.commentID, newComment)}>Save</button>
-                      <button onClick={() => setEditingCommentId(null)}>Cancel</button>
+                      <button onClick={() => handleSave(comment.commentID, newComment)}>Lưu</button>
+                      <button onClick={() => setEditingCommentId(null)}>Hủy</button>
                     </>
                   ) : (
                     <>
@@ -367,10 +367,10 @@ const AdminComment = () => {
                           });
                         }}
                       >
-                        Edit
+                        Chỉnh sửa
                       </button>
-                      <button onClick={() => handleDeleteSoft(comment.commentID)}>Disable</button>
-                      <button onClick={() => handleDeleteHard(comment.commentID)}>Delete</button>
+                      <button onClick={() => handleDeleteSoft(comment.commentID)}>Vô hiệu hóa</button>
+                      <button onClick={() => handleDeleteHard(comment.commentID)}>Xóa</button>
                     </>
                   )}
                 </td>

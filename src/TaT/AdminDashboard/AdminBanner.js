@@ -239,7 +239,7 @@ const AdminBanner = () => {
         <input type="file" onChange={handleFileChange} />
         <button onClick={handleUploadImage}>Tải ảnh lên</button>
         {imageUrl && <img src={imageUrl} alt="Banner Avatar" style={{ width: 100 }} />}
-
+        <br></br>
         <label>Chọn Flower ID:</label>
         <input
           type="number"

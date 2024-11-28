@@ -23,6 +23,7 @@ import pureposeIcon from "./ImageDashboard/purpose.png"; // Hình ảnh cho qu�
 import repcommentIcon from "./ImageDashboard/repcomment.png"; // Hình ảnh cho quản lý Review
 import logo from "./ImageDashboard/logo.png"; // Hình ảnh cho quản lý Review
 import exit from "./ImageDashboard/exit.png"; // Hình ảnh cho quản lý Review
+import { Bar } from "react-chartjs-2"; // Biểu đồ cột
 
 import BillGrowthChart from "./BillGrowthChart"; // Nhập biểu đồ
 import ReviewChart from "./ReviewChart";
@@ -32,17 +33,21 @@ import {
   ArcElement,
   Tooltip,
   Legend,
-} from 'chart.js';
+  BarElement,
+  CategoryScale,
+  LinearScale,
+} from "chart.js";
 
 // Đăng ký các thành phần:
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [accountInfo, setAccountInfo] = useState(null);
-  const [bills, setBills] = useState([]);
+  const [orders, setOrders] = useState([]); // Đổi từ 'bills' thành 'orders'
   const [error, setError] = useState(null);
   const [reviewList, setReviewList] = useState([]);
+  const [revenueData, setRevenueData] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
   const accountID = localStorage.getItem("accountID");
 
@@ -74,7 +79,7 @@ const Dashboard = () => {
     }
 
     // Lấy danh sách hóa đơn để vẽ biểu đồ
-    const fetchBills = async () => {
+    const fetchOrders = async () => {
       try {
         const response = await fetch(
           "http://localhost:8080/api/v1/admin/order",
@@ -86,19 +91,21 @@ const Dashboard = () => {
         );
 
         if (!response.ok) {
-          throw new Error("Không thể lấy danh sách hóa đơn.");
+          throw new Error("Không thể lấy danh sách đơn hàng.");
         }
 
         const data = await response.json();
-        const enabledBills = data.filter((bill) => bill.status === "Enable");
-        setBills(enabledBills);
+        const enabledOrders = data.filter((order) => order.status === "ENABLE");
+        setOrders(enabledOrders);
       } catch (err) {
         setError(err.message);
       }
     };
 
-    fetchBills();
+    fetchOrders();
   }, [accountID, accesstoken, navigate]);
+
+
   useEffect(() => {
     const fetchReviews = async () => {
       try {
@@ -111,55 +118,76 @@ const Dashboard = () => {
             credentials: "include",
           }
         );
-
+    
         if (!response.ok) {
           throw new Error("Không thể lấy danh sách đánh giá.");
         }
-
+    
         const data = await response.json();
-        setReviewList(data.Review || []);
+        console.log("Dữ liệu đánh giá:", data);  // Kiểm tra dữ liệu trả về
+    
+        // Kiểm tra nếu data là một mảng
+        if (Array.isArray(data)) {
+          setReviewList(data);
+        } else {
+          console.error("Dữ liệu không phải mảng");
+        }
       } catch (err) {
-        console.error(err.message);
+        console.error("Lỗi khi fetch reviews:", err.message);
       }
     };
 
     fetchReviews();
   }, [accesstoken]);
 
-  const prepareChartData = () => {
-    const chartData = {};
-    bills.forEach((bill) => {
-      if (bill.date && Array.isArray(bill.date) && bill.date.length >= 5) {
-        const date = new Date(
-          bill.date[0],
-          bill.date[1] - 1,
-          bill.date[2],
-          bill.date[3],
-          bill.date[4]
-        ).toLocaleDateString("en-GB");
-        if (!chartData[date]) {
-          chartData[date] = 0;
+ 
+  const prepareRevenueChartData = () => {
+    const revenueData = {};
+    let totalRevenue = 0; // Biến để tính tổng doanh thu
+  
+    orders.forEach((order) => {
+      if (order.paid === "Yes" && Array.isArray(order.date) && order.date.length >= 3) {
+        const monthYear = `${order.date[1]}/${order.date[0]}`; // Định dạng Tháng/Năm
+  
+        if (!revenueData[monthYear]) {
+          revenueData[monthYear] = 0;
         }
-        chartData[date]++;
-      } else {
-        console.warn("Bill date is invalid or missing:", bill);
+        revenueData[monthYear] += order.totalAmount;
+        totalRevenue += order.totalAmount; // Cộng dồn doanh thu
       }
     });
-
+  
     return {
-      labels: Object.keys(chartData),
-      data: Object.values(chartData),
+      totalRevenue, // Trả về tổng doanh thu cùng dữ liệu biểu đồ
+      chartData: {
+        labels: Object.keys(revenueData),
+        datasets: [
+          {
+            label: "Doanh thu (VND)",
+            data: Object.values(revenueData),
+            backgroundColor: "rgba(75, 192, 192, 0.6)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            borderWidth: 1,
+          },
+        ],
+      },
     };
   };
-
+  
   const getChartData = () => {
     const ratingCounts = [0, 0, 0, 0, 0]; // Đếm số lượng đánh giá cho mỗi sao (1-5 sao)
+    
     reviewList.forEach((review) => {
       if (review.rating) {
-        ratingCounts[review.rating - 1] += 1; // Tăng số lượng theo số sao
+        const ratingIndex = Math.floor(review.rating) - 1;
+        if (ratingIndex >= 0 && ratingIndex < 5) {
+          ratingCounts[ratingIndex] += 1; // Tăng số lượng theo số sao
+        }
       }
     });
-
+  
+    console.log("Số lượng đánh giá theo sao:", ratingCounts);  // Kiểm tra số lượng đánh giá
+  
     return {
       labels: ["1 sao", "2 sao", "3 sao", "4 sao", "5 sao"],
       datasets: [
@@ -177,7 +205,6 @@ const Dashboard = () => {
       ],
     };
   };
-  const chartData = prepareChartData();
 
   const handleLogout = () => {
     fetch("http://localhost:8080/api/v1/auth/logout", {
@@ -203,6 +230,7 @@ const Dashboard = () => {
   const handleNavigate = (path) => {
     navigate(path);
   };
+  const { totalRevenue, chartData } = prepareRevenueChartData();
 
   return (
     <div className="admin-dashboard">
@@ -278,15 +306,23 @@ const Dashboard = () => {
         </div>
 
         <div className="account-info-container">
-          {bills.length > 0 && (
-            <div className="chart-container">
-              <BillGrowthChart chartData={chartData} />
-            </div>
-          )}
-          <div className="pie-chart-container">
-            <h2>Thống kê đánh giá</h2>
+
+        <div className="revenue-chart-container">
+          <h2>Thống kê doanh thu theo tháng</h2>
+          <h3 className="total-revenue">
+            Tổng doanh thu: {totalRevenue.toLocaleString()} VND
+          </h3>
+          <Bar data={chartData} />
+        </div>
+        
+        <div className="pie-chart-container">
+          <h2>Thống kê đánh giá</h2>
+          {reviewList.length > 0 ? (
             <Pie data={getChartData()} />
-          </div>
+          ) : (
+            <p>Đang tải hoặc không có đánh giá</p>
+          )}
+        </div>
           <div className="account-info">
             <h3>Thông Tin Tài Khoản</h3>
             {accesstoken && accountInfo ? (
@@ -323,6 +359,7 @@ const Dashboard = () => {
             {!accesstoken && <p>Không có thông tin đăng nhập.</p>}
           </div>
         </div>
+        
       </div>
     </div>
     </div>
