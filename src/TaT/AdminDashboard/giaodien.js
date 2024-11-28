@@ -20,6 +20,9 @@ import productSizeIcon from "./ImageDashboard/productsize.png"; // Hình ảnh c
 import productTypeIcon from "./ImageDashboard/producttype.png"; // Hình ảnh cho quản lý ProductType
 import reviewIcon from "./ImageDashboard/review.png"; // Hình ảnh cho quản lý Review
 import sizeIcon from "./ImageDashboard/size.png"; // Hình ảnh cho quản lý Size
+import commentIcon from "./ImageDashboard/comment.png"; // Hình ảnh cho quản lý Review
+import commenttypeIcon from "./ImageDashboard/commenttype.png"; // Hình ảnh cho quản lý Review
+
 import BillGrowthChart from "./BillGrowthChart"; // Nhập biểu đồ
 import ReviewChart from "./ReviewChart";
 import {
@@ -240,10 +243,10 @@ const Dashboard = () => {
               <img src={categoryIcon} alt="Quản lý Category" /> Category
             </button>
             <button onClick={() => handleNavigate("/AdminComment")}>
-              <img src={cartIcon} alt="Quản lý Comment" /> Comment
+              <img src={commentIcon} alt="Quản lý Comment" /> Comment
             </button>
             <button onClick={() => handleNavigate("/AdminCommentType")}>
-              <img src={cartIcon} alt="Quản lý CommentType" /> CommentType
+              <img src={commenttypeIcon} alt="Quản lý CommentType" /> CommentType
             </button>
             <button onClick={() => handleNavigate("/AdminDiscount")}>
               <img src={discountIcon} alt="Quản lý Discount" /> Discount
