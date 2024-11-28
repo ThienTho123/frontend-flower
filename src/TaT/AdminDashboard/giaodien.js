@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Pie } from "react-chartjs-2"; // Import the Pie chart component
 import "./Dashboard.css"; // Thêm file CSS cho Dashboard
-import adminIcon from "./ImageDashboard/admin.png"; // Đường dẫn đến icon admin
 import accountIcon from "./ImageDashboard/account.png"; // Hình ảnh cho quản lý account
 import bannerIcon from "./ImageDashboard/banner.png"; // Hình ảnh cho quản lý banner
 import billInfoIcon from "./ImageDashboard/billinfo.png"; // Hình ảnh cho quản lý Bill Info
@@ -25,8 +24,7 @@ import logo from "./ImageDashboard/logo.png"; // Hình ảnh cho quản lý Revi
 import exit from "./ImageDashboard/exit.png"; // Hình ảnh cho quản lý Review
 import { Bar } from "react-chartjs-2"; // Biểu đồ cột
 
-import BillGrowthChart from "./BillGrowthChart"; // Nhập biểu đồ
-import ReviewChart from "./ReviewChart";
+
 
 import {
   Chart as ChartJS,
