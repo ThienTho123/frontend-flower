@@ -248,18 +248,18 @@ const Dashboard = () => {
             <button onClick={() => handleNavigate("/AdminFlower")}>
               <img src={flowerIcon} alt="Quản lý hoa" /> Hoa
             </button>
-            <button onClick={() => handleNavigate("/AdminImage")}>
-              <img src={imageIcon} alt="Quản lý Image" /> Image
+            <button onClick={() => handleNavigate("/AdminFlowerImage")}>
+              <img src={imageIcon} alt="Quản lý hình ảnh hoa" /> Hình ảnh hoa
+            </button>
+            <button onClick={() => handleNavigate("/AdminFlowerSize")}>
+              <img src={productSizeIcon} alt="Quản lý size hoa" /> 
+              Size hoa
             </button>
             <button onClick={() => handleNavigate("/AdminNews")}>
               <img src={newsIcon} alt="Quản lý News" /> News
             </button>
             <button onClick={() => handleNavigate("/AdminOrigin")}>
               <img src={originIcon} alt="Quản lý Origin" /> Origin
-            </button>
-            <button onClick={() => handleNavigate("/AdminProductSize")}>
-              <img src={productSizeIcon} alt="Quản lý ProductSize" /> Product
-              Size
             </button>
             <button onClick={() => handleNavigate("/AdminProductType")}>
               <img src={productTypeIcon} alt="Quản lý ProductType" /> Product

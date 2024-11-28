@@ -339,12 +339,12 @@ const AdminFlower = () => {
                 </td>
                 <td>{flower.status}</td>
                 <td>
-                  <button onClick={() => handleEdit(flower)}>Edit</button>
+                  <button onClick={() => handleEdit(flower)}>Sửa</button>
                   <button onClick={() => handleDeleteSoft(flower.flowerID)}>
-                    Disable
+                    Vô hiệu hóa
                   </button>
                   <button onClick={() => handleDeleteHard(flower.flowerID)}>
-                    Delete
+                    Xóa
                   </button>
                 </td>
               </tr>
