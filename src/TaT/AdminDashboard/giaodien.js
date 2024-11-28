@@ -261,6 +261,12 @@ const Dashboard = () => {
             <button onClick={() => handleNavigate("/AdminPurpose")}>
               <img src={newsIcon} alt="Quản lý Purpose" /> Purpose
             </button>
+            <button onClick={() => handleNavigate("/AdminRepcomment")}>
+              <img src={productTypeIcon} alt="Quản lý Repcomment" /> Repcomment
+            </button>
+            <button onClick={() => handleNavigate("/AdminReview")}>
+              <img src={reviewIcon} alt="Quản lý Review" /> Review
+            </button>
             <button onClick={() => handleNavigate("/AdminOrigin")}>
               <img src={originIcon} alt="Quản lý Origin" /> Origin
             </button>
@@ -268,9 +274,7 @@ const Dashboard = () => {
               <img src={productTypeIcon} alt="Quản lý ProductType" /> Product
               Type
             </button>
-            <button onClick={() => handleNavigate("/AdminReview")}>
-              <img src={reviewIcon} alt="Quản lý Review" /> Review
-            </button>
+
             <button onClick={() => handleNavigate("/AdminSize")}>
               <img src={sizeIcon} alt="Quản lý Size" /> Size
             </button>
