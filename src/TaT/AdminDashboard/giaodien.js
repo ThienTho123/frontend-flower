@@ -9,7 +9,7 @@ import bannerIcon from "./ImageDashboard/banner.png"; // Hình ảnh cho quản 
 import billIcon from "./ImageDashboard/bill.png"; // Hình ảnh cho quản lý hóa đơn
 import billInfoIcon from "./ImageDashboard/billinfo.png"; // Hình ảnh cho quản lý Bill Info
 import brandIcon from "./ImageDashboard/brand.png"; // Hình ảnh cho quản lý Brand
-import cartIcon from "./ImageDashboard/cart.png"; // Hình ảnh cho quản lý Cart
+import flowerIcon from "./ImageDashboard/flower.png"; // Hình ảnh cho quản lý Cart
 import categoryIcon from "./ImageDashboard/category.png"; // Hình ảnh cho quản lý Category
 import discountIcon from "./ImageDashboard/discount.png"; // Hình ảnh cho quản lý Discount
 import imageIcon from "./ImageDashboard/image.png"; // Hình ảnh cho quản lý Image
@@ -233,12 +233,6 @@ const Dashboard = () => {
             <button onClick={() => handleNavigate("/AdminOrderDetail")}>
               <img src={billInfoIcon} alt="Quản lý thông tin đơn hàng" /> Thông tin đơn hàng
             </button>
-            <button onClick={() => handleNavigate("/AdminBrand")}>
-              <img src={brandIcon} alt="Quản lý Brand" /> Brand
-            </button>
-            <button onClick={() => handleNavigate("/AdminCart")}>
-              <img src={cartIcon} alt="Quản lý Cart" /> Cart
-            </button>
             <button onClick={() => handleNavigate("/AdminCategory")}>
               <img src={categoryIcon} alt="Quản lý Category" /> Category
             </button>
@@ -251,6 +245,9 @@ const Dashboard = () => {
             <button onClick={() => handleNavigate("/AdminDiscount")}>
               <img src={discountIcon} alt="Quản lý Discount" /> Discount
             </button>
+            <button onClick={() => handleNavigate("/AdminFlower")}>
+              <img src={flowerIcon} alt="Quản lý hoa" /> Hoa
+            </button>
             <button onClick={() => handleNavigate("/AdminImage")}>
               <img src={imageIcon} alt="Quản lý Image" /> Image
             </button>
@@ -259,9 +256,6 @@ const Dashboard = () => {
             </button>
             <button onClick={() => handleNavigate("/AdminOrigin")}>
               <img src={originIcon} alt="Quản lý Origin" /> Origin
-            </button>
-            <button onClick={() => handleNavigate("/AdminProduct")}>
-              <img src={productIcon} alt="Quản lý Product" /> Product
             </button>
             <button onClick={() => handleNavigate("/AdminProductSize")}>
               <img src={productSizeIcon} alt="Quản lý ProductSize" /> Product
