@@ -77,6 +77,7 @@
     flex-direction: column;
     padding: 0;
     background-color: #D8E9A8;
+
 }
 
 .admin-dashboard .dashboard-header {
@@ -140,7 +141,15 @@
 .dashboard-container {
     display: flex;
 }
-
+.content-container {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    overflow: hidden;
+    box-sizing: border-box;
+    word-wrap: break-word;  /* Đảm bảo nội dung dài sẽ tự động xuống dòng */
+}
 .admin-buttons-container {
     flex: 0 0 200px;
     height: calc(100vh - 80px);
@@ -457,3 +466,10 @@
     width: 100%;
     box-sizing: border-box;
   }
+ /* Giới hạn chiều rộng của cột chứa content và cho phép xuống dòng */
+.content-column {
+    max-width: 800px; /* Chiều rộng tối đa của cột */
+    word-wrap: break-word; /* Cho phép từ dài xuống dòng */
+    word-break: break-word; /* Tách từ dài để xuống dòng nếu cần */
+  }
+  

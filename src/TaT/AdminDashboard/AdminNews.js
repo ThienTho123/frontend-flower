@@ -1,49 +1,48 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; 
-import returnIcon from './ImageDashboard/return-button.png'; 
+import { useNavigate } from "react-router-dom";
+import returnIcon from './ImageDashboard/return-button.png';
 
 const AdminNews = () => {
   const [newsList, setNewsList] = useState([]);
-  const [editingNewsId, setEditingNewsId] = useState(null); 
   const [newNews, setNewNews] = useState({
-    newsTitle: "",
-    newsImage: "",
+    image: "",
+    title: "",
     content: "",
-    status: "Enable",
+    status: "ENABLE",
+    date: new Date().toISOString(),
   });
+  const [editingNewsId, setEditingNewsId] = useState(null);
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [imageUrl, setImageUrl] = useState("");
   const [file, setFile] = useState(null);
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:8080/api/v1/admin/news",
-          {
-            headers: {
-              Authorization: `Bearer ${accesstoken}`,
-            },
-            credentials: "include",
-          }
-        );
+        const response = await fetch("http://localhost:8080/api/v1/admin/news", {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          credentials: "include",
+        });
 
         if (!response.ok) {
-          throw new Error("Không thể lấy danh sách tin tức.");
+          const errorMessage = await response.text();
+          throw new Error(`Error: ${response.status} - ${errorMessage}`);
         }
 
         const data = await response.json();
-        setNewsList(data.News || []);
+        setNewsList(data || []);
       } catch (err) {
+        console.error("Error fetching news:", err.message);
         setError(err.message);
       }
     };
 
     fetchNews();
   }, [accesstoken]);
-
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -53,7 +52,7 @@ const AdminNews = () => {
     if (!file) return;
     const formData = new FormData();
     formData.append("file", file);
-  
+
     try {
       const response = await fetch("http://localhost:8080/api/v1/upload", {
         method: "POST",
@@ -63,24 +62,28 @@ const AdminNews = () => {
         credentials: "include",
         body: formData,
       });
-  
+
       const data = await response.json();
       if (response.ok) {
-        setImageUrl(data.DT); 
-        setNewNews((prev) => ({ ...prev, newsImage: data.DT })); // Cập nhật đúng vào newNews
-        console.log("Tải lên thành công:", data.DT);
+        const imageUrl = data.DT;
+        setImageUrl(imageUrl);
+        setNewNews((prevNews) => ({
+          ...prevNews,
+          image: imageUrl,
+        }));
+        console.log("Upload successful:", imageUrl);
       } else {
-        console.error("Lỗi khi tải lên:", data.EM);
+        console.error("Upload failed:", data.EM);
       }
     } catch (err) {
-      console.error("Lỗi khi tải lên:", err.message);
+      console.error("Upload error:", err.message);
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/news/${id}`,
+        `http://localhost:8080/api/v1/admin/news/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -93,11 +96,36 @@ const AdminNews = () => {
       if (response.ok) {
         setNewsList((prevNewsList) =>
           prevNewsList.map((news) =>
-            news.newsID === id ? { ...news, status: "Disable" } : news
+            news.newsID === id ? { ...news, status: "DISABLE" } : news
           )
         );
       } else {
-        throw new Error("Không thể vô hiệu hóa tin tức.");
+        throw new Error("Unable to disable news.");
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleDeleteHard = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/v1/admin/news/harddelete/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          credentials: "include",
+        }
+      );
+
+      if (response.ok) {
+        setNewsList((prevNewsList) =>
+          prevNewsList.filter((news) => news.newsID !== id)
+        );
+      } else {
+        throw new Error("Unable to delete news.");
       }
     } catch (err) {
       setError(err.message);
@@ -128,7 +156,7 @@ const AdminNews = () => {
         );
         setEditingNewsId(null);
       } else {
-        throw new Error("Không thể cập nhật tin tức.");
+        throw new Error("Unable to update news.");
       }
     } catch (err) {
       setError(err.message);
@@ -137,6 +165,16 @@ const AdminNews = () => {
 
   const handleCreate = async () => {
     try {
+      // Đảm bảo date có định dạng đúng
+      const formattedDate = new Date().toISOString().split('.')[0];  // Loại bỏ phần millisecond
+  
+      const newNewsWithFormattedDate = {
+        ...newNews,
+        date: formattedDate,
+      };
+  
+      console.log("Creating news with data: ", JSON.stringify(newNewsWithFormattedDate, null, 2));  // In ra JSON để kiểm tra
+  
       const response = await fetch("http://localhost:8080/api/v1/admin/news", {
         method: "POST",
         headers: {
@@ -144,24 +182,32 @@ const AdminNews = () => {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify(newNews),
+        body: JSON.stringify(newNewsWithFormattedDate),
       });
-
+  
       if (response.ok) {
         const createdNews = await response.json();
         setNewsList([...newsList, createdNews]);
         setNewNews({
-          newsTitle: "",
-          newsImage: "",
+          image: "",
+          title: "",
           content: "",
-          status: "Enable",
+          status: "ENABLE",
+          date: new Date().toISOString(), // Cập nhật lại giá trị date
         });
       } else {
-        throw new Error("Không thể tạo tin tức.");
+        throw new Error("Unable to create news.");
       }
     } catch (err) {
       setError(err.message);
     }
+  };
+  const handleEditClick = (news) => {
+    setEditingNewsId(news.newsID);
+    setNewNews(news);
+  
+    // Cuộn trang về đầu khi nhấn Edit
+    window.scrollTo(0, 0);
   };
 
   const handleBackToDashboard = () => {
@@ -171,155 +217,118 @@ const AdminNews = () => {
   return (
     <div className="admin-ql-container">
       <div className="title-container">
-        <img 
-          src={returnIcon} 
-          alt="Quay Lại" 
-          className="return-button" 
-          onClick={handleBackToDashboard} 
+        <img
+          src={returnIcon}
+          alt="Back"
+          className="return-button"
+          onClick={handleBackToDashboard}
         />
-        <h2>Quản Lý Tin Tức</h2>
+        <h2>Quản lý News</h2>
       </div>
-      <h3>Thêm Tin Tức Mới</h3>
+  
+      <h3>{editingNewsId === null ? "Add New News" : "Edit News"}</h3>
       <div>
-        <label>Tiêu Đề Tin Tức: </label>
+        <label>News Image: </label>
+        <input type="file" onChange={handleFileChange} />
+        <button onClick={handleUploadImage}>Upload Image</button>
+        {imageUrl && <img src={imageUrl} alt="News Thumbnail" style={{ width: 100 }} />}
+  
+        <label>Title:</label>
         <input
-          value={newNews.newsTitle}
+          type="text"
+          value={newNews.title}
           onChange={(e) =>
-            setNewNews((prev) => ({ ...prev, newsTitle: e.target.value }))
+            setNewNews((prev) => ({ ...prev, title: e.target.value }))
           }
         />
-        <label>Hình Ảnh (URL): </label>
-        <input type="file" onChange={handleFileChange} />
-        <button onClick={handleUploadImage}>Tải ảnh lên</button>
-        {imageUrl && <img src={imageUrl} alt="News Avatar" style={{ width: 100 }} />}
-
-        <label>Nội Dung: </label>
+  
+        <label>Content:</label>
         <textarea
           value={newNews.content}
           onChange={(e) =>
             setNewNews((prev) => ({ ...prev, content: e.target.value }))
           }
         />
-        <label>Trạng Thái: </label>
+  
+        <label>Status: </label>
         <select
           value={newNews.status}
           onChange={(e) =>
             setNewNews((prev) => ({ ...prev, status: e.target.value }))
           }
         >
-          <option value="Enable">Enable</option>
-          <option value="Disable">Disable</option>
+          <option value="ENABLE">Enable</option>
+          <option value="DISABLE">Disable</option>
         </select>
-        <button onClick={handleCreate}>Thêm</button>
+  
+        <label>Date: </label>
+        <input
+          type="datetime-local"
+          value={newNews.date}
+          onChange={(e) =>
+            setNewNews((prev) => ({ ...prev, date: e.target.value }))
+          }
+        />
+  
+        {/* Hiển thị nút Create News khi không có bài viết đang chỉnh sửa */}
+        {editingNewsId === null ? (
+          <button onClick={handleCreate}>Create News</button>
+        ) : (
+          // Hiển thị nút Save khi đang chỉnh sửa bài viết
+          <button onClick={() => handleSave(editingNewsId, newNews)}>Save</button>
+        )}
       </div>
-
-      {error && <p>{error}</p>}
+  
+      <h3>List</h3>
       {newsList.length === 0 ? (
-        <p>Không có tin tức nào.</p>
+        <p>No news available.</p>
       ) : (
         <table border="1" cellPadding="10" cellSpacing="0">
           <thead>
             <tr>
-              <th>ID Tin Tức</th>
-              <th>Tiêu Đề</th>
-              <th>Hình Ảnh (URL)</th>
-              <th>Nội Dung</th>
-              <th>Ngày Tạo</th> 
-              <th>Trạng Thái</th>
-              <th>Hành động</th>
+              <th>ID</th>
+              <th>Image</th>
+              <th>Title</th>
+              <th>Content</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {newsList.map((news) => (
               <tr key={news.newsID}>
                 <td>{news.newsID}</td>
-                <td>{editingNewsId === news.newsID ? (
-                    <input
-                      value={news.newsTitle}
-                      onChange={(e) =>
-                        setNewsList((prevNewsList) =>
-                          prevNewsList.map((n) =>
-                            n.newsID === news.newsID
-                              ? { ...n, newsTitle: e.target.value }
-                              : n
-                          )
-                        )
-                      }
-                    />
-                  ) : (
-                    news.newsTitle
-                  )}
+                <td>
+                  <img
+                    src={news.image}
+                    alt="News"
+                    style={{ width: "100px", height: "auto" }}
+                  />
                 </td>
-                <td>{editingNewsId === news.newsID ? (
-                    <div>
-                      <label>Avatar: </label>
-                      <input type="file" onChange={handleFileChange} />
-                      <button onClick={handleUploadImage}>Tải ảnh lên</button>
-                      {imageUrl && <img src={imageUrl} alt="News Avatar" style={{ width: 100 }} />}
-                    </div>
-                  ) : (
-                    <img src={news.newsImage} alt="News Avatar" style={{ width: 100 }} />
-                  )}
-                </td>
-                <td>{editingNewsId === news.newsID ? (
-                    <textarea
-                      value={news.content}
-                      onChange={(e) =>
-                        setNewsList((prevNewsList) =>
-                          prevNewsList.map((n) =>
-                            n.newsID === news.newsID
-                              ? { ...n, content: e.target.value }
-                              : n
-                          )
-                        )
-                      }
-                    />
-                  ) : (
-                    news.content
-                  )}
-                </td>
-                <td>{news.date ? new Date(news.date).toLocaleDateString("en-GB") : ""}</td>
-                <td>{editingNewsId === news.newsID ? (
-                    <select
-                      value={news.status}
-                      onChange={(e) =>
-                        setNewsList((prevNewsList) =>
-                          prevNewsList.map((n) =>
-                            n.newsID === news.newsID
-                              ? { ...n, status: e.target.value }
-                              : n
-                          )
-                        )
-                      }
-                    >
-                      <option value="Enable">Enable</option>
-                      <option value="Disable">Disable</option>
-                    </select>
-                  ) : (
-                    news.status
-                  )}
-                </td>
+                <td>{news.title}</td>
+                <td className="content-column">{news.content}</td>
+                <td>{news.status}</td>
+                <td>{news.date}</td>
                 <td>
                   {editingNewsId === news.newsID ? (
                     <>
-                      <button
-                        onClick={() =>
-                          handleSave(news.newsID, {
-                            newsTitle: news.newsTitle,
-                            newsImage: news.newsImage,
-                            content: news.content,
-                            status: news.status,
-                          })
-                        }
-                      >
-                        Lưu
-                      </button>
-                      <button onClick={() => setEditingNewsId(null)}>Hủy</button>
+                      <button onClick={() => handleSave(news.newsID, newNews)}>Save</button>
+                      <button onClick={() => setEditingNewsId(null)}>Cancel</button>
                     </>
                   ) : (
                     <>
-                      <button onClick={() => setEditingNewsId(news.newsID)}>Chỉnh Sửa</button>
-                      <button onClick={() => handleDelete(news.newsID)}>Xóa</button>
+                    <button
+                      onClick={() => handleEditClick(news)}
+                    >
+                      Sửa
+                    </button>
+                      <button onClick={() => handleDeleteSoft(news.newsID)}>
+                        Vô hiệu hóa
+                      </button>
+                      <button onClick={() => handleDeleteHard(news.newsID)}>
+                        Xóa
+                      </button>
                     </>
                   )}
                 </td>
@@ -328,8 +337,11 @@ const AdminNews = () => {
           </tbody>
         </table>
       )}
+  
+      {error && <p style={{ color: "red" }}>Error: {error}</p>}
     </div>
   );
+  
 };
 
 export default AdminNews;
