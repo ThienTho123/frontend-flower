@@ -227,8 +227,8 @@ const Dashboard = () => {
             <button onClick={() => handleNavigate("/AdminOder")}>
               <img src={billIcon} alt="Quản lý đơn hàng" /> Đơn hàng
             </button>
-            <button onClick={() => handleNavigate("/AdminBillInfo")}>
-              <img src={billInfoIcon} alt="Quản lý Bill Info" /> Bill Info
+            <button onClick={() => handleNavigate("/AdminOrderDetail")}>
+              <img src={billInfoIcon} alt="Quản lý thông tin đơn hàng" /> Thông tin đơn hàng
             </button>
             <button onClick={() => handleNavigate("/AdminBrand")}>
               <img src={brandIcon} alt="Quản lý Brand" /> Brand
