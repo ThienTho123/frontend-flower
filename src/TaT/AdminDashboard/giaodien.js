@@ -258,6 +258,9 @@ const Dashboard = () => {
             <button onClick={() => handleNavigate("/AdminNews")}>
               <img src={newsIcon} alt="Quản lý News" /> News
             </button>
+            <button onClick={() => handleNavigate("/AdminPurpose")}>
+              <img src={newsIcon} alt="Quản lý Purpose" /> Purpose
+            </button>
             <button onClick={() => handleNavigate("/AdminOrigin")}>
               <img src={originIcon} alt="Quản lý Origin" /> Origin
             </button>
