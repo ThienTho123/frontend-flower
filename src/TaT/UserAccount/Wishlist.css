@@ -1,0 +1,46 @@
+.wishlist-card {
+    position: relative; /* This ensures the button is positioned relative to the card */
+    width: 200px; /* Adjust width based on your design */
+    margin: 10px;
+  }
+  
+  .img-wrapper {
+    position: relative; /* This allows us to position the delete button inside the image wrapper */
+  }
+  
+  .delete-button {
+    position: absolute;
+    top: 10px; /* Distance from the top edge of the image */
+    right: 10px; /* Distance from the right edge of the image */
+    background-color: transparent;
+    border: none;
+    color: rgb(255, 0, 43); /* Heart color */
+    font-size: 24px; /* Adjust the size of the heart */
+    cursor: pointer;
+    transition: color 0.3s ease; /* Smooth color change */
+  }
+  
+  .delete-button:hover {
+    color: rgb(172, 47, 47); /* Change color when hovering */
+  }
+  
+  .wishlist-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .wishlist-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .wishlist-container h1 {
+    text-align: center;
+  }
+  
+  .wishlist-card img {
+    width: 100%; /* Makes the image take up the full width of the card */
+    height: auto;
+  }
+  

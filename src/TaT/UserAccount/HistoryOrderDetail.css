@@ -1,0 +1,42 @@
+.order-history-container {
+    padding: 20px;
+  }
+  
+  .order-history {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .order-history-left, .order-history-right {
+    width: 45%;
+  }
+  
+  .order-history-left p, .order-history-right p {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  
+  .order-history-left strong, .order-history-right strong {
+    font-weight: bold;
+  }
+  
+  .order-detail table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .order-detail th, .order-detail td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .order-detail th {
+    background-color: #f4f4f4;
+  }
+  
+  .order-detail tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  

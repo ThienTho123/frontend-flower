@@ -24,12 +24,16 @@ import NewsList from "./TaT/NewsList";
 import NewsDetail from "./TaT/NewsDetail";
 import PaymentFailure from "./TaT/UserAccount/PaymentFailure";
 import PaymentSuccess from "./TaT/UserAccount/PaymentSuccess";
+import HistoryOrderDetail from './TaT/UserAccount/HistoryOrderDetail.js';
 import AccountLayout from "./TaT/UserAccount/AccountLayout";
+import HistoryOrder from "./TaT/UserAccount/HistoryOrder";
+import SendComment from './TaT/UserAccount/SendComment.js';
 import Profile from "./TaT/UserAccount/Profile";
 import ChangePassword from "./TaT/UserAccount/ChangePassword";
 import PurchaseHistory from "./TaT/UserAccount/PurchaseHistory";
 import Wishlist from "./TaT/UserAccount/Wishlist";
 import Find from "./TaT/find";
+import SendCommentDetail from './TaT/UserAccount/SendCommentDetail.js';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';  
 import React, { useEffect } from "react";
 
@@ -98,6 +102,11 @@ const AppRoutes = () => {
           <Route path="changepassword" element={<ChangePassword />} />
           <Route path="wishlist" element={<Wishlist />} />
           <Route path="orders" element={<PurchaseHistory />} />
+          <Route path="history" element={<HistoryOrder />} />
+          <Route path="history/:id" element={<HistoryOrderDetail />} /> 
+          <Route path="sendcomment" element={<SendComment />} />
+          <Route path="sendcomment/:id" element={<SendCommentDetail />} />
+
         </Route>
       </Routes>
       {/* Only render Footer if it's not an admin route */}

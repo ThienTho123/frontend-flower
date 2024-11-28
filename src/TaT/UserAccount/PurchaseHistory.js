@@ -20,17 +20,19 @@ const PurchaseHistory = () => {
           Authorization: `Bearer ${access_token}`,
         },
       });
-
+  
+      console.log("Dữ liệu nhận được từ API:", response.data); // In ra dữ liệu nhận được từ API
+  
       const { billInfo: rawBillInfo, review } = response.data;
       setReviews(review);
-
+  
       const updatedBillInfo = rawBillInfo.map((item) => {
         const formattedDate = dayjs(item.date).format("YYYY-MM-DD HH:mm:ss");
-
+  
         const relatedReview = review.find(
-          (rev) => rev.productID && rev.productID.productID === item.productID
+          (rev) => rev.flower && rev.flower.flowerID === item.productID
         );
-
+  
         return {
           title: item.productTitle,
           price: item.cost,
@@ -40,21 +42,29 @@ const PurchaseHistory = () => {
           review: relatedReview ? relatedReview : false,
         };
       });
-
+  
       setBillInfo(updatedBillInfo);
     } catch (error) {
       console.error("Error fetching purchase history:", error);
     }
   };
-
-  const handleSubmitReview = async (comment, rating) => {
+  
+  const handleSubmitReview = async (comment, rating, image) => {
     try {
+      let imageUrl = null;
+      if (image) {
+        // Đảm bảo rằng bạn đã nhận được URL ảnh từ Firebase
+        imageUrl = await uploadImage(image);
+      }
+      console.log("Image URL: ", imageUrl); // Kiểm tra URL ảnh đã được nhận
+  
       await axios.post(
-        "http://localhost:8080/review",
+        "http://localhost:8080/review", // Đảm bảo API endpoint chính xác
         {
-          productID: { productID: selectedProductId },
+          flower: { flowerID: selectedProductId },  // ID sản phẩm bạn muốn đánh giá
           comment,
           rating,
+          image: imageUrl, // Đảm bảo URL ảnh được gửi qua đây
         },
         {
           headers: {
@@ -62,21 +72,31 @@ const PurchaseHistory = () => {
           },
         }
       );
-      getPurchaseHistory();
-      handleAddReviewClose();
+      getPurchaseHistory();  // Cập nhật lại danh sách khi gửi đánh giá xong
+      handleAddReviewClose();  // Đóng modal
     } catch (error) {
       console.error("Error submitting review:", error);
     }
   };
+  
 
-  const handleUpdateReview = async (comment, rating) => {
+  const handleUpdateReview = async (comment, rating, image) => {
     try {
+      let imageUrl = null;
+      if (image) {
+        // Đảm bảo rằng bạn đã nhận được URL ảnh từ Firebase
+        imageUrl = await uploadImage(image);
+      }
+      console.log("imageURL: "+imageUrl);
+      console.log("selectedProductId: "+selectedProductId);
+
       await axios.post(
         "http://localhost:8080/review",
         {
-          productID: selectedProductId,
+          flower: { flowerID: selectedProductId },  // ID sản phẩm bạn muốn đánh giá
           comment,
           rating,
+          image: imageUrl, // Đảm bảo URL ảnh được gửi qua đây
         },
         {
           headers: {
@@ -84,10 +104,32 @@ const PurchaseHistory = () => {
           },
         }
       );
-      getPurchaseHistory();
-      handleModalClose();
+      getPurchaseHistory();  // Cập nhật lại danh sách khi cập nhật đánh giá xong
+      handleModalClose();  // Đóng modal
     } catch (error) {
       console.error("Error updating review:", error);
+    }
+  };
+  
+
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await axios.post("http://localhost:8080/api/v1/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.data.EM === "success") {
+        return response.data.DT; // Return the image link
+      } else {
+        console.log("Image upload failed:", response.data.EM);
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
     }
   };
 
@@ -97,7 +139,7 @@ const PurchaseHistory = () => {
 
   const handleReviewClick = (item) => {
     setSelectedReview(item);
-    setSelectedProductId(item.productID);
+    setSelectedProductId(item.flower.flowerID);
     setModalVisible(true);
   };
 
@@ -116,6 +158,7 @@ const PurchaseHistory = () => {
     setAddReviewVisible(false);
     setSelectedProductId(null);
   };
+
   const handleDeleteReview = async (reviewId) => {
     try {
       await axios.delete(`http://localhost:8080/review/${reviewId}`, {
@@ -123,11 +166,12 @@ const PurchaseHistory = () => {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      getPurchaseHistory(); 
+      getPurchaseHistory();
     } catch (error) {
       console.error("Error deleting review:", error);
     }
   };
+
   return (
     <div>
       <h3>Lịch sử mua hàng</h3>
@@ -185,16 +229,11 @@ const PurchaseHistory = () => {
   );
 };
 
-const ModalEditReview = ({
-  isVisible,
-  onClose,
-  review,
-  onSubmit,
-  onDelete,
-}) => {
+const ModalEditReview = ({ isVisible, onClose, review, onSubmit, onDelete }) => {
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState("0");
   const [error, setError] = useState("");
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     if (review) {
@@ -219,7 +258,7 @@ const ModalEditReview = ({
         setError("Đánh giá không được để trống");
         return;
       }
-      onSubmit(comment, rating);
+      onSubmit(comment, rating, image);
       setComment("");
       setRating("0");
       setError("");
@@ -227,11 +266,14 @@ const ModalEditReview = ({
   };
 
   const handleDelete = () => {
-    console.log("Deleting review with ID:", review.reviewID);
     if (review && review.reviewID) {
       onDelete(review.reviewID);
-      onClose(); 
+      onClose();
     }
+  };
+
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
   };
 
   if (!isVisible) {
@@ -258,10 +300,17 @@ const ModalEditReview = ({
           onChange={(e) => setComment(e.target.value)}
           placeholder="Nhập đánh giá của bạn..."
         ></textarea>
+        <div>
+          <label>Upload Image: </label>
+          <input type="file" onChange={handleImageChange} />
+        </div>
         <button onClick={handleSubmit}>Gửi</button>
-        <button style={{marginLeft:"10px"}} onClick={onClose}>Đóng</button>
-        <button className="buttonDelete" onClick={handleDelete}>Xóa</button> 
-
+        <button style={{ marginLeft: "10px" }} onClick={onClose}>
+          Đóng
+        </button>
+        <button className="buttonDelete" onClick={handleDelete}>
+          Xóa
+        </button>
       </div>
     </div>
   );
@@ -271,6 +320,7 @@ const ModalAddReview = ({ isVisible, onClose, onSubmit }) => {
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState("0");
   const [error, setError] = useState("");
+  const [image, setImage] = useState(null);
 
   const handleRatingChange = (e) => {
     const value = Number(e.target.value);
@@ -288,11 +338,15 @@ const ModalAddReview = ({ isVisible, onClose, onSubmit }) => {
         setError("Đánh giá không được để trống");
         return;
       }
-      onSubmit(comment, rating);
+      onSubmit(comment, rating, image);
       setComment("");
       setRating("0");
       setError("");
     }
+  };
+
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
   };
 
   if (!isVisible) {
@@ -302,7 +356,7 @@ const ModalAddReview = ({ isVisible, onClose, onSubmit }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-container">
-        <h3>Thêm đánh giá sản phẩm</h3>
+        <h3>Đánh giá sản phẩm</h3>
         <div className="rating-input">
           <label>Rating (0 - 5): </label>
           <input
@@ -319,8 +373,14 @@ const ModalAddReview = ({ isVisible, onClose, onSubmit }) => {
           onChange={(e) => setComment(e.target.value)}
           placeholder="Nhập đánh giá của bạn..."
         ></textarea>
+        <div>
+          <label>Upload Image: </label>
+          <input type="file" onChange={handleImageChange} />
+        </div>
         <button onClick={handleSubmit}>Gửi</button>
-        <button style={{marginLeft:"10px"}} onClick={onClose}>Đóng</button>
+        <button style={{ marginLeft: "10px" }} onClick={onClose}>
+          Đóng
+        </button>
       </div>
     </div>
   );
