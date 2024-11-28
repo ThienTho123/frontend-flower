@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+
 .admin-dashboard body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f2f2f9;
@@ -6,7 +8,7 @@
 }
 
 .admin-dashboard h2 {
-    color: #1E5128;
+    color: #5c1f44;
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     font-size: 28px;
@@ -23,7 +25,7 @@
 }
 
 .admin-dashboard button:hover {
-    background-color: #4E9F3D;
+    background-color: #60254a;
 }
 
 .admin-dashboard h3 {
@@ -59,12 +61,12 @@
 }
 
 .admin-dashboard th {
-    background-color: #4E9F3D;
+    background-color: #a35184;
     color: white;
 }
 
 .admin-dashboard tr:hover {
-    background-color: #D8E9A8;
+    background-color: #d5a3c2;
 }
 
 .admin-dashboard .error {
@@ -76,25 +78,28 @@
     display: flex;
     flex-direction: column;
     padding: 0;
-    background-color: #D8E9A8;
+    background-color: #c0a1b4;
+
 }
 
 .admin-dashboard .dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #191A19;
+    background-color: #ebcee0;
     color: white;
     padding: 10px;
 }
 
 .admin-dashboard .dashboard-header h2 {
     margin: 0;
-    font-size: 32px;
+    font-size: 50px;
     letter-spacing: 1px;
     font-weight: 700;
     font-family: 'Montserrat', sans-serif;
-    color: #D8E9A8;
+    color: black; 
+    font-family: "Dancing Script", cursive;
+
 }
 
 .admin-dashboard .dashboard-header .shop-name {
@@ -121,14 +126,13 @@
 }
 
 .admin-dashboard .logout-button {
-    background-color: #1E5128;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 20px;
+    background-color: #bc729f;
+    font-size: 20px;
+    border-radius: 100px;
 }
 
 .admin-dashboard .logout-button:hover {
-    background-color: #4E9F3D;
+    background-color: #974d7b;
 }
 
 .admin-dashboard .dashboard-container {
@@ -140,9 +144,17 @@
 .dashboard-container {
     display: flex;
 }
-
+.content-container {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    overflow: hidden;
+    box-sizing: border-box;
+    word-wrap: break-word;  /* Đảm bảo nội dung dài sẽ tự động xuống dòng */
+}
 .admin-buttons-container {
-    flex: 0 0 200px;
+    flex: 0 0 260px;
     height: calc(100vh - 80px);
     overflow: auto;
     margin-right: 20px;
@@ -178,7 +190,7 @@
     font-size: 20px;
     font-family: 'Arial', sans-serif;
     color: white;
-    background-color: #309244;
+    background-color: #a45ab9;
     border: none;
     border-radius: 0px;
     cursor: pointer;
@@ -187,7 +199,7 @@
 }
 
 .admin-buttons button:hover {
-    background-color: #4E9F3D;
+    background-color: #884a99;
 }
 
 .admin-buttons button img {
@@ -211,20 +223,50 @@
 }
 
 .account-info {
-    background: linear-gradient(135deg, #D8E9A8, #ffffff);
+    background: linear-gradient(135deg, #f3a8d3, #ffffff); 
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
+    max-width: 350px;
     width: 100%;
-    transition: transform 0.3s;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
     margin-top: 20px;
-    overflow: auto;
-}
-
-.account-info:hover {
-    transform: scale(1.02);
-}
+    overflow: hidden;
+    margin-left: auto;
+    font-family: 'Arial', sans-serif; 
+    color: #333; 
+  }
+  
+  .account-info:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  .account-info h3 {
+    font-size: 1.0rem; 
+    margin-bottom: 10px;
+  }
+  
+  .account-info p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 15px; 
+  }
+  
+  .account-info button {
+    background-color: #f3a8d3; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .account-info button:hover {
+    background-color: #f15b91; 
+  }
 
 .info-row {
     display: flex;
@@ -233,7 +275,7 @@
 }
 
 .account-info p {
-    font-size: 20px;
+    font-size: 15px;
     line-height: 1.5;
     color: #333;
     margin: 0;
@@ -241,8 +283,8 @@
 
 .account-info .label {
     font-weight: bold;
-    color: #1E5128;
-    font-size: 22px;
+    color: #59133b;
+    font-size: 20px;
 }
 
 .account-info h3 {
@@ -268,28 +310,42 @@
 }
 
 .account-info p:hover {
-    color: #1E5128;
+    color: #f3a8d3;
 }
 
 .admin-ql-container {
     padding: 20px;
-    background-color: #D8E9A8;
+    background-color: #edecec;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
 
 .admin-ql-container button {
-    background-color: #ce9b4f;
+    background-color: #9966d3;
     color: white;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Thêm hiệu ứng chuyển động */
     margin-right: 10px;
     margin-bottom: 10px;
-}
-
-.admin-ql-container button:hover {
-    background-color: #a57328;
-}
+    padding: 10px 20px; /* Thêm padding để nút đẹp hơn */
+    border: none;
+    border-radius: 8px; /* Bo góc mềm mại */
+    cursor: pointer; /* Thêm con trỏ tay khi hover */
+    font-size: 1rem;
+    font-weight: 600; /* Làm chữ đậm hơn */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+  }
+  
+  .admin-ql-container button:hover {
+    background-color: #55238e;
+    transform: translateY(-2px); /* Di chuyển nhẹ lên khi hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Tăng độ bóng khi hover */
+  }
+  
+  .admin-ql-container button:active {
+    transform: translateY(2px); /* Di chuyển nhẹ xuống khi nhấn */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Quay lại bóng đổ nhẹ khi nhấn */
+  }
 
 .admin-ql-container input {
     padding: 16px; /* Tăng padding */
@@ -305,7 +361,7 @@
     font-size: 16px; /* Kích thước chữ */
 }
 .admin-ql-container input:hover {
-    border-color: #1E5128;
+    border-color: #ab519a;
 }
 
 .admin-ql-container table {
@@ -322,19 +378,19 @@
 }
 
 .admin-ql-container th {
-    background-color: #4E9F3D;
+    background-color: #ad5b8e;
     color: white;
 }
 
 .admin-ql-container tr:hover {
-    background-color: #D8E9A8;
+    background-color: #f3bfe1;
 }
 
 .admin-ql-container label {
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 5px;
-    color: #1E5128;
+    color: #020202;
 }
 .title-container {
     display: flex;
@@ -353,7 +409,7 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #edecec;
+    background-color: #ffcaeb;
     padding: 10px 20px; 
     border-radius: 10px; 
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
@@ -368,7 +424,7 @@
     width: 80%; /* Kích thước biểu đồ */
     margin: 0 auto; /* Căn giữa biểu đồ */
     padding: 20px; /* Khoảng cách bên trong */
-    border: 2px solid #04a52c; /* Đường viền */
+    border: 2px solid #a20164; /* Đường viền */
     border-radius: 10px; /* Bo góc */
     background-color: #f8f9fa; /* Màu nền */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng */
@@ -456,4 +512,28 @@
     margin-bottom: 15px;
     width: 100%;
     box-sizing: border-box;
+  }
+ /* Giới hạn chiều rộng của cột chứa content và cho phép xuống dòng */
+.content-column {
+    max-width: 800px; /* Chiều rộng tối đa của cột */
+    word-wrap: break-word; /* Cho phép từ dài xuống dòng */
+    word-break: break-word; /* Tách từ dài để xuống dòng nếu cần */
+  }
+  .shop-logo {
+    width: 90px; /* Kích thước logo nhỏ hơn */
+    height: 110px;
+    margin-bottom: 10px;
+  }
+  .logout-button {
+    background: none; /* Xóa nền */
+    border: none; /* Xóa viền */
+    padding: 0; /* Xóa khoảng cách */
+    cursor: pointer; /* Hiển thị con trỏ dạng tay khi hover */
+  }
+  
+  .logout-icon {
+    width: 50px; /* Kích thước hình ảnh */
+    height: 50px;
+    margin-left: 10px;
+    margin-top: 10px;
   }

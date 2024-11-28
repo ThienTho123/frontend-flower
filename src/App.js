@@ -7,6 +7,17 @@ import AdminAccount from "./TaT/AdminDashboard/AdminAccount";
 import AdminOrderDetail from "./TaT/AdminDashboard/AdminOrderDetail";
 import AdminCategory from "./TaT/AdminDashboard/AdminCategory";
 import AdminComment from "./TaT/AdminDashboard/AdminComment";
+import AdminCommentType from "./TaT/AdminDashboard/AdminCommentType";
+import AdminDiscount from "./TaT/AdminDashboard/AdminDiscount";
+import AdminFlower from "./TaT/AdminDashboard/AdminFlower";
+import AdminFlowerImage from "./TaT/AdminDashboard/AdminFlowerImage";
+import AdminFlowerSize from "./TaT/AdminDashboard/AdminFlowerSize";
+import AdminNews from "./TaT/AdminDashboard/AdminNews";
+import AdminPurpose from "./TaT/AdminDashboard/AdminPurpose";
+import AdminRepcomment from "./TaT/AdminDashboard/AdminRepcomment";
+import AdminReview from "./TaT/AdminDashboard/AdminReview";
+import AdminShipping from "./TaT/AdminDashboard/AdminShipping";
+import AdminType from "./TaT/AdminDashboard/AdminType";
 
 
 import Footer from './Component/Footer/footer';
@@ -42,7 +53,8 @@ const AppRoutes = () => {
   const location = useLocation(); // Get the current location
   
   // List of admin routes where Header and Footer should be hidden
-  const adminRoutes = ["/dashboard", "/AdminOder", "/AdminBanner", "/AdminAccount", "/AdminOrderDetail", "/AdminCategory", "/AdminComment"];  
+  const adminRoutes = ["/dashboard", "/AdminOder", "/AdminBanner", "/AdminAccount", "/AdminOrderDetail", "/AdminCategory", "/AdminComment", "/AdminCommentType", 
+    "/AdminDiscount", "/AdminFlower", "/AdminFlowerImage", "/AdminFlowerSize",  "/AdminNews","/AdminPurpose", "/AdminRepcomment","/AdminReview","/AdminShipping", "/AdminType"  ];  
 
   // Check if the current route is an admin route
   const isAdminRoute = adminRoutes.includes(location.pathname);  
@@ -87,6 +99,17 @@ const AppRoutes = () => {
         <Route path="/AdminOrderDetail" element={<AdminOrderDetail />} />
         <Route path="/AdminCategory" element={<AdminCategory />} />
         <Route path="/AdminComment" element={<AdminComment />} />
+        <Route path="/AdminCommentType" element={<AdminCommentType />} />
+        <Route path="/AdminDiscount" element={<AdminDiscount />} />
+        <Route path="/AdminFlower" element={<AdminFlower />} />
+        <Route path="/AdminFlowerImage" element={<AdminFlowerImage />} />
+        <Route path="/AdminFlowerSize" element={<AdminFlowerSize />} />
+        <Route path="/AdminNews" element={<AdminNews/>} />
+        <Route path="/AdminPurpose" element={<AdminPurpose/>} />
+        <Route path="/AdminRepcomment" element={<AdminRepcomment/>} />
+        <Route path="/AdminReview" element={<AdminReview/>} />
+        <Route path="/AdminShipping" element={<AdminShipping/>} />
+        <Route path="/AdminType" element={<AdminType/>} />
 
 
         {/* Other Routes */}

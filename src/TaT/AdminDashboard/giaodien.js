@@ -6,22 +6,27 @@ import "./Dashboard.css"; // Thêm file CSS cho Dashboard
 import adminIcon from "./ImageDashboard/admin.png"; // Đường dẫn đến icon admin
 import accountIcon from "./ImageDashboard/account.png"; // Hình ảnh cho quản lý account
 import bannerIcon from "./ImageDashboard/banner.png"; // Hình ảnh cho quản lý banner
-import billIcon from "./ImageDashboard/bill.png"; // Hình ảnh cho quản lý hóa đơn
 import billInfoIcon from "./ImageDashboard/billinfo.png"; // Hình ảnh cho quản lý Bill Info
-import brandIcon from "./ImageDashboard/brand.png"; // Hình ảnh cho quản lý Brand
-import cartIcon from "./ImageDashboard/cart.png"; // Hình ảnh cho quản lý Cart
+import flowerIcon from "./ImageDashboard/flower.png"; // Hình ảnh cho quản lý Cart
 import categoryIcon from "./ImageDashboard/category.png"; // Hình ảnh cho quản lý Category
 import discountIcon from "./ImageDashboard/discount.png"; // Hình ảnh cho quản lý Discount
 import imageIcon from "./ImageDashboard/image.png"; // Hình ảnh cho quản lý Image
 import newsIcon from "./ImageDashboard/news.png"; // Hình ảnh cho quản lý News
 import originIcon from "./ImageDashboard/origin.png"; // Hình ảnh cho quản lý Origin
-import productIcon from "./ImageDashboard/product.png"; // Hình ảnh cho quản lý Product
 import productSizeIcon from "./ImageDashboard/productsize.png"; // Hình ảnh cho quản lý ProductSize
 import productTypeIcon from "./ImageDashboard/producttype.png"; // Hình ảnh cho quản lý ProductType
 import reviewIcon from "./ImageDashboard/review.png"; // Hình ảnh cho quản lý Review
-import sizeIcon from "./ImageDashboard/size.png"; // Hình ảnh cho quản lý Size
+import commentIcon from "./ImageDashboard/comment.png"; // Hình ảnh cho quản lý Review
+import commenttypeIcon from "./ImageDashboard/commenttype.png"; // Hình ảnh cho quản lý Review
+import cartIcon from "./ImageDashboard/cart.png"; // Hình ảnh cho quản lý Review
+import pureposeIcon from "./ImageDashboard/purpose.png"; // Hình ảnh cho quản lý Review
+import repcommentIcon from "./ImageDashboard/repcomment.png"; // Hình ảnh cho quản lý Review
+import logo from "./ImageDashboard/logo.png"; // Hình ảnh cho quản lý Review
+import exit from "./ImageDashboard/exit.png"; // Hình ảnh cho quản lý Review
+
 import BillGrowthChart from "./BillGrowthChart"; // Nhập biểu đồ
 import ReviewChart from "./ReviewChart";
+
 import {
   Chart as ChartJS,
   ArcElement,
@@ -205,11 +210,10 @@ const Dashboard = () => {
       {/* Header */}
       <header className="dashboard-header">
         <h2>Dashboard</h2>
-        <h1 className="shop-name">J4M</h1>
+        <img src={logo} alt="Logo" className="shop-logo" />
         <div className="admin-section">
-          <img src={adminIcon} alt="Admin Icon" className="admin-icon" />
           <button className="logout-button" onClick={handleLogout}>
-            Log out
+            <img src={exit} alt="Log out" className="logout-icon" />
           </button>
         </div>
       </header>
@@ -225,51 +229,50 @@ const Dashboard = () => {
               <img src={bannerIcon} alt="Quản lý Banner" /> Banner
             </button>
             <button onClick={() => handleNavigate("/AdminOder")}>
-              <img src={billIcon} alt="Quản lý đơn hàng" /> Đơn hàng
+              <img src={cartIcon} alt="Quản lý đơn hàng" /> Đơn hàng
             </button>
             <button onClick={() => handleNavigate("/AdminOrderDetail")}>
               <img src={billInfoIcon} alt="Quản lý thông tin đơn hàng" /> Thông tin đơn hàng
             </button>
-            <button onClick={() => handleNavigate("/AdminBrand")}>
-              <img src={brandIcon} alt="Quản lý Brand" /> Brand
-            </button>
-            <button onClick={() => handleNavigate("/AdminCart")}>
-              <img src={cartIcon} alt="Quản lý Cart" /> Cart
-            </button>
             <button onClick={() => handleNavigate("/AdminCategory")}>
-              <img src={categoryIcon} alt="Quản lý Category" /> Category
+              <img src={pureposeIcon} alt="Quản lý Category" /> Category
             </button>
             <button onClick={() => handleNavigate("/AdminComment")}>
-              <img src={cartIcon} alt="Quản lý Comment" /> Comment
+              <img src={commentIcon} alt="Quản lý Comment" /> Comment
+            </button>
+            <button onClick={() => handleNavigate("/AdminRepcomment")}>
+              <img src={repcommentIcon} alt="Quản lý Repcomment" /> Repcomment
+            </button>
+            <button onClick={() => handleNavigate("/AdminCommentType")}>
+              <img src={commenttypeIcon} alt="Quản lý CommentType" /> CommentType
             </button>
             <button onClick={() => handleNavigate("/AdminDiscount")}>
               <img src={discountIcon} alt="Quản lý Discount" /> Discount
             </button>
-            <button onClick={() => handleNavigate("/AdminImage")}>
-              <img src={imageIcon} alt="Quản lý Image" /> Image
+            <button onClick={() => handleNavigate("/AdminFlower")}>
+              <img src={flowerIcon} alt="Quản lý hoa" /> Hoa
+            </button>
+            <button onClick={() => handleNavigate("/AdminFlowerImage")}>
+              <img src={imageIcon} alt="Quản lý hình ảnh hoa" /> Hình ảnh hoa
+            </button>
+            <button onClick={() => handleNavigate("/AdminFlowerSize")}>
+              <img src={productSizeIcon} alt="Quản lý size hoa" /> 
+              Size hoa
             </button>
             <button onClick={() => handleNavigate("/AdminNews")}>
               <img src={newsIcon} alt="Quản lý News" /> News
             </button>
-            <button onClick={() => handleNavigate("/AdminOrigin")}>
-              <img src={originIcon} alt="Quản lý Origin" /> Origin
-            </button>
-            <button onClick={() => handleNavigate("/AdminProduct")}>
-              <img src={productIcon} alt="Quản lý Product" /> Product
-            </button>
-            <button onClick={() => handleNavigate("/AdminProductSize")}>
-              <img src={productSizeIcon} alt="Quản lý ProductSize" /> Product
-              Size
-            </button>
-            <button onClick={() => handleNavigate("/AdminProductType")}>
-              <img src={productTypeIcon} alt="Quản lý ProductType" /> Product
-              Type
+            <button onClick={() => handleNavigate("/AdminPurpose")}>
+              <img src={categoryIcon} alt="Quản lý Purpose" /> Purpose
             </button>
             <button onClick={() => handleNavigate("/AdminReview")}>
               <img src={reviewIcon} alt="Quản lý Review" /> Review
             </button>
-            <button onClick={() => handleNavigate("/AdminSize")}>
-              <img src={sizeIcon} alt="Quản lý Size" /> Size
+            <button onClick={() => handleNavigate("/AdminShipping")}>
+              <img src={originIcon} alt="Quản lý Shipping" /> Shipping
+            </button>
+            <button onClick={() => handleNavigate("/AdminType")}>
+              <img src={productTypeIcon} alt="Quản lý Type" /> Type
             </button>
           </div>
         </div>
