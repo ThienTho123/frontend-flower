@@ -357,8 +357,8 @@ const AdminBanner = () => {
                       >
                         Chỉnh Sửa
                       </button>
-                      <button onClick={() => handleDeleteSoft(banner.bannerID)}>Xóa Mềm</button>
-                      <button onClick={() => handleDeleteHard(banner.bannerID)}>Xóa Cứng</button>
+                      <button onClick={() => handleDeleteSoft(banner.bannerID)}>Vô hiệu hóa</button>
+                      <button onClick={() => handleDeleteHard(banner.bannerID)}>Xóa</button>
                     </>
                   )}
                 </td>

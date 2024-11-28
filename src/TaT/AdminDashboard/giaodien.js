@@ -72,7 +72,7 @@ const Dashboard = () => {
     const fetchBills = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/v1/admin/bill",
+          "http://localhost:8080/api/v1/admin/order",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,

@@ -35,20 +35,23 @@ const AdminCategory = () => {
     fetchCategories();
   }, [accesstoken]);
 
-  const handleDelete = async (id) => {
+  const handleDeleteSoft = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/admin/category/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-        },
-        credentials: "include",
-      });
-
+      const response = await fetch(
+        `http://localhost:8080/api/v1/admin/category/softdelete/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          credentials: "include",
+        }
+      );
+  
       if (response.ok) {
         setCategories((prevCategories) =>
           prevCategories.map((category) =>
-            category.categoryID === id ? { ...category, status: "Disable" } : category
+            category.categoryID === id ? { ...category, status: "DISABLE" } : category
           )
         );
       } else {
@@ -58,7 +61,32 @@ const AdminCategory = () => {
       setError(err.message);
     }
   };
-
+  
+  const handleDeleteHard = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/v1/admin/category/harddelete/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          credentials: "include",
+        }
+      );
+  
+      if (response.ok) {
+        setCategories((prevCategories) =>
+          prevCategories.filter((category) => category.categoryID !== id)
+        );
+      } else {
+        throw new Error("Không thể xóa loại sản phẩm.");
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+  
   const handleSave = async (id, categoryName, status) => {
     try {
       const response = await fetch(`http://localhost:8080/api/v1/admin/category/${id}`, {
@@ -96,7 +124,7 @@ const AdminCategory = () => {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ categoryName: newCategoryName, status: "Enable" }),
+        body: JSON.stringify({ categoryName: newCategoryName, status: "ENABLE" }),
       });
 
       if (response.ok) {
@@ -185,8 +213,8 @@ const AdminCategory = () => {
                         )
                       }
                     >
-                      <option value="Enable">Enable</option>
-                      <option value="Disable">Disable</option>
+                      <option value="ENABLE">Enable</option>
+                      <option value="DISABLE">Disable</option>
                     </select>
                   ) : (
                     category.status
@@ -201,8 +229,8 @@ const AdminCategory = () => {
                   ) : (
                     <>
                       <button onClick={() => setEditingCategoryId(category.categoryID)}>Chỉnh Sửa</button>
-                      <button onClick={() => handleDelete(category.categoryID)}>Xóa</button>
-                    </>
+                      <button onClick={() => handleDeleteSoft(category.categoryID)}>Vô hiệu hóa</button>
+                      <button onClick={() => handleDeleteHard(category.categoryID)}>Xóa </button>    </>
                   )}
                 </td>
               </tr>

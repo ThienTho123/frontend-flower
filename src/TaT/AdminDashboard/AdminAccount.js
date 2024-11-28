@@ -12,7 +12,7 @@ const AdminAccount = () => {
     email: "",
     phoneNumber: "",
     address: "",
-    status: "Enable",
+    status: "ENABLE",
     role: "user",
   });
   const [error, setError] = useState(null);
@@ -45,33 +45,57 @@ const AdminAccount = () => {
     fetchAccounts();
   }, [accesstoken]);
 
-  const handleDelete = async (accountID) => {
+  const handleDeleteSoft = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/admin/account/${accountID}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+      const response = await fetch(
+        `http://localhost:8080/api/v1/admin/account/softdelete/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          credentials: "include",
+        }
+      );
   
       if (response.ok) {
-        setAccounts((prevAccounts) => 
+        setAccounts((prevAccounts) =>
           prevAccounts.map((account) =>
-            account.accountID === accountID ? { ...account, status: 'Disable' } : account
+            account.accountID === id ? { ...account, status: "DISABLE" } : account
           )
         );
       } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Không thể vô hiệu hóa tài khoản.");
+        throw new Error("Không thể vô hiệu hóa tài khoản.");
       }
     } catch (err) {
       setError(err.message);
     }
   };
   
+  const handleDeleteHard = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/v1/admin/account/harddelete/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          credentials: "include",
+        }
+      );
   
+      if (response.ok) {
+        setAccounts((prevAccounts) =>
+          prevAccounts.filter((account) => account.accountID !== id)
+        );
+      } else {
+        throw new Error("Không thể xóa tài khoản.");
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
   
 
   const handleSave = async (accountID, account) => {
@@ -155,7 +179,7 @@ const AdminAccount = () => {
           email: "",
           phoneNumber: "",
           address: "",
-          status: "Enable",
+          status: "ENABLE",
           role: "user",
         });
       } else {
@@ -198,175 +222,196 @@ const AdminAccount = () => {
     />
     <h2>Quản Lý Tài Khoản</h2>
   </div>
-      <h3>Tạo Tài Khoản Mới</h3>
-      <div>
-        <label>Tên: </label>
-        <input
-          value={newAccount.name}
-          onChange={(e) => handleInputChange(e, null, "name")}
-        />
-        <br />
-        <label>Tên Đăng Nhập: </label>
-        <input
-          value={newAccount.username}
-          onChange={(e) => handleInputChange(e, null, "username")}
-        />
-        <br />
-        <label>Mật Khẩu: </label>
-        <input
-          type="password"
-          value={newAccount.password}
-          onChange={(e) => handleInputChange(e, null, "password")}
-        />
-        <br />
-        <label>Email: </label>
-        <input
-          value={newAccount.email}
-          onChange={(e) => handleInputChange(e, null, "email")}
-        />
-        <br />
-        <label>Số Điện Thoại: </label>
-        <input
-          value={newAccount.phoneNumber}
-          onChange={(e) => handleInputChange(e, null, "phoneNumber")}
-        />
-        <br />
-        {phoneError && <p style={{ color: "red" }}>{phoneError}</p>}
-        <label>Địa Chỉ: </label>
-        <input
-          value={newAccount.address}
-          onChange={(e) => handleInputChange(e, null, "address")}
-        />
-        <br />
-        <div>
-          <label>Vai Trò: </label>
-          <select
-            value={newAccount.role}
-            onChange={(e) => handleInputChange(e, null, "role")}
-          >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
-        <button onClick={handleCreate}>Tạo Tài Khoản</button>
-      </div>
-
-      {createError && <p style={{ color: "red" }}>{createError}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {accounts.length === 0 ? (
-        <p>Không có tài khoản nào.</p>
-      ) : (
-        <table border="1" cellPadding="10" cellSpacing="0">
-          <thead>
-            <tr>
-              <th>Account ID</th> 
-              <th>Tên</th>
-              <th>Tên Đăng Nhập</th>
-              <th>Email</th>
-              <th>Số Điện Thoại</th>
-              <th>Địa Chỉ</th>
-              <th>Trạng Thái</th>
-              <th>Vai Trò</th>
-              <th>Hành Động</th>
-            </tr>
-          </thead>
-          <tbody>
-            {accounts.map((account) => (
-              <tr key={account.accountID}>
-                <td>{account.accountID}</td> 
-                <td>
-                  {editingAccountId === account.accountID ? (
-                    <input
-                      value={account.name}
-                      onChange={(e) => handleInputChange(e, account.accountID, "name")}
-                    />
-                  ) : (
-                    account.name
-                  )}
-                </td>
-                <td>
-                  {editingAccountId === account.accountID ? (
-                    <input
-                      value={account.username}
-                      onChange={(e) => handleInputChange(e, account.accountID, "username")}
-                      disabled 
-                    />
-                  ) : (
-                    account.username
-                  )}
-                </td>
-                <td>
-                  {editingAccountId === account.accountID ? (
-                    <input
-                      value={account.email}
-                      onChange={(e) => handleInputChange(e, account.accountID, "email")}
-                    />
-                  ) : (
-                    account.email
-                  )}
-                </td>
-                <td>
-                  {editingAccountId === account.accountID ? (
-                    <input
-                      value={account.phoneNumber}
-                      onChange={(e) => handleInputChange(e, account.accountID, "phoneNumber")}
-                    />
-                  ) : (
-                    account.phoneNumber
-                  )}
-                </td>
-                <td>
-                  {editingAccountId === account.accountID ? (
-                    <input
-                      value={account.address}
-                      onChange={(e) => handleInputChange(e, account.accountID, "address")}
-                    />
-                  ) : (
-                    account.address
-                  )}
-                </td>
-                <td>
-                  {editingAccountId === account.accountID ? (
-                    <select
-                      value={account.status}
-                      onChange={(e) => handleInputChange(e, account.accountID, "status")}
-                    >
-                      <option value="Enable">Enable</option>
-                      <option value="Disable">Disable</option>
-                    </select>
-                  ) : (
-                    account.status
-                  )}
-                </td>
-                <td>
-                  {editingAccountId === account.accountID ? (
-                    <select
-                      value={account.role}
-                      onChange={(e) => handleInputChange(e, account.accountID, "role")}
-                    >
-                      <option value="user">User</option>
-                      <option value="admin">Admin</option>
-                    </select>
-                  ) : (
-                    account.role
-                  )}
-                </td>                <td>
-                  {editingAccountId === account.accountID ? (
-                    <>
-                      <button onClick={() => handleSave(account.accountID, account)}>Lưu</button>
-                      <button onClick={() => setEditingAccountId(null)}>Hủy</button>
-                    </>
-                  ) : (
-                    <button onClick={() => setEditingAccountId(account.accountID)}>Chỉnh Sửa</button>
-                  )}
-                  <button onClick={() => handleDelete(account.accountID)}>Xóa</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+  <h3>Tạo Tài Khoản Mới</h3>
+  <div>
+    <label>Tên: </label>
+    <input
+      value={newAccount.name}
+      onChange={(e) => handleInputChange(e, null, "name")}
+    />
+    <br />
+    <label>Tên Đăng Nhập: </label>
+    <input
+      value={newAccount.username}
+      onChange={(e) => handleInputChange(e, null, "username")}
+    />
+    <br />
+    <label>Mật Khẩu: </label>
+    <input
+      type="password"
+      value={newAccount.password}
+      onChange={(e) => handleInputChange(e, null, "password")}
+    />
+    <br />
+    <label>Email: </label>
+    <input
+      value={newAccount.email}
+      onChange={(e) => handleInputChange(e, null, "email")}
+    />
+    <br />
+    <label>Số Điện Thoại: </label>
+    <input
+      value={newAccount.phoneNumber}
+      onChange={(e) => handleInputChange(e, null, "phoneNumber")}
+    />
+    <br />
+    {phoneError && <p style={{ color: "red" }}>{phoneError}</p>}
+    <label>Địa Chỉ: </label>
+    <input
+      value={newAccount.address}
+      onChange={(e) => handleInputChange(e, null, "address")}
+    />
+    <br />
+    <div>
+      <label>Vai Trò: </label>
+      <select
+        value={newAccount.role}
+        onChange={(e) => handleInputChange(e, null, "role")}
+      >
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+        <option value="shipper">Shipper</option>
+        <option value="staff">Staff</option>
+      </select>
     </div>
+    <button onClick={handleCreate}>Tạo Tài Khoản</button>
+  </div>
+
+  {createError && <p style={{ color: "red" }}>{createError}</p>}
+  {error && <p style={{ color: "red" }}>{error}</p>}
+  {accounts.length === 0 ? (
+    <p>Không có tài khoản nào.</p>
+  ) : (
+    <table border="1" cellPadding="10" cellSpacing="0">
+      <thead>
+        <tr>
+          <th>Account ID</th>
+          <th>Avatar</th>
+          <th>Tên</th>
+          <th>Tên Đăng Nhập</th>
+          <th>Email</th>
+          <th>Số Điện Thoại</th>
+          <th>Địa Chỉ</th>
+          <th>Tiêu Dùng</th>
+          <th>Vai Trò</th>
+          <th>Trạng Thái</th>
+          <th>Hành Động</th>
+        </tr>
+      </thead>
+      <tbody>
+        {accounts.map((account) => (
+          <tr key={account.accountID}>
+            
+            <td>{account.accountID}</td>
+            <td>
+              {/* Display Avatar */}
+              <img 
+                src={account.avatar || "/default-avatar.png"} 
+                alt="Avatar" 
+                style={{ width: "50px", height: "50px", borderRadius: "50%" }} 
+              />
+            </td>
+            <td>
+              {editingAccountId === account.accountID ? (
+                <input
+                  value={account.name}
+                  onChange={(e) => handleInputChange(e, account.accountID, "name")}
+                />
+              ) : (
+                account.name
+              )}
+            </td>
+            <td>
+              {editingAccountId === account.accountID ? (
+                <input
+                  value={account.username}
+                  onChange={(e) => handleInputChange(e, account.accountID, "username")}
+                  disabled
+                />
+              ) : (
+                account.username
+              )}
+            </td>
+            <td>
+              {editingAccountId === account.accountID ? (
+                <input
+                  value={account.email}
+                  onChange={(e) => handleInputChange(e, account.accountID, "email")}
+                />
+              ) : (
+                account.email
+              )}
+            </td>
+            <td>
+              {editingAccountId === account.accountID ? (
+                <input
+                  value={account.phoneNumber}
+                  onChange={(e) => handleInputChange(e, account.accountID, "phoneNumber")}
+                />
+              ) : (
+                account.phoneNumber
+              )}
+            </td>
+            <td>
+              {editingAccountId === account.accountID ? (
+                <input
+                  value={account.address}
+                  onChange={(e) => handleInputChange(e, account.accountID, "address")}
+                />
+              ) : (
+                account.address
+              )}
+            </td>
+            <td>{account.consume ? account.consume.toFixed(2) : "N/A"}</td> {/* Displaying the consume value */}
+
+            <td>
+              {editingAccountId === account.accountID ? (
+                <select
+                  value={account.role}
+                  onChange={(e) => handleInputChange(e, account.accountID, "role")}
+                >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+                <option value="shipper">Shipper</option>
+                <option value="staff">Staff</option>
+                </select>
+              ) : (
+                account.role
+              )}
+            </td>
+            <td>
+              {editingAccountId === account.accountID ? (
+                <select
+                  value={account.status}
+                  onChange={(e) => handleInputChange(e, account.accountID, "status")}
+                >
+                  <option value="ENABLE">Enable</option>
+                  <option value="DISABLE">Disable</option>
+                </select>
+              ) : (
+                account.status
+              )}
+            </td>
+            <td>
+              {editingAccountId === account.accountID ? (
+                <>
+                  <button onClick={() => handleSave(account.accountID, account)}>Lưu</button>
+                  <button onClick={() => setEditingAccountId(null)}>Hủy</button>
+                </>
+              ) : (
+                <button onClick={() => setEditingAccountId(account.accountID)}>Chỉnh Sửa</button>
+              )}
+              <button onClick={() => handleDeleteSoft(account.accountID)}>Xóa Mềm</button>
+              <button onClick={() => handleDeleteHard(account.accountID)}>Xóa Cứng</button>
+
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )}
+</div>
+
   );
 };
 

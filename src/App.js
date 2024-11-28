@@ -5,6 +5,8 @@ import AdminOder from "./TaT/AdminDashboard/AdminOder";
 import AdminBanner from "./TaT/AdminDashboard/AdminBanner";
 import AdminAccount from "./TaT/AdminDashboard/AdminAccount";
 import AdminOrderDetail from "./TaT/AdminDashboard/AdminOrderDetail";
+import AdminCategory from "./TaT/AdminDashboard/AdminCategory";
+
 
 import Footer from './Component/Footer/footer';
 import Header from './Component/Header/header';
@@ -35,7 +37,7 @@ const AppRoutes = () => {
   const location = useLocation(); // Get the current location
   
   // List of admin routes where Header and Footer should be hidden
-  const adminRoutes = ["/dashboard", "/AdminOder", "/AdminBanner", "/AdminAccount", "/AdminOrderDetail"];  
+  const adminRoutes = ["/dashboard", "/AdminOder", "/AdminBanner", "/AdminAccount", "/AdminOrderDetail", "/AdminCategory"];  
 
   // Check if the current route is an admin route
   const isAdminRoute = adminRoutes.includes(location.pathname);  
@@ -78,6 +80,8 @@ const AppRoutes = () => {
         <Route path="/AdminBanner" element={<AdminBanner />} />
         <Route path="/AdminAccount" element={<AdminAccount />} />
         <Route path="/AdminOrderDetail" element={<AdminOrderDetail />} />
+        <Route path="/AdminCategory" element={<AdminCategory />} />
+
 
         {/* Other Routes */}
         <Route path="/product" element={<ProductList />} />

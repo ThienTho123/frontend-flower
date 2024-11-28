@@ -266,10 +266,10 @@ const AdminOrderDetail = ({ orderID }) => {
                         Chỉnh Sửa
                       </button>
                       <button onClick={() => handleSoftDelete(orderDetail.orderdetailID)}>
-                        Xóa Mềm
+                        Vô hiệu hóa
                       </button>
                       <button onClick={() => handleHardDelete(orderDetail.orderdetailID)}>
-                        Xóa Cứng
+                       Xóa
                       </button>
                     </>
                   )}
