@@ -68,6 +68,7 @@ const AccountLayout = () => {
           <img
             src={profileForm.avatar || userImg} // Hiển thị avatar từ API hoặc ảnh mặc định
             alt="user"
+            className="avatar-user"
             style={{ width: "50px", height: "50px", borderRadius: "50%" }} // Style ảnh tròn
           />
           <div
@@ -86,14 +87,16 @@ const AccountLayout = () => {
         </h2>
         <button onClick={() => navigate("/account")}>Tài khoản</button>
         <button onClick={() => navigate("/account/wishlist")}>Yêu thích</button>
-        <button onClick={() => navigate("/account/orders")}>Đơn hàng</button>
+        <button onClick={() => navigate("/account/orders")}>Sản phẩm đã mua</button>
+        <button onClick={() => navigate("/account/history")}>Lịch sử mua hàng</button>
+        <button onClick={() => navigate("/account/sendcomment")}>Gửi góp ý</button>
         <button onClick={() => navigate("/account/changepassword")}>
           Đổi mật khẩu
         </button>
         <button onClick={handleLogout}>Đăng xuất</button>
       </div>
       <div className="account-outlet">
-        <Outlet />
+        <Outlet />  
       </div>
     </div>
   );
