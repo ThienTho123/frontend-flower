@@ -6,6 +6,7 @@ const AdminRepcomment = () => {
   const [repCommentList, setRepCommentList] = useState([]);
   const [newRepComment, setNewRepComment] = useState({
     account: { accountID: null },
+    comment: { commentID: null }, // Đảm bảo comment luôn là một đối tượng
     repcommenttext: "",
     repcommentdate: new Date().toISOString().split("T")[0],
     status: "ENABLE",
@@ -17,6 +18,7 @@ const AdminRepcomment = () => {
   const navigate = useNavigate();
   const [imageUrl, setImageUrl] = useState("");
   const [file, setFile] = useState(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
     const fetchRepComments = async () => {
@@ -120,16 +122,24 @@ const AdminRepcomment = () => {
   };
 
   const handleEdit = (id) => {
+    // Lưu vị trí cuộn hiện tại
+    const currentScrollPosition = window.scrollY;
+    setScrollPosition(currentScrollPosition);
+  
     const repComment = repCommentList.find((item) => item.repcommentID === id);
     if (repComment) {
       setEditingRepCommentId(id);
       setNewRepComment({
         account: { accountID: repComment.account?.accountID || null },
+        comment: { commentID: repComment.comment?.commentID || null },
         repcommenttext: repComment.repcommenttext || "",
         repcommentdate: repComment.repcommentdate || new Date().toISOString().split("T")[0],
         status: repComment.status || "ENABLE",
         image: repComment.image || "",
       });
+  
+      // Cuộn lên đầu trang
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -146,6 +156,17 @@ const AdminRepcomment = () => {
 
   const handleSave = async (id, repCommentData) => {
     try {
+      const payload = {
+        comment: { commentID: repCommentData.comment.commentID },
+        account: { accountID: repCommentData.account.accountID },
+        repcommentdate: repCommentData.repcommentdate,
+        repcommenttext: repCommentData.repcommenttext,
+        status: repCommentData.status,
+        image: repCommentData.image,
+      };
+  
+      console.log("JSON data to be sent for edit:", JSON.stringify(payload, null, 2));
+  
       const response = await fetch(
         `http://localhost:8080/api/v1/admin/repcomment/${id}`,
         {
@@ -155,10 +176,10 @@ const AdminRepcomment = () => {
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify(repCommentData),
+          body: JSON.stringify(payload),
         }
       );
-
+  
       if (response.ok) {
         const updatedRepComment = await response.json();
         setRepCommentList((prev) =>
@@ -167,6 +188,9 @@ const AdminRepcomment = () => {
           )
         );
         setEditingRepCommentId(null);
+  
+        // Cuộn lại vị trí đã lưu
+        window.scrollTo({ top: scrollPosition, behavior: "smooth" });
       } else {
         throw new Error("Unable to update rep comment.");
       }
@@ -174,9 +198,21 @@ const AdminRepcomment = () => {
       setError(err.message);
     }
   };
-
   const handleCreate = async () => {
     try {
+      if (!newRepComment.comment.commentID) {
+        throw new Error("Comment ID không được để trống.");
+      }
+  
+      const formattedDate = new Date(newRepComment.repcommentdate).toISOString().split(".")[0];
+      const payload = {
+        ...newRepComment,
+        repcommentdate: formattedDate,
+        account: { accountID: Number(newRepComment.account.accountID) },
+        comment: { commentID: Number(newRepComment.comment.commentID) },
+      };
+  
+      console.log("JSON data to be sent for creation:", JSON.stringify(payload, null, 2));
       const response = await fetch("http://localhost:8080/api/v1/admin/repcomment", {
         method: "POST",
         headers: {
@@ -184,27 +220,37 @@ const AdminRepcomment = () => {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify(newRepComment),
+        body: JSON.stringify(payload),
       });
-
+  
       if (response.ok) {
         const createdRepComment = await response.json();
         setRepCommentList([...repCommentList, createdRepComment]);
         setNewRepComment({
           account: { accountID: null },
+          comment: { commentID: null },
           repcommenttext: "",
           repcommentdate: new Date().toISOString().split("T")[0],
           status: "ENABLE",
           image: "",
         });
+        // Cuộn xuống cuối trang
+      setTimeout(() => {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      }, 100); // Đặt thời gian nhỏ để đảm bảo DOM đã cập nhật
       } else {
+        const errorData = await response.json();
+        console.error("Error from server:", errorData);
         throw new Error("Unable to create rep comment.");
       }
     } catch (err) {
       setError(err.message);
     }
   };
-
+  
+  
+  
+  
   const handleBackToDashboard = () => {
     navigate("/dashboard");
   };
@@ -234,7 +280,17 @@ const AdminRepcomment = () => {
             }))
           }
         />
-
+        <label>Comment ID:</label>
+        <input
+        type="number"
+        value={newRepComment.comment.commentID || ""}
+        onChange={(e) =>
+            setNewRepComment((prev) => ({
+            ...prev,
+            comment: { commentID: e.target.value },
+            }))
+        }
+        />
         <label>Text:</label>
         <textarea
           value={newRepComment.repcommenttext}
@@ -245,7 +301,7 @@ const AdminRepcomment = () => {
 
         <label>Date:</label>
         <input
-          type="date"
+          type="datetime-local"
           value={newRepComment.repcommentdate}
           onChange={(e) =>
             setNewRepComment((prev) => ({ ...prev, repcommentdate: e.target.value }))
@@ -290,6 +346,7 @@ const AdminRepcomment = () => {
           <thead>
             <tr>
               <th>ID</th>
+              <th>Comment ID</th> 
               <th>Account ID</th>
               <th>Text</th>
               <th>Date</th>
@@ -300,35 +357,30 @@ const AdminRepcomment = () => {
           </thead>
           <tbody>
             {repCommentList.map((repComment) => (
-              <tr key={repComment.repcommentID}>
+                <tr key={repComment.repcommentID}>
                 <td>{repComment.repcommentID}</td>
+                <td>{repComment.comment?.commentID || "N/A"}</td>
                 <td>{repComment.account?.accountID || "N/A"}</td>
                 <td>{repComment.repcommenttext}</td>
                 <td>{repComment.repcommentdate}</td>
                 <td>{repComment.status}</td>
                 <td>
-                  {repComment.image && (
+                    {repComment.image && (
                     <img
-                      src={repComment.image}
-                      alt="Rep Comment"
-                      style={{ width: 100 }}
+                        src={repComment.image}
+                        alt="Rep Comment"
+                        style={{ width: 100 }}
                     />
-                  )}
+                    )}
                 </td>
                 <td>
-                  <button onClick={() => handleEdit(repComment.repcommentID)}>
-                    Edit
-                  </button>
-                  <button onClick={() => handleDeleteSoft(repComment.repcommentID)}>
-                    Soft Delete
-                  </button>
-                  <button onClick={() => handleDeleteHard(repComment.repcommentID)}>
-                    Hard Delete
-                  </button>
+                    <button onClick={() => handleEdit(repComment.repcommentID)}>Edit</button>
+                    <button onClick={() => handleDeleteSoft(repComment.repcommentID)}>Soft Delete</button>
+                    <button onClick={() => handleDeleteHard(repComment.repcommentID)}>Hard Delete</button>
                 </td>
-              </tr>
+                </tr>
             ))}
-          </tbody>
+        </tbody>
         </table>
       )}
 
