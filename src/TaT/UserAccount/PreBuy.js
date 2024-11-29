@@ -324,14 +324,19 @@ const PreBuy = () => {
     const prices = selectedItems.map((item) => {
       // Tổng giá trị sản phẩm
       const totalPrice = item.productPrice * item.number;
-    
+  
       // Trừ giảm giá tuyệt đối
       const discountedPrice = totalPrice - appliedDiscount;
-    
+  
       // Đảm bảo không có giá trị âm
       return Math.max(discountedPrice, 0);
     });
-    
+  
+    // In ra các giá trị trước khi gửi
+    console.log("Cart IDs:", cartIDs);
+    console.log("Quantities:", quantities);
+    console.log("Prices:", prices);
+  
     if (cartIDs.length === 0) {
       setError("Vui lòng chọn ít nhất một sản phẩm để mua.");
       setTimeout(() => {
@@ -369,12 +374,12 @@ const PreBuy = () => {
       },
       body: JSON.stringify(buyInfoBody), // Gửi thông tin người dùng trong body
     })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Could not complete the purchase.");
-      }
-      return response.text(); 
-    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Could not complete the purchase.");
+        }
+        return response.text();
+      })
       .then(() => {
         if (selectedDiscount) {
           deleteDiscount(selectedDiscount);
@@ -385,7 +390,6 @@ const PreBuy = () => {
         navigate("/PaymentSuccess");
         console.log("Giảm giá:", appliedDiscount);
         console.log("Giá từng sản phẩm sau giảm:", prices);
-        console.log("Tổng thanh toán:", totalPayment);
       })
       .catch((error) => {
         setError("Có lỗi xảy ra khi thực hiện giao dịch.");
@@ -415,6 +419,11 @@ const PreBuy = () => {
       // Đảm bảo không có giá trị âm
       return Math.max(discountedPrice, 0);
     });
+  
+    // In ra các giá trị trước khi gửi
+    console.log("Cart IDs:", cartIDs);
+    console.log("Quantities:", quantities);
+    console.log("Prices:", prices);
   
     if (cartIDs.length === 0) {
       alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
@@ -458,7 +467,7 @@ const PreBuy = () => {
       })
       .then(() => {
         const totalPayment =
-        calculateTotalPrice() - calculateDiscountAmount(calculateTotalPrice());      
+          calculateTotalPrice() - calculateDiscountAmount(calculateTotalPrice());      
           console.log("Giảm giá:", appliedDiscount);
           console.log("Giá từng sản phẩm sau giảm:", prices);
           console.log("Tổng thanh toán:", totalPayment);
