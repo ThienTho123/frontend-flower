@@ -87,6 +87,10 @@ const AdminType = () => {
   };
 
   const handleSave = async (id, typeName, minConsume, status) => {
+    if (minConsume <= 0) {
+      setError("Tiêu thụ tối thiểu phải lớn hơn 0.");
+      return;
+    }
     try {
       const response = await fetch(`http://localhost:8080/api/v1/admin/type/${id}`, {
         method: "PUT",
@@ -114,6 +118,10 @@ const AdminType = () => {
 
   const handleCreate = async () => {
     try {
+      if (newType.minConsume <= 0) {
+        setError("Tiêu thụ tối thiểu phải lớn hơn 0.");
+        return;
+      }
       const response = await fetch("http://localhost:8080/api/v1/admin/type", {
         method: "POST",
         headers: {
@@ -171,7 +179,7 @@ const AdminType = () => {
         <button onClick={handleCreate}>Thêm</button>
       </div>
 
-      {error && <p>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       {types.length === 0 ? (
         <p>Không có loại người dùng nào.</p>
       ) : (

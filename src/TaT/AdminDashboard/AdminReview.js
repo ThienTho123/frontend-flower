@@ -167,6 +167,12 @@ const AdminReview = () => {
       if (imageUrl) {
         reviewData.image = imageUrl;
       }
+      if (!reviewData.accountID.accountID) {
+        throw new Error("ID Tài Khoản không được để trống.");
+      }
+      if (!reviewData.flower.flowerID) {
+        throw new Error("ID Hoa không được để trống.");
+      }
   
       // Định dạng ngày nếu có giá trị ngày
       if (reviewData.date && !isNaN(new Date(reviewData.date).getTime())) {
@@ -226,6 +232,12 @@ const AdminReview = () => {
       // Kiểm tra nếu `newReview.date` không hợp lệ
       if (!newReview.date || isNaN(new Date(newReview.date).getTime())) {
         throw new Error("Date không hợp lệ. Hãy nhập đúng định dạng YYYY-MM-DD.");
+      }
+      if (!newReview.accountID.accountID) {
+        throw new Error("ID Tài Khoản không được để trống.");
+      }
+      if (!newReview.flower.flowerID) {
+        throw new Error("ID Hoa không được để trống.");
       }
   
       // Định dạng ngày theo yêu cầu API (YYYY-MM-DDTHH:mm:ss)
@@ -385,7 +397,7 @@ const AdminReview = () => {
         <button onClick={handleCreate}>Thêm</button>
       </div>
   
-      {error && <p>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       {reviewList.length === 0 ? (
         <p>Không có đánh giá nào.</p>
       ) : (

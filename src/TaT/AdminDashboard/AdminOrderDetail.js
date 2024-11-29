@@ -67,7 +67,19 @@ const AdminOrderDetail = ({ orderID }) => {
     const orderDetailToUpdate = orderDetails.find(
       (detail) => detail.orderdetailID === orderDetailId
     );
+    if (orderDetailToUpdate.quantity < 0) {
+      setError("Số lượng không được nhập số âm.");
+      return;
+    }
   
+    if (orderDetailToUpdate.price < 0) {
+      setError("Giá không được nhập số âm.");
+      return;
+    }
+    if (!orderDetailToUpdate.flowerSizeID) {
+      setError("Flower Size không được để trống.");
+      return;
+    }
     // Lấy giá trị flowerSizeID mới từ state
     const updatedOrderDetail = {
       ...orderDetailToUpdate,
@@ -172,7 +184,7 @@ const AdminOrderDetail = ({ orderID }) => {
         />
         <h2>Quản Lý Chi Tiết Đơn Hàng</h2>
       </div>
-      {error && <p>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       {orderDetails.length === 0 ? (
         <p>Không có chi tiết đơn hàng nào.</p>
       ) : (

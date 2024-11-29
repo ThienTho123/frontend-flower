@@ -155,7 +155,11 @@ const AdminRepcomment = () => {
   };
 
   const handleSave = async (id, repCommentData) => {
+    
     try {
+      if (!repCommentData.account.accountID || !repCommentData.comment.commentID) {
+        throw new Error("Account ID và Comment ID không được để trống.");
+      }
       const payload = {
         comment: { commentID: repCommentData.comment.commentID },
         account: { accountID: repCommentData.account.accountID },
@@ -200,8 +204,8 @@ const AdminRepcomment = () => {
   };
   const handleCreate = async () => {
     try {
-      if (!newRepComment.comment.commentID) {
-        throw new Error("Comment ID không được để trống.");
+      if (!newRepComment.account.accountID || !newRepComment.comment.commentID) {
+        throw new Error("Account ID và Comment ID không được để trống.");
       }
   
       const formattedDate = new Date(newRepComment.repcommentdate).toISOString().split(".")[0];
@@ -329,14 +333,17 @@ const AdminRepcomment = () => {
             <button
               onClick={() => handleSave(editingRepCommentId, newRepComment)}
             >
-              Save Changes
+              Lưu
             </button>
-            <button onClick={handleCancelEdit}>Cancel</button>
+            <button onClick={handleCancelEdit}>Hủy</button>
           </div>
         ) : (
-          <button onClick={handleCreate}>Create Rep Comment</button>
+          <button onClick={handleCreate}>Tạo repcomment</button>
+          
         )}
       </div>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
 
       <h3>Danh sách phản hồi</h3>
       {repCommentList.length === 0 ? (
@@ -374,9 +381,9 @@ const AdminRepcomment = () => {
                     )}
                 </td>
                 <td>
-                    <button onClick={() => handleEdit(repComment.repcommentID)}>Edit</button>
-                    <button onClick={() => handleDeleteSoft(repComment.repcommentID)}>Soft Delete</button>
-                    <button onClick={() => handleDeleteHard(repComment.repcommentID)}>Hard Delete</button>
+                    <button onClick={() => handleEdit(repComment.repcommentID)}>Chỉnh sửa</button>
+                    <button onClick={() => handleDeleteSoft(repComment.repcommentID)}>Vô hiệu hóa</button>
+                    <button onClick={() => handleDeleteHard(repComment.repcommentID)}>Xóa</button>
                 </td>
                 </tr>
             ))}
@@ -384,7 +391,6 @@ const AdminRepcomment = () => {
         </table>
       )}
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 };

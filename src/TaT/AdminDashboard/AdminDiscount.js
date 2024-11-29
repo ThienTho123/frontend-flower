@@ -126,6 +126,10 @@ const AdminDiscount = () => {
 
   const handleSave = async (id, discountData) => {
     try {
+      if (discountData.discountPercent === "" || discountData.discountPercent <= 0) {
+        alert("Giảm giá không thể để trống và phải lớn hơn 0.");
+        return;
+    }
       // Format the data before sending
       const formattedData = {
         discountID: discountData.discountID,
@@ -207,6 +211,10 @@ const AdminDiscount = () => {
   
   const handleCreate = async () => {
     try {
+      if (newDiscount.discountPercent === "" || newDiscount.discountPercent <= 0) {
+        alert("Giảm giá không thể để trống và phải lớn hơn 0.");
+        return;
+    }
         // Chuyển đổi dữ liệu thành đúng định dạng
         const formattedData = {
             categoryID: newDiscount.categoryID.categoryID

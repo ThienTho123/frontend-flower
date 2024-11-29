@@ -6,6 +6,7 @@ const AdminFlowerSize = () => {
   const [flowerSizeList, setFlowerSizeList] = useState([]);
   const [flowerList, setFlowerList] = useState([]); 
   const [newFlowerSize, setNewFlowerSize] = useState({
+    
     sizeName: "",
     length: "",
     high: "",
@@ -22,6 +23,7 @@ const AdminFlowerSize = () => {
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
   const navigate = useNavigate();
+  const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
     const fetchFlowerSizesAndFlowers = async () => {
@@ -59,6 +61,21 @@ const AdminFlowerSize = () => {
 
   const handleCreate = async () => {
     try {
+      const errors = {};
+    if (!newFlowerSize.sizeName) errors.sizeName = "Tên kích thước không được để trống";
+    if (newFlowerSize.length <= 0) errors.length = "Độ dài phải là số dương";
+    if (newFlowerSize.high <= 0) errors.high = "Độ cao phải là số dương";
+    if (newFlowerSize.width <= 0) errors.width = "Độ rộng phải là số dương";
+    if (newFlowerSize.weight <= 0) errors.weight = "Trọng lượng phải là số dương";
+    if (newFlowerSize.stock < 0) errors.stock = "Số lượng tồn kho không được âm";
+    if (newFlowerSize.price <= 0) errors.price = "Giá bán phải là số dương";
+    if (newFlowerSize.cost <= 0) errors.cost = "Giá gốc phải là số dương";
+    if (!newFlowerSize.flower.flowerID) errors.flower = "Vui lòng chọn hoa";
+
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      return;
+    }
       const response = await fetch("http://localhost:8080/api/v1/admin/flowersize", {
         method: "POST",
         headers: {
@@ -93,6 +110,21 @@ const AdminFlowerSize = () => {
 
 
   const handleSave = async (id) => {
+    const errors = {};
+    if (!editingData.sizeName) errors.sizeName = "Tên kích thước không được để trống";
+    if (editingData.length <= 0) errors.length = "Độ dài phải là số dương";
+    if (editingData.high <= 0) errors.high = "Độ cao phải là số dương";
+    if (editingData.width <= 0) errors.width = "Độ rộng phải là số dương";
+    if (editingData.weight <= 0) errors.weight = "Trọng lượng phải là số dương";
+    if (editingData.stock < 0) errors.stock = "Số lượng tồn kho không được âm";
+    if (editingData.price <= 0) errors.price = "Giá bán phải là số dương";
+    if (editingData.cost <= 0) errors.cost = "Giá gốc phải là số dương";
+    if (!editingData.flower?.flowerID) errors.flower = "Vui lòng chọn hoa";
+
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      return;
+    }
     try {
       const response = await fetch(
         `http://localhost:8080/api/v1/admin/flowersize/${id}`,
@@ -215,6 +247,8 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, sizeName: e.target.value }))
           }
         />
+                {validationErrors.sizeName && <div className="error">{validationErrors.sizeName}</div>}
+
         <label>Độ dài:</label>
         <input
           type="number"
@@ -223,6 +257,8 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, length: e.target.value }))
           }
         />
+                {validationErrors.length && <div className="error">{validationErrors.length}</div>}
+
         <label>Độ cao:</label>
         <input
           type="number"
@@ -231,6 +267,8 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, high: e.target.value }))
           }
         />
+                {validationErrors.high && <div className="error">{validationErrors.high}</div>}
+
         <label>Độ rộng:</label>
         <input
           type="number"
@@ -239,6 +277,8 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, width: e.target.value }))
           }
         />
+                        {validationErrors.width && <div className="error">{validationErrors.width}</div>}
+
         <label>Trọng lượng:</label>
         <input
           type="number"
@@ -247,6 +287,8 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, weight: e.target.value }))
           }
         />
+                {validationErrors.weight && <div className="error">{validationErrors.weight}</div>}
+
         <label>Số lượng tồn kho:</label>
         <input
           type="number"
@@ -255,6 +297,8 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, stock: e.target.value }))
           }
         />
+        {validationErrors.stock && <div className="error">{validationErrors.stock}</div>}
+
         <label>Giá bán:</label>
         <input
           type="number"
@@ -263,6 +307,8 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, price: e.target.value }))
           }
         />
+                {validationErrors.price && <div className="error">{validationErrors.price}</div>}
+
         <label>Giá gốc:</label>
         <input
           type="number"
@@ -271,6 +317,8 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, cost: e.target.value }))
           }
         />
+                {validationErrors.cost && <div className="error">{validationErrors.cost}</div>}
+
         <label>Hoa (ID):</label>
         <select
           value={newFlowerSize.flower.flowerID || ""}
@@ -288,6 +336,8 @@ const AdminFlowerSize = () => {
             </option>
           ))}
         </select>
+        {validationErrors.flower && <div className="error">{validationErrors.flower}</div>}
+
 
         <label>Trạng thái:</label>
         <select

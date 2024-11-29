@@ -91,6 +91,9 @@ const AdminCommentType = () => {
 
   const handleSave = async (id, updatedType) => {
     try {
+      if (!newCommentType.commenttypename) {
+        throw new Error("Tên Loại không được để trống.");
+      }
       const response = await fetch(
         `http://localhost:8080/api/v1/admin/commenttype/${id}`,
         {
@@ -138,6 +141,9 @@ const AdminCommentType = () => {
 
   const handleCreate = async () => {
     try {
+      if (!newCommentType.commenttypename) {
+        throw new Error("Tên Loại không được để trống.");
+      }
       const response = await fetch("http://localhost:8080/api/v1/admin/commenttype", {
         method: "POST",
         headers: {
@@ -203,6 +209,7 @@ const AdminCommentType = () => {
 
         <button onClick={handleCreate}>Thêm Loại</button>
       </div>
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
       <h3>Danh Sách Loại Bình Luận</h3>
       {commentTypeList.length === 0 ? (

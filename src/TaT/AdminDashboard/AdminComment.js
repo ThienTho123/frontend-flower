@@ -134,6 +134,10 @@ const AdminComment = () => {
   };
 
   const handleSave = async (id, commentData) => {
+    if (!commentData.accountID.accountID || !commentData.commentType.commenttypeID) {
+      alert("Account ID và Comment Type ID không được để trống.");
+      return;
+    }
     try {
       const formattedData = {
         ...commentData,
@@ -168,6 +172,10 @@ const AdminComment = () => {
   };
   
   const handleCreate = async () => {
+    if (!newComment.accountID.accountID || !newComment.commentType.commenttypeID) {
+      alert("Account ID và Comment Type ID không được để trống.");
+      return;
+    }
     try {
       const formattedData = {
         ...newComment,

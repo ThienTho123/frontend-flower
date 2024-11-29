@@ -226,7 +226,16 @@ const AdminBanner = () => {
   const handleBackToDashboard = () => {
     navigate("/dashboard");
   };
-
+  const handleSelectChange = (type, value) => {
+    setNewBanner((prev) => ({
+      ...prev,
+      flower: type === "flower" ? { flowerID: value || null } : { flowerID: null },
+      category: type === "category" ? { categoryID: value || null } : { categoryID: null },
+      purpose: type === "purpose" ? { purposeID: value || null } : { purposeID: null },
+    }));
+  };
+  
+  
   return (
     <div className="admin-ql-container">
     <div className="title-container">
@@ -248,58 +257,47 @@ const AdminBanner = () => {
       <br />
   
       <label>Chọn Flower:</label>
-      <select
-        value={newBanner.flower?.flowerID || ""}
-        onChange={(e) =>
-          setNewBanner((prev) => ({
-            ...prev,
-            flower: { flowerID: e.target.value },
-          }))
-        }
-      >
-        <option value="">Chọn Flower</option>
-        {flowers.map((flower) => (
-          <option key={flower.flowerID} value={flower.flowerID}>
-            {flower.name}
-          </option>
-        ))}
-      </select>
-  
-      <label>Chọn Category:</label>
-      <select
-        value={newBanner.category?.categoryID || ""}
-        onChange={(e) =>
-          setNewBanner((prev) => ({
-            ...prev,
-            category: { categoryID: e.target.value },
-          }))
-        }
-      >
-        <option value="">Chọn Category</option>
-        {categories.map((category) => (
-          <option key={category.categoryID} value={category.categoryID}>
-            {category.categoryName}
-          </option>
-        ))}
-      </select>
-  
-      <label>Chọn Purpose:</label>
-      <select
-        value={newBanner.purpose?.purposeID || ""}
-        onChange={(e) =>
-          setNewBanner((prev) => ({
-            ...prev,
-            purpose: { purposeID: e.target.value },
-          }))
-        }
-      >
-        <option value="">Chọn Purpose</option>
-        {purposes.map((purpose) => (
-          <option key={purpose.purposeID} value={purpose.purposeID}>
-            {purpose.purposeName}
-          </option>
-        ))}
-      </select>
+<select
+  value={newBanner.flower?.flowerID || ""}
+  onChange={(e) => handleSelectChange("flower", e.target.value)}
+  disabled={newBanner.category?.categoryID || newBanner.purpose?.purposeID}
+>
+  <option value="">Chọn Flower</option>
+  {flowers.map((flower) => (
+    <option key={flower.flowerID} value={flower.flowerID}>
+      {flower.name}
+    </option>
+  ))}
+</select>
+
+<label>Chọn Category:</label>
+<select
+  value={newBanner.category?.categoryID || ""}
+  onChange={(e) => handleSelectChange("category", e.target.value)}
+  disabled={newBanner.flower?.flowerID || newBanner.purpose?.purposeID}
+>
+  <option value="">Chọn Category</option>
+  {categories.map((category) => (
+    <option key={category.categoryID} value={category.categoryID}>
+      {category.categoryName}
+    </option>
+  ))}
+</select>
+
+<label>Chọn Purpose:</label>
+<select
+  value={newBanner.purpose?.purposeID || ""}
+  onChange={(e) => handleSelectChange("purpose", e.target.value)}
+  disabled={newBanner.flower?.flowerID || newBanner.category?.categoryID}
+>
+  <option value="">Chọn Purpose</option>
+  {purposes.map((purpose) => (
+    <option key={purpose.purposeID} value={purpose.purposeID}>
+      {purpose.purposeName}
+    </option>
+  ))}
+</select>
+
   
       <label>Trạng Thái: </label>
       <select

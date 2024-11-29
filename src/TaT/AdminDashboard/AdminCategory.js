@@ -88,6 +88,11 @@ const AdminCategory = () => {
   };
   
   const handleSave = async (id, categoryName, status) => {
+    if (!categoryName.trim()) {
+      setError("Tên Danh Mục Sản Phẩm không được để trống.");
+      return;
+    }
+  
     try {
       const response = await fetch(`http://localhost:8080/api/v1/admin/category/${id}`, {
         method: "PUT",
@@ -107,6 +112,8 @@ const AdminCategory = () => {
           )
         );
         setEditingCategoryId(null);
+        setError(null); // Xóa lỗi khi lưu thành công
+
       } else {
         throw new Error("Không thể cập nhật loại sản phẩm.");
       }
@@ -116,6 +123,10 @@ const AdminCategory = () => {
   };
 
   const handleCreate = async () => {
+    if (!newCategoryName.trim()) {
+      setError("Tên Danh Mục Sản Phẩm không được để trống.");
+      return;
+    }
     try {
       const response = await fetch("http://localhost:8080/api/v1/admin/category", {
         method: "POST",
@@ -131,6 +142,8 @@ const AdminCategory = () => {
         const createdCategory = await response.json();
         setCategories([...categories, createdCategory]);
         setNewCategoryName("");
+        setError(null); // Xóa lỗi khi thêm thành công
+
       } else {
         throw new Error("Không thể tạo loại sản phẩm.");
       }

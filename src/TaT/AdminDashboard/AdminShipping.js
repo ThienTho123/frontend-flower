@@ -100,6 +100,19 @@ const AdminShipping = () => {
   };
 
   const handleSave = async (id, shippingData) => {
+    if (!shippingData.accountID.accountID) {
+      setError("Account không được trống.");
+      return;
+    }
+  
+    const startDate = shippingData.startDate ? new Date(shippingData.startDate) : null;
+    const completeDate = shippingData.completeDate ? new Date(shippingData.completeDate) : null;
+  
+    if (!startDate || !completeDate) {
+      setError("Both Start Date and Complete Date are required.");
+      return;
+    }
+
     const updatedShippingData = {
       shippingID: id,
       startDate: shippingData.startDate
@@ -151,6 +164,20 @@ const AdminShipping = () => {
   
 
   const handleCreate = async () => {
+
+    if (!newShipping.accountID) {
+      setError("Account không được trống.");
+      return;
+    }
+  
+    const startDate = newShipping.startDate ? new Date(newShipping.startDate) : null;
+    const completeDate = newShipping.completeDate ? new Date(newShipping.completeDate) : null;
+  
+    if (!startDate || !completeDate) {
+      setError("Ngày bắt đầu và Ngày hết thúc không được trống.");
+      return;
+    }
+
     const shippingData = {
       // Chuyển đổi startDate và completeDate sang định dạng ISO chuẩn
       startDate: newShipping.startDate ? new Date(newShipping.startDate).toISOString().slice(0, 19) : null,  // Chuyển đổi và cắt phần millisecond
@@ -253,7 +280,7 @@ const AdminShipping = () => {
         <button onClick={handleCreate}>Thêm</button>
       </div>
 
-      {error && <p>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       {shippings.length === 0 ? (
         <p>Không có shipping nào.</p>
       ) : (
