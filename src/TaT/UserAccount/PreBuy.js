@@ -321,10 +321,17 @@ const PreBuy = () => {
     const selectedItems = cartItems.filter((item) => item.selected);
     const cartIDs = selectedItems.map((item) => item.cartID);
     const quantities = selectedItems.map((item) => item.number);
-    const prices = selectedItems.map(
-      (item) => item.productPrice * item.number * (1 - appliedDiscount / 100)
-    );
-  
+    const prices = selectedItems.map((item) => {
+      // Tổng giá trị sản phẩm
+      const totalPrice = item.productPrice * item.number;
+    
+      // Trừ giảm giá tuyệt đối
+      const discountedPrice = totalPrice - appliedDiscount;
+    
+      // Đảm bảo không có giá trị âm
+      return Math.max(discountedPrice, 0);
+    });
+    
     if (cartIDs.length === 0) {
       setError("Vui lòng chọn ít nhất một sản phẩm để mua.");
       setTimeout(() => {
@@ -376,6 +383,9 @@ const PreBuy = () => {
         setCartItems(updatedCartItems);
         localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
         navigate("/PaymentSuccess");
+        console.log("Giảm giá:", appliedDiscount);
+        console.log("Giá từng sản phẩm sau giảm:", prices);
+        console.log("Tổng thanh toán:", totalPayment);
       })
       .catch((error) => {
         setError("Có lỗi xảy ra khi thực hiện giao dịch.");
