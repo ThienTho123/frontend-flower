@@ -21,6 +21,9 @@ const AdminFlower = () => {
   const [file, setFile] = useState(null);
   const [scrollPosition, setScrollPosition] = useState(0); 
 
+  const [categories, setCategories] = useState([]);
+  const [purposes, setPurposes] = useState([]);
+  
   useEffect(() => {
     const fetchFlowers = async () => {
       try {
@@ -30,23 +33,26 @@ const AdminFlower = () => {
           },
           credentials: "include",
         });
-
+  
         if (!response.ok) {
           const errorMessage = await response.text();
           throw new Error(`Error: ${response.status} - ${errorMessage}`);
         }
-
+  
         const data = await response.json();
-        setFlowerList(data || []);
+  
+        // Đảm bảo rằng flowerList là mảng và categories, purposes đã có dữ liệu
+        setFlowerList(Array.isArray(data.flowers) ? data.flowers : []);
+        setCategories(data.categories || []);
+        setPurposes(data.purposes || []);
       } catch (err) {
         console.error("Error fetching flowers:", err.message);
         setError(err.message);
       }
     };
-
+  
     fetchFlowers();
   }, [accesstoken]);
-
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -160,6 +166,8 @@ const AdminFlower = () => {
         );
         setEditingFlowerId(null);
         window.scrollTo(0, scrollPosition);  // Ensure scrollPosition is a valid number
+        window.location.reload();
+
 
       } else {
         throw new Error("Unable to update flower.");
@@ -198,6 +206,8 @@ const AdminFlower = () => {
           purpose: { purposeID: null },
           status: "ENABLE",
         });
+        window.location.reload();
+
       } else {
         throw new Error("Unable to create flower.");
       }
@@ -259,8 +269,7 @@ const AdminFlower = () => {
         ></textarea>
 
         <label>Danh Mục:</label>
-        <input
-          type="number"
+        <select
           value={newFlower.category.categoryID || ""}
           onChange={(e) =>
             setNewFlower((prev) => ({
@@ -268,11 +277,17 @@ const AdminFlower = () => {
               category: { categoryID: e.target.value },
             }))
           }
-        />
+        >
+          <option value="">Chọn danh mục</option>
+          {categories.map((category) => (
+            <option key={category.categoryID} value={category.categoryID}>
+              {category.categoryName}
+            </option>
+          ))}
+        </select>
 
         <label>Mục Đích:</label>
-        <input
-          type="number"
+        <select
           value={newFlower.purpose.purposeID || ""}
           onChange={(e) =>
             setNewFlower((prev) => ({
@@ -280,13 +295,20 @@ const AdminFlower = () => {
               purpose: { purposeID: e.target.value },
             }))
           }
-        />
+        >
+          <option value="">Chọn mục đích</option>
+          {purposes.map((purpose) => (
+            <option key={purpose.purposeID} value={purpose.purposeID}>
+              {purpose.purposeName}
+            </option>
+          ))}
+        </select>
 
         <label>Image:</label>
         <input type="file" onChange={handleFileChange} />
         <button onClick={handleUploadImage}>Upload Image</button>
         {imageUrl && <img src={imageUrl} alt="Flower" style={{ width: 100 }} />}
-
+        <br></br>
         <label>Trạng Thái:</label>
         <select
           value={newFlower.status}
@@ -326,9 +348,22 @@ const AdminFlower = () => {
               <tr key={flower.flowerID}>
                 <td>{flower.flowerID}</td>
                 <td>{flower.name}</td>
-                <td>{flower.description}</td>
-                <td>{flower.languageOfFlowers}</td>
-                <td>{flower.category.categoryName}</td>
+                <td style={{
+                  maxWidth: '700px',        
+                  wordWrap: 'break-word',  
+                  overflowWrap: 'break-word', 
+                  whiteSpace: 'normal'     
+                }}>
+                  {flower.description}
+                </td>             
+                <td style={{
+                  maxWidth: '400px',        
+                  wordWrap: 'break-word',   
+                  overflowWrap: 'break-word', 
+                  whiteSpace: 'normal'    
+                }}>
+                  {flower.languageOfFlowers}
+                </td>                <td>{flower.category.categoryName}</td>
                 <td>{flower.purpose.purposeName}</td>
                 <td>
                   <img
