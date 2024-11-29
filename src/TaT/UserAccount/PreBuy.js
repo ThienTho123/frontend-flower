@@ -405,9 +405,16 @@ const PreBuy = () => {
     const selectedItems = cartItems.filter((item) => item.selected);
     const cartIDs = selectedItems.map((item) => item.cartID);
     const quantities = selectedItems.map((item) => item.number);
-    const prices = selectedItems.map(
-      (item) => item.productPrice * item.number * (1 - appliedDiscount / 100)
-    );
+    const prices = selectedItems.map((item) => {
+      // Tổng giá trị sản phẩm
+      const totalPrice = item.productPrice * item.number;
+  
+      // Trừ giảm giá tuyệt đối
+      const discountedPrice = totalPrice - appliedDiscount;
+  
+      // Đảm bảo không có giá trị âm
+      return Math.max(discountedPrice, 0);
+    });
   
     if (cartIDs.length === 0) {
       alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
@@ -451,7 +458,10 @@ const PreBuy = () => {
       })
       .then(() => {
         const totalPayment =
-          calculateTotalPrice() - calculateDiscountAmount(calculateTotalPrice());
+        calculateTotalPrice() - calculateDiscountAmount(calculateTotalPrice());      
+          console.log("Giảm giá:", appliedDiscount);
+          console.log("Giá từng sản phẩm sau giảm:", prices);
+          console.log("Tổng thanh toán:", totalPayment);
         console.log("Tổng thanh toán:", totalPayment); // Kiểm tra tổng thanh toán
         return fetch(`http://localhost:8080/pay?totalPayment=${totalPayment}`, {
           method: "GET",
@@ -560,8 +570,13 @@ const PreBuy = () => {
     return (productPrice * quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
   const totalPrice = calculateTotalPrice();
+  console.log("Tổng giá trị sản phẩm (totalPrice):", totalPrice);
+  
   const discountAmount = calculateDiscountAmount(totalPrice);
+  console.log("Tổng giảm giá (discountAmount):", discountAmount);
+  
   const totalPayment = totalPrice - discountAmount;
+  console.log("Tổng thanh toán (totalPayment):", totalPayment);
   return (
     <div className="prebuy-container">
       <h2 className="prebuy-h2">

@@ -1,89 +1,126 @@
-/* Thêm CSS vào phần style hoặc file CSS riêng */
 .table-container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .history-title {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #f8f9fa;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.history-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #6c757d;
+  font-family: 'Dancing Script', cursive;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.history-table th, .history-table td {
+  padding: 14px 20px;
+  text-align: center;
+  font-size: 1.1rem;
+  color: #495057;
+}
+
+.history-table th {
+  background-color: #007bff;
+  color: #fff;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  font-weight: bold;
+}
+
+.history-table td {
+  background-color: #f8f8f8;
+  border-bottom: 2px solid #e2e6ea;
+  font-weight: 500;
+}
+
+.history-table tr:nth-child(even) td {
+  background-color: #f1f1f1;
+}
+
+.history-table tr:hover {
+  background-color: #f0f8ff;
+  transform: scale(1.02);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cancel-btn {
+  padding: 10px 18px;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.cancel-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background-color: #c82333;
+  transform: scale(1.05);
+}
+
+.history-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.history-link:hover {
+  text-decoration: underline;
+}
+
+.history-link:focus {
+  outline: none;
+}
+
+.history-table td a:focus {
+  outline: none;
+}
+
+@media (max-width: 768px) {
   .history-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    text-align: left;
+    font-size: 0.9rem;
   }
-  
+
   .history-table th, .history-table td {
-    padding: 12px 15px;
-    text-align: center;
-    font-size: 1rem;
+    padding: 10px 12px;
   }
-  
-  .history-table th {
-    background-color: #007bff;
-    color: #fff;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+
+  .history-title {
+    font-size: 2rem;
   }
-  
-  .history-table td {
-    background-color: #f8f8f8;
-    border-bottom: 1px solid #ddd;
+}
+
+@media (max-width: 480px) {
+  .history-title {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
   }
-  
-  .history-table tr:nth-child(even) td {
-    background-color: #f1f1f1;
+
+  .history-table th, .history-table td {
+    padding: 8px 10px;
+    font-size: 0.9rem;
   }
-  
-  .history-table tr:hover {
-    background-color: #e0e0e0;
-  }
-  
+
   .cancel-btn {
-    padding: 8px 16px;
-    background-color: #dc3545;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
+    padding: 6px 12px;
+    font-size: 0.9rem;
   }
-  
-  .cancel-btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .cancel-btn:hover:not(:disabled) {
-    background-color: #c82333;
-  }
-  
-  .history-link {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: 600;
-  }
-  
-  .history-link:hover {
-    text-decoration: underline;
-  }
-  
-  @media (max-width: 768px) {
-    .history-table {
-      font-size: 0.9rem;
-    }
-  
-    .history-table th, .history-table td {
-      padding: 10px;
-    }
-  }
-  
+}
