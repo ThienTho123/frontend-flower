@@ -17,6 +17,7 @@ import AdminPurpose from "./TaT/AdminDashboard/AdminPurpose";
 import AdminRepcomment from "./TaT/AdminDashboard/AdminRepcomment";
 import AdminReview from "./TaT/AdminDashboard/AdminReview";
 import AdminShipping from "./TaT/AdminDashboard/AdminShipping";
+import NeedShip from './TaT/ShipperAccount/NeedShip.js';
 import AdminType from "./TaT/AdminDashboard/AdminType";
 
 import StaffDashboard from "./TaT/StaffDashboard/StaffDashboard.js";
@@ -37,7 +38,9 @@ import CompleteComment from './TaT/StaffAccount/CompleteComment.js';
 import StaffCommentDetail from './TaT/StaffAccount/SendCommentDetail.js';
 import ProcessingComment from './TaT/StaffAccount/ProcessingComment.js';
 import WaitingComment from './TaT/StaffAccount/WaitingComment.js';
-
+import OrderShipped from './TaT/ShipperAccount/OrderShipped.js';
+import OrderShippedDetail from './TaT/ShipperAccount/OrderShippedDetail.js';
+import AllOrder from './TaT/ShipperAccount/AllOrder.js';
 import Footer from './Component/Footer/footer';
 import Header from './Component/Header/header';
 import BackToTop from './Component/BackToTop/BackToTop';
@@ -65,7 +68,7 @@ import Find from "./TaT/find";
 import SendCommentDetail from './TaT/UserAccount/SendCommentDetail.js';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';  
 import React, { useEffect } from "react";
-
+import OrderDetail from './TaT/ShipperAccount/OrderDetail.js';
 const AppRoutes = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location
@@ -168,9 +171,16 @@ const AppRoutes = () => {
 
           <Route path="comment/:id" element={<StaffCommentDetail />} />
         </Route>
+
         <Route path="/shipperaccount" element={<AccountShipperLayout />}>
           <Route index element={<ProfileShipper />} />
           <Route path="changepassword" element={<ChangeShipperPassword />} />
+          <Route path="ordershipped" element={<OrderShipped />} />
+          <Route path="allorder" element={<AllOrder />} />
+          <Route path="needship" element={<NeedShip />} />
+
+          <Route path="ordershipped/:id" element={<OrderShippedDetail />} />
+          <Route path="orderdetail/:id" element={<OrderDetail />} />
 
 
         </Route>

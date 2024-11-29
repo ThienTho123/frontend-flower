@@ -1,0 +1,178 @@
+/* Phần container chính */
+.order-history-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 900px;
+}
+
+/* Phần thông tin đơn hàng */
+.order-history {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+/* Phần thông tin bên trái */
+.order-history-left,
+.order-history-right {
+  width: 48%;
+}
+
+.order-history-left p,
+.order-history-right p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 8px 0;
+}
+
+.order-history-left strong,
+.order-history-right strong {
+  font-weight: bold;
+}
+
+/* Phần thông tin chi tiết đơn hàng */
+.order-detail {
+  margin-top: 30px;
+}
+
+.order-detail table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.order-detail th,
+.order-detail td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.order-detail th {
+  background-color: #f2f2f2;
+}
+
+.order-detail tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.order-history-container > div:last-child {
+  display: flex; /* Sử dụng flexbox để căn chỉnh */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc (nếu cần) */
+  margin-top: 20px; /* Thêm khoảng cách phía trên */
+}
+.start-delivery-button {
+  background-color: #405fec;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.success-delivery-button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.fail-delivery-button {
+  background-color: #c02f2f;
+  color: white;
+  margin-left: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.start-delivery-button:hover {
+  background-color: #212b88;
+}
+.success-delivery-button:hover {
+  background-color: #178120;
+}
+.fail-delivery-button:hover {
+  background-color: #9b1111;
+}
+.start-delivery-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Phần nhận đơn */
+.order-receive-section {
+  margin-top: 30px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Textarea cho ghi chú */
+.order-receive-section textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  resize: vertical;
+  margin-bottom: 20px;
+  outline: none;
+}
+
+.order-receive-section textarea:focus {
+  border-color: #4e9f8f;
+  box-shadow: 0 0 5px rgba(78, 159, 143, 0.5);
+}
+
+/* Button Nhận đơn */
+.order-receive-section button {
+  background-color: #4e9f8f;
+  color: white;
+  font-size: 18px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.order-receive-section button:hover {
+  background-color: #357d6a;
+}
+
+/* Đảm bảo responsive */
+@media (max-width: 768px) {
+  .order-history {
+    flex-direction: column;
+  }
+
+  .order-history-left,
+  .order-history-right {
+    width: 100%;
+  }
+
+  .order-detail table {
+    font-size: 14px;
+  }
+
+  .order-receive-section {
+    padding: 15px;
+  }
+
+  .order-receive-section textarea {
+    height: 80px;
+  }
+}

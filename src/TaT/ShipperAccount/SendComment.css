@@ -1,0 +1,47 @@
+.send-comment-container {
+    padding: 20px;
+  }
+  
+  .comment-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .comments-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .comments-table th, .comments-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  /* Đặt màu chữ của liên kết thành màu đen */
+.comment-link {
+    color: #333;
+    text-decoration: none; /* Loại bỏ gạch chân mặc định */
+  }
+  
+  /* Khi hover vào liên kết, màu chữ vẫn là đen và in đậm */
+  .comment-link:hover {
+    font-weight: bold;
+  }
+  
+  .comments-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .comments-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .comments-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .comments-list {
+    margin-top: 20px;
+  }
+  
+  
