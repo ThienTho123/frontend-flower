@@ -1,46 +1,137 @@
+.wishlist-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+.wishlist-container h1 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 48px;
+  color: #954571;
+  text-align: center;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+  border-bottom: 4px solid #954571;
+  padding-bottom: 10px;
+}
+
+.wishlist-container p {
+  font-size: 18px;
+  color: #555;
+  text-align: center;
+}
+
+.wishlist-container p[style*="color: red"] {
+  color: #e74c3c;
+}
+
+.wishlist-container p[style*="color: green"] {
+  color: #2ecc71;
+}
+
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  justify-items: center;
+}
+
 .wishlist-card {
-    position: relative; /* This ensures the button is positioned relative to the card */
-    width: 200px; /* Adjust width based on your design */
-    margin: 10px;
-  }
-  
-  .img-wrapper {
-    position: relative; /* This allows us to position the delete button inside the image wrapper */
-  }
-  
-  .delete-button {
-    position: absolute;
-    top: 10px; /* Distance from the top edge of the image */
-    right: 10px; /* Distance from the right edge of the image */
-    background-color: transparent;
-    border: none;
-    color: rgb(255, 0, 43); /* Heart color */
-    font-size: 24px; /* Adjust the size of the heart */
-    cursor: pointer;
-    transition: color 0.3s ease; /* Smooth color change */
-  }
-  
-  .delete-button:hover {
-    color: rgb(172, 47, 47); /* Change color when hovering */
-  }
-  
-  .wishlist-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  
-  .wishlist-link {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  .wishlist-container h1 {
-    text-align: center;
-  }
-  
-  .wishlist-card img {
-    width: 100%; /* Makes the image take up the full width of the card */
-    height: auto;
-  }
-  
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: center;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  border: 3px solid #FFC6C6;
+}
+
+.wishlist-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  background-color: #f9dae5;
+  border-color: #f7d7e8;
+}
+
+.img-wrapper {
+  height: 250px;
+  width: 100%;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-wrapper img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.wishlist-card h2 {
+  font-size: 24px;
+  color: #753257;
+  margin-top: 15px;
+  font-family: 'Dancing Script', cursive;
+}
+
+.wishlist-card p {
+  font-size: 15px;
+  color: #6b6b6b;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 5px;
+}
+
+.delete-button {
+  background-color: #de831a;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 50%;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  transition: background-color 0.3s ease;
+  font-family: 'Arial', sans-serif;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+.wishlist-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.wishlist-container p:last-child {
+  color: #999;
+  text-align: center;
+}
+
+.wishlist-card h2 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 24px;
+  color: #753257;
+  text-align: center;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.wishlist-card h2:hover {
+  color: #000000;
+  transform: scale(1.1);
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
