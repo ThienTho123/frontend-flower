@@ -1,0 +1,202 @@
+/* General container styling */
+.purchase-history-container {
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+  }
+  
+  /* Title styling */
+  .purchase-history-container h3 {
+    text-align: center;
+    font-size: 2rem;
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+  
+  /* Table styling */
+  .purchase-history-container table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .purchase-history-container th,
+  .purchase-history-container td {
+    padding: 12px 15px;
+    text-align: left;
+    font-size: 1.2rem;
+  }
+  
+  .purchase-history-container th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  .purchase-history-container td {
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .purchase-history-container td a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .purchase-history-container td a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Button styling */
+  .purchase-history-container button {
+    padding: 8px 12px;
+    margin: 4px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .purchase-history-container button:hover {
+    background-color: #0056b3;
+  }
+  
+  .purchase-history-container button:focus {
+    outline: none;
+  }
+  
+  .purchase-history-container button.delete {
+    background-color: #dc3545;
+  }
+  
+  .purchase-history-container button.delete:hover {
+    background-color: #c82333;
+  }
+  
+  /* Star rating styling */
+  .star-rating {
+    font-size: 1.8rem;
+    color: #ccc;
+    cursor: pointer;
+  }
+  
+  .star-rating .star {
+    margin: 0 5px;
+    transition: color 0.3s;
+  }
+  
+  .star-rating .filled {
+    color: #ffcc00; /* Gold color for filled stars */
+  }
+  
+  /* Modal styling */
+  .purchase-history-container .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .purchase-history-container .modal-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 500px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .purchase-history-container .modal-container h3 {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+  
+  .purchase-history-container textarea {
+    width: 100%;
+    height: 120px;
+    padding: 10px;
+    font-size: 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: none;
+    margin-bottom: 20px;
+  }
+  
+  .purchase-history-container textarea:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .purchase-history-container input[type="number"],
+  .purchase-history-container input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .purchase-history-container input[type="number"]:focus,
+  .purchase-history-container input[type="file"]:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  /* Error message styling */
+  .purchase-history-container p.error-message {
+    color: #e74c3c;
+    font-size: 1rem;
+    text-align: center;
+  }
+  
+  /* Modal button container */
+  .purchase-history-container .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .purchase-history-container .modal-buttons button {
+    width: 48%;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .purchase-history-container {
+      padding: 15px;
+    }
+  
+    .purchase-history-container table {
+      font-size: 1rem;
+    }
+  
+    .purchase-history-container button,
+    .purchase-history-container .modal-container button {
+      font-size: 0.9rem;
+      padding: 6px 10px;
+    }
+  
+    .purchase-history-container .modal-container {
+      width: 90%;
+    }
+  
+    .purchase-history-container .modal-overlay {
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+  }
+  

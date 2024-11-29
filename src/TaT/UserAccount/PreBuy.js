@@ -227,10 +227,15 @@ const PreBuy = () => {
   };
 
   const calculateTotalPrice = () => {
-    return cartItems
-      .filter((item) => item.selected)
-      .reduce((total, item) => total + item.productPrice * item.number, 0);
+    const selectedItems = cartItems.filter((item) => item.selected);
+    if (selectedItems.length === 0) return 0;
+  
+    return selectedItems.reduce(
+      (total, item) => total + item.productPrice * item.number,
+      0
+    );
   };
+  
   const calculateDiscountAmount = (totalPrice) => {
     return appliedDiscount; // Sử dụng giá trị giảm giá đã áp dụng
   };
@@ -312,35 +317,30 @@ const PreBuy = () => {
   };
   const handleBuy = () => {
     if (Object.keys(errorMessages).length > 0) {
-      setError(
-        "Không thể thanh toán vì có sản phẩm vượt quá số lượng tồn kho."
-      );
+      setError("Không thể thanh toán vì có sản phẩm vượt quá số lượng tồn kho.");
       return;
     }
   
     const selectedItems = cartItems.filter((item) => item.selected);
-    const cartIDs = selectedItems.map((item) => item.cartID);
-    const quantities = selectedItems.map((item) => item.number);
-    const prices = selectedItems.map((item) => {
-      // Tổng giá trị sản phẩm
-      const totalPrice = item.productPrice * item.number;
-    
-      // Trừ giảm giá tuyệt đối
-      const discountedPrice = totalPrice - appliedDiscount;
-    
-      // Đảm bảo không có giá trị âm
-      return Math.max(discountedPrice, 0);
-    });
-    
-    if (cartIDs.length === 0) {
+  
+    if (selectedItems.length === 0) {
       setError("Vui lòng chọn ít nhất một sản phẩm để mua.");
-      setTimeout(() => {
-        setError(null);
-      }, 3000);
       return;
     }
   
-    // Tạo query parameters cho cartID, quantities, và prices
+    const selectedDiscountObj = discounts.find(
+      (discount) => discount.discountID === selectedDiscount
+    );
+    const discountPercent = selectedDiscountObj?.discountPercent || 0;
+  
+    const cartIDs = selectedItems.map((item) => item.cartID);
+    const quantities = selectedItems.map((item) => item.number);
+    const prices = selectedItems.map((item) => {
+      const totalPrice = item.productPrice * item.number;
+      const discountedPrice = totalPrice * (1 - discountPercent / 100); // Áp dụng giảm giá phần trăm
+      return Math.max(discountedPrice, 0);
+    });
+  
     const params = new URLSearchParams();
     cartIDs.forEach((id, index) => {
       params.append("cartID", id);
@@ -348,7 +348,6 @@ const PreBuy = () => {
       params.append("price", prices[index]);
     });
   
-    // Tạo đối tượng request body cho thông tin người dùng
     const buyInfoBody = {
       name: buyInfo.name,
       address: buyInfo.address,
@@ -367,14 +366,14 @@ const PreBuy = () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accesstoken}`,
       },
-      body: JSON.stringify(buyInfoBody), // Gửi thông tin người dùng trong body
+      body: JSON.stringify(buyInfoBody),
     })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Could not complete the purchase.");
-      }
-      return response.text(); 
-    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Could not complete the purchase.");
+        }
+        return response.text();
+      })
       .then(() => {
         if (selectedDiscount) {
           deleteDiscount(selectedDiscount);
@@ -383,9 +382,6 @@ const PreBuy = () => {
         setCartItems(updatedCartItems);
         localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
         navigate("/PaymentSuccess");
-        console.log("Giảm giá:", appliedDiscount);
-        console.log("Giá từng sản phẩm sau giảm:", prices);
-        console.log("Tổng thanh toán:", totalPayment);
       })
       .catch((error) => {
         setError("Có lỗi xảy ra khi thực hiện giao dịch.");
@@ -393,43 +389,39 @@ const PreBuy = () => {
       });
   };
   
-
   const handleBuyVNPay = () => {
     if (Object.keys(errorMessages).length > 0) {
-      setError(
-        "Không thể thanh toán vì có sản phẩm vượt quá số lượng tồn kho."
-      );
+      setError("Không thể thanh toán vì có sản phẩm vượt quá số lượng tồn kho.");
       return;
     }
   
     const selectedItems = cartItems.filter((item) => item.selected);
-    const cartIDs = selectedItems.map((item) => item.cartID);
-    const quantities = selectedItems.map((item) => item.number);
-    const prices = selectedItems.map((item) => {
-      // Tổng giá trị sản phẩm
-      const totalPrice = item.productPrice * item.number;
   
-      // Trừ giảm giá tuyệt đối
-      const discountedPrice = totalPrice - appliedDiscount;
-  
-      // Đảm bảo không có giá trị âm
-      return Math.max(discountedPrice, 0);
-    });
-  
-    if (cartIDs.length === 0) {
-      alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
+    if (selectedItems.length === 0) {
+      setError("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
       return;
     }
   
-    // Tạo query parameters từ cartID, quantities, và prices
-    const queryParams = selectedItems
+    const selectedDiscountObj = discounts.find(
+      (discount) => discount.discountID === selectedDiscount
+    );
+    const discountPercent = selectedDiscountObj?.discountPercent || 0;
+  
+    const cartIDs = selectedItems.map((item) => item.cartID);
+    const quantities = selectedItems.map((item) => item.number);
+    const prices = selectedItems.map((item) => {
+      const totalPrice = item.productPrice * item.number;
+      const discountedPrice = totalPrice * (1 - discountPercent / 100); // Áp dụng giảm giá phần trăm
+      return Math.max(discountedPrice, 0);
+    });
+  
+    const queryParams = cartIDs
       .map(
-        (item, index) =>
-          `cartID=${cartIDs[index]}&quantities=${quantities[index]}&price=${prices[index]}`
+        (id, index) =>
+          `cartID=${id}&quantities=${quantities[index]}&price=${prices[index]}`
       )
       .join("&");
   
-    // Tạo đối tượng request body cho thông tin người dùng
     const buyInfoBody = {
       name: buyInfo.name,
       address: buyInfo.address,
@@ -437,18 +429,16 @@ const PreBuy = () => {
       note: buyInfo.note,
     };
   
-    // In ra query params và body để kiểm tra
     console.log("Query Parameters:", queryParams);
     console.log("Body JSON gửi đến API /setCart:", buyInfoBody);
   
-    // Gửi yêu cầu đến API với query params và body
     fetch(`http://localhost:8080/setCart?${queryParams}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accesstoken}`,  // Đảm bảo token hợp lệ
+        Authorization: `Bearer ${accesstoken}`,
       },
-      body: JSON.stringify(buyInfoBody), // Gửi thông tin người dùng trong body
+      body: JSON.stringify(buyInfoBody),
     })
       .then((response) => {
         if (!response.ok) {
@@ -457,12 +447,8 @@ const PreBuy = () => {
         return response.text();
       })
       .then(() => {
-        const totalPayment =
-        calculateTotalPrice() - calculateDiscountAmount(calculateTotalPrice());      
-          console.log("Giảm giá:", appliedDiscount);
-          console.log("Giá từng sản phẩm sau giảm:", prices);
-          console.log("Tổng thanh toán:", totalPayment);
-        console.log("Tổng thanh toán:", totalPayment); // Kiểm tra tổng thanh toán
+        const totalPayment = prices.reduce((sum, price) => sum + price, 0);
+        console.log("Tổng thanh toán (đã giảm giá):", totalPayment);
         return fetch(`http://localhost:8080/pay?totalPayment=${totalPayment}`, {
           method: "GET",
           headers: {
@@ -477,7 +463,7 @@ const PreBuy = () => {
         return response.text();
       })
       .then((vnpayUrl) => {
-        console.log("VNPay URL:", vnpayUrl); // Kiểm tra URL thanh toán VNPay
+        console.log("VNPay URL:", vnpayUrl);
         window.location.href = vnpayUrl;
       })
       .catch((error) => {
@@ -485,7 +471,6 @@ const PreBuy = () => {
         console.error(error);
       });
   };
-  
   
 
   const handleCheckboxChange = (cartID) => {

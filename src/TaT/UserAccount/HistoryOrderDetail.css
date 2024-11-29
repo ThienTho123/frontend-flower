@@ -1,42 +1,143 @@
 .order-history-container {
-    padding: 20px;
-  }
-  
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+.order-history {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px; /* Tăng khoảng cách dưới */
+  padding: 30px; /* Tăng padding để không gian rộng hơn */
+  background-color: #f9f9f9;
+  border-radius: 12px; /* Bo góc mạnh hơn */
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* Thêm bóng mờ nhẹ */
+}
+
+.order-history-left, .order-history-right {
+  width: 48%; /* Tăng độ rộng cột để phù hợp với không gian */
+}
+
+.order-history-left p, .order-history-right p {
+  font-size: 1.2rem; /* Tăng cỡ chữ cho dễ đọc */
+  margin: 12px 0; /* Tăng khoảng cách giữa các dòng */
+  color: #333;
+  line-height: 1.6; /* Tăng chiều cao dòng để dễ đọc */
+}
+
+.order-history-left strong, .order-history-right strong {
+  font-weight: bold;
+  color: #007bff; /* Dùng màu xanh cho các thông tin quan trọng */
+}
+
+.order-history-title {
+  font-size: 2rem;
+  color: #000;
+  font-weight: bold;
+  margin-bottom: 25px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.5px; /* Tăng khoảng cách chữ để dễ nhìn */
+}
+
+.order-detail table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+}
+
+.order-detail th, .order-detail td {
+  padding: 15px 20px; /* Tăng padding để bảng không bị chật */
+  text-align: center;
+  border: 1px solid #ddd;
+  font-size: 1.1rem;
+  color: #495057;
+}
+
+.order-detail th {
+  background-color: #007bff;
+  color: #000; /* Thay đổi màu chữ thành màu đen */
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.order-detail tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.order-detail td {
+  background-color: #ffffff;
+}
+
+.order-detail th:first-child, .order-detail td:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.order-detail th:last-child, .order-detail td:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+@media (max-width: 768px) {
   .order-history {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    flex-direction: column;
   }
-  
+
   .order-history-left, .order-history-right {
-    width: 45%;
-  }
-  
-  .order-history-left p, .order-history-right p {
-    font-size: 14px;
-    margin: 5px 0;
-  }
-  
-  .order-history-left strong, .order-history-right strong {
-    font-weight: bold;
-  }
-  
-  .order-detail table {
     width: 100%;
-    border-collapse: collapse;
   }
-  
+
+  .order-history-left p, .order-history-right p {
+    font-size: 1.1rem;
+  }
+
   .order-detail th, .order-detail td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
+    font-size: 1rem;
+    padding: 12px 15px;
   }
-  
-  .order-detail th {
-    background-color: #f4f4f4;
+}
+
+@media (max-width: 480px) {
+  .order-history-left p, .order-history-right p {
+    font-size: 1rem;
   }
-  
-  .order-detail tr:nth-child(even) {
-    background-color: #f9f9f9;
+
+  .order-detail th, .order-detail td {
+    font-size: 0.9rem;
+    padding: 10px 12px;
   }
-  
+}
+.order-history-left p, .order-history-right p {
+  font-size: 1.2rem; /* Tăng cỡ chữ */
+  margin: 10px 0;
+  color: #333;
+}
+
+.order-history-left strong, .order-history-right strong {
+  font-weight: bold;
+  color: #007bff;
+  font-size: 1.0rem; /* Tăng cỡ chữ cho các label (strong) */
+}
+
+.order-history {
+  font-size: 1.0rem; /* Tăng kích thước toàn bộ phần order history */
+}
+
+.order-history-left, .order-history-right {
+  width: 45%;
+  font-size: 1.2rem; /* Cũng tăng kích thước font chữ trong cả hai phần */
+}
+
+.order-history-left p, .order-history-right p {
+  font-size: 1.1rem; /* Tăng kích thước của thông tin từng mục */
+  color: #333;
+}
+
+.order-history p {
+  line-height: 1.8; /* Giãn cách giữa các dòng để dễ nhìn hơn */
+}
