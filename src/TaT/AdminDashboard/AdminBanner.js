@@ -18,31 +18,37 @@ const AdminBanner = () => {
   const navigate = useNavigate();
   const [imageUrl, setImageUrl] = useState("");
   const [file, setFile] = useState(null);
-
+  const [flowers, setFlowers] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [purposes, setPurposes] = useState([]);
+  
   useEffect(() => {
-    const fetchBanners = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/v1/admin/banner", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        });
-
-        if (!response.ok) {
-          const errorMessage = await response.text();
-          throw new Error(`Lỗi: ${response.status} - ${errorMessage}`);
-        }
-
-        const data = await response.json();
-        setBannerList(data || []);
-      } catch (err) {
-        console.error("Lỗi khi lấy banner:", err.message);
-        setError(err.message);
-      }
-    };
-
-    fetchBanners();
+      const fetchBanners = async () => {
+          try {
+              const response = await fetch("http://localhost:8080/api/v1/admin/banner", {
+                  headers: {
+                      Authorization: `Bearer ${accesstoken}`,
+                  },
+                  credentials: "include",
+              });
+  
+              if (!response.ok) {
+                  const errorMessage = await response.text();
+                  throw new Error(`Lỗi: ${response.status} - ${errorMessage}`);
+              }
+  
+              const data = await response.json();
+              setBannerList(data.banners || []);
+              setFlowers(data.flowers || []);
+              setCategories(data.categories || []);
+              setPurposes(data.purposes || []);
+          } catch (err) {
+              console.error("Lỗi khi lấy banner:", err.message);
+              setError(err.message);
+          }
+      };
+  
+      fetchBanners();
   }, [accesstoken]);
 
   const handleFileChange = (e) => {
@@ -223,151 +229,173 @@ const AdminBanner = () => {
 
   return (
     <div className="admin-ql-container">
-      <div className="title-container">
-        <img
-          src={returnIcon}
-          alt="Quay Lại"
-          className="return-button"
-          onClick={handleBackToDashboard}
-        />
-        <h2>Quản Lý Banner</h2>
-      </div>
-
-      <h3>Thêm Banner Mới</h3>
-      <div>
-        <label>Hình Ảnh Banner: </label>
-        <input type="file" onChange={handleFileChange} />
-        <button onClick={handleUploadImage}>Tải ảnh lên</button>
-        {imageUrl && <img src={imageUrl} alt="Banner Avatar" style={{ width: 100 }} />}
-        <br></br>
-        <label>Chọn Flower ID:</label>
-        <input
-          type="number"
-          value={newBanner.flower.flowerID || ""}
-          onChange={(e) =>
-            setNewBanner((prev) => ({
-              ...prev,
-              flower: { flowerID: e.target.value },
-            }))
-          }
-        />
-
-        <label>Chọn News ID:</label>
-        <input
-          type="number"
-          value={newBanner.news.newsID || ""}
-          onChange={(e) =>
-            setNewBanner((prev) => ({
-              ...prev,
-              news: { newsID: e.target.value },
-            }))
-          }
-        />
-
-        <label>Chọn Category ID:</label>
-        <input
-          type="number"
-          value={newBanner.category.categoryID || ""}
-          onChange={(e) =>
-            setNewBanner((prev) => ({
-              ...prev,
-              category: { categoryID: e.target.value },
-            }))
-          }
-        />
-
-        <label>Chọn Purpose ID:</label>
-        <input
-          type="number"
-          value={newBanner.purpose.purposeID || ""}
-          onChange={(e) =>
-            setNewBanner((prev) => ({
-              ...prev,
-              purpose: { purposeID: e.target.value },
-            }))
-          }
-        />
-                <label>Trạng Thái: </label>
-        <select
-          value={newBanner.status}
-          onChange={(e) =>
-            setNewBanner((prev) => ({ ...prev, status: e.target.value }))
-          }
-        >
-          <option value="ENABLE">Enable</option>
-          <option value="DISABLE">Disable</option>
-        </select>
-
-        <button onClick={handleCreate}>Tạo Banner</button>
-      </div>
-
-      <h3>Danh Sách Banner</h3>
-      {bannerList.length === 0 ? (
-        <p>Không có banner nào.</p>
+    <div className="title-container">
+      <img
+        src={returnIcon}
+        alt="Quay Lại"
+        className="return-button"
+        onClick={handleBackToDashboard}
+      />
+      <h2>Quản Lý Banner</h2>
+    </div>
+  
+    <h3>{editingBannerId ? "Chỉnh Sửa Banner" : "Thêm Banner Mới"}</h3>
+    <div>
+      <label>Hình Ảnh Banner: </label>
+      <input type="file" onChange={handleFileChange} />
+      <button onClick={handleUploadImage}>Tải ảnh lên</button>
+      {imageUrl && <img src={imageUrl} alt="Banner Avatar" style={{ width: 100 }} />}
+      <br />
+  
+      <label>Chọn Flower:</label>
+      <select
+        value={newBanner.flower?.flowerID || ""}
+        onChange={(e) =>
+          setNewBanner((prev) => ({
+            ...prev,
+            flower: { flowerID: e.target.value },
+          }))
+        }
+      >
+        <option value="">Chọn Flower</option>
+        {flowers.map((flower) => (
+          <option key={flower.flowerID} value={flower.flowerID}>
+            {flower.name}
+          </option>
+        ))}
+      </select>
+  
+      <label>Chọn Category:</label>
+      <select
+        value={newBanner.category?.categoryID || ""}
+        onChange={(e) =>
+          setNewBanner((prev) => ({
+            ...prev,
+            category: { categoryID: e.target.value },
+          }))
+        }
+      >
+        <option value="">Chọn Category</option>
+        {categories.map((category) => (
+          <option key={category.categoryID} value={category.categoryID}>
+            {category.categoryName}
+          </option>
+        ))}
+      </select>
+  
+      <label>Chọn Purpose:</label>
+      <select
+        value={newBanner.purpose?.purposeID || ""}
+        onChange={(e) =>
+          setNewBanner((prev) => ({
+            ...prev,
+            purpose: { purposeID: e.target.value },
+          }))
+        }
+      >
+        <option value="">Chọn Purpose</option>
+        {purposes.map((purpose) => (
+          <option key={purpose.purposeID} value={purpose.purposeID}>
+            {purpose.purposeName}
+          </option>
+        ))}
+      </select>
+  
+      <label>Trạng Thái: </label>
+      <select
+        value={newBanner.status || "ENABLE"}
+        onChange={(e) =>
+          setNewBanner((prev) => ({ ...prev, status: e.target.value }))
+        }
+      >
+        <option value="ENABLE">Enable</option>
+        <option value="DISABLE">Disable</option>
+      </select>
+  
+      {editingBannerId ? (
+    // Nếu đang chỉnh sửa banner, truyền bannerID và newBanner để lưu
+      <button onClick={() => handleSave(editingBannerId, newBanner)}>Lưu</button>
       ) : (
-        <table border="1" cellPadding="10" cellSpacing="0">
-          <thead>
-            <tr>
-              <th>ID Banner</th>
-              <th>Hình Ảnh</th>
-              <th>Flower ID</th>
-              <th>News ID</th>
-              <th>Category ID</th>
-              <th>Purpose ID</th>
-              <th>Trạng Thái</th>
-              <th>Hành Động</th>
-            </tr>
-          </thead>
-          <tbody>
-            {bannerList.map((banner) => (
-              <tr key={banner.bannerID}>
-                <td>{banner.bannerID}</td>
-                <td>
-                  <img
-                    src={banner.image}
-                    alt="Banner"
-                    style={{ width: "100px", height: "auto" }}
-                  />
-                </td>
-                <td>{banner.flower ? banner.flower.flowerID : "N/A"}</td>
-                <td>{banner.news ? banner.news.newsID : "N/A"}</td>
-                <td>{banner.category ? banner.category.categoryID : "N/A"}</td>
-                <td>{banner.purpose ? banner.purpose.purposeID : "N/A"}</td>
-                <td>{banner.status}</td>
-                <td>
-                  {editingBannerId === banner.bannerID ? (
-                    <>
-                      <button onClick={() => handleSave(banner.bannerID, newBanner)}>Lưu</button>
-                      <button onClick={() => setEditingBannerId(null)}>Hủy</button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => {
-                          setEditingBannerId(banner.bannerID);
-                          setNewBanner({
-                            image: banner.image,
-                            flower: banner.flower || { flowerID: null },
-                            news: banner.news || { newsID: null },
-                            category: banner.category || { categoryID: null },
-                            purpose: banner.purpose || { purposeID: null },
-                            status: banner.status,
-                          });
-                        }}
-                      >
-                        Chỉnh Sửa
-                      </button>
-                      <button onClick={() => handleDeleteSoft(banner.bannerID)}>Vô hiệu hóa</button>
-                      <button onClick={() => handleDeleteHard(banner.bannerID)}>Xóa</button>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        // Nếu không chỉnh sửa, giữ nút "Tạo Banner"
+        <button onClick={handleCreate}>Tạo Banner</button>
       )}
     </div>
+  
+    <h3>Danh Sách Banner</h3>
+    {bannerList.length === 0 ? (
+      <p>Không có banner nào.</p>
+    ) : (
+      <table border="1" cellPadding="10" cellSpacing="0">
+        <thead>
+          <tr>
+            <th>ID Banner</th>
+            <th>Hình Ảnh</th>
+            <th>Flower</th>
+            <th>News</th>
+            <th>Category</th>
+            <th>Purpose</th>
+            <th>Trạng Thái</th>
+            <th>Hành Động</th>
+          </tr>
+        </thead>
+        <tbody>
+          {bannerList.map((banner) => (
+            <tr key={banner.bannerID}>
+              <td>{banner.bannerID}</td>
+              <td>
+                <img
+                  src={banner.image}
+                  alt="Banner"
+                  style={{ width: "100px", height: "auto" }}
+                />
+              </td>
+              <td>{banner.flower?.name || ""}</td>
+              <td>{banner.news?.name || ""}</td>
+              <td>{banner.category?.categoryName || ""}</td>
+              <td>{banner.purpose?.purposeName || ""}</td>
+              <td>{banner.status}</td>
+              <td>
+                {editingBannerId === banner.bannerID ? (
+                  <>
+                    <button onClick={() => handleSave(banner.bannerID, newBanner)}>
+                      Lưu
+                    </button>
+                    <button onClick={() => setEditingBannerId(null)}>Hủy</button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        setEditingBannerId(banner.bannerID);
+                        setNewBanner({
+                          image: banner.image,
+                          flower: banner.flower || { flowerID: null },
+                          news: banner.news || { newsID: null },
+                          category: banner.category || { categoryID: null },
+                          purpose: banner.purpose || { purposeID: null },
+                          status: banner.status,
+                        });
+                      }}
+                    >
+                      Chỉnh Sửa
+                    </button>
+                    <button onClick={() => handleDeleteSoft(banner.bannerID)}>
+                      Vô hiệu hóa
+                    </button>
+                    <button onClick={() => handleDeleteHard(banner.bannerID)}>
+                      Xóa
+                    </button>
+                  </>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+  
   );
 };
 

@@ -18,6 +18,10 @@ const AdminDiscount = () => {
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [purposes, setPurposes] = useState([]);
+  const [activeField, setActiveField] = useState(""); 
 
   useEffect(() => {
     const fetchDiscounts = async () => {
@@ -28,23 +32,26 @@ const AdminDiscount = () => {
           },
           credentials: "include",
         });
-
+  
         if (!response.ok) {
           const errorMessage = await response.text();
           throw new Error(`Lỗi: ${response.status} - ${errorMessage}`);
         }
-
+  
         const data = await response.json();
-        setDiscountList(data || []);
+        setDiscountList(data.discounts || []);
+        setCategories(data.categories || []);
+        setTypes(data.types || []);
+        setPurposes(data.purposes || []);
       } catch (err) {
         console.error("Lỗi khi lấy giảm giá:", err.message);
         setError(err.message);
       }
     };
-
+  
     fetchDiscounts();
   }, [accesstoken]);
-
+  
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
@@ -119,17 +126,24 @@ const AdminDiscount = () => {
 
   const handleSave = async (id, discountData) => {
     try {
-      // Chuyển đổi định dạng dữ liệu trước khi gửi
+      // Format the data before sending
       const formattedData = {
-        ...discountData,
-        discountPercent: parseFloat(discountData.discountPercent), // Đảm bảo kiểu số thực
-        startDate: discountData.startDate.split("-").map((item, index) => {
-          return index === 1 ? parseInt(item) : parseInt(item, 10); // Chuyển tháng thành số (không chuỗi)
-        }).concat([0, 0]), // Thêm giờ và phút mặc định
-        endDate: discountData.endDate.split("-").map((item, index) => {
-          return index === 1 ? parseInt(item) : parseInt(item, 10);
-        }).concat([0, 0]),
-      };
+        discountID: discountData.discountID,
+        categories: discountData.categories && discountData.categories.categoryID
+            ? [{ categoryID: discountData.categories.categoryID }] // Nếu có categoryID, đặt categoryID
+            : [{ categoryID: 3 }], // Nếu không có categoryID, gán mặc định categoryID: 3
+        type: discountData.type?.typeID
+            ? { typeID: discountData.type.typeID }
+            : null, // Nếu không có typeID, gán null
+        purpose: discountData.purpose?.purposeID
+            ? { purposeID: discountData.purpose.purposeID }
+            : null, // Nếu không có purposeID, gán null
+        discountPercent: parseFloat(discountData.discountPercent), // Đảm bảo là số thực
+        startDate: discountData.startDate.split("-").map(Number).concat([0, 0]), // Chuyển startDate thành đúng định dạng
+        endDate: discountData.endDate.split("-").map(Number).concat([0, 0]), // Chuyển endDate thành đúng định dạng
+        status: discountData.status || "DISABLE", // Mặc định "DISABLE" nếu không có trạng thái
+    };
+    
   
       console.log(`JSON gửi đi khi cập nhật giảm giá ID ${id}:`, JSON.stringify(formattedData, null, 2));
   
@@ -155,7 +169,6 @@ const AdminDiscount = () => {
         );
         setEditingDiscountId(null);
         window.location.reload();
-
       } else {
         throw new Error("Không thể cập nhật giảm giá.");
       }
@@ -163,6 +176,7 @@ const AdminDiscount = () => {
       setError(err.message);
     }
   };
+  
   
 
   const handleEditRow = (id) => {
@@ -176,11 +190,21 @@ const AdminDiscount = () => {
   const handleFieldChange = (id, field, value) => {
     setDiscountList((prev) =>
       prev.map((discount) =>
-        discount.discountID === id ? { ...discount, [field]: value } : discount
+        discount.discountID === id
+          ? { 
+              ...discount, 
+              [field]: value,
+              // Nếu là các trường danh mục, loại, mục đích thì cập nhật đầy đủ vào đối tượng
+              categoryID: field === "categoryID" ? { categoryID: value } : discount.categoryID,
+              type: field === "type" ? { typeID: value } : discount.type,
+              purpose: field === "purpose" ? { purposeID: value } : discount.purpose
+            }
+          : discount
       )
     );
   };
-
+  
+  
   const handleCreate = async () => {
     try {
         // Chuyển đổi dữ liệu thành đúng định dạng
@@ -287,30 +311,50 @@ const AdminDiscount = () => {
       <h3>Thêm Giảm Giá Mới</h3>
       <div>
 
+      {/* Chọn Danh Mục */}
       <label>Chọn Danh Mục:</label>
-        <input
-          type="number"
-          value={newDiscount.categoryID.categoryID || ""}
-          onChange={(e) => handleFieldChangeAdd('categoryID', e.target.value)}
-          disabled={newDiscount.type.typeID || newDiscount.purpose.purposeID}
-        />
+      <select
+        value={newDiscount.categoryID.categoryID || ""}
+        onChange={(e) => handleFieldChangeAdd('categoryID', e.target.value)}
+        disabled={newDiscount.type.typeID || newDiscount.purpose.purposeID}
+      >
+        <option value="">Chọn Danh Mục</option>
+        {categories.map((category) => (
+          <option key={category.categoryID} value={category.categoryID}>
+            {category.categoryName}
+          </option>
+        ))}
+      </select>
 
+      {/* Chọn Loại */}
+      <label>Chọn Loại:</label>
+      <select
+        value={newDiscount.type.typeID || ""}
+        onChange={(e) => handleFieldChangeAdd('type', e.target.value)}
+        disabled={newDiscount.categoryID.categoryID || newDiscount.purpose.purposeID}
+      >
+        <option value="">Chọn Loại</option>
+        {types.map((type) => (
+          <option key={type.typeID} value={type.typeID}>
+            {type.typeName}
+          </option>
+        ))}
+      </select>
 
-       <label>Chọn Loại:</label>
-        <input
-          type="number"
-          value={newDiscount.type.typeID || ""}
-          onChange={(e) => handleFieldChangeAdd('type', e.target.value)}
-          disabled={newDiscount.categoryID.categoryID || newDiscount.purpose.purposeID}
-        />
-
-        <label>Chọn Mục Đích:</label>
-        <input
-          type="number"
-          value={newDiscount.purpose.purposeID || ""}
-          onChange={(e) => handleFieldChangeAdd('purpose', e.target.value)}
-          disabled={newDiscount.categoryID.categoryID || newDiscount.type.typeID}
-        />
+      {/* Chọn Mục Đích */}
+      <label>Chọn Mục Đích:</label>
+      <select
+        value={newDiscount.purpose.purposeID || ""}
+        onChange={(e) => handleFieldChangeAdd('purpose', e.target.value)}
+        disabled={newDiscount.categoryID.categoryID || newDiscount.type.typeID}
+      >
+        <option value="">Chọn Mục Đích</option>
+        {purposes.map((purpose) => (
+          <option key={purpose.purposeID} value={purpose.purposeID}>
+            {purpose.purposeName}
+          </option>
+        ))}
+      </select>
 
         <label>Phần Trăm Giảm Giá:</label>
         <input
@@ -372,83 +416,157 @@ const AdminDiscount = () => {
             </tr>
           </thead>
           <tbody>
-            {discountList.map((discount) => (
-              <tr key={discount.discountID}>
-                <td>{discount.discountID}</td>
-                <td>{discount.categoryID ? discount.categoryID.categoryName : "N/A"}</td>
-                <td>{discount.type ? discount.type.typeName : "N/A"}</td>
-                <td>{discount.purpose ? discount.purpose.purposeName : "N/A"}</td>
-                <td>
-                  {editingDiscountId === discount.discountID ? (
-                    <input
-                      type="number"
-                      value={discount.discountPercent}
-                      onChange={(e) =>
-                        handleFieldChange(discount.discountID, "discountPercent", e.target.value)
-                      }
-                    />
-                  ) : (
-                    discount.discountPercent
-                  )}
-                </td>
-                <td>
-                {editingDiscountId === discount.discountID ? (
-                  <input
-                    type="date"
-                    value={discount.startDate}
-                    onChange={(e) =>
-                      handleFieldChange(discount.discountID, "startDate", e.target.value)
-                    }
-                  />
-                ) : (
-                  formatDate(discount.startDate) // Gọi hàm formatDate để chuyển đổi ngày
-                )}
-              </td>
-              <td>
-                {editingDiscountId === discount.discountID ? (
-                  <input
-                    type="date"
-                    value={discount.endDate}
-                    onChange={(e) =>
-                      handleFieldChange(discount.discountID, "endDate", e.target.value)
-                    }
-                  />
-                ) : (
-                  formatDate(discount.endDate) // Gọi hàm formatDate để chuyển đổi ngày
-                )}
-              </td>
+          {discountList.map((discount) => (
+  <tr key={discount.discountID}>
+    <td>{discount.discountID}</td>
 
-                <td>
-                  {editingDiscountId === discount.discountID ? (
-                    <select
-                      value={discount.status}
-                      onChange={(e) =>
-                        handleFieldChange(discount.discountID, "status", e.target.value)
-                      }
-                    >
-                      <option value="ENABLE">ENABLE</option>
-                      <option value="DISABLE">DISABLE</option>
-                    </select>
-                  ) : (
-                    discount.status
-                  )}
-                </td>
-                <td>
-                  {editingDiscountId === discount.discountID ? (
-                    <>
-                      <button onClick={() => handleSave(discount.discountID, discount)}>Lưu</button>
-                      <button onClick={handleCancelEdit}>Hủy</button>
-                    </>
-                  ) : (
-                    <>
-                      <button onClick={() => handleEditRow(discount.discountID)}>Chỉnh sửa</button>
-                      <button onClick={() => handleDeleteSoft(discount.discountID)}>Vô hiệu</button>
-                      <button onClick={() => handleDeleteHard(discount.discountID)}>Xóa</button>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
+    {/* Chỉnh sửa Danh Mục */}
+    <td>
+      {editingDiscountId === discount.discountID ? (
+        <select
+          value={discount.categoryID?.categoryID || ""}
+          onChange={(e) =>
+            handleFieldChange(discount.discountID, "categoryID", e.target.value)
+          }
+          disabled={discount.type?.typeID || discount.purpose?.purposeID} // Khoá khi có dữ liệu trong Loại hoặc Mục Đích
+        >
+          <option value="">Chọn Danh Mục</option>
+          {categories.map((category) => (
+            <option key={category.categoryID} value={category.categoryID}>
+              {category.categoryName}
+            </option>
+          ))}
+        </select>
+      ) : (
+        discount.categoryID?.categoryName || "N/A"
+      )}
+    </td>
+
+    {/* Chỉnh sửa Loại */}
+    <td>
+      {editingDiscountId === discount.discountID ? (
+        <select
+          value={discount.type?.typeID || ""}
+          onChange={(e) =>
+            handleFieldChange(discount.discountID, "type", e.target.value)
+          }
+          disabled={discount.categoryID?.categoryID || discount.purpose?.purposeID} // Khoá khi có dữ liệu trong Danh Mục hoặc Mục Đích
+        >
+          <option value="">Chọn Loại</option>
+          {types.map((type) => (
+            <option key={type.typeID} value={type.typeID}>
+              {type.typeName}
+            </option>
+          ))}
+        </select>
+      ) : (
+        discount.type?.typeName || "N/A"
+      )}
+    </td>
+
+    {/* Chỉnh sửa Mục Đích */}
+    <td>
+      {editingDiscountId === discount.discountID ? (
+        <select
+          value={discount.purpose?.purposeID || ""}
+          onChange={(e) =>
+            handleFieldChange(discount.discountID, "purpose", e.target.value)
+          }
+          disabled={discount.categoryID?.categoryID || discount.type?.typeID} // Khoá khi có dữ liệu trong Danh Mục hoặc Loại
+        >
+          <option value="">Chọn Mục Đích</option>
+          {purposes.map((purpose) => (
+            <option key={purpose.purposeID} value={purpose.purposeID}>
+              {purpose.purposeName}
+            </option>
+          ))}
+        </select>
+      ) : (
+        discount.purpose?.purposeName || "N/A"
+      )}
+    </td>
+
+    {/* Chỉnh sửa Giảm Giá (%) */}
+    <td>
+      {editingDiscountId === discount.discountID ? (
+        <input
+          type="number"
+          value={discount.discountPercent}
+          onChange={(e) =>
+            handleFieldChange(discount.discountID, "discountPercent", e.target.value)
+          }
+        />
+      ) : (
+        discount.discountPercent
+      )}
+    </td>
+
+    {/* Chỉnh sửa Ngày Bắt Đầu */}
+    <td>
+      {editingDiscountId === discount.discountID ? (
+        <input
+          type="date"
+          value={discount.startDate}
+          onChange={(e) =>
+            handleFieldChange(discount.discountID, "startDate", e.target.value)
+          }
+        />
+      ) : (
+        formatDate(discount.startDate) // Gọi hàm formatDate để chuyển đổi ngày
+      )}
+    </td>
+
+    {/* Chỉnh sửa Ngày Kết Thúc */}
+    <td>
+      {editingDiscountId === discount.discountID ? (
+        <input
+          type="date"
+          value={discount.endDate}
+          onChange={(e) =>
+            handleFieldChange(discount.discountID, "endDate", e.target.value)
+          }
+        />
+      ) : (
+        formatDate(discount.endDate) // Gọi hàm formatDate để chuyển đổi ngày
+      )}
+    </td>
+
+    {/* Chỉnh sửa Trạng Thái */}
+    <td>
+      {editingDiscountId === discount.discountID ? (
+        <select
+          value={discount.status}
+          onChange={(e) =>
+            handleFieldChange(discount.discountID, "status", e.target.value)
+          }
+        >
+          <option value="ENABLE">ENABLE</option>
+          <option value="DISABLE">DISABLE</option>
+        </select>
+      ) : (
+        discount.status
+      )}
+    </td>
+
+    {/* Các nút hành động */}
+    <td>
+      {editingDiscountId === discount.discountID ? (
+        <>
+          <button onClick={() => handleSave(discount.discountID, discount)}>Lưu</button>
+          <button onClick={handleCancelEdit}>Hủy</button>
+        </>
+      ) : (
+        <>
+          <button onClick={() => handleEditRow(discount.discountID)}>Chỉnh sửa</button>
+          <button onClick={() => handleDeleteSoft(discount.discountID)}>Vô hiệu</button>
+          <button onClick={() => handleDeleteHard(discount.discountID)}>Xóa</button>
+        </>
+      )}
+    </td>
+  </tr>
+))}
+
+
           </tbody>
         </table>
       )}

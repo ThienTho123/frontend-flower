@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import returnIcon from './ImageDashboard/return-button.png';
 
-const AdminFlower = () => {
+const StaffFlower = () => {
   const [flowerList, setFlowerList] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [purposes, setPurposes] = useState([]);
   const [newFlower, setNewFlower] = useState({
     name: "",
     description: "",
@@ -19,40 +21,35 @@ const AdminFlower = () => {
   const navigate = useNavigate();
   const [imageUrl, setImageUrl] = useState("");
   const [file, setFile] = useState(null);
-  const [scrollPosition, setScrollPosition] = useState(0); 
 
-  const [categories, setCategories] = useState([]);
-  const [purposes, setPurposes] = useState([]);
-  
   useEffect(() => {
-    const fetchFlowers = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/admin/flower", {
+        const response = await fetch("http://localhost:8080/api/v1/staff/flower", {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
           },
           credentials: "include",
         });
-  
+
         if (!response.ok) {
           const errorMessage = await response.text();
           throw new Error(`Error: ${response.status} - ${errorMessage}`);
         }
-  
+
         const data = await response.json();
-  
-        // Đảm bảo rằng flowerList là mảng và categories, purposes đã có dữ liệu
-        setFlowerList(Array.isArray(data.flowers) ? data.flowers : []);
-        setCategories(data.categories || []);
-        setPurposes(data.purposes || []);
+        setFlowerList(data.flower || []);
+        setCategories(data.category || []);
+        setPurposes(data.purpose || []);
       } catch (err) {
-        console.error("Error fetching flowers:", err.message);
+        console.error("Error fetching data:", err.message);
         setError(err.message);
       }
     };
-  
-    fetchFlowers();
+
+    fetchData();
   }, [accesstoken]);
+
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -89,65 +86,13 @@ const AdminFlower = () => {
     }
   };
 
-  const handleDeleteSoft = async (id) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flower/softdelete/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        }
-      );
-
-      if (response.ok) {
-        setFlowerList((prev) =>
-          prev.map((flower) =>
-            flower.flowerID === id ? { ...flower, status: "DISABLE" } : flower
-          )
-        );
-      } else {
-        throw new Error("Unable to disable flower.");
-      }
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  const handleDeleteHard = async (id) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flower/harddelete/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        }
-      );
-
-      if (response.ok) {
-        setFlowerList((prev) => prev.filter((flower) => flower.flowerID !== id));
-      } else {
-        throw new Error("Unable to delete flower.");
-      }
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
   const handleSave = async (id, flowerData) => {
     try {
-      const formattedData = {
-        ...flowerData,
-      };
+      const formattedData = { ...flowerData };
       console.log("Data to be saved (Edit):", JSON.stringify(formattedData));
 
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flower/${id}`,
+        `http://localhost:8080/api/v1/staff/flower/${id}`,
         {
           method: "PUT",
           headers: {
@@ -165,9 +110,7 @@ const AdminFlower = () => {
           prev.map((flower) => (flower.flowerID === id ? updatedFlower : flower))
         );
         setEditingFlowerId(null);
-        window.scrollTo(0, scrollPosition);  // Ensure scrollPosition is a valid number
         window.location.reload();
-
 
       } else {
         throw new Error("Unable to update flower.");
@@ -179,12 +122,10 @@ const AdminFlower = () => {
 
   const handleCreate = async () => {
     try {
-      const formattedData = {
-        ...newFlower,
-      };
+      const formattedData = { ...newFlower };
       console.log("Data to be created (New Flower):", JSON.stringify(formattedData));
 
-      const response = await fetch("http://localhost:8080/api/v1/admin/flower", {
+      const response = await fetch("http://localhost:8080/api/v1/staff/flower", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accesstoken}`,
@@ -208,6 +149,8 @@ const AdminFlower = () => {
         });
         window.location.reload();
 
+        window.scrollTo(0, document.body.scrollHeight);
+
       } else {
         throw new Error("Unable to create flower.");
       }
@@ -216,17 +159,41 @@ const AdminFlower = () => {
     }
   };
 
-  const handleBackToDashboard = () => {
-    navigate("/dashboard");
-  };
-
-  
   const handleEdit = (flower) => {
-    setScrollPosition(window.scrollY);
     setEditingFlowerId(flower.flowerID);
     setNewFlower({ ...flower });
     window.scrollTo(0, 0);
+  };
 
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/v1/staff/flower/softdelete/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          credentials: "include",
+        }
+      );
+
+      if (response.ok) {
+        setFlowerList((prev) =>
+          prev.map((flower) =>
+            flower.flowerID === id ? { ...flower, status: "DISABLE" } : flower
+          )
+        );
+      } else {
+        throw new Error("Unable to disable flower.");
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleBackToDashboard = () => {
+    navigate("/staff");
   };
 
   return (
@@ -238,7 +205,7 @@ const AdminFlower = () => {
           className="return-button"
           onClick={handleBackToDashboard}
         />
-        <h2>Quản lý hoa</h2>
+        <h2>Quản lý hoa - Nhân viên</h2>
       </div>
 
       <h3>{editingFlowerId ? "Chỉnh sửa hoa" : "Thêm mới hoa"}</h3>
@@ -274,7 +241,7 @@ const AdminFlower = () => {
           onChange={(e) =>
             setNewFlower((prev) => ({
               ...prev,
-              category: { categoryID: e.target.value },
+              category: { categoryID: parseInt(e.target.value) },
             }))
           }
         >
@@ -292,7 +259,7 @@ const AdminFlower = () => {
           onChange={(e) =>
             setNewFlower((prev) => ({
               ...prev,
-              purpose: { purposeID: e.target.value },
+              purpose: { purposeID: parseInt(e.target.value) },
             }))
           }
         >
@@ -304,11 +271,6 @@ const AdminFlower = () => {
           ))}
         </select>
 
-        <label>Image:</label>
-        <input type="file" onChange={handleFileChange} />
-        <button onClick={handleUploadImage}>Upload Image</button>
-        {imageUrl && <img src={imageUrl} alt="Flower" style={{ width: 100 }} />}
-        <br></br>
         <label>Trạng Thái:</label>
         <select
           value={newFlower.status}
@@ -316,80 +278,64 @@ const AdminFlower = () => {
             setNewFlower((prev) => ({ ...prev, status: e.target.value }))
           }
         >
-          <option value="ENABLE">Enable</option>
-          <option value="DISABLE">Disable</option>
+          <option value="ENABLE">ENABLE</option>
+          <option value="DISABLE">DISABLE</option>
         </select>
 
+        <label>Hình Ảnh:</label>
+        <input type="file" onChange={handleFileChange} />
+        <button onClick={handleUploadImage}>Tải lên</button>
+        {imageUrl && <img src={imageUrl} alt="Uploaded" style={{ width: 100 }} />}
+        <br></br>
+
         <button onClick={editingFlowerId ? () => handleSave(editingFlowerId, newFlower) : handleCreate}>
-          {editingFlowerId ? "Save Changes" : "Create Flower"}
+          {editingFlowerId ? "Lưu thay đổi" : "Thêm hoa"}
         </button>
       </div>
 
       <h3>Danh sách hoa</h3>
-      {flowerList.length === 0 ? (
-        <p>No flowers available.</p>
-      ) : (
-        <table border="1" cellPadding="10" cellSpacing="0">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Language of Flowers</th>
-              <th>Category</th>
-              <th>Purpose</th>
-              <th>Image</th>
-              <th>Status</th>
-              <th>Actions</th>
+      <table>
+        <thead>
+          <tr>
+            <th>ID Hoa</th>
+            <th>Tên Hoa</th>
+            <th>Hình Ảnh</th>
+            <th>Mô Tả</th>
+            <th>Ngôn Ngữ Hoa</th>
+            <th>Danh Mục</th>
+            <th>Mục Đích</th>
+            <th>Trạng Thái</th>
+            <th>Hành Động</th>
+          </tr>
+        </thead>
+        <tbody>
+          {flowerList.map((flower) => (
+            <tr key={flower.flowerID}>
+              <td>{flower.flowerID}</td>
+              <td>{flower.name}</td>
+              <td>
+                {flower.image ? (
+                  <img src={flower.image} alt={flower.name} style={{ width: 100 }} />
+                ) : (
+                  "Không có hình ảnh"
+                )}
+              </td>
+              <td>{flower.description}</td>
+              <td>{flower.languageOfFlowers}</td>
+              <td>{flower.category?.categoryName || "N/A"}</td>
+              <td>{flower.purpose?.purposeName || "N/A"}</td>
+              <td>{flower.status}</td>
+              <td>
+                <button onClick={() => handleEdit(flower)}>Sửa</button>
+                <button onClick={() => handleDelete(flower.flowerID)}>Xóa</button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {flowerList.map((flower) => (
-              <tr key={flower.flowerID}>
-                <td>{flower.flowerID}</td>
-                <td>{flower.name}</td>
-                <td style={{
-                  maxWidth: '700px',        
-                  wordWrap: 'break-word',  
-                  overflowWrap: 'break-word', 
-                  whiteSpace: 'normal'     
-                }}>
-                  {flower.description}
-                </td>             
-                <td style={{
-                  maxWidth: '400px',        
-                  wordWrap: 'break-word',   
-                  overflowWrap: 'break-word', 
-                  whiteSpace: 'normal'    
-                }}>
-                  {flower.languageOfFlowers}
-                </td>                <td>{flower.category.categoryName}</td>
-                <td>{flower.purpose.purposeName}</td>
-                <td>
-                  <img
-                    src={flower.image}
-                    alt="Flower"
-                    style={{ width: 100 }}
-                  />
-                </td>
-                <td>{flower.status}</td>
-                <td>
-                  <button onClick={() => handleEdit(flower)}>Sửa</button>
-                  <button onClick={() => handleDeleteSoft(flower.flowerID)}>
-                    Vô hiệu hóa
-                  </button>
-                  <button onClick={() => handleDeleteHard(flower.flowerID)}>
-                    Xóa
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      {error && <p>{error}</p>}
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
 
-export default AdminFlower;
+export default StaffFlower;
+

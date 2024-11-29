@@ -594,4 +594,188 @@
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
+  /* Button Styles */
+/* Button Container Styles */
+.staff-button-wrapper {
+    flex: 1; /* Allows the button wrapper to take up equal space */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .staff-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 buttons per row */
+    gap: 20px;
+    max-width: 450px; /* Sets a max width for the buttons */
+    width: 100%;
+  }
+  
+  .staff-buttons button {
+    background-color: #9966d3; /* Beautiful coral color */
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    border-radius: 8px; /* Rounded corners */
+    transition: all 0.3s ease;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 200px; /* Equal height for all buttons */
+    width: 300px; /* Equal width for all buttons */
+
+  }
+  
+  .staff-buttons button:hover {
+    background-color: #6735a0; /* Darker shade of coral */
+    transform: translateY(-3px); /* Slight lift effect */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .staff-buttons button img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+  }
+  
+  /* Responsive design for smaller screens */
+  @media (max-width: 768px) {
+    .staff-buttons {
+      grid-template-columns: repeat(2, 1fr); /* 2 buttons per row on smaller screens */
+    }
+  
+    .staff-buttons button {
+      padding: 15px;
+      font-size: 16px;
+      height: 100px; /* Slightly smaller buttons on smaller screens */
+      width: 100px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .staff-buttons {
+      grid-template-columns: 1fr; /* 1 button per row on very small screens */
+    }
+  
+    .staff-buttons button {
+      height: 80px;
+      width: 80px;
+    }
+  }
+  
+  /* Account Info Wrapper */
+  .staff-account-info-wrapper {
+    flex: 2; /* Takes up more space than the button container */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .staff-account-info {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+  }
+  
+  /* Title for Account Info */
+  .staff-account-info h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #f4f4f4; /* Adds a subtle separator */
+    padding-bottom: 10px;
+  }
+  
+  /* Information Row */
+  .staff-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+    font-size: 16px;
+    border-bottom: 1px solid #f4f4f4; /* Light border for separation */
+    padding-bottom: 10px;
+  }
+  
+  /* Styling for Labels */
+  .staff-info-label {
+    font-weight: 600;
+    color: #555;
+    width: 40%; /* Ensures labels are aligned */
+  }
+  
+  /* Styling for Values */
+  .staff-info-value {
+    font-weight: 400;
+    color: #333;
+    width: 55%; /* Ensures values align next to labels */
+  }
+  
+  /* Styling for loading or error messages */
+  .staff-loading-info {
+    color: #888;
+    font-size: 16px;
+    text-align: center;
+  }
+  
+  .staff-error-info {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  .staff-no-login-info {
+    color: #888;
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  /* Responsive design for small screens */
+  @media (max-width: 768px) {
+    .staff-info-row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .staff-info-label {
+      width: 100%;
+      margin-bottom: 5px; /* Adds spacing between label and value */
+    }
+  
+    .staff-info-value {
+      width: 100%;
+      margin-bottom: 15px; /* Adds space below value for better readability */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .staff-account-info {
+      padding: 20px;
+    }
+  
+    .staff-info-row {
+      margin: 10px 0;
+    }
+  
+    .staff-info-label,
+    .staff-info-value {
+      font-size: 14px; /* Reduces font size for smaller screens */
+    }
+  }
+  .staff-dashboard-main {
+    display: flex;
+    justify-content: space-between; /* Distribute space between the items */
+    align-items: flex-start; /* Align items to the top */
+    gap: 30px; /* Adds space between the button wrapper and account info wrapper */
+    padding: 20px;
+  }
   

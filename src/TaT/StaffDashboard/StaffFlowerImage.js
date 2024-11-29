@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import returnIcon from './ImageDashboard/return-button.png';
 
-const AdminFlowerImage = () => {
+const StaffFlowerImage = () => {
   const [flowerImageList, setFlowerImageList] = useState([]);
-  const [flowerList, setFlowerList] = useState([]); // Danh sách hoa để tạo dropdown
+  const [flowerList, setFlowerList] = useState([]); // Danh sách hoa
   const [newFlowerImage, setNewFlowerImage] = useState({
     imageURL: "",
     flower: { flowerID: null },
@@ -12,39 +12,53 @@ const AdminFlowerImage = () => {
   });
   const [editingFlowerImageId, setEditingFlowerImageId] = useState(null);
   const [error, setError] = useState(null);
-  const [savedScrollPosition, setSavedScrollPosition] = useState(0); // Lưu vị trí cuộn
   const accesstoken = localStorage.getItem("access_token");
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
 
+  // Lấy danh sách ảnh hoa và danh sách hoa từ API tổng
   useEffect(() => {
-    const fetchFlowerImages = async () => {
+    const fetchFlowerData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/admin/flowerimage", {
+        const response = await fetch("http://localhost:8080/api/v1/staff/flower", {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
           },
           credentials: "include",
         });
-
-        if (!response.ok) {
-          const errorMessage = await response.text();
-          throw new Error(`Error: ${response.status} - ${errorMessage}`);
-        }
-
+        if (!response.ok) throw new Error("Error fetching flower data.");
         const data = await response.json();
-        setFlowerImageList(Array.isArray(data.flowerImages) ? data.flowerImages : []); // Đảm bảo là array
-        setFlowerList(Array.isArray(data.flowers) ? data.flowers : []); // Đảm bảo flowers là array
+  
+        // Gán danh sách hoa từ API trả về
+        setFlowerList(data.flower || []);
       } catch (err) {
-        console.error("Error fetching flower images:", err.message);
         setError(err.message);
       }
     };
-
+  
+    const fetchFlowerImages = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/v1/staff/flowerimage", {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          credentials: "include",
+        });
+        if (!response.ok) throw new Error("Error fetching flower images.");
+        const data = await response.json();
+        
+        // Fix here: data.flowerImage contains the flower images, so set it correctly
+        setFlowerImageList(data.flowerImage || []);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+  
+    fetchFlowerData();
     fetchFlowerImages();
   }, [accesstoken]);
-
+  
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -72,7 +86,6 @@ const AdminFlowerImage = () => {
           ...prev,
           imageURL: imageUrl,
         }));
-        console.log("Upload successful:", imageUrl);
       } else {
         console.error("Upload error:", data.EM);
       }
@@ -84,7 +97,7 @@ const AdminFlowerImage = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flowerimage/softdelete/${id}`,
+        `http://localhost:8080/api/v1/staff/flowerimage/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -93,7 +106,6 @@ const AdminFlowerImage = () => {
           credentials: "include",
         }
       );
-
       if (response.ok) {
         setFlowerImageList((prev) =>
           prev.map((image) =>
@@ -108,33 +120,10 @@ const AdminFlowerImage = () => {
     }
   };
 
-  const handleDeleteHard = async (id) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flowerimage/harddelete/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        }
-      );
-
-      if (response.ok) {
-        setFlowerImageList((prev) => prev.filter((image) => image.flowerImageID !== id));
-      } else {
-        throw new Error("Unable to delete flower image.");
-      }
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
   const handleSave = async (id, imageData) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flowerimage/${id}`,
+        `http://localhost:8080/api/v1/staff/flowerimage/${id}`,
         {
           method: "PUT",
           headers: {
@@ -145,7 +134,6 @@ const AdminFlowerImage = () => {
           body: JSON.stringify(imageData),
         }
       );
-
       if (response.ok) {
         const updatedImage = await response.json();
         setFlowerImageList((prev) =>
@@ -155,7 +143,7 @@ const AdminFlowerImage = () => {
         );
         setEditingFlowerImageId(null);
         window.location.reload();
-        window.scrollTo(0, savedScrollPosition);
+
       } else {
         throw new Error("Unable to update flower image.");
       }
@@ -166,7 +154,7 @@ const AdminFlowerImage = () => {
 
   const handleCreate = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/admin/flowerimage", {
+      const response = await fetch("http://localhost:8080/api/v1/staff/flowerimage", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accesstoken}`,
@@ -175,7 +163,6 @@ const AdminFlowerImage = () => {
         credentials: "include",
         body: JSON.stringify(newFlowerImage),
       });
-
       if (response.ok) {
         const createdImage = await response.json();
         setFlowerImageList([...flowerImageList, createdImage]);
@@ -185,7 +172,7 @@ const AdminFlowerImage = () => {
           status: "ENABLE",
         });
         window.location.reload();
-        window.scrollTo(0, document.body.scrollHeight);
+
       } else {
         throw new Error("Unable to create flower image.");
       }
@@ -195,18 +182,14 @@ const AdminFlowerImage = () => {
   };
 
   const handleEdit = (image) => {
-    // Lưu vị trí cuộn hiện tại
-    setSavedScrollPosition(window.scrollY);
-
     setEditingFlowerImageId(image.flowerImageID);
     setNewFlowerImage({ ...image });
-
-    // Cuộn lên đầu trang
     window.scrollTo(0, 0);
+
   };
 
   const handleBackToDashboard = () => {
-    navigate("/dashboard");
+    navigate("/staff");
   };
 
   return (
@@ -264,49 +247,47 @@ const AdminFlowerImage = () => {
               : handleCreate
           }
         >
-          {editingFlowerImageId ? "Lưu chỉnh sửa" : "Thêm mới"}
+          {editingFlowerImageId ? "Save Changes" : "Create Image"}
         </button>
       </div>
 
       <h3>Danh sách hình ảnh hoa</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Flower</th>
-            <th>Image</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {flowerImageList.map((image) => (
-            <tr key={image.flowerImageID}>
-              <td>{image.flowerImageID}</td>
-              <td>{image.flower.name}</td>
-              <td>
-                <img
-                  src={image.imageURL}
-                  alt={image.flower.name}
-                  style={{ width: 100 }}
-                />
-              </td>
-              <td>{image.status}</td>
-              <td>
-                <button onClick={() => handleEdit(image)}>Sửa</button>
-                <button onClick={() => handleDeleteSoft(image.flowerImageID)}>
-                  Vô hiệu hóa
-                </button>
-                <button onClick={() => handleDeleteHard(image.flowerImageID)}>
-                  Xóa
-                </button>
-              </td>
+      {flowerImageList.length === 0 ? (
+        <p>No flower images available.</p>
+      ) : (
+        <table border="1" cellPadding="10" cellSpacing="0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Image</th>
+              <th>Flower</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {flowerImageList.map((image) => (
+              <tr key={image.flowerImageID}>
+                <td>{image.flowerImageID}</td>
+                <td>
+                  <img src={image.imageURL} alt="Flower" style={{ width: 100 }} />
+                </td>
+                <td>{image.flower.name}</td>
+                <td>{image.status}</td>
+                <td>
+                  <button onClick={() => handleEdit(image)}>Sửa</button>
+                  <button onClick={() => handleDeleteSoft(image.flowerImageID)}>
+                    Vô hiệu hóa
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {error && <p>{error}</p>}
     </div>
   );
 };
 
-export default AdminFlowerImage;
+export default StaffFlowerImage;

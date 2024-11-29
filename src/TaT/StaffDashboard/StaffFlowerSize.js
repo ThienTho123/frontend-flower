@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import returnIcon from './ImageDashboard/return-button.png';
 
-const AdminFlowerSize = () => {
+const StaffFlowerSize = () => {
   const [flowerSizeList, setFlowerSizeList] = useState([]);
-  const [flowerList, setFlowerList] = useState([]); 
+  const [flowerOptions, setFlowerOptions] = useState([]);
   const [newFlowerSize, setNewFlowerSize] = useState({
     sizeName: "",
     length: "",
@@ -24,52 +24,85 @@ const AdminFlowerSize = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchFlowerSizesAndFlowers = async () => {
+    const fetchFlowerSizes = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/admin/flowersize", {
+        const response = await fetch("http://localhost:8080/api/v1/staff/flowersize", {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
           },
           credentials: "include",
         });
-
+  
         if (!response.ok) {
-          const errorMessage = await response.text();
-          throw new Error(`Error: ${response.status} - ${errorMessage}`);
+          throw new Error("Error fetching flower sizes");
         }
-
+  
         const data = await response.json();
-        if (Array.isArray(data.flowerSizes)) {
-          setFlowerSizeList(data.flowerSizes);
-        } else {
-          setFlowerSizeList([]);
-        }
-
-        if (Array.isArray(data.flowers)) {
-          setFlowerList(data.flowers); // Lưu danh sách hoa
-        }
+        // Đảm bảo data trả về là một mảng
+        setFlowerSizeList(Array.isArray(data.flowerSize) ? data.flowerSize : []);
       } catch (err) {
         console.error("Error fetching flower sizes:", err.message);
         setError(err.message);
       }
     };
-
-    fetchFlowerSizesAndFlowers();
+  
+    const fetchFlowerOptions = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/v1/staff/flower", {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          credentials: "include",
+        });
+  
+        if (!response.ok) {
+          throw new Error("Error fetching flower options");
+        }
+  
+        const data = await response.json();
+        setFlowerOptions(data.flower || []);
+      } catch (err) {
+        console.error("Error fetching flower options:", err.message);
+        setError(err.message);
+      }
+    };
+  
+    fetchFlowerSizes();
+    fetchFlowerOptions();
   }, [accesstoken]);
-
+  
   const handleCreate = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/admin/flowersize", {
+      const payload = {
+        flower: {
+          flowerID: Number(newFlowerSize.flower.flowerID), 
+        },
+        sizeName: newFlowerSize.sizeName,
+        length: parseFloat(newFlowerSize.length).toFixed(2), 
+        high: parseFloat(newFlowerSize.high).toFixed(2), 
+        width: parseFloat(newFlowerSize.width).toFixed(2),
+        weight: parseFloat(newFlowerSize.weight).toFixed(2), 
+        stock: parseInt(newFlowerSize.stock, 10), 
+        price: parseFloat(newFlowerSize.price).toFixed(2), 
+        cost: parseFloat(newFlowerSize.cost).toFixed(2), 
+        status: newFlowerSize.status,
+      };
+  
+      console.log("Payload sent to API:", payload);
+  
+      const response = await fetch("http://localhost:8080/api/v1/staff/flowersize", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accesstoken}`,
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify(newFlowerSize),
+        body: JSON.stringify(payload),
       });
   
       if (response.ok) {
+        const createdFlowerSize = await response.json();
+        console.log("Response from API:", createdFlowerSize); 
         setNewFlowerSize({
           sizeName: "",
           length: "",
@@ -82,20 +115,31 @@ const AdminFlowerSize = () => {
           status: "ENABLE",
           flower: { flowerID: null },
         });
+        setFlowerSizeList((prev) => [...prev, createdFlowerSize]); // Cập nhật danh sách
+        window.location.reload();
+
       } else {
         throw new Error("Unable to create flower size.");
       }
     } catch (err) {
+      console.error("Error:", err.message);
       setError(err.message);
     }
   };
   
+  
 
+  const handleEdit = (id) => {
+    setEditingFlowerSizeId(id);
+    setEditingData(
+      flowerSizeList.find((size) => size.flowerSizeID === id) || {}
+    );
+  };
 
   const handleSave = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flowersize/${id}`,
+        `http://localhost:8080/api/v1/staff/flowersize/${id}`,
         {
           method: "PUT",
           headers: {
@@ -115,6 +159,7 @@ const AdminFlowerSize = () => {
         setEditingFlowerSizeId(null);
         setEditingData({});
         window.location.reload();
+
       } else {
         throw new Error("Unable to update flower size.");
       }
@@ -123,10 +168,14 @@ const AdminFlowerSize = () => {
     }
   };
 
+  const handleChange = (field, value) => {
+    setEditingData((prev) => ({ ...prev, [field]: value }));
+  };
+
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flowersize/softdelete/${id}`,
+        `http://localhost:8080/api/v1/staff/flowersize/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -149,48 +198,12 @@ const AdminFlowerSize = () => {
       setError(err.message);
     }
   };
-
-  const handleDeleteHard = async (id) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flowersize/harddelete/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        }
-      );
-
-      if (response.ok) {
-        setFlowerSizeList((prev) => prev.filter((size) => size.flowerSizeID !== id));
-      } else {
-        throw new Error("Unable to delete flower size.");
-      }
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  const handleEdit = (id) => {
-    setEditingFlowerSizeId(id);
-    setEditingData(
-      flowerSizeList.find((size) => size.flowerSizeID === id) || {}
-    );
-  };
-
   const handleCancel = () => {
     setEditingFlowerSizeId(null);
     setEditingData({});
   };
-
-  const handleChange = (field, value) => {
-    setEditingData((prev) => ({ ...prev, [field]: value }));
-  };
-
   const handleBackToDashboard = () => {
-    navigate("/dashboard");
+    navigate("/staff");
   };
 
   return (
@@ -202,7 +215,7 @@ const AdminFlowerSize = () => {
           className="return-button"
           onClick={handleBackToDashboard}
         />
-        <h2>Quản lý kích thước hoa</h2>
+        <h2>Quản lý kích thước hoa - Nhân viên</h2>
       </div>
 
       <h3>Thêm mới kích thước hoa</h3>
@@ -271,7 +284,7 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, cost: e.target.value }))
           }
         />
-        <label>Hoa (ID):</label>
+        <label>Loại hoa:</label>
         <select
           value={newFlowerSize.flower.flowerID || ""}
           onChange={(e) =>
@@ -281,14 +294,13 @@ const AdminFlowerSize = () => {
             }))
           }
         >
-          <option value="">Chọn hoa</option>
-          {flowerList.map((flower) => (
+          <option value="" disabled>Chọn hoa</option>
+          {flowerOptions.map((flower) => (
             <option key={flower.flowerID} value={flower.flowerID}>
-              {flower.name} 
+              {flower.name}
             </option>
           ))}
         </select>
-
         <label>Trạng thái:</label>
         <select
           value={newFlowerSize.status}
@@ -318,7 +330,7 @@ const AdminFlowerSize = () => {
               <th>Số lượng tồn kho</th>
               <th>Giá bán</th>
               <th>Giá gốc</th>
-              <th>Hoa (ID)</th>
+              <th>Loại hoa</th>
               <th>Trạng thái</th>
               <th>Thao tác</th>
             </tr>
@@ -420,21 +432,22 @@ const AdminFlowerSize = () => {
                     <select
                       value={editingData.flower?.flowerID || ""}
                       onChange={(e) =>
-                        handleChange("flower", { flowerID: e.target.value })
+                        handleChange("flower", {
+                          flowerID: e.target.value,
+                        })
                       }
                     >
-                      <option value="">Chọn hoa</option>
-                      {flowerList.map((flower) => (
+                      <option value="" disabled>Chọn hoa</option>
+                      {flowerOptions.map((flower) => (
                         <option key={flower.flowerID} value={flower.flowerID}>
-                          {flower.name} 
+                          {flower.name}
                         </option>
                       ))}
                     </select>
                   ) : (
-                    flowerSize.flower?.name || "" 
+                    flowerSize.flower?.name || ""
                   )}
                 </td>
-
                 <td>
                   {editingFlowerSizeId === flowerSize.flowerSizeID ? (
                     <select
@@ -464,9 +477,6 @@ const AdminFlowerSize = () => {
                       <button onClick={() => handleDeleteSoft(flowerSize.flowerSizeID)}>
                         Vô hiệu hóa
                       </button>
-                      <button onClick={() => handleDeleteHard(flowerSize.flowerSizeID)}>
-                        Xóa
-                      </button>
                     </>
                   )}
                 </td>
@@ -475,10 +485,10 @@ const AdminFlowerSize = () => {
           </tbody>
         </table>
       )}
-
       {error && <div className="error-message">{error}</div>}
     </div>
   );
+
 };
 
-export default AdminFlowerSize;
+export default StaffFlowerSize;
