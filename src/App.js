@@ -23,6 +23,8 @@ import StaffDashboard from "./TaT/StaffDashboard/StaffDashboard.js";
 import StaffFlower from "./TaT/StaffDashboard/StaffFlower.js";
 import StaffFlowerImage from './TaT/StaffDashboard/StaffFlowerImage.js';
 import StaffFlowerSize from './TaT/StaffDashboard/StaffFlowerSize.js';
+import StaffOrder from './TaT/StaffDashboard/StaffOrder.js';
+import StaffOrderDetail from './TaT/StaffDashboard/StaffOrderDetail.js';
 
 
 import AccountStaffLayout from './TaT/StaffAccount/AccountStaffLayout.js';
@@ -71,7 +73,7 @@ const AppRoutes = () => {
   // List of admin routes where Header and Footer should be hidden
   const adminRoutes = ["/dashboard", "/AdminOder", "/AdminBanner", "/AdminAccount", "/AdminOrderDetail", "/AdminCategory", "/AdminComment", "/AdminCommentType", 
     "/AdminDiscount", "/AdminFlower", "/AdminFlowerImage", "/AdminFlowerSize",  "/AdminNews","/AdminPurpose", "/AdminRepcomment","/AdminReview","/AdminShipping", "/AdminType", "/StaffFlower",
-    "/staff", "/StaffFlowerImage", "/StaffFlowerSize"];  
+    "/staff", "/StaffFlowerImage", "/StaffFlowerSize", "/StaffOrder", "/StaffOrderDetail"];  
 
   // Check if the current route is an admin route
   const isAdminRoute = adminRoutes.includes(location.pathname);  
@@ -133,6 +135,8 @@ const AppRoutes = () => {
         <Route path="/StaffFlower" element={<StaffFlower/>} />
         <Route path="/StaffFlowerImage" element={<StaffFlowerImage/>} />
         <Route path="/StaffFlowerSize" element={<StaffFlowerSize/>} />
+        <Route path="/StaffOrder" element={<StaffOrder/>} />
+        <Route path="/StaffOrderDetail" element={<StaffOrderDetail/>} />
 
 
         {/* Other Routes */}
