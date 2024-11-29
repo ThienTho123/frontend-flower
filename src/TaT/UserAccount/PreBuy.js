@@ -728,22 +728,24 @@ const PreBuy = () => {
             >
               <option value="">Chọn mã giảm giá</option>
               {discounts.map((discount) => (
-                <option key={discount.discountID} value={discount.discountID}>
-                  {discount.categoryID
-                    ? `Giảm ${discount.discountPercent}% cho ${discount.categoryID.categoryName}`
-                    : `Giảm ${discount.discountPercent}% (${discount.type.typeName})`}
-                </option>
-              ))}
+              <option key={discount.discountID} value={discount.discountID}>
+                {discount.categoryID
+                  ? `Giảm ${discount.discountPercent}% cho ${discount.categoryID.categoryName}`
+                  : `Giảm ${discount.discountPercent}% (${discount.type?.typeName || "Không xác định"})`}
+              </option>
+            ))}
             </select>
             <button onClick={handleApplyDiscount} className="prebuy-button">
               Áp dụng
             </button>
             {error && (
-              <div className="error-popup">
-                <span className="error-message">{error}</span>
-                <span className="close-btn" onClick={() => setError(null)}>
-                  &times;
-                </span>
+              <div className="custom-error-container">
+                <div className="custom-error-popup">
+                  <span className="custom-error-message">{error}</span>
+                  <span className="custom-close-btn" onClick={() => setError(null)}>
+                    &times;
+                  </span>
+                </div>
               </div>
             )}
             <div className="prebuy-payment-options">
