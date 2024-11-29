@@ -90,6 +90,7 @@ const Profile = () => {
           },
         }
       );
+      console.log(response.data)
       setProfileForm(response.data);
     } catch (error) {
       console.log("Error fetching user info:", error);
@@ -234,23 +235,57 @@ const Profile = () => {
             </div>
           </div>
 
-          {/* Role */}
-          <div className="profile-page__group">
-            <div className="profile-page__icon">
-              <img src={roleImg} alt="role" />
+            {/* Role */}
+            <div className="profile-form-group">
+              <div className="form-icon">
+                <img src={roleImg} alt="role" />
+              </div>
+              <div className="form-input">
+                <label htmlFor="role">Người dùng</label>
+                <input
+                  id="role"
+                  type="text"
+                  defaultValue={profileForm.role}
+                  name="role"
+                  disabled
+                />
+              </div>
+
+              
             </div>
-            <div className="profile-page__input">
-              <label htmlFor="role">Người dùng</label>
-              <input
-                id="role"
-                type="text"
-                defaultValue={profileForm.role}
-                name="role"
-                disabled
-              />
+
+            <div className="profile-form-group">
+              <div className="form-icon">
+                <img src="/istockphoto-1330591104-612x612 (1).jpg" alt="role" />
+              </div>
+              <div className="form-input">
+                <label htmlFor="role">Chi tiêu</label>
+                <input
+                  type="text"
+                  defaultValue={profileForm.consume}
+                  name="role"
+                  disabled
+                />
+              </div>
             </div>
-          </div>
-        </section>
+
+            <div className="profile-form-group">
+              <div className="form-icon">
+                <img src="user-icon-trendy-flat-style-600nw-1697898655.webp" alt="role" />
+              </div>
+              <div className="form-input">
+                <label htmlFor="role">Loại tài khoản</label>
+                <input
+                  type="text"
+                  defaultValue={profileForm.typeName}
+                  name="role"
+                  disabled
+                />
+              </div>
+
+              
+            </div>
+          </section>
 
         {/* Avatar upload */}
         {isEditable && (

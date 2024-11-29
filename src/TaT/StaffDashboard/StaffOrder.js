@@ -103,8 +103,24 @@ const StaffOrder = () => {
 
   const handleSave = async (id, status, paid, condition) => {
     const orderToUpdate = orders.find((order) => order.orderID === id);
-    const updatedShippingID = orderToUpdate.shipping ? orderToUpdate.shipping.shippingID : null;
-
+    
+    // Kiểm tra nếu order không có shipping, set shipping là null
+    const updatedShipping = orderToUpdate.shipping
+      ? {
+          ...orderToUpdate.shipping,
+          shippingID: orderToUpdate.shipping.shippingID, // Cập nhật shippingID nếu có
+        }
+      : null;
+  
+    // Log để kiểm tra dữ liệu
+    console.log("Order to update:", {
+      ...orderToUpdate,
+      status,
+      paid,
+      condition,
+      shipping: updatedShipping, // Gửi shipping đã được xử lý
+    });
+  
     try {
       const response = await fetch(
         `http://localhost:8080/api/v1/staff/order/${id}`,
@@ -119,10 +135,7 @@ const StaffOrder = () => {
             status,
             paid,
             condition,
-            shipping: {
-              ...orderToUpdate.shipping, // Retain other shipping data
-              shippingID: updatedShippingID, // Make sure to update the shippingID
-            },
+            shipping: updatedShipping, // Gửi shipping đã được xử lý
           }),
         }
       );

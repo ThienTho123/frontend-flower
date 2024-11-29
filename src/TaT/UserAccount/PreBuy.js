@@ -374,6 +374,12 @@ const PreBuy = () => {
         }
         return response.text();
       })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Could not complete the purchase.");
+        }
+        return response.text();
+      })
       .then(() => {
         if (selectedDiscount) {
           deleteDiscount(selectedDiscount);
