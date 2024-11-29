@@ -116,7 +116,6 @@ const HistoryOrderDetail = () => {
               <th>Product Name</th>
               <th>Size Name</th>
               <th>Quantity</th>
-              <th>Price</th>
               <th>Total</th>
               <th>Size (LxWxH)</th>
               <th>Weight</th>
@@ -130,7 +129,6 @@ const HistoryOrderDetail = () => {
                 <td>{item.sizeName}</td>
                 <td>{item.quantity}</td>
                 <td>{item.price}</td>
-                <td>{item.price *item.quantity }</td>
                 <td>{item.length} x {item.width} x {item.high}</td>
                 <td>{item.weight}</td>
               </tr>

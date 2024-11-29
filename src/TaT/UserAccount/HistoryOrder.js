@@ -30,6 +30,7 @@ const HistoryOrder = () => {
       const updatedOrder = rawOrder.map((item, index) => ({
         stt: index + 1,
         id: item.orderID,
+        isPaid: item.isPaid,
         total: item.total,
         date: dayjs(item.date).format("YYYY-MM-DD HH:mm:ss"),
         condition: item.condition.replaceAll("_", " "),
@@ -112,6 +113,7 @@ const HistoryOrder = () => {
                 className="cancel-btn"
                 onClick={() => handleCancelOrder(order.id)}
                 disabled={
+                  order.isPaid === "Yes"||
                   order.condition === "Cancel is Processing" ||
                   order.condition === "Cancel_is_Processing" ||
                   order.condition === "Cancelled" ||
