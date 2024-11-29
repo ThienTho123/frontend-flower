@@ -4,6 +4,7 @@ import returnIcon from './ImageDashboard/return-button.png';
 
 const AdminFlowerSize = () => {
   const [flowerSizeList, setFlowerSizeList] = useState([]);
+  const [flowerList, setFlowerList] = useState([]); 
   const [newFlowerSize, setNewFlowerSize] = useState({
     sizeName: "",
     length: "",
@@ -23,7 +24,7 @@ const AdminFlowerSize = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchFlowerSizes = async () => {
+    const fetchFlowerSizesAndFlowers = async () => {
       try {
         const response = await fetch("http://localhost:8080/api/v1/admin/flowersize", {
           headers: {
@@ -38,14 +39,22 @@ const AdminFlowerSize = () => {
         }
 
         const data = await response.json();
-        setFlowerSizeList(data || []);
+        if (Array.isArray(data.flowerSizes)) {
+          setFlowerSizeList(data.flowerSizes);
+        } else {
+          setFlowerSizeList([]);
+        }
+
+        if (Array.isArray(data.flowers)) {
+          setFlowerList(data.flowers); // Lưu danh sách hoa
+        }
       } catch (err) {
         console.error("Error fetching flower sizes:", err.message);
         setError(err.message);
       }
     };
 
-    fetchFlowerSizes();
+    fetchFlowerSizesAndFlowers();
   }, [accesstoken]);
 
   const handleCreate = async () => {
@@ -105,6 +114,7 @@ const AdminFlowerSize = () => {
         );
         setEditingFlowerSizeId(null);
         setEditingData({});
+        window.location.reload();
       } else {
         throw new Error("Unable to update flower size.");
       }
@@ -262,8 +272,7 @@ const AdminFlowerSize = () => {
           }
         />
         <label>Hoa (ID):</label>
-        <input
-          type="number"
+        <select
           value={newFlowerSize.flower.flowerID || ""}
           onChange={(e) =>
             setNewFlowerSize((prev) => ({
@@ -271,7 +280,15 @@ const AdminFlowerSize = () => {
               flower: { flowerID: e.target.value },
             }))
           }
-        />
+        >
+          <option value="">Chọn hoa</option>
+          {flowerList.map((flower) => (
+            <option key={flower.flowerID} value={flower.flowerID}>
+              {flower.name} 
+            </option>
+          ))}
+        </select>
+
         <label>Trạng thái:</label>
         <select
           value={newFlowerSize.status}
@@ -400,19 +417,24 @@ const AdminFlowerSize = () => {
                 </td>
                 <td>
                   {editingFlowerSizeId === flowerSize.flowerSizeID ? (
-                    <input
-                      type="number"
+                    <select
                       value={editingData.flower?.flowerID || ""}
                       onChange={(e) =>
-                        handleChange("flower", {
-                          flowerID: e.target.value,
-                        })
+                        handleChange("flower", { flowerID: e.target.value })
                       }
-                    />
+                    >
+                      <option value="">Chọn hoa</option>
+                      {flowerList.map((flower) => (
+                        <option key={flower.flowerID} value={flower.flowerID}>
+                          {flower.name} 
+                        </option>
+                      ))}
+                    </select>
                   ) : (
-                    flowerSize.flower?.name || ""
+                    flowerSize.flower?.name || "" 
                   )}
                 </td>
+
                 <td>
                   {editingFlowerSizeId === flowerSize.flowerSizeID ? (
                     <select

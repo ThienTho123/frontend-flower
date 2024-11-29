@@ -4,6 +4,7 @@ import returnIcon from './ImageDashboard/return-button.png';
 
 const AdminFlowerImage = () => {
   const [flowerImageList, setFlowerImageList] = useState([]);
+  const [flowerList, setFlowerList] = useState([]); // Danh sách hoa để tạo dropdown
   const [newFlowerImage, setNewFlowerImage] = useState({
     imageURL: "",
     flower: { flowerID: null },
@@ -33,7 +34,8 @@ const AdminFlowerImage = () => {
         }
 
         const data = await response.json();
-        setFlowerImageList(data || []);
+        setFlowerImageList(Array.isArray(data.flowerImages) ? data.flowerImages : []); // Đảm bảo là array
+        setFlowerList(Array.isArray(data.flowers) ? data.flowers : []); // Đảm bảo flowers là array
       } catch (err) {
         console.error("Error fetching flower images:", err.message);
         setError(err.message);
@@ -154,7 +156,6 @@ const AdminFlowerImage = () => {
         setEditingFlowerImageId(null);
         window.location.reload();
         window.scrollTo(0, savedScrollPosition);
-
       } else {
         throw new Error("Unable to update flower image.");
       }
@@ -185,7 +186,6 @@ const AdminFlowerImage = () => {
         });
         window.location.reload();
         window.scrollTo(0, document.body.scrollHeight);
-
       } else {
         throw new Error("Unable to create flower image.");
       }
@@ -227,10 +227,9 @@ const AdminFlowerImage = () => {
         <input type="file" onChange={handleFileChange} />
         <button onClick={handleUploadImage}>Upload Image</button>
         {imageUrl && <img src={imageUrl} alt="Flower" style={{ width: 100 }} />}
-
-        <label>Flower ID:</label>
-        <input
-          type="number"
+        <br></br>
+        <label>Flower:</label>
+        <select
           value={newFlowerImage.flower.flowerID || ""}
           onChange={(e) =>
             setNewFlowerImage((prev) => ({
@@ -238,7 +237,14 @@ const AdminFlowerImage = () => {
               flower: { flowerID: e.target.value },
             }))
           }
-        />
+        >
+          <option value="">Chọn hoa</option>
+          {flowerList.map((flower) => (
+            <option key={flower.flowerID} value={flower.flowerID}>
+              {flower.name}
+            </option>
+          ))}
+        </select>
 
         <label>Status:</label>
         <select
@@ -258,48 +264,47 @@ const AdminFlowerImage = () => {
               : handleCreate
           }
         >
-          {editingFlowerImageId ? "Save Changes" : "Create Image"}
+          {editingFlowerImageId ? "Lưu chỉnh sửa" : "Thêm mới"}
         </button>
       </div>
 
       <h3>Danh sách hình ảnh hoa</h3>
-      {flowerImageList.length === 0 ? (
-        <p>No flower images available.</p>
-      ) : (
-        <table border="1" cellPadding="10" cellSpacing="0">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Image</th>
-              <th>Flower</th>
-              <th>Status</th>
-              <th>Actions</th>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Flower</th>
+            <th>Image</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {flowerImageList.map((image) => (
+            <tr key={image.flowerImageID}>
+              <td>{image.flowerImageID}</td>
+              <td>{image.flower.name}</td>
+              <td>
+                <img
+                  src={image.imageURL}
+                  alt={image.flower.name}
+                  style={{ width: 100 }}
+                />
+              </td>
+              <td>{image.status}</td>
+              <td>
+                <button onClick={() => handleEdit(image)}>Sửa</button>
+                <button onClick={() => handleDeleteSoft(image.flowerImageID)}>
+                  Vô hiệu hóa
+                </button>
+                <button onClick={() => handleDeleteHard(image.flowerImageID)}>
+                  Xóa
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {flowerImageList.map((image) => (
-              <tr key={image.flowerImageID}>
-                <td>{image.flowerImageID}</td>
-                <td>
-                  <img src={image.imageURL} alt="Flower" style={{ width: 100 }} />
-                </td>
-                <td>{image.flower.name}</td>
-                <td>{image.status}</td>
-                <td>
-                  <button onClick={() => handleEdit(image)}>Sửa</button>
-                  <button onClick={() => handleDeleteSoft(image.flowerImageID)}>
-                    Vô hiệu hóa
-                  </button>
-                  <button onClick={() => handleDeleteHard(image.flowerImageID)}>
-                    Xóa
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      {error && <p>{error}</p>}
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
