@@ -193,7 +193,7 @@ const StaffFlower = () => {
   };
 
   const handleBackToDashboard = () => {
-    navigate("/staffaccount");
+    navigate("/staff");
   };
 
   return (

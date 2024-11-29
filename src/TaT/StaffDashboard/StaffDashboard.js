@@ -205,23 +205,7 @@ const StaffDashboard = () => {
   };
 
   const handleLogout = () => {
-    fetch("http://localhost:8080/api/v1/auth/logout", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (response.ok) {
-          localStorage.removeItem("access_token");
-          localStorage.removeItem("refresh_token");
-          localStorage.removeItem("accountID");
-          navigate("/login");
-        } else {
-          throw new Error("Không thể đăng xuất");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    navigate('/staffaccount');
   };
 
   // Các hàm chuyển hướng
@@ -238,8 +222,8 @@ const StaffDashboard = () => {
         <h2>Staff Dashboard</h2>
         <img src={logo} alt="Logo" className="shop-logo" />
         <div className="admin-section">
-          <button className="logout-button" onClick={handleLogout}>
-            <img src={exit} alt="Log out" className="logout-icon" />
+        <button className="logout-button" onClick={handleLogout}>
+        <img src={exit} alt="Log out" className="logout-icon" />
           </button>
         </div>
       </header>
@@ -248,6 +232,13 @@ const StaffDashboard = () => {
       <div className="dashboard-container">
         <div className="admin-buttons-container">
           <div className="admin-buttons">
+          <button onClick={() => handleNavigate("/StaffFlower")}>
+              <img src={flowerIcon} alt="Quản lý hoa" /> Hoa
+            </button>
+            <button onClick={() => handleNavigate("/StaffFlowerImage")}>
+              <img src={imageIcon} alt="Quản lý hình ảnh hoa" /> Hình ảnh hoa
+            </button>
+
             <button onClick={() => handleNavigate("/AdminAccount")}>
               <img src={accountIcon} alt="Quản lý Account" /> Account
             </button>
@@ -275,12 +266,7 @@ const StaffDashboard = () => {
             <button onClick={() => handleNavigate("/AdminDiscount")}>
               <img src={discountIcon} alt="Quản lý Discount" /> Discount
             </button>
-            <button onClick={() => handleNavigate("/StaffFlower")}>
-              <img src={flowerIcon} alt="Quản lý hoa" /> Hoa
-            </button>
-            <button onClick={() => handleNavigate("/AdminFlowerImage")}>
-              <img src={imageIcon} alt="Quản lý hình ảnh hoa" /> Hình ảnh hoa
-            </button>
+
             <button onClick={() => handleNavigate("/AdminFlowerSize")}>
               <img src={productSizeIcon} alt="Quản lý size hoa" /> 
               Size hoa
