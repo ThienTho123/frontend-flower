@@ -18,7 +18,10 @@ const AdminDiscount = () => {
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
   const navigate = useNavigate();
-
+  const [categories, setCategories] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [purposes, setPurposes] = useState([]);
+  
   useEffect(() => {
     const fetchDiscounts = async () => {
       try {
@@ -28,23 +31,26 @@ const AdminDiscount = () => {
           },
           credentials: "include",
         });
-
+  
         if (!response.ok) {
           const errorMessage = await response.text();
           throw new Error(`Lỗi: ${response.status} - ${errorMessage}`);
         }
-
+  
         const data = await response.json();
-        setDiscountList(data || []);
+        setDiscountList(data.discounts || []);
+        setCategories(data.categories || []);
+        setTypes(data.types || []);
+        setPurposes(data.purposes || []);
       } catch (err) {
         console.error("Lỗi khi lấy giảm giá:", err.message);
         setError(err.message);
       }
     };
-
+  
     fetchDiscounts();
   }, [accesstoken]);
-
+  
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
@@ -287,30 +293,50 @@ const AdminDiscount = () => {
       <h3>Thêm Giảm Giá Mới</h3>
       <div>
 
+      {/* Chọn Danh Mục */}
       <label>Chọn Danh Mục:</label>
-        <input
-          type="number"
-          value={newDiscount.categoryID.categoryID || ""}
-          onChange={(e) => handleFieldChangeAdd('categoryID', e.target.value)}
-          disabled={newDiscount.type.typeID || newDiscount.purpose.purposeID}
-        />
+      <select
+        value={newDiscount.categoryID.categoryID || ""}
+        onChange={(e) => handleFieldChangeAdd('categoryID', e.target.value)}
+        disabled={newDiscount.type.typeID || newDiscount.purpose.purposeID}
+      >
+        <option value="">Chọn Danh Mục</option>
+        {categories.map((category) => (
+          <option key={category.categoryID} value={category.categoryID}>
+            {category.categoryName}
+          </option>
+        ))}
+      </select>
 
+      {/* Chọn Loại */}
+      <label>Chọn Loại:</label>
+      <select
+        value={newDiscount.type.typeID || ""}
+        onChange={(e) => handleFieldChangeAdd('type', e.target.value)}
+        disabled={newDiscount.categoryID.categoryID || newDiscount.purpose.purposeID}
+      >
+        <option value="">Chọn Loại</option>
+        {types.map((type) => (
+          <option key={type.typeID} value={type.typeID}>
+            {type.typeName}
+          </option>
+        ))}
+      </select>
 
-       <label>Chọn Loại:</label>
-        <input
-          type="number"
-          value={newDiscount.type.typeID || ""}
-          onChange={(e) => handleFieldChangeAdd('type', e.target.value)}
-          disabled={newDiscount.categoryID.categoryID || newDiscount.purpose.purposeID}
-        />
-
-        <label>Chọn Mục Đích:</label>
-        <input
-          type="number"
-          value={newDiscount.purpose.purposeID || ""}
-          onChange={(e) => handleFieldChangeAdd('purpose', e.target.value)}
-          disabled={newDiscount.categoryID.categoryID || newDiscount.type.typeID}
-        />
+      {/* Chọn Mục Đích */}
+      <label>Chọn Mục Đích:</label>
+      <select
+        value={newDiscount.purpose.purposeID || ""}
+        onChange={(e) => handleFieldChangeAdd('purpose', e.target.value)}
+        disabled={newDiscount.categoryID.categoryID || newDiscount.type.typeID}
+      >
+        <option value="">Chọn Mục Đích</option>
+        {purposes.map((purpose) => (
+          <option key={purpose.purposeID} value={purpose.purposeID}>
+            {purpose.purposeName}
+          </option>
+        ))}
+      </select>
 
         <label>Phần Trăm Giảm Giá:</label>
         <input
