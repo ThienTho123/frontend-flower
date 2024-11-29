@@ -32,19 +32,20 @@ const StaffFlowerSize = () => {
           },
           credentials: "include",
         });
-
+  
         if (!response.ok) {
           throw new Error("Error fetching flower sizes");
         }
-
+  
         const data = await response.json();
-        setFlowerSizeList(data || []);
+        // Đảm bảo data trả về là một mảng
+        setFlowerSizeList(Array.isArray(data.flowerSize) ? data.flowerSize : []);
       } catch (err) {
         console.error("Error fetching flower sizes:", err.message);
         setError(err.message);
       }
     };
-
+  
     const fetchFlowerOptions = async () => {
       try {
         const response = await fetch("http://localhost:8080/api/v1/staff/flower", {
@@ -53,11 +54,11 @@ const StaffFlowerSize = () => {
           },
           credentials: "include",
         });
-
+  
         if (!response.ok) {
           throw new Error("Error fetching flower options");
         }
-
+  
         const data = await response.json();
         setFlowerOptions(data.flower || []);
       } catch (err) {
@@ -65,11 +66,11 @@ const StaffFlowerSize = () => {
         setError(err.message);
       }
     };
-
+  
     fetchFlowerSizes();
     fetchFlowerOptions();
   }, [accesstoken]);
-
+  
   const handleCreate = async () => {
     try {
       const payload = {

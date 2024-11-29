@@ -29,14 +29,14 @@ const StaffFlowerImage = () => {
         });
         if (!response.ok) throw new Error("Error fetching flower data.");
         const data = await response.json();
-
+  
         // Gán danh sách hoa từ API trả về
         setFlowerList(data.flower || []);
       } catch (err) {
         setError(err.message);
       }
     };
-
+  
     const fetchFlowerImages = async () => {
       try {
         const response = await fetch("http://localhost:8080/api/v1/staff/flowerimage", {
@@ -47,16 +47,18 @@ const StaffFlowerImage = () => {
         });
         if (!response.ok) throw new Error("Error fetching flower images.");
         const data = await response.json();
-        setFlowerImageList(data || []);
+        
+        // Fix here: data.flowerImage contains the flower images, so set it correctly
+        setFlowerImageList(data.flowerImage || []);
       } catch (err) {
         setError(err.message);
       }
     };
-
+  
     fetchFlowerData();
     fetchFlowerImages();
   }, [accesstoken]);
-
+  
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
