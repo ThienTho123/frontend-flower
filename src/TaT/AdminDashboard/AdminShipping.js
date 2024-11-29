@@ -15,6 +15,7 @@ const AdminShipping = () => {
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
   const navigate = useNavigate();
+  const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
     const fetchShippings = async () => {
@@ -25,20 +26,26 @@ const AdminShipping = () => {
           },
           credentials: "include",
         });
-
+  
         if (!response.ok) {
           throw new Error("Không thể lấy danh sách shipping.");
         }
-
+  
         const data = await response.json();
-        setShippings(data);
+        if (Array.isArray(data.shippings) && Array.isArray(data.accounts)) {
+          setShippings(data.shippings);
+          setAccounts(data.accounts);
+        } else {
+          throw new Error("Dữ liệu shipping không hợp lệ.");
+        }
       } catch (err) {
         setError(err.message);
       }
     };
-
+  
     fetchShippings();
   }, [accesstoken]);
+  
 
   const handleDeleteSoft = async (id) => {
     try {
@@ -218,12 +225,18 @@ const AdminShipping = () => {
             setNewShipping({ ...newShipping, completeDate: e.target.value })
           }
         />
-        <label>Account ID: </label>
-        <input
-          type="number"
+        <label>Account: </label>
+        <select
           value={newShipping.accountID}
           onChange={(e) => setNewShipping({ ...newShipping, accountID: e.target.value })}
-        />
+        >
+          <option value="">Chọn tài khoản</option>
+          {accounts.map((account) => (
+            <option key={account.accountID} value={account.accountID}>
+              {account.name} ({account.accountID})
+            </option>
+          ))}
+        </select>
         <label>Note: </label>
         <input
           value={newShipping.note}
@@ -299,25 +312,30 @@ const AdminShipping = () => {
                   )}
                 </td>
                 <td>
-  {editingShippingId === shipping.shippingID ? (
-    <input
-    type="number"
-    value={shipping.accountID.accountID} // Sử dụng accountID.accountID
-    onChange={(e) =>
-      setShippings((prevShippings) =>
-        prevShippings.map((s) =>
-          s.shippingID === shipping.shippingID
-            ? { ...s, accountID: { accountID: parseInt(e.target.value) } } // Cập nhật object
-            : s
-        )
-      )
-    }
-  />
-  
-  ) : (
-    shipping.accountID.accountID
-  )}
-</td>
+                {editingShippingId === shipping.shippingID ? (
+                  <select
+                    value={shipping.accountID.accountID}
+                    onChange={(e) =>
+                      setShippings((prevShippings) =>
+                        prevShippings.map((s) =>
+                          s.shippingID === shipping.shippingID
+                            ? { ...s, accountID: { accountID: parseInt(e.target.value) } }
+                            : s
+                        )
+                      )
+                    }
+                  >
+                    {accounts.map((account) => (
+                      <option key={account.accountID} value={account.accountID}>
+                        {account.name} ({account.accountID})
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  `${shipping.accountID.name} (${shipping.accountID.accountID})`
+                )}
+              </td>
+
                 <td>
                   {editingShippingId === shipping.shippingID ? (
                     <input
