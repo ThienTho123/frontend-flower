@@ -187,7 +187,7 @@ const StaffFlowerImage = () => {
   };
 
   const handleBackToDashboard = () => {
-    navigate("/dashboard");
+    navigate("/staff");
   };
 
   return (

@@ -238,7 +238,10 @@ const StaffDashboard = () => {
             <button onClick={() => handleNavigate("/StaffFlowerImage")}>
               <img src={imageIcon} alt="Quản lý hình ảnh hoa" /> Hình ảnh hoa
             </button>
-
+            <button onClick={() => handleNavigate("/StaffFlowerSize")}>
+              <img src={productSizeIcon} alt="Quản lý size hoa" /> 
+              Size hoa
+            </button>
             <button onClick={() => handleNavigate("/AdminAccount")}>
               <img src={accountIcon} alt="Quản lý Account" /> Account
             </button>
@@ -267,10 +270,7 @@ const StaffDashboard = () => {
               <img src={discountIcon} alt="Quản lý Discount" /> Discount
             </button>
 
-            <button onClick={() => handleNavigate("/AdminFlowerSize")}>
-              <img src={productSizeIcon} alt="Quản lý size hoa" /> 
-              Size hoa
-            </button>
+
             <button onClick={() => handleNavigate("/AdminNews")}>
               <img src={newsIcon} alt="Quản lý News" /> News
             </button>
