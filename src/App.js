@@ -23,6 +23,16 @@ import StaffDashboard from "./TaT/StaffDashboard/StaffDashboard.js";
 import StaffFlower from "./TaT/StaffDashboard/StaffFlower.js";
 
 
+import AccountStaffLayout from './TaT/StaffAccount/AccountStaffLayout.js';
+import ChangeStaffPassword from './TaT/StaffAccount/ChangePassword.js';
+import ProfileStaff from './TaT/StaffAccount/Profile.js';
+import ChangeShipperPassword from './TaT/ShipperAccount/ChangePassword.js';
+import ProfileShipper from './TaT/ShipperAccount/Profile.js';
+import AccountShipperLayout from './TaT/ShipperAccount/AccountShipperLayout.js';
+import CompleteComment from './TaT/StaffAccount/CompleteComment.js';
+import StaffCommentDetail from './TaT/StaffAccount/SendCommentDetail.js';
+import ProcessingComment from './TaT/StaffAccount/ProcessingComment.js';
+import WaitingComment from './TaT/StaffAccount/WaitingComment.js';
 
 import Footer from './Component/Footer/footer';
 import Header from './Component/Header/header';
@@ -58,8 +68,7 @@ const AppRoutes = () => {
   
   // List of admin routes where Header and Footer should be hidden
   const adminRoutes = ["/dashboard", "/AdminOder", "/AdminBanner", "/AdminAccount", "/AdminOrderDetail", "/AdminCategory", "/AdminComment", "/AdminCommentType", 
-    "/AdminDiscount", "/AdminFlower", "/AdminFlowerImage", "/AdminFlowerSize",  "/AdminNews","/AdminPurpose", "/AdminRepcomment","/AdminReview","/AdminShipping", "/AdminType",
-    "/staffaccount", "/StaffFlower"  ];  
+    "/AdminDiscount", "/AdminFlower", "/AdminFlowerImage", "/AdminFlowerSize",  "/AdminNews","/AdminPurpose", "/AdminRepcomment","/AdminReview","/AdminShipping", "/AdminType", "/StaffFlower"];  
 
   // Check if the current route is an admin route
   const isAdminRoute = adminRoutes.includes(location.pathname);  
@@ -141,6 +150,23 @@ const AppRoutes = () => {
           <Route path="sendcomment/:id" element={<SendCommentDetail />} />
 
         </Route>
+
+        <Route path="/staffaccount" element={<AccountStaffLayout />}>
+          <Route index element={<ProfileStaff />} />
+          <Route path="changepassword" element={<ChangeStaffPassword />} />
+          <Route path="completecomment" element={<CompleteComment />} />
+          <Route path="processingcomment" element={<ProcessingComment />} />
+          <Route path="waitingcomment" element={<WaitingComment />} />
+
+          <Route path="comment/:id" element={<StaffCommentDetail />} />
+        </Route>
+        <Route path="/shipperaccount" element={<AccountShipperLayout />}>
+          <Route index element={<ProfileShipper />} />
+          <Route path="changepassword" element={<ChangeShipperPassword />} />
+
+
+        </Route>
+
       </Routes>
       {/* Only render Footer if it's not an admin route */}
       {!isAdminRoute && <Footer />}

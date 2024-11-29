@@ -1,0 +1,172 @@
+/* General container styling */
+.comment-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+
+/* Comment details section */
+.comment-details {
+  margin-bottom: 30px;
+}
+
+.comment-details h2 {
+  font-size: 1.8em;
+  color: #444;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 5px;
+}
+
+.comment-details p {
+  margin: 10px 0;
+  line-height: 1.6;
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+}
+
+.comment-details p strong {
+  font-weight: bold;
+  color: #555;
+}
+
+.comment-image {
+  display: block;
+  margin-top: 15px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* Repcomments section */
+.repcomments {
+  margin-top: 20px;
+}
+
+.repcomments h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.repcomments ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.repcomment-item {
+  padding: 15px;
+  margin-bottom: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+}
+
+.repcomment-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.repcomment-header .repcomment-name {
+  font-weight: bold;
+  font-size: 16px; /* Kích thước tên */
+}
+
+.repcomment-header .repcomment-time {
+  font-weight: 300; /* Font chữ mảnh */
+  font-size: 12px; /* Kích thước nhỏ cho thời gian */
+  color: #888; /* Màu nhạt hơn cho thời gian */
+  margin-top: 5px; /* Khoảng cách giữa tên và thời gian */
+}
+
+/* Avatar styling */
+.repcomment-avatar {
+  width: 40px; /* Chiều rộng */
+  height: 40px; /* Chiều cao (phải bằng width) */
+  border-radius: 50%; /* Biến ảnh thành hình tròn */
+  object-fit: cover; /* Đảm bảo ảnh luôn vừa khung */
+  border: 2px solid #ddd; /* Thêm đường viền */
+  margin-right: 10px; /* Khoảng cách với nội dung bên cạnh */
+}
+.comment-container .repcomment-avatar {
+  border-radius: 50%;
+}
+.repcomment-item p {
+  margin: 5px 0;
+  line-height: 1.6;
+  word-break: break-word; /* Fix lỗi chữ dài gây tràn */
+}
+
+.repcomment-item p strong {
+  color: #007bff;
+}
+
+.repcomment-image {
+  display: block;
+  margin-top: 10px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+/* Fix issue with flex wrapping */
+.repcomment-item img {
+  margin-top: 10px;
+  align-self: flex-start;
+  max-width: 50%;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+/* Add spacing for nested elements */
+.repcomment-item:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+.complete-button {
+  margin-left: 450px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+.complete-button:hover {
+  background-color: #1e7e34; 
+  color:#f9f9f9;
+}
+.complete-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+
+/* Responsiveness */
+@media (max-width: 600px) {
+  .comment-container {
+    padding: 15px;
+  }
+
+  .comment-details h2,
+  .repcomments h3 {
+    font-size: 1.4em;
+  }
+
+  .repcomment-item {
+    padding: 10px;
+  }
+}

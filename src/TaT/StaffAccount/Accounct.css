@@ -1,0 +1,197 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  max-width: 80%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.buttonDelete {
+  position: absolute; 
+  right: 15px; 
+}
+
+.buttonDelete:hover{
+  background-color: #BB0000;
+  color: #FFFFFF	;
+}
+textarea {
+  resize: none; 
+  width: 100%; 
+  height: 100px;
+}
+/* CSS UserAccount AccountLayout.js */
+.account-layout {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem;
+}
+
+.account-nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 2rem;
+  width: 250px;
+  min-width: 200px;
+  background-color: #f8f9fa;
+  border-right: 1px solid #e9ecef;
+}
+
+.account-nav h2 {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0;
+}
+
+.account-nav h2 img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+.account-nav h2 div {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-nav h2 span:first-child {
+  font-size: 0.875rem;
+  color: #6c757d;
+  font-weight: normal;
+}
+
+.account-nav h2 span:last-child {
+  font-size: 1rem;
+  color: #343a40;
+  font-weight: 600;
+}
+
+.account-nav button {
+  background-color: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 1rem;
+  color: #495057;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+
+.account-nav button:hover,
+.account-nav button:focus {
+  background-color: #e9ecef;
+  color: #212529;
+}
+
+.account-nav button:last-child {
+  margin-top: auto;
+  color: #dc3545;
+}
+
+.account-nav button:last-child:hover,
+.account-nav button:last-child:focus {
+  background-color: #fce8e8;
+}
+
+.account-outlet {
+  flex-grow: 1;
+  padding: 2rem;
+  width: 80%;
+  max-width: 1000px;
+  background-color: #ffffff;
+}
+
+.linkToProduct {
+  text-decoration: none;
+  color: #495057;
+  transition: all 0.2s ease-in-out;
+}
+
+.linkToProduct:hover {
+  font-weight: 500;
+  color: #212529;
+}
+
+@media (max-width: 768px) {
+  .account-layout {
+    padding: 1rem;
+  }
+
+  .account-container {
+    flex-direction: column;
+  }
+
+  .account-nav {
+    width: 100%;
+    min-width: auto;
+    border-right: none;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .account-outlet {
+    padding: 1rem;
+  }
+}
+/* CSS UserAccount Profile.js */
+.profile-container {
+  min-width: 480px;
+  padding: 20px;
+}
+.profile-form {
+  width: 100%;
+  display: grid;
+  grid-template-columns:1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 20px;
+}
+.form-icon{
+  display: flex;
+  width: 24px !important;
+  height: 24px !important;
+  padding: 6px;
+  justify-content: center;
+  align-items: center;
+  border: 1px gray solid;
+  border-radius: 100%;
+  margin-right: 1rem;
+  margin-top: 1.5rem;
+}
+.form-icon img{
+  width: 100%;
+  height: 100%;
+}
+.profile-form-group{
+  display: flex;
+  align-items: center;
+}
+.form-input input{
+  padding: 8px;
+}
+.form-input label{
+  font-weight: bold;
+}
+.form-error{
+  color: red;
+  margin-top: 4px;
+  font-size: 12px;
+}

@@ -4,27 +4,27 @@ import dayjs from "dayjs";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import "./SendComment.css";
 
-const SendComment = () => {
+const CompleteComment = () => {
   const [comments, setComments] = useState([]);
-  const [commentTypes, setCommentTypes] = useState([]);
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [commentType, setCommentType] = useState(""); // ID loại góp ý
   const access_token = localStorage.getItem("access_token");
 
-  // Lấy thông tin danh sách bình luận và loại bình luận
   const getCommentInfo = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/comment", {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
-
-      const rawComment = response.data?.comments || [];
-      const rawTypeComment = response.data?.commentTypes || [];
-
+      const response = await axios.get(
+        "http://localhost:8080/staffaccount/commentcomplete",
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+  
+      const rawComment = response.data?.comment || [];
+  
       const updatedComment = rawComment.map((item, index) => ({
         stt: index + 1,
         id: item.commentID,
@@ -35,14 +35,14 @@ const SendComment = () => {
         text: item.text,
         numberRep: item.numberRep,
       }));
-
-      setComments(updatedComment);
-      setCommentTypes(rawTypeComment);
+  
+      // Đảo ngược mảng bình luận để hiển thị ngược
+      setComments(updatedComment.reverse());
     } catch (error) {
       console.error("Error fetching comments:", error);
     }
   };
-
+  
   useEffect(() => {
     getCommentInfo();
   }, []);
@@ -80,6 +80,7 @@ const SendComment = () => {
       );
 
       if (response.status === 200) {
+        alert("Bình luận đã được tạo thành công");
         getCommentInfo(); // Cập nhật lại danh sách bình luận
         // Reset form sau khi gửi
         setTitle("");
@@ -122,7 +123,7 @@ const SendComment = () => {
 
   return (
     <div className="send-comment-container">
-      <h2 className="comment-title">Danh sách góp ý</h2>
+      <h2 className="comment-title">Các ý kiến đã giải quyết</h2>
 
       {/* Hiển thị danh sách bình luận */}
       <div className="comments-list">
@@ -144,8 +145,9 @@ const SendComment = () => {
                 <tr key={comment.id}>
                   <td>{comment.stt}</td>
                   <td>
+                    {/* Link tới trang chi tiết với title */}
                     <Link
-                      to={`/account/sendcomment/${comment.id}`}
+                      to={`/staffaccount/comment/${comment.id}`}
                       className="comment-link"
                     >
                       {comment.id}
@@ -154,7 +156,7 @@ const SendComment = () => {
                   <td>
                     {/* Link tới trang chi tiết với title */}
                     <Link
-                      to={`/account/sendcomment/${comment.id}`}
+                      to={`/staffaccount/comment/${comment.id}`}
                       className="comment-link"
                     >
                       {comment.title.length > 20
@@ -178,61 +180,8 @@ const SendComment = () => {
           <p>Không có bình luận nào.</p>
         )}
       </div>
-
-      {/* Form tạo góp ý */}
-      <div className="create-comment-form">
-        <h3>Tạo góp ý mới</h3>
-        <form onSubmit={handleCreateComment}>
-          <div className="form-group">
-            <label htmlFor="commentType">Loại góp ý</label>
-            <select
-              id="commentType"
-              value={commentType}
-              onChange={(e) => setCommentType(e.target.value)}
-              required
-            >
-              <option value="">Chọn loại góp ý</option>
-              {commentTypes.map((type) => (
-                <option key={type.commenttypeID} value={type.commenttypeID}>
-                  {type.commenttypename}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="title">Tiêu đề</label>
-            <input
-              type="text"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="text">Nội dung</label>
-            <textarea
-              id="text"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="image">Chọn hình ảnh (tùy chọn)</label>
-            <input type="file" id="image" onChange={handleImageChange} />
-          </div>
-
-          <button type="submit" className="submit-btn">
-            Gửi góp ý
-          </button>
-        </form>
-      </div>
     </div>
   );
 };
 
-export default SendComment;
+export default CompleteComment;

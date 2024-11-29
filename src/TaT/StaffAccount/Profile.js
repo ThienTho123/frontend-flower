@@ -7,7 +7,7 @@ import addressImg from "./Image/location.png";
 import nameImg from "./Image/id-card.png";
 import roleImg from "./Image/group-chat.png";
 
-const Profile = () => {
+const ProfileStaff = () => {
   const navigate = useNavigate();
   const [profileForm, setProfileForm] = useState({});
   const [error, setError] = useState({});
@@ -129,7 +129,7 @@ const Profile = () => {
     console.log("avatarLink"+avatarLink);
     try {
       const response = await axios.put(
-        "http://localhost:8080/account/updateinfo",
+        "http://localhost:8080/staffaccount/updateinfo",
         {
           name: profileForm.name,
           email: profileForm.email,
@@ -285,4 +285,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfileStaff;

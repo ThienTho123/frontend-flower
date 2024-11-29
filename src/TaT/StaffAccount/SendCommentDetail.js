@@ -4,7 +4,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import "./SendCommentDetail.css"; // Import file CSS
 
-const SendCommentDetail = () => {
+const StaffCommentDetail = () => {
   const access_token = localStorage.getItem("access_token");
   const { id } = useParams();
   const [comment, setComment] = useState(null);
@@ -12,6 +12,56 @@ const SendCommentDetail = () => {
   const [image, setImage] = useState(null);
   const [repCommentText, setRepCommentText] = useState("");
   const [loading, setLoading] = useState(false); // Loading state
+  const startResponse = async () => {
+    if (!repCommentText.trim()) {
+      alert("Bạn chưa nhập nội dung phản hồi!");
+      return;
+    }
+    setLoading(true);
+    let imageUrl = null;
+
+    // Upload hình ảnh nếu có
+    if (image) {
+      try {
+        imageUrl = await uploadImage(image);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        alert("Không thể tải lên hình ảnh.");
+        setLoading(false);
+        return;
+      }
+    }
+
+    const repCommentDTO = {
+      repcommenttext: repCommentText,
+      image: imageUrl,
+    };
+
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/staff/${id}`, // URL API backend
+        repCommentDTO,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`, // Gửi token xác thực
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        getCommentDetail(); // Refresh danh sách bình luận
+        setRepCommentText(""); // Reset nội dung phản hồi
+        setImage(null); // Xóa hình ảnh đã chọn
+      } else {
+        alert("Có lỗi xảy ra trong quá trình phản hồi!");
+      }
+    } catch (error) {
+      console.error("Error sending response comment:", error);
+      alert("Không thể gửi phản hồi.");
+    } finally {
+      setLoading(false); // Kết thúc trạng thái loading
+    }
+  };
 
   const handleSubmitRepComment = async () => {
     if (!repCommentText.trim()) {
@@ -32,7 +82,7 @@ const SendCommentDetail = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/comment/${id}`,
+        `http://localhost:8080/staffaccount/commentprocess/${id}`,
         repCommentDTO,
         {
           headers: {
@@ -51,6 +101,33 @@ const SendCommentDetail = () => {
     } catch (error) {
       console.error("Error posting reply comment:", error);
       alert("Không thể gửi bình luận trả lời.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleCompleteComment = async () => {
+    if (!comment) return;
+
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/staffaccount/commentprocess/${comment.commentID}/complete`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        getCommentDetail(); // Refresh comment details
+      } else {
+        alert("Không thể hoàn thành bình luận. Vui lòng thử lại.");
+      }
+    } catch (error) {
+      console.error("Error completing comment process:", error);
+      alert("Đã xảy ra lỗi khi hoàn thành bình luận.");
     } finally {
       setLoading(false);
     }
@@ -87,7 +164,7 @@ const SendCommentDetail = () => {
   const getCommentDetail = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/comment/${id}`,
+        `http://localhost:8080/staffaccount/comment/${id}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -96,6 +173,7 @@ const SendCommentDetail = () => {
       );
 
       const rawCommentDetail = response.data?.commentDTO;
+
       if (!rawCommentDetail) {
         console.error("Không có dữ liệu bình luận");
         return;
@@ -120,7 +198,7 @@ const SendCommentDetail = () => {
         commentText,
         commentDate: dayjs(commentDate).format("YYYY-MM-DD HH:mm:ss"),
         commentStatus,
-        commentStative, // Đảm bảo trạng thái được cập nhật chính xác
+        commentStative,
         image,
       });
 
@@ -139,7 +217,6 @@ const SendCommentDetail = () => {
   };
 
   useEffect(() => {
-    console.log(comment?.commentStative); // Kiểm tra giá trị commentStative
     getCommentDetail();
   }, [id]);
 
@@ -156,6 +233,15 @@ const SendCommentDetail = () => {
         </p>
         <p>
           <strong>Trạng thái:</strong> {comment?.commentStative}
+          {comment?.commentStative === "Processing" && (
+            <button
+              className="complete-button"
+              onClick={handleCompleteComment}
+              disabled={loading}
+            >
+              {loading ? "Đang xử lý..." : "Hoàn thành"}
+            </button>
+          )}
         </p>
 
         {comment?.image && (
@@ -206,9 +292,22 @@ const SendCommentDetail = () => {
           </button>
         </div>
       )}
-     
+
+      {comment?.commentStative === "Waiting" && (
+        <div className="rep-comment-form">
+          <textarea
+            placeholder="Nhập bình luận trả lời..."
+            value={repCommentText}
+            onChange={(e) => setRepCommentText(e.target.value)}
+          />
+          <input type="file" onChange={handleImageChange} />
+          <button onClick={startResponse} disabled={loading}>
+            {loading ? "Đang gửi..." : "Gửi bình luận trả lời"}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
 
-export default SendCommentDetail;
+export default StaffCommentDetail;
