@@ -84,6 +84,10 @@ const AccountShipperLayout = () => {
           </div>
         </h2>
         <button onClick={() => navigate("/shipperaccount")}>Tài khoản</button>
+        <button onClick={() => navigate("/shipperaccount/ordershipped")}>Đơn hàng đã giao</button>
+        <button onClick={() => navigate("/shipperaccount/allorder")}>Đơn hàng chưa được nhận</button>
+        <button onClick={() => navigate("/shipperaccount/needship")}>Đơn hàng cần được giao</button>
+
         <button onClick={() => navigate("/shipperaccount/changepassword")}>
           Đổi mật khẩu
         </button>

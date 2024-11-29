@@ -43,16 +43,15 @@ const HistoryOrderDetail = () => {
         isPaid: rawOrderHistory.isPaid,
         note: rawOrderHistory.note || "",
         shipStart: rawOrderHistory.shipStart
-          ? dayjs(rawOrderHistory.shipStart).format("YYYY-MM-DD")
+          ? dayjs(rawOrderHistory.shipStart).format("YYYY-MM-DD HH:mm:ss")
           : null,
         shipEnd: rawOrderHistory.shipEnd
-          ? dayjs(rawOrderHistory.shipEnd).format("YYYY-MM-DD")
+          ? dayjs(rawOrderHistory.shipEnd).format("YYYY-MM-DD HH:mm:ss")
           : null,
         shipperName: rawOrderHistory.shipperName,
         shipperPhone: rawOrderHistory.shipperPhone,
         shipperEmail: rawOrderHistory.shipperEmail,
         shipperNote: rawOrderHistory.shipperNote,
-
       };
 
       setOrderHistory([updatedOrderHistory]);
@@ -88,12 +87,11 @@ const HistoryOrderDetail = () => {
           <div className="order-history-left">
             <p><strong>Order ID:</strong> {orderHistory[0].id}</p>
             <p><strong>Customer Name:</strong> {orderHistory[0].name}</p>
-            <p><strong>Total:</strong> ${orderHistory[0].total}</p>
+            <p><strong>Total:</strong> {orderHistory[0].total} đ</p>
             <p><strong>Condition:</strong> {orderHistory[0].condition}</p>
             <p><strong>Order Date:</strong> {orderHistory[0].date}</p>
             <p><strong>Phone:</strong> {orderHistory[0].phone}</p>
             <p><strong>Address:</strong> {orderHistory[0].address}</p>
-            <p><strong>Name:</strong> {orderHistory[0].name}</p>
 
           </div>
           <div className="order-history-right">
@@ -102,7 +100,7 @@ const HistoryOrderDetail = () => {
             <p><strong>Shipper Email:</strong> {orderHistory[0].shipperEmail}</p>
             <p><strong>Shipper Note:</strong> {orderHistory[0].shipperNote}</p>
             <p><strong>Ship Start On:</strong> {orderHistory[0].shipStart}</p>
-            <p><strong>Ship End On:</strong> {orderHistory[0].setOrderHistory}</p>
+            <p><strong>Ship End On:</strong> {orderHistory[0].shipEnd}</p>
             <p><strong>Tình trạng thanh toán:</strong> {orderHistory[0].isPaid === "Yes" ? "Đã thanh toán" : "Chưa thanh toán"}</p>
 
           </div>
@@ -132,7 +130,7 @@ const HistoryOrderDetail = () => {
                 <td>{item.sizeName}</td>
                 <td>{item.quantity}</td>
                 <td>{item.price}</td>
-                <td>{item.total}</td>
+                <td>{item.price *item.quantity }</td>
                 <td>{item.length} x {item.width} x {item.high}</td>
                 <td>{item.weight}</td>
               </tr>
