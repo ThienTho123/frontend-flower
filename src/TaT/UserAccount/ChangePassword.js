@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Thêm import này
-
+import "./ChangePassword.css";
 const ChangePassword = () => {
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: "",
@@ -78,10 +78,10 @@ const ChangePassword = () => {
   };
   
   return (
-    <>
+    <div className="change-password-container">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
-          <label htmlFor="currentPassword">Mật khẩu</label>
+          <label htmlFor="currentPassword">Mật khẩu hiện tại</label>
           <input
             id="currentPassword"
             name="currentPassword"
@@ -90,7 +90,7 @@ const ChangePassword = () => {
             onChange={handleChange}
             required
           />
-          {error.currentPassword && <p style={{ color: "red" }}>{error.currentPassword}</p>}
+          {error.currentPassword && <p className="error-message">{error.currentPassword}</p>}
         </div>
         <div className="space-y-2">
           <label htmlFor="newPassword">Mật khẩu mới</label>
@@ -102,7 +102,7 @@ const ChangePassword = () => {
             onChange={handleChange}
             required
           />
-          {error.newPassword && <p style={{ color: "red" }} >{error.newPassword}</p>}
+          {error.newPassword && <p className="error-message">{error.newPassword}</p>}
         </div>
         <div className="space-y-2">
           <label htmlFor="confirmPassword">Xác nhận mật khẩu mới</label>
@@ -114,12 +114,12 @@ const ChangePassword = () => {
             onChange={handleChange}
             required
           />
-          {error.confirmPassword && <p style={{ color: "red" }}>{error.confirmPassword}</p>}
+          {error.confirmPassword && <p className="error-message">{error.confirmPassword}</p>}
         </div>
         <button type="submit">Đổi mật khẩu</button>
-        {error.message  && <p style={{ color: "red" }}>{error.message}</p>}
+        {error.message && <p className="error-message">{error.message}</p>}
       </form>
-    </>
+    </div>
   );
 };
 

@@ -90,12 +90,19 @@ const Profile = () => {
           },
         }
       );
-      console.log(response.data)
-      setProfileForm(response.data);
+      console.log(response.data);
+      
+      // Lấy thông tin loại tài khoản từ `type.typeName`
+      const userData = response.data;
+      setProfileForm({
+        ...userData,
+        typeName: userData.type.typeName,  // Lấy thông tin loại tài khoản
+      });
     } catch (error) {
       console.log("Error fetching user info:", error);
     }
   };
+  
 
   useEffect(() => {
     if (accountID && access_token) {
@@ -271,20 +278,21 @@ const Profile = () => {
 
             <div className="profile-form-group">
               <div className="form-icon">
-                <img src="user-icon-trendy-flat-style-600nw-1697898655.webp" alt="role" />
+                <img src={roleImg} alt="role" />
               </div>
               <div className="form-input">
                 <label htmlFor="role">Loại tài khoản</label>
                 <input
+                  id="role"
                   type="text"
-                  defaultValue={profileForm.typeName}
+                  value={profileForm.typeName || ''}  // Hiển thị loại tài khoản từ state
                   name="role"
                   disabled
                 />
               </div>
+            </div>
 
               
-            </div>
           </section>
 
         {/* Avatar upload */}

@@ -176,3 +176,26 @@
     height: 80px;
   }
 }
+.receive-button {
+  background-color: #77228f; /* Green background */
+  color: white;              /* White text */
+  padding: 12px 24px;        /* Padding around the text */
+  font-size: 16px;           /* Font size */
+  border: none;              /* Remove border */
+  border-radius: 5px;        /* Rounded corners */
+  cursor: pointer;          /* Cursor changes to pointer */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+}
+
+.receive-button:hover {
+  background-color: #924dae; /* Darker green on hover */
+}
+
+.receive-button:active {
+  transform: scale(0.98); /* Slight shrink effect when clicked */
+}
+
+.receive-button:disabled {
+  background-color: #b5b5b5; /* Grey background when disabled */
+  cursor: not-allowed;        /* Cursor changes to not-allowed */
+}

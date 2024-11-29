@@ -44,7 +44,7 @@ const WaitingComment = () => {
  
   return (
     <div className="send-comment-container">
-      <h2 className="comment-title">Các ý kiến đã giải quyết</h2>
+      <h2 className="comment-title">Các ý kiến đang chờ</h2>
   
       {/* Hiển thị danh sách bình luận */}
       <div className="comments-list">

@@ -1,202 +1,98 @@
-/* General container styling */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+
+/* Gói toàn bộ trong lớp cha */
 .purchase-history-container {
-    font-family: 'Arial', sans-serif;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin: 20px;
-  }
-  
-  /* Title styling */
-  .purchase-history-container h3 {
-    text-align: center;
-    font-size: 2rem;
-    color: #007bff;
-    margin-bottom: 20px;
-  }
-  
-  /* Table styling */
-  .purchase-history-container table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .purchase-history-container th,
-  .purchase-history-container td {
-    padding: 12px 15px;
-    text-align: left;
-    font-size: 1.2rem;
-  }
-  
-  .purchase-history-container th {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-  
-  .purchase-history-container td {
-    border-bottom: 1px solid #f0f0f0;
-  }
-  
-  .purchase-history-container td a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .purchase-history-container td a:hover {
-    text-decoration: underline;
-  }
-  
-  /* Button styling */
-  .purchase-history-container button {
-    padding: 8px 12px;
-    margin: 4px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-  
-  .purchase-history-container button:hover {
-    background-color: #0056b3;
-  }
-  
-  .purchase-history-container button:focus {
-    outline: none;
-  }
-  
-  .purchase-history-container button.delete {
-    background-color: #dc3545;
-  }
-  
-  .purchase-history-container button.delete:hover {
-    background-color: #c82333;
-  }
-  
-  /* Star rating styling */
-  .star-rating {
-    font-size: 1.8rem;
-    color: #ccc;
-    cursor: pointer;
-  }
-  
-  .star-rating .star {
-    margin: 0 5px;
-    transition: color 0.3s;
-  }
-  
-  .star-rating .filled {
-    color: #ffcc00; /* Gold color for filled stars */
-  }
-  
-  /* Modal styling */
-  .purchase-history-container .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .purchase-history-container .modal-container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 500px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .purchase-history-container .modal-container h3 {
-    text-align: center;
-    font-size: 1.8rem;
-    color: #007bff;
-    margin-bottom: 20px;
-  }
-  
-  .purchase-history-container textarea {
-    width: 100%;
-    height: 120px;
-    padding: 10px;
-    font-size: 1.2rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    resize: none;
-    margin-bottom: 20px;
-  }
-  
-  .purchase-history-container textarea:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-  
-  .purchase-history-container input[type="number"],
-  .purchase-history-container input[type="file"] {
-    width: 100%;
-    padding: 10px;
-    font-size: 1.2rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 20px;
-  }
-  
-  .purchase-history-container input[type="number"]:focus,
-  .purchase-history-container input[type="file"]:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-  
-  /* Error message styling */
-  .purchase-history-container p.error-message {
-    color: #e74c3c;
-    font-size: 1rem;
-    text-align: center;
-  }
-  
-  /* Modal button container */
-  .purchase-history-container .modal-buttons {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .purchase-history-container .modal-buttons button {
-    width: 48%;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .purchase-history-container {
-      padding: 15px;
-    }
-  
-    .purchase-history-container table {
-      font-size: 1rem;
-    }
-  
-    .purchase-history-container button,
-    .purchase-history-container .modal-container button {
-      font-size: 0.9rem;
-      padding: 6px 10px;
-    }
-  
-    .purchase-history-container .modal-container {
-      width: 90%;
-    }
-  
-    .purchase-history-container .modal-overlay {
-      justify-content: flex-start;
-      align-items: flex-start;
-    }
+  font-family: Arial, sans-serif;
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 1200px;
+  background-color: #ffffff;
+  color: #333;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Tiêu đề với font Dancing Script */
+.purchase-history-container h3 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #6C3483; 
+}
+
+/* Table Styling */
+.purchase-history-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.purchase-history-container th,
+.purchase-history-container td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.purchase-history-container th {
+  background-color: #f4f4f4;
+}
+
+.purchase-history-container tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.purchase-history-container .linkToProduct {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.purchase-history-container .linkToProduct:hover {
+  text-decoration: underline;
+}
+
+/* Buttons */
+.purchase-history-container button {
+  padding: 8px 12px;
+  margin: 5px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #d574aa; /* Màu hồng nhạt */
+  color: #fff; /* Chữ màu trắng */
+  transition: background-color 0.3s ease;
+}
+
+.purchase-history-container button:hover {
+  background-color: #E08AB6; /* Tông đậm hơn khi hover */
+}
+
+/* Modals */
+.purchase-history-container .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.purchase-history-container .modal-container {
+  width: 90%;
+  max-width: 500px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+.purchase-history-container button.buttonDelete {
+    background-color: #ff4d4f; /* Màu đỏ */
   }
   

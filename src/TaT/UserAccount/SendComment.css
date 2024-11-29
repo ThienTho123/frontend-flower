@@ -1,46 +1,246 @@
+/* Đưa font Dancing Script vào */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+
+/* Tổng quan của container */
 .send-comment-container {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Tiêu đề của trang */
+.comment-title {
+  font-size: 50px; /* Chữ to lên */
+  font-weight: bold;
+  text-align: center; /* Căn giữa */
+  margin-bottom: 30px; /* Khoảng cách dưới tiêu đề */
+  color: #700081; /* Màu đậm cho tiêu đề */
+  font-family: 'Dancing Script', cursive;
+}
+
+/* Danh sách bình luận */
+.comments-list {
+  margin-top: 30px;
+}
+
+.comments-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+.comments-table th,
+.comments-table td {
+  padding: 15px 20px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.comments-table th {
+  background-color: #F7B5CA;
+  color: #fff;
+  font-size: 18px; /* Chữ lớn hơn */
+}
+
+.comments-table tr:hover {
+  background-color: #FFEBD4;
+}
+
+.comment-link {
+  color: #D6008E; /* Đổi màu liên kết */
+  text-decoration: none;
+  font-size: 18px; /* Chữ lớn hơn */
+}
+
+.comment-link:hover {
+  text-decoration: underline;
+}
+
+/* Form tạo góp ý */
+.create-comment-form {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #F7B5CA;
+  border-radius: 10px;
+}
+
+.create-comment-form h3 {
+  font-size: 28px; /* Kích thước chữ */
+  font-weight: bold;
+  color: #4c036b; /* Màu đen */
+  margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
+  font-family: 'Dancing Script', cursive;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+  font-size: 18px; /* Chữ lớn hơn */
+}
+
+
+button.submit-btn {
+  padding: 15px 30px;
+  font-size: 18px;
+  color: #fff;
+  background-color: #800080; /* Màu tím đậm hơn */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+}
+
+button.submit-btn:hover {
+  background-color: #9b4f96; /* Màu tím nhạt hơn khi hover */
+}
+
+/* Responsive: Khi màn hình nhỏ */
+@media (max-width: 768px) {
+  .send-comment-container {
+    padding: 15px;
+  }
+
+  .comments-table th,
+  .comments-table td {
+    padding: 12px;
+  }
+
+  .create-comment-form {
+    padding: 15px;
+  }
+
+  button.submit-btn {
+    width: auto;
+    margin: 10px auto;
+  }
+}
+.create-comment-form .form-group {
+  margin-bottom: 20px;
+}
+
+/* Label */
+.create-comment-form label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+/* Các trường input, select và textarea */
+.create-comment-form input,
+.create-comment-form select,
+.create-comment-form textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+}
+
+/* Focus trạng thái */
+.create-comment-form input:focus,
+.create-comment-form select:focus,
+.create-comment-form textarea:focus {
+  border-color: #007bff;
+  outline: none;
+  background-color: #fff;
+}
+
+/* Styling cho textarea */
+.create-comment-form textarea {
+  resize: vertical; /* Cho phép người dùng thay đổi chiều cao */
+  min-height: 100px;
+}
+
+/* Styling cho select */
+.create-comment-form select {
+  height: 40px;
+  background-color: #f9f9f9;
+}
+
+/* Chỉnh sửa input file */
+.create-comment-form input[type="file"] {
+  border: none;
+  padding: 6px;
+  background-color: #f9f9f9;
+}
+
+/* Nút Submit */
+.create-comment-form .submit-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #8a248f;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.create-comment-form .submit-btn:hover {
+  background-color: #651c7b;
+}
+
+.create-comment-form .submit-btn:disabled {
+  background-color: #d1d1d1;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .create-comment-form {
     padding: 20px;
   }
-  
-  .comment-title {
-    font-size: 24px;
-    margin-bottom: 20px;
+
+  .create-comment-form h3 {
+    font-size: 1.6rem;
   }
-  
-  .comments-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .comments-table th, .comments-table td {
-    border: 1px solid #ddd;
+
+  .create-comment-form input,
+  .create-comment-form select,
+  .create-comment-form textarea {
+    font-size: 0.9rem;
     padding: 10px;
-    text-align: left;
   }
-  /* Đặt màu chữ của liên kết thành màu đen */
-.comment-link {
-    color: #333;
-    text-decoration: none; /* Loại bỏ gạch chân mặc định */
+}
+
+@media (max-width: 480px) {
+  .create-comment-form {
+    padding: 15px;
   }
-  
-  /* Khi hover vào liên kết, màu chữ vẫn là đen và in đậm */
-  .comment-link:hover {
-    font-weight: bold;
+
+  .create-comment-form .submit-btn {
+    font-size: 1rem;
   }
-  
-  .comments-table th {
-    background-color: #f4f4f4;
+
+  .create-comment-form input,
+  .create-comment-form select,
+  .create-comment-form textarea {
+    font-size: 0.85rem;
+    padding: 8px;
   }
-  
-  .comments-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  .comments-table tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .comments-list {
-    margin-top: 20px;
-  }
-  
+}
+.create-comment-form select {
+  height: 45px; /* Tăng chiều cao của select */
+  padding: 12px; /* Cải thiện padding để làm cho nó dễ sử dụng */
+  background-color: #f9f9f9; /* Màu nền giống với các input khác */
+}

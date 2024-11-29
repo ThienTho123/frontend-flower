@@ -25,6 +25,8 @@
   text-align: left;
   overflow: hidden;
   border-radius: 12px;
+  border: 2px solid #F7B5CA; 
+
 }
 
 .history-table th,
