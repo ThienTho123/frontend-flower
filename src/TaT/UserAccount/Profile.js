@@ -90,19 +90,20 @@ const Profile = () => {
           },
         }
       );
+      setProfileForm(response.data);
       console.log(response.data);
       
       // Lấy thông tin loại tài khoản từ `type.typeName`
       const userData = response.data;
       setProfileForm({
         ...userData,
-        typeName: userData.type?.typeName || "Chưa xác định", // Xử lý lỗi nếu type không tồn tại
+        typeName: userData.typeName,  // Lấy thông tin loại tài khoản
       });
+      console.log("profileform: "+profileForm);
     } catch (error) {
       console.log("Error fetching user info:", error);
     }
   };
-  
 
   useEffect(() => {
     if (accountID && access_token) {
