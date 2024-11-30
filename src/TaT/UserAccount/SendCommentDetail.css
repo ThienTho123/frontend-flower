@@ -48,9 +48,7 @@
   transition: transform 0.3s ease;
 }
 
-.comment-image:hover {
-  transform: scale(1.05);
-}
+
 
 .repcomments {
   margin-top: 30px;
