@@ -164,7 +164,7 @@ const Dashboard = () => {
   const prepareRevenueChartData = () => {
     const revenueData = {};
     let totalRevenue = 0; // Biến để tính tổng doanh thu
-
+  
     orders.forEach((order) => {
       if (
         order.paid === "Yes" &&
@@ -172,7 +172,7 @@ const Dashboard = () => {
         order.date.length >= 3
       ) {
         const monthYear = `${order.date[1]}/${order.date[0]}`; // Định dạng Tháng/Năm
-
+  
         if (!revenueData[monthYear]) {
           revenueData[monthYear] = 0;
         }
@@ -180,15 +180,28 @@ const Dashboard = () => {
         totalRevenue += order.totalAmount; // Cộng dồn doanh thu
       }
     });
-
+  
+    // Sắp xếp các tháng theo thứ tự từ tháng đầu đến tháng cuối
+    const sortedLabels = Object.keys(revenueData).sort((a, b) => {
+      const [monthA, yearA] = a.split('/').map(Number); // Tách tháng và năm
+      const [monthB, yearB] = b.split('/').map(Number);
+  
+      // So sánh theo năm trước, tháng sau
+      if (yearA !== yearB) {
+        return yearA - yearB; // Sắp xếp theo năm
+      } else {
+        return monthA - monthB; // Sắp xếp theo tháng
+      }
+    });
+  
     return {
       totalRevenue, // Trả về tổng doanh thu cùng dữ liệu biểu đồ
       chartData: {
-        labels: Object.keys(revenueData),
+        labels: sortedLabels, // Labels đã được sắp xếp
         datasets: [
           {
             label: "Doanh thu (VND)",
-            data: Object.values(revenueData),
+            data: sortedLabels.map(label => revenueData[label]), // Dữ liệu theo thứ tự sắp xếp
             backgroundColor: "rgba(75, 192, 192, 0.6)",
             borderColor: "rgba(75, 192, 192, 1)",
             borderWidth: 1,
@@ -197,6 +210,7 @@ const Dashboard = () => {
       },
     };
   };
+  
 
   const getChartData = () => {
     const ratingCounts = [0, 0, 0, 0, 0]; // Đếm số lượng đánh giá cho mỗi sao (1-5 sao)

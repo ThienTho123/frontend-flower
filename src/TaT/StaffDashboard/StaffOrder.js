@@ -8,6 +8,7 @@ const StaffOrder = () => {
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
   const navigate = useNavigate();
+  const [validationError, setValidationError] = useState(null); 
 
   const orderConditions = [
     "Pending",
@@ -103,7 +104,10 @@ const StaffOrder = () => {
 
   const handleSave = async (id, status, paid, condition) => {
     const orderToUpdate = orders.find((order) => order.orderID === id);
-    
+    if (validationError) {
+      alert("Vui lòng nhập đúng thông tin.");
+      return;
+    }
     // Kiểm tra nếu order không có shipping, set shipping là null
     const updatedShipping = orderToUpdate.shipping
       ? {
@@ -156,10 +160,26 @@ const StaffOrder = () => {
   const handleUpdateClick = (orderId) => {
     setEditingOrderId(orderId);
   };
-
+  const validateInput = (field, value) => {
+    if (field === "totalAmount" && value < 0) {
+      return "Tổng tiền không thể là số âm.";
+    }
+    return null; // Không có lỗi
+  };
   const handleInputChange = (e, id, field) => {
     let value = e.target.value;
-  
+    if (field === "totalAmount") {
+      value = parseFloat(value) || 0; // Chuyển đổi sang số
+    }
+    const validationError = validateInput(field, value);
+    setValidationError(validationError);
+    if (!validationError) {
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.orderID === id ? { ...order, [field]: value } : order
+        )
+      );
+    }
     // Check if the field is "shippingID" and handle empty or 0 value
     if (field === "shippingID") {
       value = value === "" || value === "0" ? null : value; // Set to null if empty or 0
@@ -251,7 +271,7 @@ const StaffOrder = () => {
         />
         <h2>Quản Lý Đơn Hàng - Nhân viên</h2>
       </div>
-      {error && <p>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       {orders.length === 0 ? (
         <p>Không có đơn hàng nào.</p>
       ) : (
