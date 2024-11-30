@@ -605,11 +605,9 @@ h5 {
 }
 
 .attached-image {
-  max-width: 600px; /* Giới hạn chiều rộng ảnh để không vượt khung */
-  max-height: 400px; /* Giới hạn chiều cao ảnh */
-  border-radius: 8px; /* Bo góc ảnh */
+  max-width: 150px; /* Giới hạn chiều rộng ảnh để không vượt khung */
+  max-height: 150px; /* Giới hạn chiều cao ảnh */
   object-fit: cover; /* Đảm bảo ảnh hiển thị phù hợp */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Đổ bóng nhẹ */
 }
 
 .title-container {
@@ -682,7 +680,13 @@ h5 {
   z-index: 9999;              /* Đảm bảo thông báo luôn nằm trên các phần tử khác */
 
 }
-
+.comment-image .attached-image {
+  max-width: 150px; /* Giới hạn chiều rộng tối đa */
+  max-height: 150px; /* Giới hạn chiều cao tối đa */
+  width: auto; /* Đảm bảo tỉ lệ giữ nguyên */
+  height: auto; /* Đảm bảo tỉ lệ giữ nguyên */
+  object-fit: cover; /* Cắt bớt nếu hình ảnh không vừa */
+}
 .toast.hide {
   opacity: 0;                /* Ẩn toast dần */
   transition: opacity 0.5s ease-in;  /* Hiệu ứng ẩn */
