@@ -134,15 +134,26 @@
     background-color: #974d7b;
 }
 
-.admin-dashboard .dashboard-container {
-    display: flex;
-    flex-direction: row;
-    margin-top: 20px;
-}
-
 .dashboard-container {
     display: flex;
-}
+    flex-direction: column;
+    gap: 20px; /* Khoảng cách giữa các hàng */
+    background-color: #ffffff;
+
+  }
+  .top-row {
+    display: flex;
+    flex-wrap: wrap; /* Cho phép xuống dòng nếu không đủ không gian */
+    justify-content: space-between;
+  }
+  
+  .bottom-row {
+    display: flex;
+    flex-wrap: wrap; /* Cho phép xuống dòng nếu không đủ không gian */
+    justify-content: space-between;
+    gap: 15px; /* Giảm khoảng cách giữa các biểu đồ trong bottom row */
+  }
+  
 .content-container {
     width: 80%;
     max-width: 600px;
@@ -151,7 +162,7 @@
     overflow: hidden;
     box-sizing: border-box;
     word-wrap: break-word;  /* Đảm bảo nội dung dài sẽ tự động xuống dòng */
-}
+} 
 .admin-buttons-container {
     flex: 0 0 260px;
     height: calc(100vh - 80px);
@@ -164,7 +175,6 @@
 
 .account-info-container {
     flex: 1;
-    height: calc(100vh - 80px);
     overflow: auto;
     background-color: #ffffff;
     border-radius: 5px;
@@ -220,7 +230,10 @@
     overflow: hidden;
     overflow: auto;
 }
-
+.chart-item h3, .pie-chart-container h2 {
+    margin-bottom: 10px; /* Giảm khoảng cách dưới tiêu đề */
+  }
+  
 .account-info {
     background: linear-gradient(135deg, #f3a8d3, #ffffff); 
     border-radius: 12px;
@@ -234,6 +247,8 @@
     margin-left: auto;
     font-family: 'Arial', sans-serif; 
     color: #333; 
+    max-height: 400px; 
+    overflow-y: auto; 
   }
   
   .account-info:hover {
@@ -474,30 +489,30 @@
     height: 20px; /* Chiều cao cho màu sắc của legend */
     margin-right: 5px; /* Khoảng cách bên phải */
 }
-.pie-chart-container {
+
+
+
+  .bottom-row .chart-item {
+    flex: 1;
+    flex: 1;
+    min-width: 250px; /* Giảm kích thước tối thiểu */
+    max-width: 300px; /* Đặt kích thước tối đa để nhỏ hơn */
+    padding: 10px; /* Giảm padding */
+
+  }
+  .top-row .chart-item {
+    flex: 1;
+    min-width: 300px; /* Đảm bảo không gian tối thiểu cho mỗi biểu đồ */
+    padding: 20px;
     text-align: center; /* Căn giữa tiêu đề và biểu đồ */
-    margin: 20px; /* Khoảng cách bên ngoài */
-    margin-left: 70px;
+    width: 300px !important; /* Giảm kích thước chiều rộng của biểu đồ Pie */
+    height: 300px !important; /* Giảm kích thước chiều cao của biểu đồ Pie */
+    margin: 0 auto; /* Căn giữa biểu đồ Pie */
+
+
   }
   
-  .pie-chart {
-    width: 200px; /* Kích thước chiều rộng của biểu đồ */
-    height: 200px; /* Kích thước chiều cao của biểu đồ */
-    margin: 0 auto; /* Căn giữa biểu đồ */
-    position: relative; /* Để có thể điều chỉnh vị trí các thành phần khác bên trong */
-  }
-  
-  .pie-chart h2 {
-    font-size: 1.5rem; /* Kích thước font tiêu đề */
-    margin-bottom: 10px; /* Khoảng cách giữa tiêu đề và biểu đồ */
-    color: #333; /* Màu sắc tiêu đề */
-  }
-  
-  /* Thêm kiểu dáng cho biểu đồ Pie nếu cần */
-  .pie-chart canvas {
-    border: 2px solid #ddd; /* Đường viền cho biểu đồ */
-    border-radius: 10px; /* Bo góc biểu đồ */
-  }
+ 
   label {
     font-size: 14px;
     font-weight: bold;
@@ -543,18 +558,19 @@
   text-align: center;
   font-size: 2.5rem;
   font-weight: bold;
-  margin-bottom: 20px;
+}
+.revenue-chart-container,
+.pie-chart-container,
+.account-info {
+  flex: 1; /* Các phần này chiếm đều không gian trong hàng trên */
 }
 
-.revenue-chart-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 800px; /* Tăng chiều cao biểu đồ */
-  width: 700px; /* Tăng chiều cao biểu đồ */
-
-}
-
+.chart-item {
+    flex: 1;
+    min-width: 250px; /* Giảm kích thước tối thiểu */
+    max-width: 300px; /* Đặt kích thước tối đa để nhỏ hơn */
+    padding: 10px; /* Giảm padding */
+  }
 .chart-wrapper {
   width: 100%;
   height: 100%;
@@ -572,7 +588,6 @@
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
   }
   
   /* Tiêu đề của biểu đồ */
@@ -601,3 +616,141 @@
     text-align: left !important;
 
   }
+  .chart-item {
+    flex: 1;
+    min-width: 300px; /* Đảm bảo không gian tối thiểu cho mỗi biểu đồ */
+    padding: 10px !important; /* Giảm padding bên trong và dùng !important để ưu tiên */
+    margin: 10px 0 !important; /* Giảm margin trên và dưới */
+    border-radius: 8px;
+    text-align: center; /* Căn giữa tiêu đề và biểu đồ */
+  }
+
+  
+  .chart-item h3 {
+    margin-bottom: 10px !important; /* Giảm khoảng cách dưới tiêu đề */
+  }
+  .chart-item {
+    flex: 1;
+    min-width: 300px; /* Đảm bảo không gian tối thiểu cho mỗi biểu đồ */
+    background-color: #f9f9f9;
+    padding: 10px !important; /* Giảm padding bên trong và dùng !important để ưu tiên */
+    margin: 10px 0 !important; /* Giảm margin trên và dưới */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Căn giữa tiêu đề và biểu đồ */
+  }
+  
+ 
+
+  
+/* Section tổng quát */
+.charts-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Khoảng cách giữa các hàng */
+  }
+  
+  /* Hàng trên cùng chứa biểu đồ lớn và Thông Tin Tài Khoản */
+  .top-chart-row {
+    display: flex;
+    justify-content: space-between; /* Khoảng cách đều giữa các phần tử */
+    gap: 20px; /* Khoảng cách giữa các khối */
+    align-items: flex-start; /* Căn các phần tử lên trên */
+  }
+  
+  /* Biểu đồ lớn */
+  .large-chart {
+    flex: 2; /* Chiếm nhiều không gian hơn */
+    min-width: 550px; /* Kích thước tối thiểu lớn */
+    max-width: 600px; /* Kích thước tối đa lớn */
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* Thông Tin Tài Khoản */
+  .highlighted-account-info {
+    flex: 1; /* Chiếm không gian nhỏ hơn */
+    max-width: 400px; /* Chiều rộng tối đa */
+    padding: 25px; /* Tăng padding cho cân đối */
+    background: linear-gradient(135deg, #ffe4ec, #fddde6); /* Gradient pastel hồng */
+    border-radius: 16px; /* Tăng bo góc mềm mại hơn */
+    box-shadow: 0 6px 15px rgba(255, 182, 193, 0.3); /* Đổ bóng nhẹ tone pastel hồng */
+    text-align: left;
+    margin-top: 30px;
+    border: 1px solid #ffc1cc; /* Viền pastel hồng nhạt */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng khi hover */
+  }
+  
+  .highlighted-account-info:hover {
+    transform: translateY(-5px); /* Nhích lên nhẹ khi hover */
+    box-shadow: 0 8px 20px rgba(255, 105, 135, 0.4); /* Tăng độ bóng khi hover */
+  }
+  
+  /* Tiêu đề trong Thông Tin Tài Khoản */
+  .highlighted-account-info h3 {
+    font-size: 26px; /* Kích thước tiêu đề */
+    font-weight: bold;
+    color: #d81b60; /* Hồng đậm nổi bật */
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ cho tiêu đề */
+  }
+  
+  /* Các dòng thông tin */
+  .highlighted-account-info .info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px; /* Khoảng cách giữa các dòng */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font nhẹ nhàng */
+    font-size: 18px; /* Kích thước chữ nhỏ hơn */
+  }
+  
+  .highlighted-account-info .info-row .label {
+    font-weight: bold;
+    color: #d81b60; /* Hồng đậm */
+  }
+  
+  .highlighted-account-info .info-row span:last-child {
+    color: #555; /* Màu xám nhẹ cho thông tin */
+    font-size: 15px; /* Giảm kích thước chữ nội dung */
+  }
+  
+  /* Hover cho nội dung dòng */
+  .highlighted-account-info .info-row span:last-child:hover {
+    color: #d81b60; /* Hồng đậm khi hover */
+    text-decoration: underline; /* Gạch dưới khi hover */
+  }
+  
+  /* Hàng dưới cùng chứa các biểu đồ nhỏ */
+  .bottom-chart-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Khoảng cách giữa các biểu đồ */
+  }
+  
+  /* Biểu đồ nhỏ */
+/* Các biểu đồ nhỏ giống nhau (tăng kích thước cho role và account type) */
+.uniform-chart {
+    flex: 1;
+    min-width: 350px !important; /* Tăng kích thước tối thiểu */
+    max-width: 350px !important; /* Tăng kích thước tối đa */
+    padding: 20px !important;
+    text-align: center !important;
+    margin-bottom: 30px;
+  }
+  
+  /* Chỉ điều chỉnh biểu đồ role-distribution-chart và account-type-chart */
+  .role-distribution-chart, 
+  .account-type-chart {
+    min-width: 400px !important; /* Lớn hơn các biểu đồ nhỏ khác */
+    max-width: 550px !important; /* Tăng kích thước tối đa */
+    padding: 25px !important; /* Tăng padding để cân đối nội dung */
+  }
+  
+  /* Biểu đồ tròn bên trong */
+  .uniform-chart .pie-chart {
+    width: 250px !important; /* Tăng kích thước chiều rộng */
+    height: 250px !important; /* Tăng kích thước chiều cao */
+    margin: 0 auto !important; /* Giữ căn giữa */
+  }
+  

@@ -53,6 +53,8 @@ const Dashboard = () => {
   const [revenueData, setRevenueData] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
   const accountID = localStorage.getItem("accountID");
+  const [dashboardData, setDashboardData] = useState(null);
+
   const handleLogoClick = () => {
     navigate("/");
   };
@@ -109,6 +111,21 @@ const Dashboard = () => {
 
     fetchOrders();
   }, [accountID, accesstoken, navigate]);
+
+
+  useEffect(() => {
+    if (accesstoken) {
+      fetch("http://localhost:8080/api/v1/admin/dashboard", {
+        headers: { Authorization: `Bearer ${accesstoken}` },
+      })
+        .then((response) => response.json())
+        .then((data) => setDashboardData(data))
+        .catch((err) => setError("Có lỗi xảy ra khi tải dữ liệu Dashboard."));
+    } else {
+      navigate("/login");
+    }
+  }, [accesstoken, navigate]);
+
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -233,6 +250,50 @@ const Dashboard = () => {
       });
   };
 
+ const roleChartData = {
+    labels: ["User", "Admin", "Staff", "Shipper"],
+    datasets: [
+      {
+        data: [
+          dashboardData?.numberUser || 0,
+          dashboardData?.numberAdmin || 0,
+          dashboardData?.numberStaff || 0,
+          dashboardData?.numberShipper || 0,
+        ],
+        backgroundColor: ["blue", "green", "orange", "red"],
+        hoverBackgroundColor: ["darkblue", "darkgreen", "darkorange", "darkred"],
+      },
+    ],
+  };
+  const typeChartData = {
+    labels: dashboardData?.typeDetails.map((type) => type.typeName) || [],
+    datasets: [
+      {
+        data: dashboardData?.accountCounts || [],
+        backgroundColor: ["#ff6384", "#36a2eb", "#cc65fe"],
+        hoverBackgroundColor: ["#ff3366", "#3399ff", "#aa55ee"],
+      },
+    ],
+  };
+  const totalChartData = {
+    labels: ["Tiền vốn", "Doanh thu đã thanh toán", "Hóa đơn chưa thanh toán"],
+    datasets: [
+      {
+        label: "Số tiền (VND)",
+        data: [
+          dashboardData?.totalCost || 0,
+          dashboardData?.totalGetYes || 0,
+          dashboardData?.totalPaidNo || 0,
+        ],
+        backgroundColor: ["#8e44ad", "#27ae60", "#e74c3c"],
+        borderColor: ["#732d91", "#1e8449", "#c0392b"],
+        borderWidth: 1,
+      },
+    ],
+  };
+  if (!dashboardData) {
+    return <p>Đang tải dữ liệu...</p>;
+  }
   // Các hàm chuyển hướng
   const handleNavigate = (path) => {
     navigate(path);
@@ -320,60 +381,82 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="account-info-container">
-            <div className="revenue-chart-container">
-              <h2>Thống kê doanh thu theo tháng</h2>
-              <h3 className="total-revenue">
-                Tổng doanh thu: {totalRevenue.toLocaleString()} VND
-              </h3>
-              <Bar data={chartData} />
-            </div>
-
-            <div className="pie-chart-container">
-              <h2>Thống kê đánh giá</h2>
-              {reviewList.length > 0 ? (
-                <Pie data={getChartData()} />
-              ) : (
-                <p>Đang tải hoặc không có đánh giá</p>
-              )}
-            </div>
-            <div className="account-info">
-              <h3>Thông Tin Tài Khoản</h3>
-              {accesstoken && accountInfo ? (
-                <div>
-                  <div className="info-row">
-                    <span className="label">ID Account:</span>
-                    <span>{accountInfo.id}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Tên:</span>
-                    <span>{accountInfo.name}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Role:</span>
-                    <span>{accountInfo.role}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Address:</span>
-                    <span>{accountInfo.address}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Phone:</span>
-                    <span>{accountInfo.phonenumber}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Email:</span>
-                    <span>{accountInfo.email}</span>
-                  </div>
-                </div>
-              ) : (
-                <p>Đang tải thông tin tài khoản...</p>
-              )}
-              {error && <p className="error">{error}</p>}
-              {!accesstoken && <p>Không có thông tin đăng nhập.</p>}
-            </div>
+          <div className="charts-section">
+  {/* Hàng 1 */}
+  <div className="top-chart-row">
+    <div className="large-chart monthly-revenue-chart">
+      <h2>Thống kê doanh thu theo tháng</h2>
+      <h3 className="total-revenue">
+        Tổng doanh thu: {totalRevenue.toLocaleString()} VND
+      </h3>
+      <Bar data={chartData} />
+    </div>
+    <div className="large-chart financial-summary-chart">
+      <h3>Thống kê tài chính</h3>
+      <Bar data={totalChartData} />
+    </div>
+    <div className="highlighted-account-info">
+      <h3>Thông Tin Tài Khoản</h3>
+      {accesstoken && accountInfo ? (
+        <div>
+          <div className="info-row">
+            <span className="label">ID Account:</span>
+            <span>{accountInfo.id}</span>
+          </div>
+          <div className="info-row">
+            <span className="label">Tên:</span>
+            <span>{accountInfo.name}</span>
+          </div>
+          <div className="info-row">
+            <span className="label">Role:</span>
+            <span>{accountInfo.role}</span>
+          </div>
+          <div className="info-row">
+            <span className="label">Address:</span>
+            <span>{accountInfo.address}</span>
+          </div>
+          <div className="info-row">
+            <span className="label">Phone:</span>
+            <span>{accountInfo.phonenumber}</span>
+          </div>
+          <div className="info-row">
+            <span className="label">Email:</span>
+            <span>{accountInfo.email}</span>
           </div>
         </div>
+      ) : (
+        <p>Đang tải thông tin tài khoản...</p>
+      )}
+    </div>
+  </div>
+
+  {/* Hàng 2 */}
+  <div className="bottom-chart-row">
+    <div className="uniform-chart role-distribution-chart">
+      <h3>Số lượng tài khoản theo vai trò</h3>
+      <div className="pie-chart">
+        <Pie data={roleChartData} />
+      </div>
+    </div>
+    <div className="uniform-chart review-summary-chart">
+      <h2>Thống kê đánh giá</h2>
+      {reviewList.length > 0 ? (
+        <Pie data={getChartData()} />
+      ) : (
+        <p>Đang tải hoặc không có đánh giá</p>
+      )}
+    </div>
+    <div className="uniform-chart account-type-chart">
+      <h3>Số lượng tài khoản theo loại</h3>
+      <div className="pie-chart">
+        <Pie data={typeChartData} />
+      </div>
+    </div>
+  </div>
+</div>
+
+
+      </div>
       </div>
     </div>
   );
