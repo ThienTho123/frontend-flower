@@ -211,7 +211,7 @@ const StaffFlowerImage = () => {
         <button onClick={handleUploadImage}>Upload Image</button>
         {imageUrl && <img src={imageUrl} alt="Flower" style={{ width: 100 }} />}
         <br></br>
-        <label>Flower:</label>
+        <label>Tên hoa:</label>
         <select
           value={newFlowerImage.flower.flowerID || ""}
           onChange={(e) =>
@@ -229,7 +229,7 @@ const StaffFlowerImage = () => {
           ))}
         </select>
 
-        <label>Status:</label>
+        <label>Trạng thái:</label>
         <select
           value={newFlowerImage.status}
           onChange={(e) =>

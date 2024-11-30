@@ -284,7 +284,7 @@ const StaffFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, cost: e.target.value }))
           }
         />
-        <label>Loại hoa:</label>
+        <label>Tên hoa:</label>
         <select
           value={newFlowerSize.flower.flowerID || ""}
           onChange={(e) =>
