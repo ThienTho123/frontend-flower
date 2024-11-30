@@ -90,6 +90,7 @@ const Profile = () => {
           },
         }
       );
+      setProfileForm(response.data);
       console.log(response.data);
       
       // Lấy thông tin loại tài khoản từ `type.typeName`
@@ -103,7 +104,6 @@ const Profile = () => {
       console.log("Error fetching user info:", error);
     }
   };
-  
 
   useEffect(() => {
     if (accountID && access_token) {
@@ -138,7 +138,7 @@ const Profile = () => {
     console.log("avatarLink"+avatarLink);
     try {
       const response = await axios.put(
-        "http://localhost:8080/account/updateinfo",
+        "http://localhost:8080/staffaccount/updateinfo",
         {
           name: profileForm.name,
           email: profileForm.email,
@@ -183,7 +183,7 @@ const Profile = () => {
               {error.name && <span className="profile-page__error">{error.name}</span>}
             </div>
           </div>
-
+  
           {/* Email */}
           <div className="profile-page__group">
             <div className="profile-page__icon">
@@ -202,7 +202,7 @@ const Profile = () => {
               {error.email && <span className="profile-page__error">{error.email}</span>}
             </div>
           </div>
-
+  
           {/* Số điện thoại */}
           <div className="profile-page__group">
             <div className="profile-page__icon">
@@ -222,7 +222,7 @@ const Profile = () => {
             </div>
           </div>
         </section>
-
+  
         <section className="profile-page__section">
           {/* Địa chỉ */}
           <div className="profile-page__group">
@@ -242,60 +242,25 @@ const Profile = () => {
               {error.address && <span className="profile-page__error">{error.address}</span>}
             </div>
           </div>
-
-            {/* Role */}
-            <div className="profile-form-group">
-              <div className="form-icon">
-                <img src={roleImg} alt="role" />
-              </div>
-              <div className="form-input">
-                <label htmlFor="role">Người dùng</label>
-                <input
-                  id="role"
-                  type="text"
-                  defaultValue={profileForm.role}
-                  name="role"
-                  disabled
-                />
-              </div>
-
-              
+  
+          {/* Role */}
+          <div className="profile-page__group">
+            <div className="profile-page__icon">
+              <img src={roleImg} alt="role" />
             </div>
-
-            <div className="profile-form-group">
-              <div className="form-icon">
-                <img src="/istockphoto-1330591104-612x612 (1).jpg" alt="role" />
-              </div>
-              <div className="form-input">
-                <label htmlFor="role">Chi tiêu</label>
-                <input
-                  type="text"
-                  defaultValue={profileForm.consume}
-                  name="role"
-                  disabled
-                />
-              </div>
+            <div className="profile-page__input">
+              <label htmlFor="role">Người dùng</label>
+              <input
+                id="role"
+                type="text"
+                defaultValue={profileForm.role}
+                name="role"
+                disabled
+              />
             </div>
-
-            <div className="profile-form-group">
-              <div className="form-icon">
-                <img src={roleImg} alt="role" />
-              </div>
-              <div className="form-input">
-                <label htmlFor="role">Loại tài khoản</label>
-                <input
-                  id="role"
-                  type="text"
-                  value={profileForm.typeName || ''}  // Hiển thị loại tài khoản từ state
-                  name="role"
-                  disabled
-                />
-              </div>
-            </div>
-
-              
-          </section>
-
+          </div>
+        </section>
+  
         {/* Avatar upload */}
         {isEditable && (
           <section className="profile-page__section">
@@ -314,7 +279,7 @@ const Profile = () => {
             </div>
           </section>
         )}
-
+  
         <div className="profile-page__button-container">
           {!isEditable && (
             <button type="button" onClick={handleEdit} className="profile-page__button">
@@ -330,7 +295,8 @@ const Profile = () => {
       </form>
     </div>
   </div>
-);
+  
+  );
 };
 
 export default Profile;
