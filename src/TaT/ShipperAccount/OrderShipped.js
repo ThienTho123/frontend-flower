@@ -68,7 +68,6 @@ const OrderShipped = () => {
                 <th>Địa chỉ</th>
                 <th>Ngày nhận</th>
                 <th>Trạng thái</th>
-                <th>Chi tiết</th>
               </tr>
             </thead>
             <tbody>
@@ -90,14 +89,7 @@ const OrderShipped = () => {
                   <td>{comment.deliveryAddress}</td>
                   <td>{comment.dateStart}</td>
                   <td>{comment.condition}</td>
-                  <td>
-                    <Link
-                      to={`/shipperaccount/ordershipped/${comment.id}`}
-                      className="comment-link"
-                    >
-                      Xem{" "}
-                    </Link>
-                  </td>
+                  
                 </tr>
               ))}
             </tbody>

@@ -143,7 +143,6 @@ const ProfileShipper = () => {
           },
         }
       );
-      alert(response.data);
 
     } catch (error) {
       console.error("Error updating account:", error);
