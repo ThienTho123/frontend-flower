@@ -96,8 +96,9 @@ const Profile = () => {
       const userData = response.data;
       setProfileForm({
         ...userData,
-        typeName: userData.type.typeName,  // Lấy thông tin loại tài khoản
+        typeName: userData.typeName,  // Lấy thông tin loại tài khoản
       });
+      console.log("profileform: "+profileForm);
     } catch (error) {
       console.log("Error fetching user info:", error);
     }
