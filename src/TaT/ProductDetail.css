@@ -679,6 +679,8 @@ h5 {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Hiệu ứng bóng đổ */
   opacity: 1;
   transition: opacity 0.5s ease-out; /* Hiệu ứng mờ dần */
+  z-index: 9999;              /* Đảm bảo thông báo luôn nằm trên các phần tử khác */
+
 }
 
 .toast.hide {

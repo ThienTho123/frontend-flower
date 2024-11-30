@@ -89,10 +89,14 @@
 }
 
 .prebuy-product-size-select {
-    font-size: 18px;
-    padding: 10px;
-    border-radius: 5px;
-}
+    font-size: 16px; /* Giảm kích thước font chữ */
+    padding: 5px 10px; /* Giảm padding bên trong */
+    width: 160px; /* Điều chỉnh chiều rộng của select */
+    height: 30px; /* Giảm chiều cao của select */
+    border-radius: 5px; /* Bo góc nhẹ */
+    border: 1px solid #ccc; /* Đảm bảo có viền */
+    background-color: #f9f9f9; /* Màu nền nhẹ */
+  }
 
 /* Khoảng cách và kích thước cho phần số lượng và nút xóa */
 .prebuy-label {
