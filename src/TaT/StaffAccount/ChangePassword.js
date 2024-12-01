@@ -80,45 +80,67 @@ const ChangeStaffPassword = () => {
   return (
     <div className="change-password-container">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <label htmlFor="currentPassword">Mật khẩu</label>
-          <input
-            id="currentPassword"
-            name="currentPassword"
-            type="password"
-            value={passwordForm.currentPassword}
-            onChange={handleChange}
-            required
-          />
-          {error.currentPassword && <p className="error-message">{error.currentPassword}</p>}
-        </div>
-        <div className="space-y-2">
-          <label htmlFor="newPassword">Mật khẩu mới</label>
-          <input
-            id="newPassword"
-            name="newPassword"
-            type="password"
-            value={passwordForm.newPassword}
-            onChange={handleChange}
-            required
-          />
-          {error.newPassword && <p className="error-message">{error.newPassword}</p>}
-        </div>
-        <div className="space-y-2">
-          <label htmlFor="confirmPassword">Xác nhận mật khẩu mới</label>
-          <input
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            value={passwordForm.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-          {error.confirmPassword && <p className="error-message">{error.confirmPassword}</p>}
-        </div>
+      <div className="space-y-2">
+  <label htmlFor="currentPassword">Mật khẩu hiện tại</label>
+  <input
+    id="currentPassword"
+    name="currentPassword"
+    type="password"
+    value={passwordForm.currentPassword}
+    onChange={handleChange}
+    required
+  />
+  {error.currentPassword && (
+    <p style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}>
+      {error.currentPassword}
+    </p>
+  )}
+</div>
+
+<div className="space-y-2">
+  <label htmlFor="newPassword">Mật khẩu mới</label>
+  <input
+    id="newPassword"
+    name="newPassword"
+    type="password"
+    value={passwordForm.newPassword}
+    onChange={handleChange}
+    required
+  />
+  {error.newPassword && (
+    <p style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}>
+      {error.newPassword}
+    </p>
+  )}
+</div>
+
+<div className="space-y-2">
+  <label htmlFor="confirmPassword">Xác nhận mật khẩu mới</label>
+  <input
+    id="confirmPassword"
+    name="confirmPassword"
+    type="password"
+    value={passwordForm.confirmPassword}
+    onChange={handleChange}
+    required
+  />
+  {error.confirmPassword && (
+    <p style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}>
+      {error.confirmPassword}
+    </p>
+  )}
+</div>
+
         <button type="submit">Đổi mật khẩu</button>
-        {error.message && <p className="error-message">{error.message}</p>}
-      </form>
+        {error.message && (
+  <p
+    className="error-notice"
+    style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}
+  >
+    {error.message}
+  </p>
+)}
+        </form>
     </div>
   );
 };

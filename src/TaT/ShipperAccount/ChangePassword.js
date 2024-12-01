@@ -91,8 +91,11 @@ const ChangeShipperPassword = () => {
             onChange={handleChange}
             required
           />
-          {error.currentPassword && <p className="error-message">{error.currentPassword}</p>}
-        </div>
+  {error.currentPassword && (
+    <p style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}>
+      {error.currentPassword}
+    </p>
+  )}        </div>
         <div className="space-y-2">
           <label htmlFor="newPassword">Mật khẩu mới</label>
           <input
@@ -103,8 +106,11 @@ const ChangeShipperPassword = () => {
             onChange={handleChange}
             required
           />
-          {error.newPassword && <p className="error-message">{error.newPassword}</p>}
-        </div>
+  {error.newPassword && (
+    <p style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}>
+      {error.newPassword}
+    </p>
+  )}        </div>
         <div className="space-y-2">
           <label htmlFor="confirmPassword">Xác nhận mật khẩu mới</label>
           <input
@@ -115,11 +121,20 @@ const ChangeShipperPassword = () => {
             onChange={handleChange}
             required
           />
-          {error.confirmPassword && <p className="error-message">{error.confirmPassword}</p>}
-        </div>
+  {error.confirmPassword && (
+    <p style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}>
+      {error.confirmPassword}
+    </p>
+  )}        </div>
         <button type="submit">Đổi mật khẩu</button>
-        {error.message && <p className="error-message">{error.message}</p>}
-      </form>
+        {error.message && (
+  <p
+    className="error-notice"
+    style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}
+  >
+    {error.message}
+  </p>
+)}      </form>
     </div>
   );
 };
