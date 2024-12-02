@@ -739,13 +739,16 @@ const PreBuy = () => {
             >
               <option value="">Chọn mã giảm giá</option>
               {discounts.map((discount) => (
-              <option key={discount.discountID} value={discount.discountID}>
-                {discount.categoryID
-                  ? `Giảm ${discount.discountPercent}% cho ${discount.categoryID.categoryName}`
-                  : `Giảm ${discount.discountPercent}% (${discount.type?.typeName || "Không xác định"})`}
-              </option>
-            ))}
+                <option key={discount.discountID} value={discount.discountID}>
+                  {discount.categoryID
+                    ? `Giảm ${discount.discountPercent}% cho ${discount.categoryID.categoryName}`
+                    : `Giảm ${discount.discountPercent}%`}
+                  {discount.type?.typeName && ` (${discount.type.typeName})`}
+                  {discount.purpose && ` cho ${discount.purpose.purposeName}`}
+                </option>
+              ))}
             </select>
+
             <button onClick={handleApplyDiscount} className="prebuy-button">
               Áp dụng
             </button>
