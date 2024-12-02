@@ -87,44 +87,47 @@ const StaffFlower = () => {
   };
 
   const handleSave = async (id, flowerData) => {
+    if (!flowerData.name || !flowerData.description || !flowerData.languageOfFlowers || !flowerData.category.categoryID || !flowerData.purpose.purposeID|| 
+      !flowerData.image) {
+      setError("Vui lòng điền đầy đủ thông tin bắt buộc.");
+      return;
+    }
     try {
-      const formattedData = { ...flowerData };
-      console.log("Data to be saved (Edit):", JSON.stringify(formattedData));
-
-      const response = await fetch(
-        `http://localhost:8080/api/v1/staff/flower/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(formattedData),
-        }
-      );
-
+      const response = await fetch(`http://localhost:8080/api/v1/staff/flower/${id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(flowerData),
+      });
+  
       if (response.ok) {
         const updatedFlower = await response.json();
         setFlowerList((prev) =>
           prev.map((flower) => (flower.flowerID === id ? updatedFlower : flower))
         );
         setEditingFlowerId(null);
+        setError(null); // Reset lỗi khi thành công
         window.location.reload();
-
       } else {
-        throw new Error("Unable to update flower.");
+        throw new Error("Không thể cập nhật hoa.");
       }
     } catch (err) {
       setError(err.message);
     }
   };
+  
 
   const handleCreate = async () => {
+    if (!newFlower.name || !newFlower.description || !newFlower.languageOfFlowers || !newFlower.category.categoryID || !newFlower.purpose.purposeID|| 
+      !newFlower.image) {
+      setError("Vui lòng điền đầy đủ thông tin bắt buộc.");
+      return;
+    }
     try {
       const formattedData = { ...newFlower };
-      console.log("Data to be created (New Flower):", JSON.stringify(formattedData));
-
       const response = await fetch("http://localhost:8080/api/v1/staff/flower", {
         method: "POST",
         headers: {
@@ -134,7 +137,7 @@ const StaffFlower = () => {
         credentials: "include",
         body: JSON.stringify(formattedData),
       });
-
+  
       if (response.ok) {
         const createdFlower = await response.json();
         setFlowerList([...flowerList, createdFlower]);
@@ -147,17 +150,16 @@ const StaffFlower = () => {
           purpose: { purposeID: null },
           status: "ENABLE",
         });
+        setError(null); // Reset lỗi khi thành công
         window.location.reload();
-
-        window.scrollTo(0, document.body.scrollHeight);
-
       } else {
-        throw new Error("Unable to create flower.");
+        throw new Error("Không thể tạo hoa.");
       }
     } catch (err) {
       setError(err.message);
     }
   };
+  
 
   const handleEdit = (flower) => {
     setEditingFlowerId(flower.flowerID);
@@ -292,6 +294,7 @@ const StaffFlower = () => {
           {editingFlowerId ? "Lưu thay đổi" : "Thêm hoa"}
         </button>
       </div>
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
       <h3>Danh sách hoa</h3>
       <table>
