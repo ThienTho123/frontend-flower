@@ -104,50 +104,51 @@ const StaffOrder = () => {
 
   const handleSave = async (id, status, paid, condition) => {
     const orderToUpdate = orders.find((order) => order.orderID === id);
-    if (validationError) {
-      alert("Vui lòng nhập đúng thông tin.");
+  
+    // Kiểm tra các trường bắt buộc
+    if (
+      !orderToUpdate.totalAmount ||
+      !orderToUpdate.deliveryAddress ||
+      !orderToUpdate.phoneNumber ||
+      !orderToUpdate.name ||
+      (orderToUpdate.shipping && !orderToUpdate.shipping.shippingID) || // Nếu có shipping thì kiểm tra shippingID
+      !orderToUpdate.note
+    ) {
+      setError("Vui lòng điền đầy đủ thông tin.");
       return;
     }
-    // Kiểm tra nếu order không có shipping, set shipping là null
+  
+    // Cấu trúc dữ liệu shipping
     const updatedShipping = orderToUpdate.shipping
       ? {
           ...orderToUpdate.shipping,
-          shippingID: orderToUpdate.shipping.shippingID, // Cập nhật shippingID nếu có
+          shippingID: orderToUpdate.shipping.shippingID,
         }
       : null;
   
-    // Log để kiểm tra dữ liệu
-    console.log("Order to update:", {
-      ...orderToUpdate,
-      status,
-      paid,
-      condition,
-      shipping: updatedShipping, // Gửi shipping đã được xử lý
-    });
-  
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/v1/staff/order/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...orderToUpdate,
-            status,
-            paid,
-            condition,
-            shipping: updatedShipping, // Gửi shipping đã được xử lý
-          }),
-        }
-      );
+      const response = await fetch(`http://localhost:8080/api/v1/staff/order/${id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...orderToUpdate,
+          status,
+          paid,
+          condition,
+          shipping: updatedShipping,
+        }),
+      });
   
       if (response.ok) {
         const updatedOrder = await response.json();
-        setOrders(orders.map((order) => (order.orderID === id ? updatedOrder : order)));
+        setOrders((prevOrders) =>
+          prevOrders.map((order) => (order.orderID === id ? updatedOrder : order))
+        );
         setEditingOrderId(null);
+        setError(null); // Reset lỗi khi thành công
       } else {
         throw new Error("Không thể cập nhật đơn hàng.");
       }
