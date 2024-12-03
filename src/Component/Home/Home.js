@@ -6,7 +6,7 @@ import "./Home.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ImageHome from '../assets/RectangleHome.png'; 
-
+const backendURL = process.env.REACT_APP_BACKEND_URL;
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleDateString("vi-VN");
@@ -21,7 +21,8 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/homepage");
+        console.log("BackendURL: ",backendURL);
+        const response = await axios.get(`${backendURL}/homepage`);
         console.log(response.data);
         setBanners(response.data.bannerList);
         setHotProducts(response.data.productList);
