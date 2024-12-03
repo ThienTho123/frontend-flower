@@ -1,72 +1,58 @@
 
-# Hướng Dẫn Triển Khai Dự Án
+# 🌺 Website Bán Hoa 🌷
+
+Chào mừng bạn đến với **Website Bán Hoa** - một nền tảng giúp khách hàng dễ dàng mua sắm và tìm hiểu về các loài hoa. Dự án được thiết kế với giao diện thân thiện, tích hợp các tính năng quản lý sản phẩm, giỏ hàng, và thanh toán trực tuyến.
+
+## 🎨 Tổng Quan
+**Website Bán Hoa** cung cấp:
+- 🌼 **Danh mục hoa đa dạng**: Phù hợp với mọi nhu cầu như quà tặng, trang trí sự kiện, và hơn thế nữa.
+- 🛒 **Giỏ hàng tiện lợi**: Tích hợp quy trình thanh toán đơn giản.
+- 📊 **Quản lý dễ dàng**: Hệ thống backend hỗ trợ quản lý sản phẩm, hóa đơn, và khách hàng hiệu quả.
+
+![Hình ảnh giao diện](https://drive.google.com/uc?id=1-W4NtWlcNTchihlsT6n9HBRm0USlp2Lp)
 
 ---
 
 ## 1. Yêu Cầu Hệ Thống
-Để triển khai và chạy dự án, đảm bảo rằng bạn đã cài đặt các công cụ sau:
 - **Java JDK** (phiên bản 8 trở lên)
-- **IntelliJ IDEA** hoặc một IDE hỗ trợ Spring Boot
 - **Node.js** (phiên bản 16 trở lên)
-- **MySQL** (hoặc một hệ quản trị cơ sở dữ liệu tương thích)
-- **Visual Studio Code** (hoặc IDE tương tự để phát triển React)
-- **Git** để clone dự án từ GitHub
+- **MySQL** hoặc hệ quản trị cơ sở dữ liệu tương thích
+- **Git** để clone mã nguồn
+- **IntelliJ IDEA** và **Visual Studio Code**
 
 ---
 
 ## 2. Hướng Dẫn Cài Đặt
-
 ### 2.1 Clone hoặc Tải Dự Án
-- **Backend**: Clone hoặc tải mã nguồn từ [Backend Repository](https://github.com/TXTThien/FlowerShop.git)
-- **Frontend**: Clone hoặc tải mã nguồn từ [Frontend Repository](https://github.com/ThienTho123/frontend-flower.git)
-
----
+- **Backend**: Clone từ [Backend Repository](https://github.com/TXTThien/FlowerShop.git)
+- **Frontend**: Clone từ [Frontend Repository](https://github.com/ThienTho123/frontend-flower.git)
 
 ### 2.2 Cài Đặt Cơ Sở Dữ Liệu
-1. Mở MySQL Workbench hoặc công cụ quản lý cơ sở dữ liệu khác.
-2. Import file `flowershop.sql` từ thư mục **Backend** để khởi tạo cơ sở dữ liệu.
-
----
+1. Import file `flowershop.sql` vào MySQL.
+2. Đảm bảo MySQL đang chạy trên cổng mặc định (`3306`) hoặc thay đổi phù hợp.
 
 ### 2.3 Cấu Hình Backend
-1. Mở thư mục **backend** trong **IntelliJ IDEA**.
-2. Điều chỉnh cấu hình cơ sở dữ liệu trong file `application.properties`:
-   ```properties
-   spring.datasource.url=jdbc:mysql://localhost:<Cổng>/flowershop
-   spring.datasource.username=<Tên người dùng>
-   spring.datasource.password=<Mật khẩu>
-   ```
-3. (Tuỳ chọn) Nếu muốn thay đổi Firebase lưu trữ hình ảnh:
-   - Thay thế tệp `GoogleCloudConsole.json` trong thư mục dự án bằng file cấu hình Firebase của bạn.
+```properties
+spring.datasource.url=jdbc:mysql://<Địa chỉ máy chủ>:<Cổng>/flowershop
+spring.datasource.username=<Tên người dùng>
+spring.datasource.password=<Mật khẩu>
+```
+> **Ghi chú:**
+> - `<Địa chỉ máy chủ>` mặc định là `localhost`.
+> - `<Cổng>` mặc định là `3306`, thay đổi nếu sử dụng cổng khác.
 
----
-
-### 2.4 Thiết Lập Server Backend
-1. Trong **IntelliJ IDEA**, mở menu **Run > Edit Configurations…**.
-2. Thêm cấu hình mới:
-   - Chọn **Spring Boot** và chỉ định `Main class` là file chính của ứng dụng (ví dụ: `SpringbootdemoApplication`).
-   - Đặt tên cho server nếu cần, sau đó nhấn **Apply**.
-3. Để chạy server backend:
-   - Bấm **Run** hoặc chọn trực tiếp file chính `SpringbootdemoApplication`, sau đó bấm **Run**.
-4. Kiểm tra hoạt động của server bằng cách truy cập:
-   ```
-   http://localhost:8080/swagger-ui/index.html
-   ```
-
----
-
-### 2.5 Cài Đặt Frontend
-1. Mở thư mục **frontend** bằng **Visual Studio Code**.
-2. Mở terminal, chạy lệnh:
+### 2.4 Cấu Hình Frontend
+1. Mở thư mục frontend trong **Visual Studio Code**.
+2. Chạy lệnh:
    ```bash
    npm i --force
    ```
    để cài đặt các gói cần thiết.
-3. Sau khi cài đặt hoàn tất, tiếp tục chạy:
+3. Sau khi cài đặt hoàn tất, chạy lệnh:
    ```bash
    npm start
    ```
-   để khởi động ứng dụng frontend.
+   để khởi động ứng dụng.
 
 ---
 
@@ -80,9 +66,9 @@
 - Hãy đảm bảo rằng cổng `8080` (backend) và `8000` (frontend) không bị sử dụng bởi ứng dụng khác.
 - Trong trường hợp gặp lỗi, kiểm tra lại cấu hình cơ sở dữ liệu hoặc liên hệ nhóm phát triển để được hỗ trợ.
 
---- 
+---
 
 ## 5. Thông Tin Liên Hệ
-- **Nhóm Phát Triển**: 
+- **Nhóm Phát Triển**:
   - Backend: [TXTThien](https://github.com/TXTThien)
-  - Frontend: [ThienTho123](https://github.com/ThienTho123) 
+  - Frontend: [ThienTho123](https://github.com/ThienTho123)
