@@ -22,7 +22,7 @@ const HomePage = () => {
     const fetchData = async () => {
       try {
         console.log('BackendURL:', process.env.REACT_APP_BACKEND_URL);
-        const response = await axios.get(`${backendURL}/homepage`);
+        const response = await axios.get(`${backendURL}`);
         console.log(response.data);
         setBanners(response.data.bannerList);
         setHotProducts(response.data.productList);
