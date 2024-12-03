@@ -21,7 +21,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("BackendURL: ",backendURL);
+        console.log('BackendURL:', process.env.REACT_APP_BACKEND_URL);
         const response = await axios.get(`${backendURL}/homepage`);
         console.log(response.data);
         setBanners(response.data.bannerList);
