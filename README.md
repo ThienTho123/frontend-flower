@@ -14,57 +14,69 @@ Chào mừng bạn đến với **Website Bán Hoa** - một nền tảng giúp 
 ---
 
 ## 1. Yêu Cầu Hệ Thống
-- **Java JDK** (phiên bản 8 trở lên)
-- **Node.js** (phiên bản 16 trở lên)
-- **MySQL** hoặc hệ quản trị cơ sở dữ liệu tương thích
-- **Git** để clone mã nguồn
-- **IntelliJ IDEA** và **Visual Studio Code**
+
+- **Java JDK** (phiên bản 8 trở lên)  
+- **Node.js** (phiên bản 16 trở lên)  
+- **MySQL** hoặc hệ quản trị cơ sở dữ liệu tương thích  
+- **Git** để quản lý mã nguồn  
+- **IntelliJ IDEA** và **Visual Studio Code**  
 
 ---
 
 ## 2. Hướng Dẫn Cài Đặt
-### 2.1 Clone hoặc Tải Dự Án
+
+### Bước 1: Clone hoặc Tải Dự Án
 - **Backend**: Clone từ [Backend Repository](https://github.com/TXTThien/FlowerShop.git)
 - **Frontend**: Clone từ [Frontend Repository](https://github.com/ThienTho123/frontend-flower.git)
 
-### 2.2 Cài Đặt Cơ Sở Dữ Liệu
+### Bước 2: Cài Đặt Cơ Sở Dữ Liệu
 1. Import file `flowershop.sql` vào MySQL.
 2. Đảm bảo MySQL đang chạy trên cổng mặc định (`3306`) hoặc thay đổi phù hợp.
 
-### 2.3 Cấu Hình Backend
-```properties
-spring.datasource.url=jdbc:mysql://<Địa chỉ máy chủ>:<Cổng>/flowershop
-spring.datasource.username=<Tên người dùng>
-spring.datasource.password=<Mật khẩu>
-```
-> **Ghi chú:**
-> - `<Địa chỉ máy chủ>` mặc định là `localhost`.
-> - `<Cổng>` mặc định là `3306`, thay đổi nếu sử dụng cổng khác.
+### Bước 3: Cấu Hình Backend
+1. Mở **IntelliJ IDEA** và truy cập thư mục backend.
+2. Chỉnh sửa cấu hình cơ sở dữ liệu trong file `application.properties` như sau:
+    ```properties
+    spring.datasource.url=jdbc:mysql://<Địa chỉ máy chủ>:<Cổng>/flowershop
+    spring.datasource.username=<Tên người dùng>
+    spring.datasource.password=<Mật khẩu>
+    ```
+    - `<Địa chỉ máy chủ>` mặc định là `localhost`.
+    - `<Cổng>` mặc định là `3306`, thay đổi nếu cần.
+3. Nếu muốn thay đổi nơi lưu trữ hình ảnh, chỉnh sửa khóa key trong file `GoogleCloudConsole.json`.
 
-### 2.4 Cấu Hình Frontend
-1. Mở thư mục frontend trong **Visual Studio Code**.
-2. Chạy lệnh:
-   ```bash
-   npm i --force
-   ```
-   để cài đặt các gói cần thiết.
+### Bước 4: Thiết Lập Server Backend
+1. Trên thanh header, bấm vào **Current File**, chọn **Edit Configurations…** để mở hộp thoại cấu hình server.
+2. Chọn **Add New…**, kéo xuống chọn **Spring Boot**.
+3. Nhập tên file main class hoặc bấm vào biểu tượng để chọn file đó. Bấm **Apply** để hoàn tất.
+
+### Bước 5: Chạy Server Backend
+1. Bấm nút **Run** hoặc chọn trực tiếp file `SpringbootdemoApplication`, sau đó chọn **Current File** và bấm **Run**.
+2. Truy cập vào địa chỉ sau để kiểm tra:
+   [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
+### Bước 6: Cấu Hình Frontend
+1. Mở **Visual Studio Code** và truy cập thư mục frontend.
+2. Mở terminal và chạy lệnh:
+    ```bash
+    npm i --force
+    ```
 3. Sau khi cài đặt hoàn tất, chạy lệnh:
-   ```bash
-   npm start
-   ```
-   để khởi động ứng dụng.
+    ```bash
+    npm start
+    ```
 
 ---
 
 ## 3. Liên Kết Kiểm Tra
 - **Backend API Documentation**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
-- **Frontend**: Sau khi chạy `npm start`, truy cập [http://localhost:8000](http://localhost:8000) để xem giao diện người dùng.
+- **Frontend**: Sau khi chạy `npm start`, truy cập [http://localhost:8000](http://localhost:8000).
 
 ---
 
 ## 4. Ghi Chú
-- Hãy đảm bảo rằng cổng `8080` (backend) và `8000` (frontend) không bị sử dụng bởi ứng dụng khác.
-- Trong trường hợp gặp lỗi, kiểm tra lại cấu hình cơ sở dữ liệu hoặc liên hệ nhóm phát triển để được hỗ trợ.
+- Đảm bảo rằng các cổng `8080` (backend) và `8000` (frontend) không bị xung đột.
+- Nếu gặp lỗi, kiểm tra lại cấu hình cơ sở dữ liệu hoặc liên hệ nhóm phát triển để được hỗ trợ.
 
 ---
 
