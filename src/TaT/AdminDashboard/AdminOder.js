@@ -460,9 +460,7 @@ const AdminOrder = () => {
                       <button onClick={() => handleSoftDelete(order.orderID)}>
                         Vô hiệu hóa
                       </button>
-                      <button onClick={() => handleHardDelete(order.orderID)}>
-                        Xóa
-                      </button>
+
                     </>
                   )}
                 </td>

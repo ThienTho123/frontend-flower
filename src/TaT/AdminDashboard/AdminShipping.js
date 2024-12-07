@@ -424,9 +424,7 @@ const AdminShipping = () => {
                       <button onClick={() => handleDeleteSoft(shipping.shippingID)}>
                         Vô hiệu hóa
                       </button>
-                      <button onClick={() => handleDeleteHard(shipping.shippingID)}>
-                        Xóa
-                      </button>
+
                     </>
                   )}
                 </td>

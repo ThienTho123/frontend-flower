@@ -20,6 +20,9 @@ import commenttypeIcon from "./ImageDashboard/commenttype.png"; // Hình ảnh c
 import cartIcon from "./ImageDashboard/cart.png"; // Hình ảnh cho quản lý Review
 import pureposeIcon from "./ImageDashboard/purpose.png"; // Hình ảnh cho quản lý Review
 import repcommentIcon from "./ImageDashboard/repcomment.png"; // Hình ảnh cho quản lý Review
+import deliveryIcon from "./ImageDashboard/delivery.png"; // Hình ảnh cho quản lý Review
+import cancelIcon from "./ImageDashboard/cancel.png"; // Hình ảnh cho quản lý Review
+
 import logo from "./ImageDashboard/logo.png"; // Hình ảnh cho quản lý Review
 import exit from "./ImageDashboard/exit.png"; // Hình ảnh cho quản lý Review
 import { Bar } from "react-chartjs-2"; // Biểu đồ cột
@@ -352,8 +355,12 @@ const Dashboard = () => {
                 Thông tin đơn hàng
               </button>
               <button onClick={() => handleNavigate("/AdminDelivery")}>
-                <img src={billInfoIcon} alt="Quản lý giao hàng" />{" "}
+                <img src={deliveryIcon} alt="Quản lý giao hàng" />{" "}
                 Quản lý giao hàng
+              </button>
+              <button onClick={() => handleNavigate("/AdminCanceldelivery")}>
+                <img src={cancelIcon} alt="Quản lý đơn hủy" />{" "}
+                Quản lý đơn hủy
               </button>
               <button onClick={() => handleNavigate("/AdminCategory")}>
                 <img src={pureposeIcon} alt="Quản lý Category" /> Category

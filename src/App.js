@@ -20,6 +20,7 @@ import AdminShipping from "./TaT/AdminDashboard/AdminShipping";
 import NeedShip from './TaT/ShipperAccount/NeedShip.js';
 import AdminType from "./TaT/AdminDashboard/AdminType";
 import AdminDelivery from "./TaT/AdminDashboard/AdminDelivery";
+import AdminCanceldelivery from "./TaT/AdminDashboard/AdminCanceldelivery";
 
 
 import StaffDashboard from "./TaT/StaffDashboard/StaffDashboard.js";
@@ -28,6 +29,8 @@ import StaffFlowerImage from './TaT/StaffDashboard/StaffFlowerImage.js';
 import StaffFlowerSize from './TaT/StaffDashboard/StaffFlowerSize.js';
 import StaffOrder from './TaT/StaffDashboard/StaffOrder.js';
 import StaffOrderDetail from './TaT/StaffDashboard/StaffOrderDetail.js';
+import StaffDelivery from './TaT/StaffDashboard/StaffDelivery.js';
+import StaffCanceldelivery from './TaT/StaffDashboard/StaffCanceldelivery.js';
 
 
 import AccountStaffLayout from './TaT/StaffAccount/AccountStaffLayout.js';
@@ -77,8 +80,8 @@ const AppRoutes = () => {
   
   // List of admin routes where Header and Footer should be hidden
   const adminRoutes = ["/dashboard", "/AdminOder", "/AdminBanner", "/AdminAccount", "/AdminOrderDetail", "/AdminCategory", "/AdminComment", "/AdminCommentType", 
-    "/AdminDiscount", "/AdminFlower", "/AdminFlowerImage", "/AdminFlowerSize",  "/AdminNews","/AdminPurpose", "/AdminRepcomment","/AdminReview","/AdminShipping", "/AdminType","/AdminDelivery" , "/StaffFlower",
-    "/staff", "/StaffFlowerImage", "/StaffFlowerSize", "/StaffOrder", "/StaffOrderDetail"];  
+    "/AdminDiscount", "/AdminFlower", "/AdminFlowerImage", "/AdminFlowerSize",  "/AdminNews","/AdminPurpose", "/AdminRepcomment","/AdminReview","/AdminShipping", "/AdminType","/AdminDelivery", "/AdminCanceldelivery" , "/StaffFlower",
+    "/staff", "/StaffFlowerImage", "/StaffFlowerSize", "/StaffOrder", "/StaffOrderDetail", "/StaffOrderDetail", "/StaffCanceldelivery", "/StaffDelivery"];  
 
   // Check if the current route is an admin route
   const isAdminRoute = adminRoutes.includes(location.pathname);  
@@ -135,6 +138,7 @@ const AppRoutes = () => {
         <Route path="/AdminShipping" element={<AdminShipping/>} />
         <Route path="/AdminType" element={<AdminType/>} />
         <Route path="/AdminDelivery" element={<AdminDelivery/>} />
+        <Route path="/AdminCanceldelivery" element={<AdminCanceldelivery/>} />
 
 
         {/* Staff routes */}
@@ -144,6 +148,8 @@ const AppRoutes = () => {
         <Route path="/StaffFlowerSize" element={<StaffFlowerSize/>} />
         <Route path="/StaffOrder" element={<StaffOrder/>} />
         <Route path="/StaffOrderDetail" element={<StaffOrderDetail/>} />
+        <Route path="/StaffDelivery" element={<StaffDelivery/>} />
+        <Route path="/StaffCanceldelivery" element={<StaffCanceldelivery/>} />
 
 
         {/* Other Routes */}

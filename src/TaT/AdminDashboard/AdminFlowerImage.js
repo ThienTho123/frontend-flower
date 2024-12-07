@@ -297,9 +297,7 @@ const AdminFlowerImage = () => {
                 <button onClick={() => handleDeleteSoft(image.flowerImageID)}>
                   Vô hiệu hóa
                 </button>
-                <button onClick={() => handleDeleteHard(image.flowerImageID)}>
-                  Xóa
-                </button>
+
               </td>
             </tr>
           ))}

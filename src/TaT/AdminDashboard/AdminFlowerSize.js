@@ -514,9 +514,7 @@ const AdminFlowerSize = () => {
                       <button onClick={() => handleDeleteSoft(flowerSize.flowerSizeID)}>
                         Vô hiệu hóa
                       </button>
-                      <button onClick={() => handleDeleteHard(flowerSize.flowerSizeID)}>
-                        Xóa
-                      </button>
+
                     </>
                   )}
                 </td>

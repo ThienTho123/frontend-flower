@@ -10,6 +10,8 @@ import cartIcon from "./ImageDashboard/cart.png"; // Hình ảnh cho quản lý 
 import logo from "./ImageDashboard/logo.png"; // Hình ảnh cho quản lý Review
 import exit from "./ImageDashboard/exit.png"; // Hình ảnh cho quản lý Review
 import { Link } from 'react-router-dom'; 
+import deliveryIcon from "./ImageDashboard/delivery.png"; // Hình ảnh cho quản lý Review
+import cancelIcon from "./ImageDashboard/cancel.png"; // Hình ảnh cho quản lý Review
 
 const StaffDashboard = () => {
   const navigate = useNavigate();
@@ -88,6 +90,12 @@ const StaffDashboard = () => {
             </button>
             <button onClick={() => handleNavigate("/StaffOrder")}>
               <img src={cartIcon} alt="Quản lý đơn hàng" /> Đơn hàng
+            </button>
+            <button onClick={() => handleNavigate("/StaffDelivery")}>
+              <img src={deliveryIcon} alt="Quản lý giao hàng" /> Giao hàng
+            </button>
+            <button onClick={() => handleNavigate("/StaffCanceldelivery")}>
+              <img src={cancelIcon} alt="Quản lý đơn hủy" /> Đơn hủy
             </button>
             <button onClick={() => handleNavigate("/StaffOrderDetail")}>
               <img src={billInfoIcon} alt="Quản lý thông tin đơn hàng" /> Thông tin đơn hàng

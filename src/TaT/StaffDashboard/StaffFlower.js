@@ -330,7 +330,7 @@ const StaffFlower = () => {
               <td>{flower.status}</td>
               <td>
                 <button onClick={() => handleEdit(flower)}>Sửa</button>
-                <button onClick={() => handleDelete(flower.flowerID)}>Xóa</button>
+                <button onClick={() => handleDelete(flower.flowerID)}>Vô hiệu</button>
               </td>
             </tr>
           ))}

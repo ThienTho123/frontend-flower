@@ -239,9 +239,7 @@ const AdminPurpose = () => {
                       <button onClick={() => handleDeleteSoft(purpose.purposeID)}>
                         Vô hiệu hóa
                       </button>
-                      <button onClick={() => handleDeleteHard(purpose.purposeID)}>
-                        Xóa
-                      </button>
+ 
                     </>
                   )}
                 </td>

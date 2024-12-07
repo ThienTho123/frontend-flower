@@ -243,7 +243,7 @@ const AdminCategory = () => {
                     <>
                       <button onClick={() => setEditingCategoryId(category.categoryID)}>Chỉnh Sửa</button>
                       <button onClick={() => handleDeleteSoft(category.categoryID)}>Vô hiệu hóa</button>
-                      <button onClick={() => handleDeleteHard(category.categoryID)}>Xóa </button>    </>
+                          </>
                   )}
                 </td>
               </tr>

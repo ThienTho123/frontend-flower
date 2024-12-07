@@ -567,7 +567,6 @@ const AdminDiscount = () => {
         <>
           <button onClick={() => handleEditRow(discount.discountID)}>Chỉnh sửa</button>
           <button onClick={() => handleDeleteSoft(discount.discountID)}>Vô hiệu</button>
-          <button onClick={() => handleDeleteHard(discount.discountID)}>Xóa</button>
         </>
       )}
     </td>

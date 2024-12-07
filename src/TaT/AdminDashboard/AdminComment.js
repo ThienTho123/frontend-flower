@@ -378,7 +378,7 @@ const AdminComment = () => {
                         Chỉnh sửa
                       </button>
                       <button onClick={() => handleDeleteSoft(comment.commentID)}>Vô hiệu hóa</button>
-                      <button onClick={() => handleDeleteHard(comment.commentID)}>Xóa</button>
+                      
                     </>
                   )}
                 </td>

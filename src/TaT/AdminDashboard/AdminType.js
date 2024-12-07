@@ -280,9 +280,7 @@ const AdminType = () => {
                       <button onClick={() => handleDeleteSoft(type.typeID)}>
                         Vô hiệu hóa
                       </button>
-                      <button onClick={() => handleDeleteHard(type.typeID)}>
-                        Xóa
-                      </button>
+ 
                     </>
                   )}
                 </td>

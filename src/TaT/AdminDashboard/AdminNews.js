@@ -326,9 +326,7 @@ const AdminNews = () => {
                       <button onClick={() => handleDeleteSoft(news.newsID)}>
                         Vô hiệu hóa
                       </button>
-                      <button onClick={() => handleDeleteHard(news.newsID)}>
-                        Xóa
-                      </button>
+
                     </>
                   )}
                 </td>

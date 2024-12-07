@@ -8,7 +8,7 @@ const AdminCommentType = () => {
     commenttypename: "",
     status: "ENABLE",
   });
-  const [editingRow, setEditingRow] = useState(null); // Lưu trữ ID của dòng đang chỉnh sửa
+  const [editingRow, setEditingRow] = useState(null); 
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
   const navigate = useNavigate();
@@ -266,7 +266,6 @@ const AdminCommentType = () => {
                     <>
                       <button onClick={() => handleEditRow(type.commenttypeID)}>Chỉnh Sửa</button>
                       <button onClick={() => handleDeleteSoft(type.commenttypeID)}>Vô Hiệu</button>
-                      <button onClick={() => handleDeleteHard(type.commenttypeID)}>Xóa</button>
                     </>
                   )}
                 </td>

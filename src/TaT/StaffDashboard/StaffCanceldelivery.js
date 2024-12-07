@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import returnIcon from './ImageDashboard/return-button.png'; // Đảm bảo đường dẫn này chính xác
 
-const AdminDelivery = () => {
+const StaffCancelDelivery = () => {
   const [orders, setOrders] = useState([]);
-  const [shippers, setShippers] = useState([]);
-  const [selectedShipper, setSelectedShipper] = useState({});
-  const [successMessage, setSuccessMessage] = useState(null);
+  const [toastMessage, setToastMessage] = useState(null);
+  const [isToastVisible, setIsToastVisible] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(true);
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ const AdminDelivery = () => {
   // Bản dịch trạng thái sang tiếng Việt
   const translations = {
     "Cancel is Processing": "Hủy đang xử lý",
+    "Cancel_is_Processing": "Hủy đang xử lý",
     Cancelled: "Đã hủy",
     "In Transit": "Đang vận chuyển",
     "Shipper Delivering": "Shipper đang giao hàng",
@@ -29,11 +30,10 @@ const AdminDelivery = () => {
     Prepare: "Chuẩn bị",
   };
 
-  // Lấy danh sách đơn hàng và shipper
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:8080/adminmanager/ordernoship", {
+        const response = await fetch("http://localhost:8080/staffmanager/cancelprocessing", {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
           },
@@ -45,40 +45,38 @@ const AdminDelivery = () => {
 
         const data = await response.json();
         setOrders(data.orders || []);
-        setShippers(data.accounts || []);
       } catch (err) {
         setError(err.message);
       }
     };
 
-    fetchData();
+    fetchOrders();
   }, [accesstoken]);
 
-  // Xử lý khi bấm "Giao Hàng"
-  const handleDelivery = async (orderID) => {
-    const shipperID = selectedShipper[orderID];
-    if (!shipperID) {
-      setError("Vui lòng chọn một shipper.");
-      return;
-    }
+  const handleAction = async (orderID, isAccepted) => {
+    const apiEndpoint = isAccepted
+      ? "http://localhost:8080/staffmanager/cancelprocessing/yes"
+      : "http://localhost:8080/staffmanager/cancelprocessing/no";
 
     try {
-      const response = await fetch("http://localhost:8080/adminmanager/ordernoship/ship", {
+      const response = await fetch(apiEndpoint, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accesstoken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ orderid: orderID, accountid: shipperID }),
+        body: JSON.stringify({ orderID }),
       });
 
       if (!response.ok) {
-        throw new Error("Không thể giao hàng cho đơn hàng này.");
+        throw new Error(isAccepted ? "Không thể chấp nhận hủy đơn hàng." : "Không thể từ chối hủy đơn hàng.");
       }
 
       setOrders((prevOrders) => prevOrders.filter((order) => order.orderID !== orderID));
-      setSuccessMessage("Đã sắp xếp giao hàng thành công!");
-      setTimeout(() => setSuccessMessage(null), 3000); // Ẩn thông báo sau 3 giây
+      setToastMessage(isAccepted ? "Đã chấp nhận hủy đơn hàng!" : "Đã từ chối hủy đơn hàng!");
+      setIsSuccess(isAccepted);
+      setIsToastVisible(true);
+      setTimeout(() => setIsToastVisible(false), 3000); // Ẩn thông báo sau 3 giây
     } catch (err) {
       setError(err.message);
     }
@@ -91,7 +89,7 @@ const AdminDelivery = () => {
   };
 
   const handleBackToDashboard = () => {
-    navigate("/dashboard");
+    navigate("/staff");
   };
 
   return (
@@ -103,20 +101,33 @@ const AdminDelivery = () => {
           className="return-button"
           onClick={handleBackToDashboard}
         />
-        <h2>Quản Lý Giao Hàng</h2>
+        <h2>Quản Lý Yêu Cầu Hủy Đơn</h2>
       </div>
-      {successMessage && <p className="success-message">{successMessage}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
+      {isToastVisible && (
+        <div
+          className="toast"
+          style={{
+            backgroundColor: isSuccess ? "green" : "red",
+            color: "white",
+            padding: "10px",
+            margin: "10px 0",
+            borderRadius: "5px",
+            textAlign: "center",
+          }}
+        >
+          {toastMessage}
+        </div>
+      )}
       {orders.length === 0 ? (
-        <p>Không có đơn hàng cần giao.</p>
+        <p>Không có yêu cầu hủy đơn hàng nào.</p>
       ) : (
         <table border="1" cellPadding="10" cellSpacing="0">
           <thead>
             <tr>
               <th>ID Đơn Hàng</th>
               <th>Ngày Đặt</th>
-              <th>Trạng Thái</th>
-              <th>Chọn Shipper</th>
+              <th>Trạng Thái Trước Đó</th>
               <th>Hành Động</th>
             </tr>
           </thead>
@@ -125,32 +136,19 @@ const AdminDelivery = () => {
               <tr key={order.orderID}>
                 <td>{order.orderID}</td>
                 <td>{formatDate(order.date)}</td>
-                <td>{translations[order.condition] || order.condition}</td>
-                <td>
-                  <select
-                    className="category-select"
-                    value={selectedShipper[order.orderID] || ""}
-                    onChange={(e) =>
-                      setSelectedShipper((prev) => ({
-                        ...prev,
-                        [order.orderID]: e.target.value,
-                      }))
-                    }
-                  >
-                    <option value="">Chọn shipper</option>
-                    {shippers.map((shipper) => (
-                      <option key={shipper.accountID} value={shipper.accountID}>
-                        {shipper.username}
-                      </option>
-                    ))}
-                  </select>
-                </td>
+                <td>{translations[order.condition] || "Trạng thái không xác định"}</td>
                 <td>
                   <button
                     className="category-action-button"
-                    onClick={() => handleDelivery(order.orderID)}
+                    onClick={() => handleAction(order.orderID, true)}
                   >
-                    Giao Hàng
+                    Yes
+                  </button>
+                  <button
+                    className="category-action-button"
+                    onClick={() => handleAction(order.orderID, false)}
+                  >
+                    No
                   </button>
                 </td>
               </tr>
@@ -162,4 +160,4 @@ const AdminDelivery = () => {
   );
 };
 
-export default AdminDelivery;
+export default StaffCancelDelivery;

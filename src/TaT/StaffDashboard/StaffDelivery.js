@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import returnIcon from './ImageDashboard/return-button.png'; // Đảm bảo đường dẫn này chính xác
 
-const AdminDelivery = () => {
+const StaffDelivery = () => {
   const [orders, setOrders] = useState([]);
   const [shippers, setShippers] = useState([]);
   const [selectedShipper, setSelectedShipper] = useState({});
@@ -29,11 +29,10 @@ const AdminDelivery = () => {
     Prepare: "Chuẩn bị",
   };
 
-  // Lấy danh sách đơn hàng và shipper
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:8080/adminmanager/ordernoship", {
+        const response = await fetch("http://localhost:8080/staffmanager/ordernoship", {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
           },
@@ -51,7 +50,7 @@ const AdminDelivery = () => {
       }
     };
 
-    fetchData();
+    fetchOrders();
   }, [accesstoken]);
 
   // Xử lý khi bấm "Giao Hàng"
@@ -63,7 +62,7 @@ const AdminDelivery = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/adminmanager/ordernoship/ship", {
+      const response = await fetch("http://localhost:8080/staffmanager/ordernoship/ship", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accesstoken}`,
@@ -91,7 +90,7 @@ const AdminDelivery = () => {
   };
 
   const handleBackToDashboard = () => {
-    navigate("/dashboard");
+    navigate("/staff");
   };
 
   return (
@@ -162,4 +161,4 @@ const AdminDelivery = () => {
   );
 };
 
-export default AdminDelivery;
+export default StaffDelivery;

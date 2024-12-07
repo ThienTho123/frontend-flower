@@ -585,9 +585,7 @@ const AdminReview = () => {
             <button onClick={() => handleDeleteSoft(review.reviewID)}>
               Vô hiệu hóa
             </button>
-            <button onClick={() => handleDeleteHard(review.reviewID)}>
-              Xóa
-            </button>
+
           </>
         )}
       </td>

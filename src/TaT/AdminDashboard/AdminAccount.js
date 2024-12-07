@@ -402,7 +402,6 @@ const AdminAccount = () => {
                 <button onClick={() => setEditingAccountId(account.accountID)}>Chỉnh Sửa</button>
               )}
               <button onClick={() => handleDeleteSoft(account.accountID)}>Vô hiệu hóa</button>
-              <button onClick={() => handleDeleteHard(account.accountID)}>Xóa</button>
 
             </td>
           </tr>

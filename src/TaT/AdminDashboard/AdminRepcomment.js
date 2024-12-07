@@ -383,7 +383,7 @@ const AdminRepcomment = () => {
                 <td>
                     <button onClick={() => handleEdit(repComment.repcommentID)}>Chỉnh sửa</button>
                     <button onClick={() => handleDeleteSoft(repComment.repcommentID)}>Vô hiệu hóa</button>
-                    <button onClick={() => handleDeleteHard(repComment.repcommentID)}>Xóa</button>
+                    
                 </td>
                 </tr>
             ))}
