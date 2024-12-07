@@ -19,6 +19,8 @@ import AdminReview from "./TaT/AdminDashboard/AdminReview";
 import AdminShipping from "./TaT/AdminDashboard/AdminShipping";
 import NeedShip from './TaT/ShipperAccount/NeedShip.js';
 import AdminType from "./TaT/AdminDashboard/AdminType";
+import AdminDelivery from "./TaT/AdminDashboard/AdminDelivery";
+
 
 import StaffDashboard from "./TaT/StaffDashboard/StaffDashboard.js";
 import StaffFlower from "./TaT/StaffDashboard/StaffFlower.js";
@@ -75,7 +77,7 @@ const AppRoutes = () => {
   
   // List of admin routes where Header and Footer should be hidden
   const adminRoutes = ["/dashboard", "/AdminOder", "/AdminBanner", "/AdminAccount", "/AdminOrderDetail", "/AdminCategory", "/AdminComment", "/AdminCommentType", 
-    "/AdminDiscount", "/AdminFlower", "/AdminFlowerImage", "/AdminFlowerSize",  "/AdminNews","/AdminPurpose", "/AdminRepcomment","/AdminReview","/AdminShipping", "/AdminType", "/StaffFlower",
+    "/AdminDiscount", "/AdminFlower", "/AdminFlowerImage", "/AdminFlowerSize",  "/AdminNews","/AdminPurpose", "/AdminRepcomment","/AdminReview","/AdminShipping", "/AdminType","/AdminDelivery" , "/StaffFlower",
     "/staff", "/StaffFlowerImage", "/StaffFlowerSize", "/StaffOrder", "/StaffOrderDetail"];  
 
   // Check if the current route is an admin route
@@ -132,6 +134,8 @@ const AppRoutes = () => {
         <Route path="/AdminReview" element={<AdminReview/>} />
         <Route path="/AdminShipping" element={<AdminShipping/>} />
         <Route path="/AdminType" element={<AdminType/>} />
+        <Route path="/AdminDelivery" element={<AdminDelivery/>} />
+
 
         {/* Staff routes */}
         <Route path="/staff" element={<StaffDashboard/>} />

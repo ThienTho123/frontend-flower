@@ -36,6 +36,7 @@ const ProductDetail = () => {
   const [isToastVisible, setIsToastVisible] = useState(false); // Điều khiển hiển thị thông báo
   const [toastMessage, setToastMessage] = useState('');  // Lưu thông báo
   const totalPrice = productSizes[selectedSizeIndex]?.price * quantity || 0;
+  const [wishlistID, setWishlistID] = useState(null); // Trạng thái để lưu wishlistID
 
   const commentsPerPage = 5;
   useEffect(() => {
@@ -209,7 +210,38 @@ const ProductDetail = () => {
       }
     }
   }, [isZoomed]);
-
+  useEffect(() => {
+    const fetchWishlistStatus = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+        if (!token) return;
+  
+        const response = await axios.get("http://localhost:8080/wishlist", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        if (response.status === 200) {
+          const wishlists = response.data.wishlists || [];
+          const wishlistItem = wishlists.find(
+            (item) => item.flower.flowerID === product?.flowerID
+          );
+  
+          setIsInWishlist(!!wishlistItem);
+          if (wishlistItem) {
+            setWishlistID(wishlistItem.wishListID); // Lưu lại wishlistID nếu sản phẩm có trong wishlist
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching wishlist status:", error.message);
+      }
+    };
+  
+    if (product) {
+      fetchWishlistStatus();
+    }
+  }, [product]);
+  
+  
   useEffect(() => {
     const maxStock = productSizes[selectedSizeIndex]?.stock || 0;
     if (quantity > maxStock) {
@@ -310,46 +342,65 @@ const ProductDetail = () => {
     }
     return stars;
   };
-  const handleAddToWishlist = async () => {
   
+  const handleAddToWishlist = async () => {
     try {
       const token = localStorage.getItem("access_token");
       if (!token) {
-        navigate("/login"); 
+        navigate("/login");
         return;
       }
   
-      const flowerID = product.flowerID;
-      setIsInWishlist(!isInWishlist);
+      if (isInWishlist) {
+        // Xóa sản phẩm khỏi wishlist
+        try {
+          await axios.delete(`http://localhost:8080/wishlist/${wishlistID}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
   
-      const response = await axios.post(
-        "http://localhost:8080/addToWishlist", 
-        { flowerID: flowerID },
-        {
-          headers: { Authorization: `Bearer ${token}` },
+          setIsInWishlist(false);
+          setWishlistID(null); // Reset wishlistID
+          setToastMessage("Sản phẩm đã bị xóa khỏi danh sách yêu thích!");
+        } catch (err) {
+          console.error("Error deleting from wishlist:", err.response?.data || err.message);
+          setToastMessage("Có lỗi xảy ra khi xóa sản phẩm khỏi danh sách yêu thích!");
         }
-      );
+      } else {
+        // Thêm sản phẩm vào wishlist
+        try {
+          const response = await axios.post(
+            "http://localhost:8080/addToWishlist",
+            { flowerID: product.flowerID },
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+  
+          setIsInWishlist(true);
+          setWishlistID(response.data.wishListID); // Lưu wishlistID từ phản hồi
+          setToastMessage("Sản phẩm đã được thêm vào danh sách yêu thích!");
+        } catch (err) {
+          console.error("Error adding to wishlist:", err.response?.data || err.message);
+          setToastMessage("Có lỗi xảy ra khi thêm sản phẩm vào danh sách yêu thích!");
+        }
+      }
   
       // Hiển thị thông báo
-      setToastMessage("Sản phẩm đã được thêm vào danh sách yêu thích!");
-      setIsToastVisible(true);  
-      // Ẩn thông báo sau 3 giây
+      setIsToastVisible(true);
       setTimeout(() => {
         setIsToastVisible(false);
-      }, 3000); // Toast tự động ẩn sau 3 giây
-  
-      console.log("Added to wishlist:", response.data);
+      }, 3000);
     } catch (error) {
-      // Hiển thị thông báo lỗi
-      if (error.response) {
-        console.error("Error adding to wishlist:", error.response.data);
-        setIsToastVisible(true);  // Hiển thị thông báo lỗi
-      } else {
-        console.error("Network or server error:", error.message);
-        setIsToastVisible(true);  // Hiển thị thông báo lỗi
-      }
+      console.error("Error in wishlist handler:", error.message);
+      setToastMessage("Có lỗi xảy ra. Vui lòng thử lại!");
+      setIsToastVisible(true);
+      setTimeout(() => {
+        setIsToastVisible(false);
+      }, 3000);
     }
   };
+  
+  
   
   return (
     <>
@@ -446,11 +497,17 @@ const ProductDetail = () => {
                 >
                   &#9825;
                 </button>
-                {isToastVisible && (
-                  <div className="toast">
+                {isToastVisible && (                                    
+                  <div
+                    className="toast"
+                    style={{
+                      backgroundColor: isInWishlist ? "green" : "red", 
+                    }}
+                  >
                     {toastMessage}
                   </div>
                 )}
+
               </h6>
               <h2 className="totalPrice" style={{ color: "#ff4c4c" }}>
               {totalPrice.toLocaleString()} <span className="currency-symbol">đ</span>

@@ -351,6 +351,10 @@ const Dashboard = () => {
                 <img src={billInfoIcon} alt="Quản lý thông tin đơn hàng" />{" "}
                 Thông tin đơn hàng
               </button>
+              <button onClick={() => handleNavigate("/AdminDelivery")}>
+                <img src={billInfoIcon} alt="Quản lý giao hàng" />{" "}
+                Quản lý giao hàng
+              </button>
               <button onClick={() => handleNavigate("/AdminCategory")}>
                 <img src={pureposeIcon} alt="Quản lý Category" /> Category
               </button>
