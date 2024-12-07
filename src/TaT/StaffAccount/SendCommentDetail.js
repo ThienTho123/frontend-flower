@@ -12,6 +12,14 @@ const StaffCommentDetail = () => {
   const [image, setImage] = useState(null);
   const [repCommentText, setRepCommentText] = useState("");
   const [loading, setLoading] = useState(false); // Loading state
+  const translateCondition = (stative) => {
+    const translations = {
+      "Waiting": "Đang chờ xử lý",
+      "Processing": "Đang xử lý",
+      "Complete": "Đã hoàn thành",
+    };
+    return translations[stative] || stative;
+  };
   const startResponse = async () => {
     if (!repCommentText.trim()) {
       alert("Bạn chưa nhập nội dung phản hồi!");
@@ -31,7 +39,7 @@ const StaffCommentDetail = () => {
         return;
       }
     }
-
+   
     const repCommentDTO = {
       repcommenttext: repCommentText,
       image: imageUrl,
@@ -232,7 +240,7 @@ const StaffCommentDetail = () => {
           <strong>Loại:</strong> {comment?.commentType}
         </p>
         <p>
-          <strong>Trạng thái:</strong> {comment?.commentStative}
+          <strong>Trạng thái:</strong> {translateCondition(comment?.commentStative)}
           {comment?.commentStative === "Processing" && (
             <button
               className="complete-button"

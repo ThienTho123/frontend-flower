@@ -12,7 +12,14 @@ const SendCommentDetail = () => {
   const [image, setImage] = useState(null);
   const [repCommentText, setRepCommentText] = useState("");
   const [loading, setLoading] = useState(false); // Loading state
-
+  const translateCondition = (stative) => {
+    const translations = {
+      "Waiting": "Đang chờ xử lý",
+      "Processing": "Đang xử lý",
+      "Complete": "Đã hoàn thành",
+    };
+    return translations[stative] || stative;
+  };
   const handleSubmitRepComment = async () => {
     if (!repCommentText.trim()) {
       alert("Bạn chưa nhập bình luận!");
@@ -55,7 +62,33 @@ const SendCommentDetail = () => {
       setLoading(false);
     }
   };
+  const handleCompleteComment = async () => {
+    if (!comment) return;
 
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/comment/${comment.commentID}/complete`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        getCommentDetail(); // Refresh comment details
+      } else {
+        alert("Không thể hoàn thành bình luận. Vui lòng thử lại.");
+      }
+    } catch (error) {
+      console.error("Error completing comment process:", error);
+      alert("Đã xảy ra lỗi khi hoàn thành bình luận.");
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
   };
@@ -155,7 +188,16 @@ const SendCommentDetail = () => {
           <strong>Loại:</strong> {comment?.commentType}
         </p>
         <p>
-          <strong>Trạng thái:</strong> {comment?.commentStative}
+          <strong>Trạng thái:</strong> {translateCondition(comment?.commentStative)}
+          {comment?.commentStative === "Processing" && (
+            <button
+              className="complete-button"
+              onClick={handleCompleteComment}
+              disabled={loading}
+            >
+              {loading ? "Đang xử lý..." : "Hoàn thành"}
+            </button>
+          )}
         </p>
 
         {comment?.image && (
@@ -206,7 +248,19 @@ const SendCommentDetail = () => {
           </button>
         </div>
       )}
-     
+      {comment?.commentStative === "Waiting" && (
+        <div className="rep-comment-form">
+          <textarea
+            placeholder="Nhập bình luận trả lời..."
+            value={repCommentText}
+            onChange={(e) => setRepCommentText(e.target.value)}
+          />
+          <input type="file" onChange={handleImageChange} />
+          <button onClick={handleSubmitRepComment} disabled={loading}>
+            {loading ? "Đang gửi..." : "Gửi bình luận trả lời"}
+          </button>
+        </div>
+      )}
     </div>
   );
 };

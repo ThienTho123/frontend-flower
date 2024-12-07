@@ -341,6 +341,14 @@ const Dashboard = () => {
         <div className="dashboard-container">
           <div className="admin-buttons-container">
             <div className="admin-buttons">
+            <button onClick={() => handleNavigate("/AdminCanceldelivery")}>
+                <img src={cancelIcon} alt="Quản lý đơn hủy" />{" "}
+                Quản lý đơn hủy
+              </button>
+              <button onClick={() => handleNavigate("/AdminDelivery")}>
+                <img src={deliveryIcon} alt="Quản lý giao hàng" />{" "}
+                Quản lý giao hàng
+              </button>
               <button onClick={() => handleNavigate("/AdminAccount")}>
                 <img src={accountIcon} alt="Quản lý Account" /> Account
               </button>
@@ -354,14 +362,8 @@ const Dashboard = () => {
                 <img src={billInfoIcon} alt="Quản lý thông tin đơn hàng" />{" "}
                 Thông tin đơn hàng
               </button>
-              <button onClick={() => handleNavigate("/AdminDelivery")}>
-                <img src={deliveryIcon} alt="Quản lý giao hàng" />{" "}
-                Quản lý giao hàng
-              </button>
-              <button onClick={() => handleNavigate("/AdminCanceldelivery")}>
-                <img src={cancelIcon} alt="Quản lý đơn hủy" />{" "}
-                Quản lý đơn hủy
-              </button>
+              
+             
               <button onClick={() => handleNavigate("/AdminCategory")}>
                 <img src={pureposeIcon} alt="Quản lý Category" /> Category
               </button>

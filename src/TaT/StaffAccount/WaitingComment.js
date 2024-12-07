@@ -7,7 +7,14 @@ import "./SendComment.css";
 const WaitingComment = () => {
   const [comments, setComments] = useState([]);
   const access_token = localStorage.getItem("access_token");
-
+  const translateCondition = (stative) => {
+    const translations = {
+      "Waiting": "Đang chờ xử lý",
+      "Processing": "Đang xử lý",
+      "Complete": "Đã hoàn thành",
+    };
+    return translations[stative] || stative;
+  };
   const getCommentInfo = async () => {
     try {
       const response = await axios.get("http://localhost:8080/staff", {
@@ -83,7 +90,7 @@ const WaitingComment = () => {
                   <td>
                     {comment.text.length > 50 ? `${comment.text.substring(0, 30)}...` : comment.text}
                   </td>
-                  <td>{comment.stative}</td>
+                  <td>{translateCondition(comment.stative)}</td>
                   <td>{comment.date}</td>
                 </tr>
               ))}

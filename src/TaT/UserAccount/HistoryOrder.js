@@ -13,7 +13,7 @@ const HistoryOrder = () => {
   const translateCondition = (condition) => {
     const translations = {
       "Cancel is Processing": "Hủy đang xử lý",
-      Cancelled: "Đã hủy",
+      "Cancelled": "Đã hủy",
       "In Transit": "Đang vận chuyển",
       "Shipper Delivering": "Shipper đang giao hàng",
       "First Attempt Failed": "Lần giao hàng đầu tiên thất bại",
@@ -21,11 +21,9 @@ const HistoryOrder = () => {
       "Third Attempt Failed": "Lần giao hàng thứ ba thất bại",
       "Delivered Successfully": "Giao hàng thành công",
       "Return to shop": "Trả về cửa hàng",
-      "Order Placed": "Đặt hàng thành công",
-      "Payment Pending": "Chờ thanh toán",
-      Pending: "Đang chờ xử lý",
-      Processing: "Đang xử lý",
-      Prepare: "Chuẩn bị",
+      "Pending": "Đang chờ xử lý",
+      "Processing": "Đang xử lý",
+      "Prepare": "Chuẩn bị",
     };
     return translations[condition] || condition;
   };
@@ -111,9 +109,9 @@ const HistoryOrder = () => {
           <tr>
             <th>STT</th>
             <th>ID</th>
-            <th>Total</th>
-            <th>Date</th>
-            <th>Condition</th>
+            <th>Tổng</th>
+            <th>Ngày đặt</th>
+            <th>Trạng thái</th>
             <th>Hủy</th>
           </tr>
         </thead>
@@ -179,7 +177,7 @@ const HistoryOrder = () => {
       {showSuccessModal && (
         <div className="modal">
           <div className="modal-content">
-            <p>Hủy đơn hàng thành công!</p>
+            <p>Đã gửi yêu cầu hủy đơn hàng!</p>
             <button
               className="confirm-btn"
               onClick={() => setShowSuccessModal(false)}

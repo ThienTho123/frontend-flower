@@ -10,23 +10,22 @@ const StaffDelivery = () => {
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
   const navigate = useNavigate();
-
-  // Bản dịch trạng thái sang tiếng Việt
-  const translations = {
-    "Cancel is Processing": "Hủy đang xử lý",
-    Cancelled: "Đã hủy",
-    "In Transit": "Đang vận chuyển",
-    "Shipper Delivering": "Shipper đang giao hàng",
-    "First Attempt Failed": "Lần giao hàng đầu tiên thất bại",
-    "Second Attempt Failed": "Lần giao hàng thứ hai thất bại",
-    "Third Attempt Failed": "Lần giao hàng thứ ba thất bại",
-    "Delivered Successfully": "Giao hàng thành công",
-    "Return to shop": "Trả về cửa hàng",
-    "Order Placed": "Đặt hàng thành công",
-    "Payment Pending": "Chờ thanh toán",
-    Pending: "Đang chờ xử lý",
-    Processing: "Đang xử lý",
-    Prepare: "Chuẩn bị",
+  const translateCondition = (condition) => {
+    const translations = {
+      "Cancel is Processing": "Hủy đang xử lý",
+      "Cancelled": "Đã hủy",
+      "In Transit": "Đang vận chuyển",
+      "Shipper Delivering": "Shipper đang giao hàng",
+      "First Attempt Failed": "Lần giao hàng đầu tiên thất bại",
+      "Second Attempt Failed": "Lần giao hàng thứ hai thất bại",
+      "Third Attempt Failed": "Lần giao hàng thứ ba thất bại",
+      "Delivered Successfully": "Giao hàng thành công",
+      "Return to shop": "Trả về cửa hàng",
+      "Pending": "Đang chờ xử lý",
+      "Processing": "Đang xử lý",
+      "Prepare": "Chuẩn bị",
+    };
+    return translations[condition] || condition;
   };
 
   useEffect(() => {
@@ -124,7 +123,7 @@ const StaffDelivery = () => {
               <tr key={order.orderID}>
                 <td>{order.orderID}</td>
                 <td>{formatDate(order.date)}</td>
-                <td>{translations[order.condition] || order.condition}</td>
+                <td>{translateCondition(order.condition)}</td>
                 <td>
                   <select
                     className="category-select"

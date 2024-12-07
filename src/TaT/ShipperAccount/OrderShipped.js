@@ -11,7 +11,23 @@ const OrderShipped = () => {
   const [text, setText] = useState("");
   const [commentType, setCommentType] = useState(""); // ID loại góp ý
   const access_token = localStorage.getItem("access_token");
-
+  const translateCondition = (condition) => {
+    const translations = {
+      Cancel_is_Processing: "Hủy đang xử lý",
+      Cancelled: "Đã hủy",
+      In_Transit: "Đang vận chuyển",
+      Shipper_Delivering: "Shipper đang giao hàng",
+      First_Attempt_Failed: "Lần giao hàng đầu tiên thất bại",
+      Second_Attempt_Failed: "Lần giao hàng thứ hai thất bại",
+      Third_Attempt_Failed: "Lần giao hàng thứ ba thất bại",
+      Delivered_Successfully: "Giao hàng thành công",
+      Return_to_shop: "Trả về cửa hàng",
+      Pending: "Đang chờ xử lý",
+      Processing: "Đang xử lý",
+      Prepare: "Chuẩn bị",
+    };
+    return translations[condition] || condition;
+  };
   const getCommentInfo = async () => {
     try {
       const response = await axios.get(
@@ -88,8 +104,7 @@ const OrderShipped = () => {
 
                   <td>{comment.deliveryAddress}</td>
                   <td>{comment.dateStart}</td>
-                  <td>{comment.condition}</td>
-                  
+                  <td>{translateCondition(comment.condition)}</td>
                 </tr>
               ))}
             </tbody>

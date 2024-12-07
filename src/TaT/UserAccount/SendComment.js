@@ -12,7 +12,14 @@ const SendComment = () => {
   const [text, setText] = useState("");
   const [commentType, setCommentType] = useState(""); // ID loại góp ý
   const access_token = localStorage.getItem("access_token");
-
+  const translateCondition = (stative) => {
+    const translations = {
+      "Waiting": "Đang chờ xử lý",
+      "Processing": "Đang xử lý",
+      "Complete": "Đã hoàn thành",
+    };
+    return translations[stative] || stative;
+  };
   // Lấy thông tin danh sách bình luận và loại bình luận
   const getCommentInfo = async () => {
     try {
@@ -167,7 +174,7 @@ const SendComment = () => {
                       ? `${comment.text.substring(0, 30)}...`
                       : comment.text}
                   </td>
-                  <td>{comment.stative}</td>
+                  <td>{translateCondition(comment.stative)}</td>
                   <td>{comment.date}</td>
                   <td>{comment.numberRep}</td>
                 </tr>

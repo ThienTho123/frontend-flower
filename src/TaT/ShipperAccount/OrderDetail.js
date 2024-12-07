@@ -10,7 +10,23 @@ const OrderDetail = () => {
   const [note, setNote] = useState(""); // Thêm state để quản lý note
   const { id } = useParams();
   const navigate = useNavigate(); // Hook để điều hướng
-
+  const translateCondition = (condition) => {
+    const translations = {
+      "Cancel_is_Processing": "Hủy đang xử lý",
+      "Cancelled": "Đã hủy",
+      "In_Transit": "Đang vận chuyển",
+      "Shipper_Delivering": "Shipper đang giao hàng",
+      "First_Attempt_Failed": "Lần giao hàng đầu tiên thất bại",
+      "Second_Attempt_Failed": "Lần giao hàng thứ hai thất bại",
+      "Third_Attempt_Failed": "Lần giao hàng thứ ba thất bại",
+      "Delivered_Successfully": "Giao hàng thành công",
+      "Return_to_shop": "Trả về cửa hàng",
+      "Pending": "Đang chờ xử lý",
+      "Processing": "Đang xử lý",
+      "Prepare": "Chuẩn bị",
+    };
+    return translations[condition] || condition;
+  };
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(`http://localhost:8080/shipper/${id}`, {
@@ -95,7 +111,7 @@ const OrderDetail = () => {
               <strong>Total:</strong> ${orderHistory[0].total}
             </p>
             <p>
-              <strong>Condition:</strong> {orderHistory[0].condition}
+              <strong>Condition:</strong> {translateCondition(orderHistory[0].condition)}
             </p>
             <p>
               <strong>Tình trạng thanh toán:</strong>{" "}

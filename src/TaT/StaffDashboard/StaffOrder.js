@@ -9,7 +9,23 @@ const StaffOrder = () => {
   const accesstoken = localStorage.getItem("access_token");
   const navigate = useNavigate();
   const [validationError, setValidationError] = useState(null); 
-
+  const translateCondition = (condition) => {
+    const translations = {
+      "Cancel is Processing": "Hủy đang xử lý",
+      "Cancelled": "Đã hủy",
+      "In Transit": "Đang vận chuyển",
+      "Shipper Delivering": "Shipper đang giao hàng",
+      "First Attempt Failed": "Lần giao hàng đầu tiên thất bại",
+      "Second Attempt Failed": "Lần giao hàng thứ hai thất bại",
+      "Third Attempt Failed": "Lần giao hàng thứ ba thất bại",
+      "Delivered Successfully": "Giao hàng thành công",
+      "Return to shop": "Trả về cửa hàng",
+      "Pending": "Đang chờ xử lý",
+      "Processing": "Đang xử lý",
+      "Prepare": "Chuẩn bị",
+    };
+    return translations[condition] || condition;
+  };
   const orderConditions = [
     "Pending",
     "Processing",

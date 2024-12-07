@@ -10,6 +10,23 @@ const OrderShippedDetail = () => {
   const [orderHistory, setOrderHistory] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
+  const translateCondition = (condition) => {
+    const translations = {
+      "Cancel is Processing": "Hủy đang xử lý",
+      "Cancelled": "Đã hủy",
+      "In Transit": "Đang vận chuyển",
+      "Shipper Delivering": "Shipper đang giao hàng",
+      "First Attempt Failed": "Lần giao hàng đầu tiên thất bại",
+      "Second Attempt Failed": "Lần giao hàng thứ hai thất bại",
+      "Third Attempt_Failed": "Lần giao hàng thứ ba thất bại",
+      "Delivered Successfully": "Giao hàng thành công",
+      "Return to shop": "Trả về cửa hàng",
+      "Pending": "Đang chờ xử lý",
+      "Processing": "Đang xử lý",
+      "Prepare": "Chuẩn bị",
+    };
+    return translations[condition] || condition;
+  };
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
@@ -141,7 +158,7 @@ const OrderShippedDetail = () => {
               <strong>Total:</strong> ${orderHistory[0].total}
             </p>
             <p>
-              <strong>Condition:</strong> {orderHistory[0].condition}
+              <strong>Condition:</strong> {translateCondition(orderHistory[0].condition)}
             </p>
             <p>
               <strong>Order Date:</strong> {orderHistory[0].date}
