@@ -127,8 +127,7 @@ const StaffOrder = () => {
       !orderToUpdate.deliveryAddress ||
       !orderToUpdate.phoneNumber ||
       !orderToUpdate.name ||
-      (orderToUpdate.shipping && !orderToUpdate.shipping.shippingID) || // Nếu có shipping thì kiểm tra shippingID
-      !orderToUpdate.note
+      (orderToUpdate.shipping && !orderToUpdate.shipping.shippingID) 
     ) {
       setError("Vui lòng điền đầy đủ thông tin.");
       return;
