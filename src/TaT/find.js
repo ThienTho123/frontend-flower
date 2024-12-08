@@ -35,7 +35,7 @@ const Find = () => {
       <h4 className="KQ-count">
         Tìm thấy <span style={{ color: "red", padding: "0 5px" }}>{currentItems.length}</span> sản phẩm
       </h4>
-      <div className="container">
+      <div className="container" style={{maxWidth: "1250px"}}>
         {currentItems.length > 0 ? (
           <>
           <div className="product-grid">
