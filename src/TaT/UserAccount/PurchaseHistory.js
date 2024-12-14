@@ -166,9 +166,11 @@ const PurchaseHistory = () => {
         },
       });
       getPurchaseHistory();
+      handleModalClose();
     } catch (error) {
       console.error("Error deleting review:", error);
     }
+
   };
 
   return (
