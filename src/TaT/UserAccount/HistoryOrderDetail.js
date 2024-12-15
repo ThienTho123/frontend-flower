@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import dayjs from "dayjs";
-import './HistoryOrderDetail.css'; // Import CSS file cho style
+import "./HistoryOrderDetail.css"; // Import CSS file cho style
 
 const HistoryOrderDetail = () => {
   const access_token = localStorage.getItem("access_token");
@@ -12,7 +12,7 @@ const HistoryOrderDetail = () => {
   const translateCondition = (condition) => {
     const translations = {
       "Cancel is Processing": "Hủy đang xử lý",
-      "Cancelled": "Đã hủy",
+      Cancelled: "Đã hủy",
       "In Transit": "Đang vận chuyển",
       "Shipper Delivering": "Shipper đang giao hàng",
       "First Attempt Failed": "Lần giao hàng đầu tiên thất bại",
@@ -20,9 +20,9 @@ const HistoryOrderDetail = () => {
       "Third Attempt Failed": "Lần giao hàng thứ ba thất bại",
       "Delivered Successfully": "Giao hàng thành công",
       "Return to shop": "Trả về cửa hàng",
-      "Pending": "Đang chờ xử lý",
-      "Processing": "Đang xử lý",
-      "Prepare": "Chuẩn bị",
+      Pending: "Đang chờ xử lý",
+      Processing: "Đang xử lý",
+      Prepare: "Chuẩn bị",
     };
     return translations[condition] || condition;
   };
@@ -36,14 +36,13 @@ const HistoryOrderDetail = () => {
           },
         }
       );
-      console.log("rawOrderHistory: "+ response.data);
+      console.log("rawOrderHistory: " + response.data);
       const rawOrderHistory = response.data?.orderHistory || {};
       const rawOrderDetail = response.data?.orderDetail || [];
 
-
       if (Object.keys(rawOrderHistory).length === 0) {
         console.error("Order history data is not valid:", rawOrderHistory);
-        setOrderHistory([]); 
+        setOrderHistory([]);
         return;
       }
 
@@ -82,7 +81,7 @@ const HistoryOrderDetail = () => {
         high: item.flowerSize.high,
         width: item.flowerSize.width,
         weight: item.flowerSize.weight,
-        sizeName: item.flowerSize.sizeName
+        sizeName: item.flowerSize.sizeName,
       }));
 
       setOrderDetail(updatedOrderDetail);
@@ -101,24 +100,58 @@ const HistoryOrderDetail = () => {
       {orderHistory.length > 0 && (
         <div className="order-history">
           <div className="order-history-left">
-            <p><strong>Order ID:</strong> {orderHistory[0].id}</p>
-            <p><strong>Customer Name:</strong> {orderHistory[0].name}</p>
-            <p><strong>Total:</strong> {orderHistory[0].total} đ</p>
-            <p><strong>Condition:</strong> {translateCondition(orderHistory[0].condition)}</p>
-            <p><strong>Order Date:</strong> {orderHistory[0].date}</p>
-            <p><strong>Phone:</strong> {orderHistory[0].phone}</p>
-            <p><strong>Address:</strong> {orderHistory[0].address}</p>
-
+            <p>
+              <strong>ID Hóa Đơn:</strong> {orderHistory[0].id}
+            </p>
+            <p>
+              <strong>Họ Tên Khách Hàng:</strong> {orderHistory[0].name}
+            </p>
+            <p>
+              <strong>Tổng:</strong> {orderHistory[0].total} đ
+            </p>
+            <p>
+              <strong>Trạng Thái:</strong>{" "}
+              {translateCondition(orderHistory[0].condition)}
+            </p>
+            <p>
+              <strong>Ngày Đặt:</strong> {orderHistory[0].date}
+            </p>
+            <p>
+              <strong>Số Điện Thoại:</strong> {orderHistory[0].phone}
+            </p>
+            <p>
+              <strong>Địa Chỉ:</strong> {orderHistory[0].address}
+            </p>
           </div>
           <div className="order-history-right">
-            <p><strong>Shipper Name:</strong> {orderHistory[0].shipperName}</p>
-            <p><strong>Shipper Phone:</strong> {orderHistory[0].shipperPhone}</p>
-            <p><strong>Shipper Email:</strong> {orderHistory[0].shipperEmail}</p>
-            <p><strong>Shipper Note:</strong> {orderHistory[0].shipperNote}</p>
-            <p><strong>Ship Start On:</strong> {orderHistory[0].shipStart}</p>
-            <p><strong>Ship End On:</strong> {orderHistory[0].shipEnd}</p>
-            <p><strong>Tình trạng thanh toán:</strong> {orderHistory[0].isPaid === "Yes" ? "Đã thanh toán" : "Chưa thanh toán"}</p>
-
+            <p>
+              <strong>Họ Tên Shipper:</strong> {orderHistory[0].shipperName}
+            </p>
+            <p>
+              <strong>Số Điện Thoại Shipper:</strong>{" "}
+              {orderHistory[0].shipperPhone}
+            </p>
+            <p>
+              <strong>Email của Shipper:</strong> {orderHistory[0].shipperEmail}
+            </p>
+            <p>
+              <strong>Ghi Chú:</strong> {orderHistory[0].note}
+            </p>
+            <p>
+              <strong>Shipper Ghi Chú:</strong> {orderHistory[0].shipperNote}
+            </p>
+            <p>
+              <strong>Ngày Bắt Đầu Giao:</strong> {orderHistory[0].shipStart}
+            </p>
+            <p>
+              <strong>Ngày Kết Thúc Giao:</strong> {orderHistory[0].shipEnd}
+            </p>
+            <p>
+              <strong>Tình trạng thanh toán:</strong>{" "}
+              {orderHistory[0].isPaid === "Yes"
+                ? "Đã thanh toán"
+                : "Chưa thanh toán"}
+            </p>
           </div>
         </div>
       )}
@@ -129,12 +162,12 @@ const HistoryOrderDetail = () => {
           <thead>
             <tr>
               <th>STT</th>
-              <th>Product Name</th>
-              <th>Size Name</th>
-              <th>Quantity</th>
-              <th>Total</th>
-              <th>Size (LxWxH)</th>
-              <th>Weight</th>
+              <th>Tên hoa</th>
+              <th>Số lượng</th>
+              <th>Đơn giá</th>
+              <th>Tổng</th>
+              <th>Kích thước (DxRxC)</th>
+              <th>Khối lượng</th>
             </tr>
           </thead>
           <tbody>
@@ -145,7 +178,9 @@ const HistoryOrderDetail = () => {
                 <td>{item.sizeName}</td>
                 <td>{item.quantity}</td>
                 <td>{item.price}</td>
-                <td>{item.length} x {item.width} x {item.high}</td>
+                <td>
+                  {item.length} x {item.width} x {item.high}
+                </td>
                 <td>{item.weight}</td>
               </tr>
             ))}

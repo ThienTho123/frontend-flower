@@ -149,25 +149,25 @@ const OrderShippedDetail = () => {
         <div className="order-history">
           <div className="order-history-left">
             <p>
-              <strong>Order ID:</strong> {orderHistory[0].id}
+              <strong>ID Hóa Đơn:</strong> {orderHistory[0].id}
             </p>
             <p>
-              <strong>Customer Name:</strong> {orderHistory[0].name}
+              <strong>Họ Tên Khách Hàng:</strong> {orderHistory[0].name}
             </p>
             <p>
-              <strong>Total:</strong> ${orderHistory[0].total}
+              <strong>Tổng:</strong> ${orderHistory[0].total}
             </p>
             <p>
-              <strong>Condition:</strong> {translateCondition(orderHistory[0].condition)}
+              <strong>Trạng Thái:</strong> {translateCondition(orderHistory[0].condition)}
             </p>
             <p>
-              <strong>Order Date:</strong> {orderHistory[0].date}
+              <strong>Ngày Đặt:</strong> {orderHistory[0].date}
             </p>
             <p>
-              <strong>Phone:</strong> {orderHistory[0].phone}
+              <strong>Số Điện Thoại:</strong> {orderHistory[0].phone}
             </p>
             <p>
-              <strong>Address:</strong> {orderHistory[0].address}
+              <strong>Địa Chỉ:</strong> {orderHistory[0].address}
             </p>
           </div>
           <div className="order-history-right">
@@ -178,16 +178,19 @@ const OrderShippedDetail = () => {
               <strong>Shipper ID:</strong> {orderHistory[0].shipperID}
             </p>
             <p>
-              <strong>Shipper Name:</strong> {orderHistory[0].shipperName}
+              <strong>Họ Tên Shipper:</strong> {orderHistory[0].shipperName}
             </p>
             <p>
-              <strong>Shipper Note:</strong> {orderHistory[0].shipperNote}
+              <strong>Ghi Chú:</strong> {orderHistory[0].note}
             </p>
             <p>
-              <strong>Ship Start On:</strong> {orderHistory[0].shipStart}
+              <strong>Shipper Ghi Chú:</strong> {orderHistory[0].shipperNote}
             </p>
             <p>
-              <strong>Ship End On:</strong> {orderHistory[0].shipEnd}
+              <strong>Ngày Bắt Đầu Giao:</strong> {orderHistory[0].shipStart}
+            </p>
+            <p>
+              <strong>Ngày Kết Thúc Giao:</strong> {orderHistory[0].shipEnd}
             </p>
             <p>
               <strong>Tình trạng thanh toán:</strong>{" "}
@@ -207,12 +210,12 @@ const OrderShippedDetail = () => {
           <thead>
             <tr>
               <th>STT</th>
-              <th>Product Name</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Total</th>
-              <th>Size (LxWxH)</th>
-              <th>Weight</th>
+              <th>Tên hoa</th>
+              <th>Số lượng</th>
+              <th>Đơn giá</th>
+              <th>Tổng</th>
+              <th>Kích thước (DxRxC)</th>
+              <th>Khối lượng</th>
             </tr>
           </thead>
           <tbody>

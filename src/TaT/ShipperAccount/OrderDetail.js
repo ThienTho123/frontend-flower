@@ -12,18 +12,18 @@ const OrderDetail = () => {
   const navigate = useNavigate(); // Hook để điều hướng
   const translateCondition = (condition) => {
     const translations = {
-      "Cancel_is_Processing": "Hủy đang xử lý",
-      "Cancelled": "Đã hủy",
-      "In_Transit": "Đang vận chuyển",
-      "Shipper_Delivering": "Shipper đang giao hàng",
-      "First_Attempt_Failed": "Lần giao hàng đầu tiên thất bại",
-      "Second_Attempt_Failed": "Lần giao hàng thứ hai thất bại",
-      "Third_Attempt_Failed": "Lần giao hàng thứ ba thất bại",
-      "Delivered_Successfully": "Giao hàng thành công",
-      "Return_to_shop": "Trả về cửa hàng",
-      "Pending": "Đang chờ xử lý",
-      "Processing": "Đang xử lý",
-      "Prepare": "Chuẩn bị",
+      Cancel_is_Processing: "Hủy đang xử lý",
+      Cancelled: "Đã hủy",
+      In_Transit: "Đang vận chuyển",
+      Shipper_Delivering: "Shipper đang giao hàng",
+      First_Attempt_Failed: "Lần giao hàng đầu tiên thất bại",
+      Second_Attempt_Failed: "Lần giao hàng thứ hai thất bại",
+      Third_Attempt_Failed: "Lần giao hàng thứ ba thất bại",
+      Delivered_Successfully: "Giao hàng thành công",
+      Return_to_shop: "Trả về cửa hàng",
+      Pending: "Đang chờ xử lý",
+      Processing: "Đang xử lý",
+      Prepare: "Chuẩn bị",
     };
     return translations[condition] || condition;
   };
@@ -74,15 +74,15 @@ const OrderDetail = () => {
     try {
       // Gửi yêu cầu POST với dữ liệu chuỗi thuần túy cho "note"
       const response = await axios.post(
-        `http://localhost:8080/shipper/${id}/receive`,  // Đảm bảo URL không có mã hóa
-        { note: note },  // Truyền chuỗi 'note' bình thường trong body JSON
+        `http://localhost:8080/shipper/${id}/receive`, // Đảm bảo URL không có mã hóa
+        { note: note }, // Truyền chuỗi 'note' bình thường trong body JSON
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
         }
       );
-  
+
       // Điều hướng về trang "allorder" nếu thành công
       if (response.status === 200) {
         navigate("/shipperaccount/needship");
@@ -91,7 +91,6 @@ const OrderDetail = () => {
       console.error("Error receiving order:", error);
     }
   };
-  
 
   useEffect(() => {
     getHistoryOrder();
@@ -104,14 +103,15 @@ const OrderDetail = () => {
         <div className="order-history">
           <div className="order-history-left">
             <p>
-              <strong>Order ID:</strong> {orderHistory[0].id}
+              <strong>ID Hóa Đơn:</strong> {orderHistory[0].id}
             </p>
 
             <p>
-              <strong>Total:</strong> ${orderHistory[0].total}
+              <strong>Tổng:</strong> ${orderHistory[0].total}
             </p>
             <p>
-              <strong>Condition:</strong> {translateCondition(orderHistory[0].condition)}
+              <strong>Trạng Thái:</strong>{" "}
+              {translateCondition(orderHistory[0].condition)}
             </p>
             <p>
               <strong>Tình trạng thanh toán:</strong>{" "}
@@ -122,19 +122,19 @@ const OrderDetail = () => {
           </div>
           <div className="order-history-right">
             <p>
-              <strong>Customer Name:</strong> {orderHistory[0].name}
+              <strong>Họ Tên Khách Hàng:</strong> {orderHistory[0].name}
             </p>
             <p>
-              <strong>Order Date:</strong> {orderHistory[0].date}
+              <strong>Ngày Đặt:</strong> {orderHistory[0].date}
             </p>
             <p>
-              <strong>Phone:</strong> {orderHistory[0].phone}
+              <strong>Số Điện Thoại:</strong> {orderHistory[0].phone}
             </p>
             <p>
-              <strong>Address:</strong> {orderHistory[0].address}
+              <strong>Địa Chỉ:</strong> {orderHistory[0].address}
             </p>
             <p>
-              <strong>Note:</strong> {orderHistory[0].note}
+              <strong>Ghi Chú:</strong> {orderHistory[0].note}
             </p>
           </div>
         </div>
@@ -146,12 +146,12 @@ const OrderDetail = () => {
           <thead>
             <tr>
               <th>STT</th>
-              <th>Product Name</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Total</th>
-              <th>Size (LxWxH)</th>
-              <th>Weight</th>
+              <th>Tên hoa</th>
+              <th>Số lượng</th>
+              <th>Đơn giá</th>
+              <th>Tổng</th>
+              <th>Kích thước (DxRxC)</th>
+              <th>Khối lượng</th>
             </tr>
           </thead>
           <tbody>
