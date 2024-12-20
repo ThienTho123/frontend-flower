@@ -119,7 +119,9 @@ const PreBuy = () => {
         if (updatedNumber > stockForSelectedSize) {
           updatedNumber = 1; 
         }
-
+        if (stockForSelectedSize === 0) {
+          updatedNumber = 0; 
+        }
         // Cập nhật item
         return {
           ...item,
