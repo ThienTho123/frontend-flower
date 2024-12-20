@@ -46,7 +46,7 @@ const OrderDetail = () => {
         name: rawOrderHistory.name,
         total: rawOrderHistory.total,
         date: dayjs(rawOrderHistory.date).format("YYYY-MM-DD HH:mm:ss"),
-        condition: rawOrderHistory.condition.replaceAll("_", " "),
+        condition: rawOrderHistory.condition,
         phone: rawOrderHistory.phone,
         address: rawOrderHistory.address,
         isPaid: rawOrderHistory.isPaid,

@@ -110,11 +110,22 @@ const PreBuy = () => {
         if (item.cartID === cartID) {
             const stockForSelectedSize =
                 item.stock[item.sizes.indexOf(selectedSize)]; // Lấy tồn kho theo kích thước mới
+
+            let updatedNumber = item.number;
+            let errorMessage = null;
+
+            // Kiểm tra số lượng hiện tại so với tồn kho mới
+            if (updatedNumber > stockForSelectedSize) {
+                updatedNumber = 1; // Đặt số lượng về 0 nếu vượt quá tồn kho
+            }
+
+            // Cập nhật item
             return {
                 ...item,
                 sizeChoose: selectedSize, // Cập nhật kích thước được chọn
                 selectedSize, // Đồng nhất giá trị selectedSize
                 currentStock: stockForSelectedSize, // Tồn kho theo kích thước mới
+                number: updatedNumber, // Cập nhật số lượng
             };
         }
         return item;
@@ -123,11 +134,19 @@ const PreBuy = () => {
     setCartItems(updatedItems); // Cập nhật state giỏ hàng
     localStorage.setItem("cartItems", JSON.stringify(updatedItems)); // Lưu vào localStorage
 
+    // Cập nhật thông báo lỗi
+    const errorMessages = updatedItems.reduce((errors, item) => {
+        if (item.errorMessage) {
+            errors[item.cartID] = item.errorMessage;
+        }
+        return errors;
+    }, {});
+    setErrorMessages(errorMessages);
+
     // Gọi API cập nhật giỏ hàng
     const updatedItem = updatedItems.find((item) => item.cartID === cartID);
     updateCart(cartID, updatedItem.number, selectedSize);
 };
-
 
   const handleQuantityChange = (cartID, quantity) => {
     const newQuantity = parseInt(quantity, 10) || 1;
