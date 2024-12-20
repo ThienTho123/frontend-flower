@@ -106,7 +106,6 @@ const PreBuy = () => {
         });
     }
   }, [accesstoken]);
-
   const handleSizeChange = (cartID, selectedSize) => {
     const updatedItems = cartItems.map((item) => {
       if (item.cartID === cartID) {
@@ -605,6 +604,7 @@ const PreBuy = () => {
                       className="prebuy-custom-checkbox"
                       checked={item.selected}
                       onChange={() => handleCheckboxChange(item.cartID)}
+                      disabled={item.number <= 0} 
                     />
                     <a href={`/detail/${item.productID}`}>
                       <img src={item.avatar} alt={item.productTitle} />
@@ -650,7 +650,14 @@ const PreBuy = () => {
                         }}
                       >
                         Tồn kho:{" "}
-                        {item.stock[item.sizes.indexOf(item.selectedSize)]}
+                        {(() => {
+                          const sizeIndex = item.sizes.indexOf(
+                            item.selectedSize
+                          );
+                          return sizeIndex !== -1
+                            ? item.stock[sizeIndex]
+                            : "Không xác định";
+                        })()}
                       </p>
                       <label className="prebuy-quantity-label">
                         Số lượng:
@@ -669,16 +676,9 @@ const PreBuy = () => {
                             type="number"
                             min="1"
                             value={item.number}
-                            onChange={(e) => {
-                              let inputValue = parseInt(e.target.value, 10);
-
-                              // Loại bỏ dấu âm và kiểm tra giá trị hợp lệ
-                              if (isNaN(inputValue) || inputValue < 1) {
-                                inputValue = -inputValue;
-                              }
-
-                              handleQuantityChange(item.cartID, inputValue);
-                            }}
+                            onChange={(e) =>
+                              handleQuantityChange(item.cartID, e.target.value)
+                            }
                             className="prebuy-quantity-input"
                           />
                           <button
@@ -687,7 +687,6 @@ const PreBuy = () => {
                             onClick={() =>
                               handleQuantityChange(item.cartID, item.number + 1)
                             }
-                            disabled={item.number >= item.stock[item.sizes.indexOf(item.selectedSize)] }
                           >
                             +
                           </button>
