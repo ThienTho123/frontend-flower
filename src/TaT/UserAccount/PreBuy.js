@@ -116,9 +116,8 @@ const PreBuy = () => {
         let updatedNumber = item.number;
         let errorMessage = null;
 
-        // Kiểm tra số lượng hiện tại so với tồn kho mới
         if (updatedNumber > stockForSelectedSize) {
-          updatedNumber = 1; // Đặt số lượng về 0 nếu vượt quá tồn kho
+          updatedNumber = 1; 
         }
 
         // Cập nhật item
@@ -686,6 +685,7 @@ const PreBuy = () => {
                             onClick={() =>
                               handleQuantityChange(item.cartID, item.number + 1)
                             }
+                            disabled={item.number >= item.stock[item.sizes.indexOf(item.selectedSize)] }
                           >
                             +
                           </button>
