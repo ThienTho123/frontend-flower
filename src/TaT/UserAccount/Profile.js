@@ -137,12 +137,13 @@ const Profile = () => {
   const updateAccount = async (avatarLink) => {
     console.log("avatarLink"+avatarLink);
     try {
+      console.log("SDT: "+profileForm.phonenumber)
       const response = await axios.put(
         "http://localhost:8080/account/updateinfo",
         {
           name: profileForm.name,
           email: profileForm.email,
-          phonenumber: profileForm.phonenumber,
+          phoneNumber: profileForm.phonenumber,
           address: profileForm.address,
           avatar: avatarLink, 
         },

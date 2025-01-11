@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import RectangleLogin from "./UserAccount/Image/RectangleLogin.png"; 
+import { useGoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -48,7 +49,88 @@ const Login = () => {
   const handleSignUp = () => {
     navigate("/signup");
   };
-
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: async (response) => {
+      try {
+        console.log("Google login response:", response);
+  
+        const accessToken = response?.access_token;
+  
+        if (!accessToken) {
+          console.error("Access Token is missing.");
+          return;
+        }
+  
+        console.log("Access Token:", accessToken);
+  
+        // Gọi Google User Info API
+        const userInfoResponse = await axios.get(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+  
+        console.log("User Info:", userInfoResponse.data);
+  
+        // Chuẩn bị dữ liệu GoogleTokenRequest
+        const googleTokenRequest = {
+          email: userInfoResponse.data.email,
+          name: userInfoResponse.data.name,
+          picture: userInfoResponse.data.picture,
+        };
+  
+        console.log("GoogleTokenRequest:", googleTokenRequest);
+  
+        // Gửi thông tin tới backend để xử lý
+        const backendResponse = await axios.post(
+          "http://localhost:8080/api/v1/auth/viagoogle",
+          googleTokenRequest,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        
+        const { access_token, refresh_token, idAccount } = backendResponse.data || {};
+        if (!access_token || !refresh_token || !idAccount) {
+          console.error("Missing tokens in backend response:", backendResponse.data);
+          setError("Phản hồi từ server không hợp lệ.");
+          return;
+        }
+        
+        localStorage.setItem("access_token", access_token);
+        localStorage.setItem("refresh_token", refresh_token);
+        localStorage.setItem("accountID", idAccount);
+        
+        // Set timeout for token removal
+        setTimeout(() => {
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("refresh_token");
+          localStorage.removeItem("accountID");
+          console.log("Tokens have been cleared from localStorage after 1 day.");
+        }, 86400000);
+        
+        localStorage.setItem("loginTime", Date.now());
+        navigate("/");
+        
+      } catch (err) {
+        console.error("Google login failed:", err);
+        setError("Đăng nhập với Google không thành công.");
+      }
+    },
+  
+    onError: (error) => {
+      console.error("Google login error:", error);
+      setError("Đăng nhập với Google không thành công.");
+    },
+    scope: "openid profile email", // Ensure you request openid, profile, and email scopes
+  });
+  
+  
   return (
     <div
       style={{
@@ -154,6 +236,27 @@ const Login = () => {
                 {error}
               </p>
             )}
+            <button
+            onClick={handleGoogleLogin}
+            style={{
+              width: "100%",
+              padding: "15px",
+              backgroundColor: "#4285F4",
+              color: "#fff",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontFamily: "'Times New Roman', Times, serif",
+              fontSize: "18px",
+            }}
+          >
+            Đăng nhập bằng Google
+          </button>
+          {error && (
+            <p style={{ color: "red", marginTop: "15px", textAlign: "center" }}>
+              {error}
+            </p>
+          )}
           </form>
           <div style={{ marginTop: "20px", textAlign: "center" }}>
             <h3 style={{ marginBottom: "15px" }}>Quên mật khẩu?</h3>

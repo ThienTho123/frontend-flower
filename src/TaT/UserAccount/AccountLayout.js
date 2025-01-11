@@ -13,13 +13,10 @@ const AccountLayout = () => {
   // Hàm lấy thông tin người dùng từ API
   const getUserInfo = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8080/account",
-        {
-          params: { accountID },
-          headers: { Authorization: `Bearer ${access_token}` },
-        }
-      );
+      const response = await axios.get("http://localhost:8080/account", {
+        params: { accountID },
+        headers: { Authorization: `Bearer ${access_token}` },
+      });
       setProfileForm(response.data); // Lưu thông tin người dùng vào state
     } catch (error) {
       console.error("Lỗi khi lấy thông tin tài khoản:", error);
@@ -82,21 +79,31 @@ const AccountLayout = () => {
             <span style={{ fontSize: 16, color: "#888", fontWeight: "normal" }}>
               #{accountID}
             </span>
-            <span style={{ fontSize: 18 }}>{profileForm.username}</span> {/* Hiển thị tên */}
+            <span style={{ fontSize: 18 }}>
+              {(profileForm.username?.length > 20
+                ? profileForm.username.slice(0, 30) + "..."
+                : profileForm.username) || "Tên không có sẵn"}
+            </span>
           </div>
         </h2>
         <button onClick={() => navigate("/account")}>Tài khoản</button>
         <button onClick={() => navigate("/account/wishlist")}>Yêu thích</button>
-        <button onClick={() => navigate("/account/orders")}>Sản phẩm đã mua</button>
-        <button onClick={() => navigate("/account/history")}>Lịch sử mua hàng</button>
-        <button onClick={() => navigate("/account/sendcomment")}>Gửi góp ý</button>
+        <button onClick={() => navigate("/account/orders")}>
+          Sản phẩm đã mua
+        </button>
+        <button onClick={() => navigate("/account/history")}>
+          Lịch sử mua hàng
+        </button>
+        <button onClick={() => navigate("/account/sendcomment")}>
+          Gửi góp ý
+        </button>
         <button onClick={() => navigate("/account/changepassword")}>
           Đổi mật khẩu
         </button>
         <button onClick={handleLogout}>Đăng xuất</button>
       </div>
       <div className="account-outlet">
-        <Outlet />  
+        <Outlet />
       </div>
     </div>
   );
