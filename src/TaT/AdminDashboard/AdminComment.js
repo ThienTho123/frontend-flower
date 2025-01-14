@@ -20,7 +20,9 @@ const AdminComment = () => {
   const navigate = useNavigate();
   const [imageUrl, setImageUrl] = useState("");
   const [file, setFile] = useState(null);
-
+  const [accounts, setAccounts] = useState([]);
+  const [commentTypes, setCommentTypes] = useState([]);
+  
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -37,7 +39,9 @@ const AdminComment = () => {
         }
 
         const data = await response.json();
-        setCommentList(data || []);
+        setCommentList(data.comments || []);
+        setAccounts(data.accounts || []);
+        setCommentTypes(data.commentTypes || []);
       } catch (err) {
         console.error("Error fetching comments:", err.message);
         setError(err.message);
@@ -249,9 +253,8 @@ const AdminComment = () => {
           }
         ></textarea>
 
-        <label>Account ID:</label>
-        <input
-          type="number"
+        <label>Account</label>
+        <select
           value={newComment.accountID.accountID || ""}
           onChange={(e) =>
             setNewComment((prev) => ({
@@ -259,11 +262,17 @@ const AdminComment = () => {
               accountID: { accountID: e.target.value },
             }))
           }
-        />
+        >
+          <option value="">Chọn tài khoản</option>
+          {accounts.map((account) => (
+            <option key={account.accountID} value={account.accountID}>
+              {account.name} ({account.accountID})
+            </option>
+          ))}
+        </select>
 
-        <label>Comment Type ID:</label>
-        <input
-          type="number"
+        <label>Comment Type:</label>
+        <select
           value={newComment.commentType.commenttypeID || ""}
           onChange={(e) =>
             setNewComment((prev) => ({
@@ -271,7 +280,15 @@ const AdminComment = () => {
               commentType: { commenttypeID: e.target.value },
             }))
           }
-        />
+        >
+          <option value="">Chọn loại bình luận</option>
+          {commentTypes.map((type) => (
+            <option key={type.commenttypeID} value={type.commenttypeID}>
+              {type.commenttypename}
+            </option>
+          ))}
+        </select>
+
 
         <label>Date:</label>
         <input
@@ -338,8 +355,8 @@ const AdminComment = () => {
                 <td>{comment.commentID}</td>
                 <td>{comment.title}</td>
                 <td>{comment.text}</td>
-                <td>{comment.accountID.accountID}</td>
-                <td>{comment.commentType.commenttypeID}</td>
+                <td>{comment.accountID?.name} ({comment.accountID?.accountID})</td>
+                <td>{comment.commentType?.commenttypename} ({comment.commentType?.commenttypeID})</td>
                 <td>{comment.date}</td>
                 <td>{comment.stative}</td>
                 <td>

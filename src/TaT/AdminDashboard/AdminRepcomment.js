@@ -19,7 +19,9 @@ const AdminRepcomment = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [file, setFile] = useState(null);
   const [scrollPosition, setScrollPosition] = useState(0);
-
+  const [accounts, setAccounts] = useState([]);
+  const [comments, setComments] = useState([]);
+  
   useEffect(() => {
     const fetchRepComments = async () => {
       try {
@@ -34,7 +36,9 @@ const AdminRepcomment = () => {
         }
 
         const data = await response.json();
-        setRepCommentList(data || []);
+        setRepCommentList(data.repComments || []);
+        setAccounts(data.accounts || []);
+        setComments(data.comments || []);
       } catch (err) {
         console.error("Error fetching rep comments:", err.message);
         setError(err.message);
@@ -273,28 +277,42 @@ const AdminRepcomment = () => {
 
       <h3>{editingRepCommentId ? "Chỉnh sửa phản hồi" : "Thêm mới phản hồi"}</h3>
       <div>
-        <label>Account ID:</label>
-        <input
-          type="number"
-          value={newRepComment.account.accountID || ""}
-          onChange={(e) =>
-            setNewRepComment((prev) => ({
-              ...prev,
-              account: { accountID: e.target.value },
-            }))
-          }
-        />
-        <label>Comment ID:</label>
-        <input
-        type="number"
+      <label>Account:</label>
+      <select
+        value={newRepComment.account.accountID || ""}
+        onChange={(e) =>
+          setNewRepComment((prev) => ({
+            ...prev,
+            account: { accountID: e.target.value },
+          }))
+        }
+      >
+        <option value="">Chọn tài khoản</option>
+        {accounts.map((account) => (
+          <option key={account.accountID} value={account.accountID}>
+            {account.name} ({account.accountID})
+          </option>
+        ))}
+      </select>
+      <label>Comment:</label>
+      <select
         value={newRepComment.comment.commentID || ""}
         onChange={(e) =>
-            setNewRepComment((prev) => ({
+          setNewRepComment((prev) => ({
             ...prev,
             comment: { commentID: e.target.value },
-            }))
+          }))
         }
-        />
+      >
+        <option value="">Chọn bình luận</option>
+        {comments.map((comment) => (
+          <option key={comment.commentID} value={comment.commentID}>
+            ID: {comment.commentID} - {comment.text}
+          </option>
+        ))}
+      </select>
+
+
         <label>Text:</label>
         <textarea
           value={newRepComment.repcommenttext}
@@ -366,8 +384,8 @@ const AdminRepcomment = () => {
             {repCommentList.map((repComment) => (
                 <tr key={repComment.repcommentID}>
                 <td>{repComment.repcommentID}</td>
-                <td>{repComment.comment?.commentID || "N/A"}</td>
-                <td>{repComment.account?.accountID || "N/A"}</td>
+                <td>{repComment.account?.name} ({repComment.account?.accountID})</td>
+                <td>{repComment.comment?.accountID?.name} ({repComment.comment?.accountID?.accountID})</td>
                 <td>{repComment.repcommenttext}</td>
                 <td>{repComment.repcommentdate}</td>
                 <td>{repComment.status}</td>
