@@ -438,58 +438,56 @@ const AdminReview = () => {
     <tr key={review.reviewID}>
       <td>{review.reviewID}</td>
       <td>
-  {editingReviewId === review.reviewID ? (
-    <select
-      value={review.accountID.accountID || ""}
-      onChange={(e) =>
-        setReviewList((prev) =>
-          prev.map((r) =>
-            r.reviewID === review.reviewID
-              ? { ...r, accountID: { accountID: e.target.value } }
-              : r
-          )
-        )
-      }
-    >
-      <option value="">Chọn tài khoản</option>
-      {accounts.map((account) => (
-        <option key={account.accountID} value={account.accountID}>
-          {account.name} ({account.accountID})
-        </option>
-      ))}
-    </select>
-  ) : (
-    // Hiển thị tên tài khoản
-    accounts.find((acc) => acc.accountID === review.accountID.accountID)?.name || "Không xác định"
-  )}
-</td>
+      {editingReviewId === review.reviewID ? (
+        <select
+          value={review.accountID.accountID || ""}
+          onChange={(e) =>
+            setReviewList((prev) =>
+              prev.map((r) =>
+                r.reviewID === review.reviewID
+                  ? { ...r, accountID: { accountID: e.target.value } }
+                  : r
+              )
+            )
+          }
+        >
+          <option value="">Chọn tài khoản</option>
+          {accounts.map((account) => (
+            <option key={account.accountID} value={account.accountID}>
+              {account.name} ({account.accountID})
+            </option>
+          ))}
+        </select>
+      ) : (
+        accounts.find((acc) => acc.accountID === review.accountID.accountID)?.name || "Không xác định"
+      )}
+    </td>
 
-<td>
-  {editingReviewId === review.reviewID ? (
-    <select
-      value={review.flower.flowerID || ""}
-      onChange={(e) =>
-        setReviewList((prev) =>
-          prev.map((r) =>
-            r.reviewID === review.reviewID
-              ? { ...r, flower: { flowerID: e.target.value } }
-              : r
-          )
-        )
-      }
-    >
-      <option value="">Chọn hoa</option>
-      {flowers.map((flower) => (
-        <option key={flower.flowerID} value={flower.flowerID}>
-          {flower.name} ({flower.flowerID})
-        </option>
-      ))}
-    </select>
-  ) : (
-    // Hiển thị tên hoa
-    flowers.find((f) => f.flowerID === review.flower.flowerID)?.name || "Không xác định"
-  )}
-</td>
+    <td>
+      {editingReviewId === review.reviewID ? (
+        <select
+          value={review.flower.flowerID || ""}
+          onChange={(e) =>
+            setReviewList((prev) =>
+              prev.map((r) =>
+                r.reviewID === review.reviewID
+                  ? { ...r, flower: { flowerID: e.target.value } }
+                  : r
+              )
+            )
+          }
+        >
+          <option value="">Chọn hoa</option>
+          {flowers.map((flower) => (
+            <option key={flower.flowerID} value={flower.flowerID}>
+              {flower.name} ({flower.flowerID})
+            </option>
+          ))}
+        </select>
+      ) : (
+        flowers.find((f) => f.flowerID === review.flower.flowerID)?.name || "Không xác định"
+      )}
+    </td>
 
       <td>
   {editingReviewId === review.reviewID ? (
