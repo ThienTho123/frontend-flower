@@ -11,7 +11,9 @@
   --text-light: #ffffff;
 }
 
-
+.account-layout{
+  width: 96.6%
+}
 
 .account-nav {
   display: flex;

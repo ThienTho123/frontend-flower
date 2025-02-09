@@ -4,36 +4,29 @@ import dayjs from "dayjs";
 import "./HistoryOrder.css";
 import { useNavigate } from "react-router-dom";
 
-const HistoryOrder = () => {
+const Preorder = () => {
   const access_token = localStorage.getItem("access_token");
-  const [orderHistory, setOrderHistory] = useState([]);
+  const [preOrder, setPreOrder] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const navigate = useNavigate();
-
-  const translateCondition = (condition) => {
+  const translateCondition = (precondition) => {
     const translations = {
-      "Cancel is Processing": "Hủy đang xử lý",
-      "Cancelled": "Đã hủy",
-      "In Transit": "Đang vận chuyển",
-      "Shipper Delivering": "Shipper đang giao hàng",
-      "First Attempt Failed": "Lần giao hàng đầu tiên thất bại",
-      "Second Attempt Failed": "Lần giao hàng thứ hai thất bại",
-      "Third Attempt Failed": "Lần giao hàng thứ ba thất bại",
-      "Delivered Successfully": "Giao hàng thành công",
-      "Return to shop": "Trả về cửa hàng",
-      "Pending": "Đang chờ xử lý",
-      "Processing": "Đang xử lý",
-      "Prepare": "Chuẩn bị",
+      Waiting: "Đang chờ",
+      Cancel: "Đã hủy",
+      Ordering: "Đang đặt hàng",
+      Refund: "Hoàn tiền",
+      Refunding: "Đang hoàn tiền",
+      Success: "Thành công",
     };
-    return translations[condition] || condition;
+    return translations[precondition] || precondition;
   };
 
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/account/orderHistory",
+        "http://localhost:8080/account/preorder",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -41,24 +34,28 @@ const HistoryOrder = () => {
         }
       );
 
-      const rawOrder = response.data?.orderHistory || [];
-      console.log(rawOrder);
+      const rawOrder = response.data?.preorders || [];
       if (!Array.isArray(rawOrder)) {
         console.error("Order data is not an array:", rawOrder);
-        setOrderHistory([]);
+        setPreOrder([]);
         return;
       }
+      console.log(rawOrder);
+      const updatedOrder = rawOrder.map((item, index) => {
+        const [year, month, day, hour, minute, second] = item.date;
+        const formattedDate = dayjs(
+          new Date(year, month - 1, day, hour, minute, second)
+        ).format("YYYY-MM-DD HH:mm:ss");
+        return {
+          stt: index + 1,
+          id: item.id,
+          total: item.totalAmount,
+          date: formattedDate,
+          condition: item.precondition,
+        };
+      });
 
-      const updatedOrder = rawOrder.map((item, index) => ({
-        stt: index + 1,
-        id: item.orderID,
-        isPaid: item.isPaid,
-        total: item.total,
-        date: dayjs(item.date).format("YYYY-MM-DD HH:mm:ss"),
-        condition: item.condition.replaceAll("_", " "),
-      }));
-
-      setOrderHistory(updatedOrder);
+      setPreOrder(updatedOrder);
     } catch (error) {
       console.error("Error fetching purchase history:", error);
     }
@@ -71,32 +68,32 @@ const HistoryOrder = () => {
 
   const handleCancelOrder = async () => {
     setShowConfirm(false);
+    console.log("Cancel Order ID:", selectedOrderId);
+
     try {
       const response = await axios.delete(
-        "http://localhost:8080/account/cancel",
+        "http://localhost:8080/account/preorder/cancel",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
-          params: {
-            orderID: selectedOrderId,
-          },
+          params: { id: selectedOrderId }, // Đổi OrderID -> id
         }
       );
 
       if (response.status === 204) {
-        setOrderHistory((prev) =>
-          prev.map((order) =>
-            order.id === selectedOrderId
-              ? { ...order, condition: "Cancel is Processing" }
-              : order
-          )
-        );
+        // Kiểm tra thành công
+        console.log("Order canceled successfully.");
         setShowSuccessModal(true);
-        getHistoryOrder();
+        getHistoryOrder(); // Refresh danh sách đơn hàng
+      } else {
+        console.warn("Unexpected response:", response);
       }
     } catch (error) {
-      console.error("Error cancelling order:", error.message);
+      console.error(
+        "Error cancelling order:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -119,12 +116,15 @@ const HistoryOrder = () => {
           </tr>
         </thead>
         <tbody>
-          {orderHistory.length > 0 ? (
-            orderHistory.map((order) => (
+          {preOrder.length > 0 ? (
+            preOrder.map((order) => (
               <tr key={order.id}>
                 <td>{order.stt}</td>
                 <td>
-                  <a href={`/account/history/${order.id}`} className="history-link">
+                  <a
+                    href={`/account/preorder/${order.id}`}
+                    className="history-link"
+                  >
                     {order.id}
                   </a>
                 </td>
@@ -132,35 +132,23 @@ const HistoryOrder = () => {
                 <td>{order.date}</td>
                 <td>{translateCondition(order.condition)}</td>
                 <td>
-                   {order.condition === "Refund" || order.condition ==="Refund is Processing" ? (
+                  {order.condition === "Refund" || order.condition ==="Refunding" ? (
                     <button
                       className="cancel-btn"
-                      onClick={() => navigate (`/account/order/refund/${order.id}`)}
-                      disabled={order.condition ==="Refund is Processing"}
+                      onClick={() => navigate (`/account/preorder/refund/${order.id}`)}
+                      disabled={order.condition ==="Refunding"}
                     >
                       Hoàn tiền
                     </button>
                   ) : (
                     <button
-                    className="cancel-btn"
-                    onClick={() => confirmCancelOrder(order.id)}
-                    disabled={
-                      [
-                        "Cancel is Processing",
-                        "Cancelled",
-                        "In Transit",
-                        "Shipper Delivering",
-                        "First Attempt Failed",
-                        "Second Attempt Failed",
-                        "Third Attempt Failed",
-                        "Delivered Successfully",
-                        "Return to shop",
-                      ].includes(order.condition)
-                    }
-                  >
-                    Hủy
-                  </button>)}
-                    
+                      className="cancel-btn"
+                      onClick={() => confirmCancelOrder(order.id)}
+                      disabled={order.condition === "Ordering" || order.condition === "Success" || order.condition === "Cancel" }
+                    >
+                      Hủy
+                    </button>
+                  )}
                 </td>
               </tr>
             ))
@@ -179,7 +167,10 @@ const HistoryOrder = () => {
             <button className="confirm-btn" onClick={handleCancelOrder}>
               Xác nhận
             </button>
-            <button className="cancel-btn" onClick={() => setShowConfirm(false)}>
+            <button
+              className="cancel-btn"
+              onClick={() => setShowConfirm(false)}
+            >
               Hủy
             </button>
           </div>
@@ -203,4 +194,4 @@ const HistoryOrder = () => {
   );
 };
 
-export default HistoryOrder;
+export default Preorder;

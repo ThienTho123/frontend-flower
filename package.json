@@ -10,8 +10,10 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "assert": "^2.1.0",
     "axios": "^1.7.9",
     "chart.js": "^4.4.6",
+    "crypto-browserify": "^3.12.1",
     "dayjs": "^1.11.13",
     "facebook-js-sdk": "^1.0.4",
     "jwt-decode": "^4.0.0",
@@ -25,7 +27,9 @@
     "react-slick": "^0.30.2",
     "react-toastify": "^3.4.3",
     "slick-carousel": "^1.8.1",
+    "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
+    "vnpay": "^1.6.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -51,5 +55,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-app-rewired": "^2.2.1"
   }
 }

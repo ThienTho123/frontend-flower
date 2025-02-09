@@ -56,8 +56,6 @@ const ProcessingComment = () => {
   return (
     <div className="send-comment-container">
       <h2 className="comment-title">Các ý kiến đang giải quyết</h2>
-
-      {/* Hiển thị danh sách bình luận */}
       <div className="comments-list">
         {comments.length > 0 ? (
           <table className="comments-table">
@@ -77,7 +75,6 @@ const ProcessingComment = () => {
                 <tr key={comment.id}>
                   <td>{comment.stt}</td>
                   <td>
-                    {/* Link tới trang chi tiết với title */}
                     <Link
                       to={`/staffaccount/comment/${comment.id}`}
                       className="comment-link"
@@ -86,7 +83,6 @@ const ProcessingComment = () => {
                     </Link>
                   </td>
                   <td>
-                    {/* Link tới trang chi tiết với title */}
                     <Link
                       to={`/staffaccount/comment/${comment.id}`}
                       className="comment-link"

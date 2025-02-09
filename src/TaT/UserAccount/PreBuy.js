@@ -55,11 +55,8 @@ const PreBuy = () => {
               selected: false,
             };
           });
-
           setCartItems(itemsWithSelectedSize);
           setDiscounts(data.discount || []);
-          console.log(discounts);
-
           localStorage.setItem(
             "cartItems",
             JSON.stringify(itemsWithSelectedSize)
@@ -716,7 +713,7 @@ const PreBuy = () => {
                         Tồn kho:{" "}
                         {(() => {
                           const sizeIndex = item.sizes.indexOf(
-                            item.selectedSize
+                            item.sizeChoose
                           );
                           return sizeIndex !== -1
                             ? item.stock[sizeIndex]

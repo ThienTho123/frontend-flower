@@ -12,7 +12,7 @@ import exit from "./ImageDashboard/exit.png"; // Hình ảnh cho quản lý Revi
 import { Link } from 'react-router-dom'; 
 import deliveryIcon from "./ImageDashboard/delivery.png"; // Hình ảnh cho quản lý Review
 import cancelIcon from "./ImageDashboard/cancel.png"; // Hình ảnh cho quản lý Review
-
+import refund from "./ImageDashboard/refund.svg"
 const StaffDashboard = () => {
   const navigate = useNavigate();
   const [accountInfo, setAccountInfo] = useState(null);
@@ -99,6 +99,9 @@ const StaffDashboard = () => {
             </button>
             <button onClick={() => handleNavigate("/StaffOrderDetail")}>
               <img src={billInfoIcon} alt="Quản lý thông tin đơn hàng" /> Thông tin đơn hàng
+            </button>
+            <button onClick={() => handleNavigate("/StaffRefund")}>
+              <img src={refund} alt="Quản lý hoàn tiền hóa đơn" /> Hoàn tiền
             </button>
           </div>
         </div>

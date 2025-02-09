@@ -94,6 +94,9 @@ const AccountLayout = () => {
         <button onClick={() => navigate("/account/history")}>
           Lịch sử mua hàng
         </button>
+        <button onClick={() => navigate("/account/preorder")}>
+          Đơn đặt trước
+        </button>
         <button onClick={() => navigate("/account/sendcomment")}>
           Gửi góp ý
         </button>
