@@ -141,6 +141,7 @@ const PreBuy = () => {
 
     setCartItems(updatedItems); // Cập nhật state giỏ hàng
     localStorage.setItem("cartItems", JSON.stringify(updatedItems)); // Lưu vào localStorage
+    window.location.reload();
 
     // Cập nhật thông báo lỗi
     const errorMessages = updatedItems.reduce((errors, item) => {
