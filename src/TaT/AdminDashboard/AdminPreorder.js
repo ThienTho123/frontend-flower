@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import returnIcon from "./ImageDashboard/return-button.png"; // Adjust the path as needed
-import "./StaffPreorder.css";
 import { Link } from "react-router-dom";
-
+import "../StaffDashboard/StaffPreorder.css"
 const AdminPreorder = () => {
   const [preOrder, setPreOrders] = useState([]);
   const [editingPreOrderId, setEditingPreOrderId] = useState(null);
@@ -340,7 +339,7 @@ const AdminPreorder = () => {
                 <tr key={preorder.id}>
                   <td>
                     <Link
-                      to={`/StaffPreorder/${preorder.id}`}
+                      to={`/AdminPreorder/${preorder.id}`}
                       style={{
                         marginLeft: "10px",
                         color: "blue",

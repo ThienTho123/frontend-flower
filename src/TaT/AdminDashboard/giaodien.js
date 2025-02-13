@@ -22,7 +22,8 @@ import pureposeIcon from "./ImageDashboard/purpose.png"; // Hình ảnh cho qu�
 import repcommentIcon from "./ImageDashboard/repcomment.png"; // Hình ảnh cho quản lý Review
 import deliveryIcon from "./ImageDashboard/delivery.png"; // Hình ảnh cho quản lý Review
 import cancelIcon from "./ImageDashboard/cancel.png"; // Hình ảnh cho quản lý Review
-
+import refund from "../StaffDashboard/ImageDashboard/refund.svg"
+import preorder from "../StaffDashboard/ImageDashboard/preorder.png"
 import logo from "./ImageDashboard/logo.png"; // Hình ảnh cho quản lý Review
 import exit from "./ImageDashboard/exit.png"; // Hình ảnh cho quản lý Review
 import { Bar } from "react-chartjs-2"; // Biểu đồ cột
@@ -405,11 +406,11 @@ const Dashboard = () => {
               <button onClick={() => handleNavigate("/AdminType")}>
                 <img src={productTypeIcon} alt="Quản lý Type" /> Type
               </button>
-              <button onClick={() => handleNavigate("/AdminType")}>
-                <img src={productTypeIcon} alt="Quản lý đơn đặt trước" /> Type
+              <button onClick={() => handleNavigate("/AdminPreorder")}>
+                <img src={preorder} alt="Quản lý đơn đặt trước" /> Quản lý đơn đặt trước
               </button>
-              <button onClick={() => handleNavigate("/AdminType")}>
-                <img src={productTypeIcon} alt="Quản lý hoàn tiền" /> Type
+              <button onClick={() => handleNavigate("/AdminRefund")}>
+                <img src={refund} alt="Quản lý hoàn tiền" /> Quản lý hoàn tiền
               </button>
             </div>
           </div>

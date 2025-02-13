@@ -572,7 +572,7 @@ const ProductDetail = () => {
                 {productSizes[selectedSizeIndex]?.stock > 0 ? (
                   <>Còn lại: {productSizes[selectedSizeIndex]?.stock || 0}</>
                 ) : (
-                  <span style={{ color: "red" }}>Sản phẩm tạm hết hàng (Có thể đặt trước)</span>
+                  <span style={{ color: "red" }}>Sản phẩm tạm hết hàng </span>
                 )}
               </h4>
 
@@ -611,7 +611,7 @@ const ProductDetail = () => {
 
 
               <div className="buy">
-                {productSizes[selectedSizeIndex]?.stock > 0 ? (
+                {productSizes[selectedSizeIndex]?.stock > 0 && (
                   <>
                     <button className="addToCart" onClick={handleAddToCart}>
                       <h4>Thêm vào giỏ hàng</h4>
@@ -620,12 +620,12 @@ const ProductDetail = () => {
                       <h4>Mua ngay</h4>
                     </button>
                   </>
-                ) : (
+                )}
+                {productSizes[selectedSizeIndex]?.preorderable === "YES" && (
                   <button className="preorder-button" onClick={handlePreorder}>
                     <h4>Đặt trước</h4>
                   </button>
                 )}
-
                 {/* Hiển thị modal thông báo khi thêm vào giỏ hàng thành công */}
                 <ModalSuccess
                   isVisible={isSuccessModalVisible}

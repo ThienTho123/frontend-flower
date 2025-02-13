@@ -73,6 +73,9 @@ import RefundPreorder from "./TaT/UserAccount/RefundPreorder.js";
 import Preorder from "./TaT/UserAccount/Preorder.js";
 import SendCommentDetail from "./TaT/UserAccount/SendCommentDetail.js";
 import StaffRefund from "./TaT/StaffDashboard/StaffRefund.js";
+import AdminRefund from "./TaT/AdminDashboard/AdminRefund.js";
+import AdminPreorder from "./TaT/AdminDashboard/AdminPreorder.js";
+import AdminPreorderDetails from "./TaT/AdminDashboard/AdminPreorderDetail.js";
 import StaffPreorder from "./TaT/StaffDashboard/StaffPreorder.js";
 import {
   BrowserRouter as Router,
@@ -176,6 +179,9 @@ const AppRoutes = () => {
         <Route path="/AdminType" element={<AdminType />} />
         <Route path="/AdminDelivery" element={<AdminDelivery />} />
         <Route path="/AdminCanceldelivery" element={<AdminCanceldelivery />} />
+        <Route path="/AdminRefund" element={<AdminRefund />} />
+        <Route path="/AdminPreorder" element={<AdminPreorder />} />
+        <Route path="/AdminPreorder/:id" element={<AdminPreorderDetails />} />
 
         {/* Staff routes */}
         <Route path="/staff" element={<StaffDashboard />} />

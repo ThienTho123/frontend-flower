@@ -12,7 +12,7 @@ const AdminPreorderDetails = () => {
 
   const accesstoken = localStorage.getItem("access_token");
   const handleBackToDashboard = () => {
-    navigate("/StaffPreorder");
+    navigate("/AdminPreorder");
   };
   const translateCondition = (precondition) => {
     const translations = {
@@ -48,6 +48,7 @@ const AdminPreorderDetails = () => {
         }
 
         const data = await response.json();
+        console.log("data: ",data)
         setPreorder(data.preorders || {}); // Đảm bảo không bị null
         setPreorderDetails(data.preorderdetails || []); // Nếu không có thì gán mảng rỗng
       } catch (err) {

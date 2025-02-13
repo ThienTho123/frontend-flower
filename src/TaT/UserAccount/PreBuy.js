@@ -46,29 +46,39 @@ const PreBuy = () => {
               note: "",
             });
           }
-  
+
           // Xử lý giỏ hàng đặt hàng ngay
           const orderItems = data.cartorder.map((item) => {
-            const savedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-            const savedItem = savedItems.find((saved) => saved.cartID === item.cartID);
+            const savedItems =
+              JSON.parse(localStorage.getItem("cartItems")) || [];
+            const savedItem = savedItems.find(
+              (saved) => saved.cartID === item.cartID
+            );
             return {
               ...item,
-              selectedSize: savedItem ? savedItem.selectedSize : item.selectedSize || item.sizes[0],
+              selectedSize: savedItem
+                ? savedItem.selectedSize
+                : item.selectedSize || item.sizes[0],
               selected: false,
             };
           });
-  
+
           // Xử lý giỏ hàng đặt trước
           const preOrderItems = data.cartpreorder.map((item) => {
-            const savedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-            const savedItem = savedItems.find((saved) => saved.cartID === item.cartID);
+            const savedItems =
+              JSON.parse(localStorage.getItem("cartItems")) || [];
+            const savedItem = savedItems.find(
+              (saved) => saved.cartID === item.cartID
+            );
             return {
               ...item,
-              selectedSize: savedItem ? savedItem.selectedSize : item.selectedSize || item.sizes[0],
+              selectedSize: savedItem
+                ? savedItem.selectedSize
+                : item.selectedSize || item.sizes[0],
               selected: false,
             };
           });
-  
+
           setCartOrderItems(orderItems);
           setCartPreOrderItems(preOrderItems);
           setCartItems(cartType === "cartorder" ? orderItems : preOrderItems);
@@ -82,7 +92,6 @@ const PreBuy = () => {
       navigate("/login");
     }
   }, [accesstoken, navigate, cartType]);
-  
 
   useEffect(() => {
     if (accesstoken) {
@@ -122,10 +131,10 @@ const PreBuy = () => {
         let errorMessage = null;
 
         if (updatedNumber > stockForSelectedSize) {
-          updatedNumber = 1; 
+          updatedNumber = 1;
         }
         if (stockForSelectedSize === 0) {
-          updatedNumber = 0; 
+          updatedNumber = 0;
         }
         // Cập nhật item
         return {
@@ -160,7 +169,7 @@ const PreBuy = () => {
   const handleQuantityChange = (cartID, quantity) => {
     const newQuantity = parseInt(quantity, 10) || 1;
     const cartItem = cartItems.find((item) => item.cartID === cartID);
-  
+
     // Nếu là giỏ hàng đặt trước (Preorder), không giới hạn số lượng
     if (cartType === "cartpreorder") {
       setCartItems((prevItems) =>
@@ -168,15 +177,16 @@ const PreBuy = () => {
           item.cartID === cartID ? { ...item, number: newQuantity } : item
         )
       );
-  
+
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
       return;
     }
-  
+
     // Nếu là giỏ hàng đặt hàng ngay (Order), kiểm tra tồn kho
     if (cartItem) {
-      const maxStock = cartItem.stock[cartItem.sizes.indexOf(cartItem.selectedSize)];
-  
+      const maxStock =
+        cartItem.stock[cartItem.sizes.indexOf(cartItem.selectedSize)];
+
       if (newQuantity > maxStock) {
         setErrorMessages((prevErrors) => ({
           ...prevErrors,
@@ -185,29 +195,28 @@ const PreBuy = () => {
         return;
       }
     }
-  
+
     // Xóa lỗi nếu số lượng hợp lệ
     setErrorMessages((prevErrors) => {
       const newErrors = { ...prevErrors };
       delete newErrors[cartID];
       return newErrors;
     });
-  
+
     // Cập nhật số lượng sản phẩm
     setCartItems((prevItems) =>
       prevItems.map((item) =>
         item.cartID === cartID ? { ...item, number: newQuantity } : item
       )
     );
-  
+
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
-  
+
     // Nếu ở chế độ `cartorder`, cập nhật giỏ hàng lên server
     if (cartType === "cartorder" && cartItem) {
       updateCart(cartID, newQuantity, cartItem.selectedSize);
     }
   };
-  
 
   const updateCart = (cartID, number, size) => {
     const requestBody = {
@@ -272,7 +281,7 @@ const PreBuy = () => {
   const handlePaymentOptionChange = (cartID, value) => {
     setPaymentOptions((prev) => ({
       ...prev,
-      [cartID]: value
+      [cartID]: value,
     }));
   };
   const calculateItemPrice = (item) => {
@@ -285,15 +294,18 @@ const PreBuy = () => {
   const calculateTotalPrice = () => {
     const selectedItems = cartItems.filter((item) => item.selected);
     if (selectedItems.length === 0) return 0;
-  
+
     return selectedItems.reduce((total, item) => {
       let itemPrice = item.productPrice * item.number;
-  
+
       // Nếu đang ở chế độ đặt trước, kiểm tra lựa chọn thanh toán
-      if (cartType === "cartpreorder" && paymentOptions[item.cartID] === "half") {
+      if (
+        cartType === "cartpreorder" &&
+        paymentOptions[item.cartID] === "half"
+      ) {
         itemPrice *= 0.5; // Chỉ tính 50% giá trị
       }
-  
+
       return total + itemPrice;
     }, 0);
   };
@@ -385,14 +397,14 @@ const PreBuy = () => {
       );
       return;
     }
-  
+
     // Kiểm tra nếu không có sản phẩm được chọn
     const selectedItems = cartItems.filter((item) => item.selected);
     if (selectedItems.length === 0) {
       setError("Vui lòng chọn ít nhất một sản phẩm để mua.");
       return;
     }
-  
+
     // Kiểm tra thông tin người mua (buyInfo)
     if (!buyInfo.name || buyInfo.name.trim().length < 2) {
       setError("Vui lòng nhập tên người nhận hợp lệ (tối thiểu 3 ký tự).");
@@ -407,32 +419,32 @@ const PreBuy = () => {
       setError("Vui lòng nhập địa chỉ giao hàng hợp lệ (tối thiểu 3 ký tự).");
       return;
     }
-  
+
     // Kiểm tra thông tin giảm giá
     const selectedDiscountObj = discounts.find(
       (discount) => discount.discountID === selectedDiscount
     );
     const discountPercent = selectedDiscountObj?.discountPercent || 0;
-  
+
     // Chuẩn bị dữ liệu thanh toán
     const cartIDs = selectedItems.map((item) => item.cartID);
     const prices = selectedItems.map((item) => item.productPrice * item.number);
-    
+
     // Tính giá trị `paid` theo từng sản phẩm
     const paids = selectedItems.map((item, index) => {
       if (cartType === "cartorder") return prices[index]; // Thanh toán toàn bộ
       return paymentOptions[item.cartID] === "half"
-        ? prices[index] * 0.5  // Trả trước 50%
+        ? prices[index] * 0.5 // Trả trước 50%
         : prices[index]; // Trả trước toàn bộ
     });
-  
+
     const buyInfoBody = {
       name: buyInfo.name,
       address: buyInfo.address,
       phone: buyInfo.phone,
       note: buyInfo.note,
     };
-  
+
     // Chuẩn bị URL query parameters
     const params = new URLSearchParams();
     cartIDs.forEach((id, index) => {
@@ -441,10 +453,10 @@ const PreBuy = () => {
       params.append("paid", paids[index]); // Gửi paid cho backend
     });
     const url = `http://localhost:8080/prebuy/buy?${params.toString()}`;
-  
+
     console.log("POST URL:", url);
     console.log("Body JSON gửi đến API:", buyInfoBody);
-  
+
     // Thực hiện giao dịch
     fetch(url, {
       method: "POST",
@@ -476,7 +488,7 @@ const PreBuy = () => {
         console.error(error);
       });
   };
-  
+
   const handleBuyVNPay = () => {
     // Kiểm tra lỗi tổng thể
     if (Object.keys(errorMessages).length > 0) {
@@ -485,14 +497,14 @@ const PreBuy = () => {
       );
       return;
     }
-  
+
     // Kiểm tra nếu không có sản phẩm được chọn
     const selectedItems = cartItems.filter((item) => item.selected);
     if (selectedItems.length === 0) {
       setError("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
       return;
     }
-  
+
     // Kiểm tra thông tin người mua (buyInfo)
     if (!buyInfo.name || buyInfo.name.trim().length < 2) {
       setError("Vui lòng nhập tên người nhận hợp lệ (tối thiểu 3 ký tự).");
@@ -507,13 +519,13 @@ const PreBuy = () => {
       setError("Vui lòng nhập địa chỉ giao hàng hợp lệ (tối thiểu 3 ký tự).");
       return;
     }
-  
+
     // Kiểm tra thông tin giảm giá
     const selectedDiscountObj = discounts.find(
       (discount) => discount.discountID === selectedDiscount
     );
     const discountPercent = selectedDiscountObj?.discountPercent || 0;
-  
+
     // Chuẩn bị dữ liệu thanh toán
     const cartIDs = selectedItems.map((item) => item.cartID);
     const quantities = selectedItems.map((item) => item.number);
@@ -541,27 +553,25 @@ const PreBuy = () => {
       setError("Tổng giá sản phẩm phải lớn hơn 0.");
       return;
     }
-  
+
     // Chuẩn bị query parameters
     const queryParams = cartIDs
-    .map(
-      (id, index) =>
-        `cartID=${id}&quantities=${quantities[index]}&price=${prices[index]}&paid=${paids[index]}`
-    )
-    .join("&");
-  
-  
-  
+      .map(
+        (id, index) =>
+          `cartID=${id}&quantities=${quantities[index]}&price=${prices[index]}&paid=${paids[index]}`
+      )
+      .join("&");
+
     const buyInfoBody = {
       name: buyInfo.name,
       address: buyInfo.address,
       phone: buyInfo.phone,
       note: buyInfo.note,
     };
-  
+
     console.log("Query Parameters:", queryParams);
     console.log("Body JSON gửi đến API /setCart:", buyInfoBody);
-  
+
     // Thực hiện các bước gửi dữ liệu và thanh toán
     fetch(`http://localhost:8080/setCart?${queryParams}`, {
       method: "POST",
@@ -602,7 +612,6 @@ const PreBuy = () => {
         console.error(error);
       });
   };
-  
 
   const handleCheckboxChange = (cartID) => {
     const updatedItems = cartItems.map((item) =>
@@ -700,33 +709,36 @@ const PreBuy = () => {
         Giỏ hoa của bạn: <span>({cartItems.length} bó hoa)</span>
       </h2>
       <div className="cart-toggle-container">
-  <div className="cart-toggle-buttons">
-    <div
-      className="toggle-bg"
-      style={{
-        transform: cartType === "cartorder" ? "translateX(0)" : "translateX(160px)",
-      }}
-    ></div>
-    <button
-      className={cartType === "cartorder" ? "active" : ""}
-      onClick={() => {
-        setCartType("cartorder");
-        setCartItems(cartOrderItems);
-      }}
-    >
-      Giỏ Hàng
-    </button>
-    <button
-      className={cartType === "cartpreorder" ? "active" : ""}
-      onClick={() => {
-        setCartType("cartpreorder");
-        setCartItems(cartPreOrderItems);
-      }}
-    >
-      Đặt Trước
-    </button>
-  </div>
-</div>
+        <div className="cart-toggle-buttons">
+          <div
+            className="toggle-bg"
+            style={{
+              transform:
+                cartType === "cartorder"
+                  ? "translateX(0)"
+                  : "translateX(160px)",
+            }}
+          ></div>
+          <button
+            className={cartType === "cartorder" ? "active" : ""}
+            onClick={() => {
+              setCartType("cartorder");
+              setCartItems(cartOrderItems);
+            }}
+          >
+            Giỏ Hàng
+          </button>
+          <button
+            className={cartType === "cartpreorder" ? "active" : ""}
+            onClick={() => {
+              setCartType("cartpreorder");
+              setCartItems(cartPreOrderItems);
+            }}
+          >
+            Đặt Trước
+          </button>
+        </div>
+      </div>
 
       {cartItems.length > 0 ? (
         <div style={{ display: "flex" }}>
@@ -740,7 +752,7 @@ const PreBuy = () => {
                       className="prebuy-custom-checkbox"
                       checked={item.selected}
                       onChange={() => handleCheckboxChange(item.cartID)}
-                      disabled={item.number <= 0} 
+                      disabled={item.number <= 0}
                     />
                     <a href={`/detail/${item.productID}`}>
                       <img src={item.avatar} alt={item.productTitle} />
@@ -756,15 +768,23 @@ const PreBuy = () => {
                         </a>
                       </p>
                       <p className="prebuy-product-price">
-                        Giá: {calculateItemPrice(item).toLocaleString("vi-VN")} VNĐ
+                        Giá: {calculateItemPrice(item).toLocaleString("vi-VN")}{" "}
+                        VNĐ
                       </p>
 
                       <label className="prebuy-product-size-label">
-                        {cartType === "cartpreorder" ? "Thanh toán:" : "Kích thước:"}
+                        {cartType === "cartpreorder"
+                          ? "Thanh toán:"
+                          : "Kích thước:"}
                         {cartType === "cartpreorder" ? (
                           <select
                             value={paymentOptions[item.cartID] || "full"}
-                            onChange={(e) => handlePaymentOptionChange(item.cartID, e.target.value)}
+                            onChange={(e) =>
+                              handlePaymentOptionChange(
+                                item.cartID,
+                                e.target.value
+                              )
+                            }
                             className="prebuy-product-size-select"
                             style={{ marginLeft: "5px" }}
                           >
@@ -774,7 +794,9 @@ const PreBuy = () => {
                         ) : (
                           <select
                             value={item.sizeChoose || ""}
-                            onChange={(e) => handleSizeChange(item.cartID, e.target.value)}
+                            onChange={(e) =>
+                              handleSizeChange(item.cartID, e.target.value)
+                            }
                             className="prebuy-product-size-select"
                             style={{ marginLeft: "5px" }}
                           >
@@ -796,9 +818,7 @@ const PreBuy = () => {
                       >
                         Tồn kho:{" "}
                         {(() => {
-                          const sizeIndex = item.sizes.indexOf(
-                            item.sizeChoose
-                          );
+                          const sizeIndex = item.sizes.indexOf(item.sizeChoose);
                           return sizeIndex !== -1
                             ? item.stock[sizeIndex]
                             : "Không xác định";
@@ -963,20 +983,22 @@ const PreBuy = () => {
                 <img src={vnpay} alt="VNPay" className="prebuy-payment-icon" />
                 VNPay
               </label>
-              <label className="prebuy-payment-option">
-                <input
-                  type="radio"
-                  value="cash"
-                  checked={selectedPaymentMethod === "cash"}
-                  onChange={() => setSelectedPaymentMethod("cash")}
-                />
-                <img
-                  src={payment}
-                  alt="Thanh toán khi nhận hàng"
-                  className="prebuy-payment-icon"
-                />
-                Thanh toán khi nhận hàng
-              </label>
+              {cartType !== "cartpreorder" && (
+                <label className="prebuy-payment-option">
+                  <input
+                    type="radio"
+                    value="cash"
+                    checked={selectedPaymentMethod === "cash"}
+                    onChange={() => setSelectedPaymentMethod("cash")}
+                  />
+                  <img
+                    src={payment}
+                    alt="Thanh toán khi nhận hàng"
+                    className="prebuy-payment-icon"
+                  />
+                  Thanh toán khi nhận hàng
+                </label>
+              )}
               <div className="prebuy-button-container">
                 <button
                   onClick={() =>
