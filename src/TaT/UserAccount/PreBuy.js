@@ -544,11 +544,13 @@ const PreBuy = () => {
   
     // Chuẩn bị query parameters
     const queryParams = cartIDs
-      .map(
-        (id, index) =>
-          `cartID=${id}&quantities=${quantities[index]}&price=${prices[index]}`
-      )
-      .join("&");
+    .map(
+      (id, index) =>
+        `cartID=${id}&quantities=${quantities[index]}&price=${prices[index]}&paid=${paids[index]}`
+    )
+    .join("&");
+  
+  
   
     const buyInfoBody = {
       name: buyInfo.name,
