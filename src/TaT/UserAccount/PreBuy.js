@@ -17,7 +17,11 @@ const PreBuy = () => {
   const [errorMessages, setErrorMessages] = useState({});
   const [sizeChoose, setSizeChoose] = useState("");
   const [account, setAccount] = useState(null);
-
+  const [cartorder, setCartorder] = useState([]);
+  const [cartType, setCartType] = useState("cartorder"); // Mặc định hiển thị giỏ hàng đặt hàng ngay
+  const [cartOrderItems, setCartOrderItems] = useState([]);
+  const [cartPreOrderItems, setCartPreOrderItems] = useState([]);
+  
   useEffect(() => {
     if (accesstoken) {
       fetch("http://localhost:8080/prebuy", {
@@ -41,30 +45,33 @@ const PreBuy = () => {
               note: "",
             });
           }
-          const itemsWithSelectedSize = data.cart.map((item) => {
-            const savedItems =
-              JSON.parse(localStorage.getItem("cartItems")) || [];
-            const savedItem = savedItems.find(
-              (saved) => saved.cartID === item.cartID
-            );
+  
+          // Xử lý giỏ hàng đặt hàng ngay
+          const orderItems = data.cartorder.map((item) => {
+            const savedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+            const savedItem = savedItems.find((saved) => saved.cartID === item.cartID);
             return {
               ...item,
-              selectedSize: savedItem
-                ? savedItem.selectedSize
-                : item.selectedSize || item.sizes[0],
+              selectedSize: savedItem ? savedItem.selectedSize : item.selectedSize || item.sizes[0],
               selected: false,
             };
           });
-          setCartItems(itemsWithSelectedSize);
+  
+          // Xử lý giỏ hàng đặt trước
+          const preOrderItems = data.cartpreorder.map((item) => {
+            const savedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+            const savedItem = savedItems.find((saved) => saved.cartID === item.cartID);
+            return {
+              ...item,
+              selectedSize: savedItem ? savedItem.selectedSize : item.selectedSize || item.sizes[0],
+              selected: false,
+            };
+          });
+  
+          setCartOrderItems(orderItems);
+          setCartPreOrderItems(preOrderItems);
+          setCartItems(cartType === "cartorder" ? orderItems : preOrderItems);
           setDiscounts(data.discount || []);
-          localStorage.setItem(
-            "cartItems",
-            JSON.stringify(itemsWithSelectedSize)
-          );
-          localStorage.setItem(
-            "discounts",
-            JSON.stringify(data.discount || [])
-          );
         })
         .catch((error) => {
           setError("Có lỗi xảy ra khi lấy giỏ hàng hoặc dữ liệu giảm giá.");
@@ -73,7 +80,8 @@ const PreBuy = () => {
     } else {
       navigate("/login");
     }
-  }, [accesstoken, navigate]);
+  }, [accesstoken, navigate, cartType]);
+  
 
   useEffect(() => {
     if (accesstoken) {
@@ -653,6 +661,35 @@ const PreBuy = () => {
       <h2 className="prebuy-h2">
         Giỏ hoa của bạn: <span>({cartItems.length} bó hoa)</span>
       </h2>
+      <div className="cart-toggle-container">
+  <div className="cart-toggle-buttons">
+    <div
+      className="toggle-bg"
+      style={{
+        transform: cartType === "cartorder" ? "translateX(0)" : "translateX(160px)",
+      }}
+    ></div>
+    <button
+      className={cartType === "cartorder" ? "active" : ""}
+      onClick={() => {
+        setCartType("cartorder");
+        setCartItems(cartOrderItems);
+      }}
+    >
+      Giỏ Hàng
+    </button>
+    <button
+      className={cartType === "cartpreorder" ? "active" : ""}
+      onClick={() => {
+        setCartType("cartpreorder");
+        setCartItems(cartPreOrderItems);
+      }}
+    >
+      Đặt Trước
+    </button>
+  </div>
+</div>
+
       {cartItems.length > 0 ? (
         <div style={{ display: "flex" }}>
           <div style={{ flex: 1 }}>

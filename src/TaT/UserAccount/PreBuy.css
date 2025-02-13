@@ -611,3 +611,67 @@
     box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Bóng mờ khi focus */
 }
 
+.cart-toggle-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .cart-toggle-buttons {
+    display: flex;
+    position: relative;
+    background: #ddd;
+    padding: 5px;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    width: 320px;
+    overflow: hidden;
+  }
+  
+  .cart-toggle-buttons button {
+    position: relative;
+    flex: 1;
+    padding: 15px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    z-index: 2;
+    color: #6a0dad; /* Màu tím */
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .cart-toggle-buttons button:hover {
+    color: #4b0082; /* Tím đậm */
+  }
+  
+  .cart-toggle-buttons button.active {
+    color: white;
+  }
+  
+  .toggle-bg {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 150px;
+    height: 50px;
+    background: linear-gradient(45deg, #8a2be2, #4b0082); /* Hiệu ứng gradient tím */
+    border-radius: 50px;
+    transition: transform 0.4s ease-in-out;
+    z-index: 1;
+  }
+  
+  .toggle-triangle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background: #ddd;
+    transform: translate(-50%, -50%) rotate(45deg);
+    z-index: 1;
+  }
+  

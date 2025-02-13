@@ -213,14 +213,16 @@
   transition: background-color 0.3s;
 }
 .addToCart.disabled,
-.buyNow.disabled{
+.buyNow.disabled,
+.preorder-button{
   border: 1px solid #666;
 
 }
 .addToCart.disabled,
 .buyNow.disabled,
 .decrease-btn.disabled,
-.increase-btn.disabled {
+.increase-btn.disabled
+.preorder-button {
   background-color: #ccc;
   color: #666;
   cursor: not-allowed;
@@ -774,4 +776,45 @@ h5 {
 .modal-close-btn:active {
   background-color: #5a1d70; /* Màu đậm khi nhấn */
   transform: scale(0.98); /* Hiệu ứng thu nhỏ nhẹ khi nhấn */
+}
+.preorder-button:hover {
+  background-color: #e68900;
+  transform: scale(1.05);
+}
+
+.preorder-button:active {
+  transform: scale(0.98);
+}
+
+.preorder-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.preorder-button {
+  background-color: #ff9009; /* Màu cam nổi bật */
+  color: white;
+  border: none;
+  padding: 4px 19px; /* Giảm padding để nút nhỏ hơn */
+  font-size: 15px; /* Giảm kích thước chữ */
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 6px; /* Bo góc nhẹ hơn */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: auto; /* Để nút có kích thước vừa với nội dung */
+  text-transform: uppercase;
+  margin: 10px 0; /* Tạo khoảng cách trên dưới */
+}
+
+.preorder-button:hover {
+  background-color: #e68900;
+  transform: scale(1.05);
+}
+
+.preorder-button:active {
+  transform: scale(0.98);
+}
+
+.preorder-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
