@@ -416,32 +416,16 @@ const PreBuy = () => {
   
     // Chuẩn bị dữ liệu thanh toán
     const cartIDs = selectedItems.map((item) => item.cartID);
-    const quantities = selectedItems.map((item) => item.number);
-    const prices = selectedItems.map((item) => {
-      const totalPrice = item.productPrice * item.number;
-      const discountedPrice = totalPrice * (1 - discountPercent / 100);
-      return Math.max(discountedPrice, 0);
+    const prices = selectedItems.map((item) => item.productPrice * item.number);
+    
+    // Tính giá trị `paid` theo từng sản phẩm
+    const paids = selectedItems.map((item, index) => {
+      if (cartType === "cartorder") return prices[index]; // Thanh toán toàn bộ
+      return paymentOptions[item.cartID] === "half"
+        ? prices[index] * 0.5  // Trả trước 50%
+        : prices[index]; // Trả trước toàn bộ
     });
   
-    // Kiểm tra giá trị giỏ hàng
-    if (quantities.some((quantity) => quantity <= 0)) {
-      setError("Số lượng sản phẩm phải lớn hơn 0.");
-      return;
-    }
-    if (prices.some((price) => price <= 0)) {
-      setError("Tổng giá sản phẩm phải lớn hơn 0.");
-      return;
-    }
-  
-    // Chuẩn bị URLSearchParams
-    const params = new URLSearchParams();
-    cartIDs.forEach((id, index) => {
-      params.append("cartID", id);
-      params.append("quantities", quantities[index]);
-      params.append("price", prices[index]);
-    });
-  
-    // Dữ liệu người mua
     const buyInfoBody = {
       name: buyInfo.name,
       address: buyInfo.address,
@@ -449,6 +433,13 @@ const PreBuy = () => {
       note: buyInfo.note,
     };
   
+    // Chuẩn bị URL query parameters
+    const params = new URLSearchParams();
+    cartIDs.forEach((id, index) => {
+      params.append("cartID", id);
+      params.append("price", prices[index]);
+      params.append("paid", paids[index]); // Gửi paid cho backend
+    });
     const url = `http://localhost:8080/prebuy/buy?${params.toString()}`;
   
     console.log("POST URL:", url);
@@ -531,7 +522,16 @@ const PreBuy = () => {
       const discountedPrice = totalPrice * (1 - discountPercent / 100); // Áp dụng giảm giá phần trăm
       return Math.max(discountedPrice, 0);
     });
-  
+    const paids = selectedItems.map((item, index) => {
+      if (cartType === "cartorder") {
+        return prices[index]; // Trả toàn bộ
+      }
+      if (cartType === "cartpreorder") {
+        return paymentOptions[item.cartID] === "half"
+          ? prices[index] * 0.5
+          : prices[index];
+      }
+    });
     // Kiểm tra giá trị giỏ hàng
     if (quantities.some((quantity) => quantity <= 0)) {
       setError("Số lượng sản phẩm phải lớn hơn 0.");

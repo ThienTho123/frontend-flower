@@ -68,12 +68,17 @@ const Header = () => {
             },
             withCredentials: true,
           });
-
+  
           if (response.status === 200) {
-            const { cart } = response.data;
-            setCartCount(cart.length);
+            const { cartorder, cartpreorder } = response.data;
+  
+            // Tính tổng số lượng sản phẩm từ cả hai giỏ hàng
+            const totalCartOrder = cartorder.reduce((sum, item) => sum + item.number, 0);
+            const totalCartPreorder = cartpreorder.reduce((sum, item) => sum + item.number, 0);
+  
+            setCartCount(totalCartOrder + totalCartPreorder);
           }
-
+  
           if (response.data.redirectUrl) {
             window.location.href = response.data.redirectUrl;
           }
@@ -82,9 +87,11 @@ const Header = () => {
         }
       }
     };
-
+  
     fetchCartData();
   }, [accesstoken, accountId]);
+  
+  
 
   const handleSearch = async () => {
     if (searchTerm.trim()) {
