@@ -270,12 +270,19 @@ const ProductDetail = () => {
   const maxStock = productSizes[selectedSizeIndex]?.stock || 0;
 
   const handleIncrease = () => {
-    setQuantity((prevQuantity) => Math.min(prevQuantity + 1, maxStock));
+    setQuantity((prevQuantity) => {
+      if (productSizes[selectedSizeIndex]?.stock > 0) {
+        return Math.min(prevQuantity + 1, maxStock); // Giới hạn theo kho nếu còn hàng
+      } else {
+        return prevQuantity + 1; // Không giới hạn nếu Preorder
+      }
+    });
   };
-
+  
   const handleDecrease = () => {
-    setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1));
+    setQuantity((prevQuantity) => Math.max(1, prevQuantity - 1)); // Luôn giữ min = 1
   };
+  
 
   const handleChange = (e) => {
     const value = Math.min(Math.max(1, Number(e.target.value)), maxStock);
@@ -341,6 +348,32 @@ const ProductDetail = () => {
       }
     }
     return stars;
+  };
+  const handlePreorder = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const productSizeID = productSizes[selectedSizeIndex].flowerSizeID;
+  
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+  
+      await axios.post(
+        "http://localhost:8080/addPreorder",
+        {
+          productSizeID: productSizeID,
+          number: quantity,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      alert("Đặt trước thành công!");
+    } catch (error) {
+      console.error("Error placing preorder:", error);
+      alert("Có lỗi xảy ra, vui lòng thử lại.");
+    }
   };
   
   const handleAddToWishlist = async () => {
@@ -510,7 +543,7 @@ const ProductDetail = () => {
 
               </h6>
               <h2 className="totalPrice" style={{ color: "#ff4c4c" }}>
-              {totalPrice.toLocaleString()} <span className="currency-symbol">đ</span>
+                {productSizes[selectedSizeIndex]?.price.toLocaleString()} <span className="currency-symbol">đ</span>
               </h2>
               <h3 className="Size">
                 Size:
@@ -539,69 +572,68 @@ const ProductDetail = () => {
                 {productSizes[selectedSizeIndex]?.stock > 0 ? (
                   <>Còn lại: {productSizes[selectedSizeIndex]?.stock || 0}</>
                 ) : (
-                  <span style={{ color: "red" }}>Sản phẩm tạm hết hàng</span>
+                  <span style={{ color: "red" }}>Sản phẩm tạm hết hàng (Có thể đặt trước)</span>
                 )}
               </h4>
 
               <div className="Number">
-                <h4>Số lượng: </h4>
-                <button
-                  onClick={handleDecrease}
-                  className={`decrease-btn ${
-                    maxStock===0 ? "disabled" : ""
-                  }`}
-                  disabled={maxStock===0}
-                >
-                  -
-                </button>
-                <input
-                  className="numberInput"
-                  type="number"
-                  value={quantity}
-                  min="1"
-                  onChange={handleChange}
-                  onBlur={() => setQuantity(Math.min(quantity, maxStock))} 
-                />
-                <button
-                  onClick={handleIncrease}
-                  className={`increase-btn ${
-                    quantity >= maxStock ? "disabled" : ""
-                  }`}
-                  disabled={quantity >= maxStock}
-                >
-                  +
-                </button>
-              </div>
+  <h4>Số lượng: </h4>
+  <button
+    onClick={handleDecrease}
+    className="decrease-btn"
+    disabled={quantity <= 1}
+  >
+    -
+  </button>
+  <input
+    className="numberInput"
+    type="number"
+    value={quantity}
+    min="1"
+    onChange={(e) => {
+      const value = Number(e.target.value);
+      if (productSizes[selectedSizeIndex]?.stock > 0) {
+        setQuantity(Math.min(Math.max(1, value), maxStock)); // Kiểm tra maxStock nếu còn hàng
+      } else {
+        setQuantity(Math.max(1, value)); // Không giới hạn nếu Preorder
+      }
+    }}
+  />
+  <button
+    onClick={handleIncrease}
+    className="increase-btn"
+    disabled={productSizes[selectedSizeIndex]?.stock > 0 && quantity >= maxStock}
+  >
+    +
+  </button>
+</div>
+
+
 
               <div className="buy">
-                <button
-                  className={`addToCart ${
-                    productSizes[selectedSizeIndex]?.stock === 0
-                      ? "disabled"
-                      : ""
-                  }`}
-                  onClick={handleAddToCart}
-                  disabled={productSizes[selectedSizeIndex]?.stock === 0}
-                >
-                  <h4>Thêm vào giỏ hàng</h4>
-                </button>
+                {productSizes[selectedSizeIndex]?.stock > 0 ? (
+                  <>
+                    <button className="addToCart" onClick={handleAddToCart}>
+                      <h4>Thêm vào giỏ hàng</h4>
+                    </button>
+                    <button className="buyNow" onClick={handleBuyNow}>
+                      <h4>Mua ngay</h4>
+                    </button>
+                  </>
+                ) : (
+                  <button className="preorder-button" onClick={handlePreorder}>
+                    <h4>Đặt trước</h4>
+                  </button>
+                )}
+
+                {/* Hiển thị modal thông báo khi thêm vào giỏ hàng thành công */}
                 <ModalSuccess
                   isVisible={isSuccessModalVisible}
                   message={successMessage}
                   onClose={handleSuccessModalClose}
                 />
-                <button
-                  className={`buyNow ${
-                    productSizes[selectedSizeIndex]?.stock === 0
-                      ? "disabled"
-                      : ""
-                  }`}
-                  onClick={handleBuyNow}
-                  disabled={productSizes[selectedSizeIndex]?.stock === 0} // Disable khi hết hàng
-                >
-                  <h4>Mua ngay</h4>
-                </button>
               </div>
+
             </div>
           </Grid>
         </Grid>
