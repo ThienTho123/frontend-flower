@@ -48,6 +48,7 @@ const OrderDetail = () => {
         date: dayjs(rawOrderHistory.date).format("YYYY-MM-DD HH:mm:ss"),
         condition: rawOrderHistory.condition,
         phone: rawOrderHistory.phone,
+        hadPaid: rawOrderHistory.hadPaid,
         address: rawOrderHistory.address,
         isPaid: rawOrderHistory.isPaid,
         note: rawOrderHistory.note || "",
@@ -59,6 +60,7 @@ const OrderDetail = () => {
         heights: rawOrderHistory.height || [],
         widths: rawOrderHistory.width || [],
         weights: rawOrderHistory.weight || [],
+        paid: rawOrderHistory.paid|| [],
         stt: Array.from(
           { length: rawOrderHistory.FlowerName?.length || 0 },
           (_, index) => index + 1
@@ -107,7 +109,7 @@ const OrderDetail = () => {
             </p>
 
             <p>
-              <strong>Tổng:</strong> ${orderHistory[0].total}
+              <strong>Tổng:</strong> {orderHistory[0].total} đ
             </p>
             <p>
               <strong>Trạng Thái:</strong>{" "}
@@ -118,6 +120,14 @@ const OrderDetail = () => {
               {orderHistory[0].isPaid === "Yes"
                 ? "Đã thanh toán"
                 : "Chưa thanh toán"}
+            </p>
+            <p>
+              <strong>Tổng tiền đã thanh toán:</strong>{" "}
+              {orderHistory[0].hadPaid} đ
+            </p>
+            <p>
+              <strong>Số tiền cần trả:</strong>{" "}
+              {orderHistory[0].total - orderHistory[0].hadPaid} đ
             </p>
           </div>
           <div className="order-history-right">
@@ -147,11 +157,12 @@ const OrderDetail = () => {
             <tr>
               <th>STT</th>
               <th>Tên hoa</th>
+              <th>Kích thước (DxRxC)</th>
+              <th>Khối lượng</th>
               <th>Số lượng</th>
               <th>Đơn giá</th>
               <th>Tổng</th>
-              <th>Kích thước (DxRxC)</th>
-              <th>Khối lượng</th>
+              <th>Đã thanh toán</th>
             </tr>
           </thead>
           <tbody>
@@ -159,18 +170,22 @@ const OrderDetail = () => {
               <tr key={index}>
                 <td>{index + 1}</td> {/* STT */}
                 <td>{flowerName}</td>
-                <td>{orderHistory[0]?.quantities[index]}</td>
-                <td>{orderHistory[0]?.price[index]}</td>
-                <td>
-                  {orderHistory[0]?.quantities[index] *
-                    orderHistory[0]?.price[index]}
-                </td>
                 <td>
                   {orderHistory[0]?.lengths[index]} x{" "}
                   {orderHistory[0]?.widths[index]} x{" "}
                   {orderHistory[0]?.heights[index]}
                 </td>
                 <td>{orderHistory[0]?.weights[index]}</td>
+                <td>{orderHistory[0]?.quantities[index]}</td>
+                <td>{orderHistory[0]?.price[index]/orderHistory[0]?.quantities[index]}</td>
+                <td>
+                  {
+                    orderHistory[0]?.price[index]}
+                </td>
+                <td>
+                  {
+                    orderHistory[0]?.paid[index]}
+                </td>
               </tr>
             ))}
           </tbody>

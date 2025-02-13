@@ -34,9 +34,7 @@ const PreorderDetail = () => {
       );
 
       const rawPreorder = response.data?.preorders || null;
-      console.log ("rawPreorder",rawPreorder);
       const rawPreorderDetail = response.data?.preorderdetails || [];
-
       if (!rawPreorder) {
         console.error("Order history data is not valid:", rawPreorder);
         setOrderHistory(null);
@@ -66,8 +64,9 @@ const PreorderDetail = () => {
         stt: index + 1,
         productName: item.flowerSize.flower.name,
         quantity: item.quantity,
-        price: item.price,
-        total: item.price * item.quantity,
+        price: item.price/item.quantity,
+        paid: item.paid,
+        total: item.price,
         length: item.flowerSize.length,
         high: item.flowerSize.high,
         width: item.flowerSize.width,
@@ -80,7 +79,9 @@ const PreorderDetail = () => {
       console.error("Error fetching order history:", error);
     }
   };
-
+  const calculateTotalPaid = () => {
+    return orderDetail.reduce((total, detail) => total + (detail.paid || 0), 0);
+  };
   useEffect(() => {
     getHistoryOrder();
   }, [id]);
@@ -104,6 +105,8 @@ const PreorderDetail = () => {
               <strong>Trạng Thái:</strong>{" "}
               {translateCondition(orderHistory.condition)}
             </p>
+            </div>
+            <div className="order-history-right">
             <p>
               <strong>Ngày Đặt:</strong> {orderHistory.date}
             </p>
@@ -112,6 +115,9 @@ const PreorderDetail = () => {
             </p>
             <p>
               <strong>Địa Chỉ:</strong> {orderHistory.address}
+            </p>
+            <p>
+              <strong>Tổng tiền đã thanh toán:</strong> {calculateTotalPaid()} đ
             </p>
           </div>
         </div>
@@ -125,11 +131,13 @@ const PreorderDetail = () => {
               <th>STT</th>
               <th>Tên hoa</th>
               <th>Kích thước</th>
+              <th>Dài x Rộng x Cao</th>
+              <th>Khối lượng</th>
               <th>Số lượng</th>
               <th>Đơn giá</th>
               <th>Tổng</th>
-              <th>Kích thước (DxRxC)</th>
-              <th>Khối lượng</th>
+              <th>Đã thanh toán</th>
+
             </tr>
           </thead>
           <tbody>
@@ -138,13 +146,15 @@ const PreorderDetail = () => {
                 <td>{item.stt}</td>
                 <td>{item.productName}</td>
                 <td>{item.sizeName}</td>
-                <td>{item.quantity}</td>
-                <td>{item.price}</td>
-                <td>{item.total}</td>
                 <td>
                   {item.length} x {item.width} x {item.high}
                 </td>
                 <td>{item.weight}</td>
+                <td>{item.quantity}</td>
+                <td>{item.price}</td>
+                <td>{item.total}</td>
+               
+                <td>{item.paid}</td>
               </tr>
             ))}
           </tbody>

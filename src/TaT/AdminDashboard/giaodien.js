@@ -405,6 +405,12 @@ const Dashboard = () => {
               <button onClick={() => handleNavigate("/AdminType")}>
                 <img src={productTypeIcon} alt="Quản lý Type" /> Type
               </button>
+              <button onClick={() => handleNavigate("/AdminType")}>
+                <img src={productTypeIcon} alt="Quản lý đơn đặt trước" /> Type
+              </button>
+              <button onClick={() => handleNavigate("/AdminType")}>
+                <img src={productTypeIcon} alt="Quản lý hoàn tiền" /> Type
+              </button>
             </div>
           </div>
 

@@ -37,8 +37,8 @@ const OrderShippedDetail = () => {
           },
         }
       );
-      console.log("rawOrderHistory: " + response.data);
       const rawOrderHistory = response.data?.orderShippingDTO || {};
+      console.log("rawOrderHistory: ",rawOrderHistory);
 
       if (Object.keys(rawOrderHistory).length === 0) {
         console.error("Order history data is not valid:", rawOrderHistory);
@@ -55,6 +55,7 @@ const OrderShippedDetail = () => {
         condition: rawOrderHistory.condition.replaceAll("_", " "),
         phone: rawOrderHistory.phone,
         address: rawOrderHistory.address,
+        hadPaid: rawOrderHistory.hadPaid,
         isPaid: rawOrderHistory.isPaid,
         note: rawOrderHistory.note || "",
         shipStart: rawOrderHistory.shipStart
@@ -75,6 +76,7 @@ const OrderShippedDetail = () => {
         heights: rawOrderHistory.height || [],
         widths: rawOrderHistory.width || [],
         weights: rawOrderHistory.weight || [],
+        paid: rawOrderHistory.paid|| [],
         stt: Array.from(
           { length: rawOrderHistory.FlowerName?.length || 0 },
           (_, index) => index + 1
@@ -155,7 +157,7 @@ const OrderShippedDetail = () => {
               <strong>Họ Tên Khách Hàng:</strong> {orderHistory[0].name}
             </p>
             <p>
-              <strong>Tổng:</strong> ${orderHistory[0].total}
+              <strong>Tổng:</strong> {orderHistory[0].total} đ
             </p>
             <p>
               <strong>Trạng Thái:</strong> {translateCondition(orderHistory[0].condition)}
@@ -168,6 +170,14 @@ const OrderShippedDetail = () => {
             </p>
             <p>
               <strong>Địa Chỉ:</strong> {orderHistory[0].address}
+            </p>
+            <p>
+              <strong>Tổng tiền đã thanh toán:</strong>{" "}
+              {orderHistory[0].hadPaid} đ
+            </p>
+            <p>
+              <strong>Số tiền cần trả:</strong>{" "}
+              {orderHistory[0].total - orderHistory[0].hadPaid} đ
             </p>
           </div>
           <div className="order-history-right">
@@ -211,11 +221,13 @@ const OrderShippedDetail = () => {
             <tr>
               <th>STT</th>
               <th>Tên hoa</th>
+              <th>Kích thước (DxRxC)</th>
+              <th>Khối lượng</th>
               <th>Số lượng</th>
               <th>Đơn giá</th>
               <th>Tổng</th>
-              <th>Kích thước (DxRxC)</th>
-              <th>Khối lượng</th>
+              <th>Đã thanh toán</th>
+
             </tr>
           </thead>
           <tbody>
@@ -223,18 +235,22 @@ const OrderShippedDetail = () => {
               <tr key={index}>
                 <td>{index + 1}</td> {/* STT */}
                 <td>{flowerName}</td>
-                <td>{orderHistory[0]?.quantities[index]}</td>
-                <td>{orderHistory[0]?.price[index]}</td>
-                <td>
-                  {orderHistory[0]?.quantities[index] *
-                    orderHistory[0]?.price[index]}
-                </td>
                 <td>
                   {orderHistory[0]?.lengths[index]} x{" "}
                   {orderHistory[0]?.widths[index]} x{" "}
                   {orderHistory[0]?.heights[index]}
                 </td>
                 <td>{orderHistory[0]?.weights[index]}</td>
+                <td>{orderHistory[0]?.quantities[index]}</td>
+                <td>{orderHistory[0]?.price[index]/
+                  orderHistory[0]?.quantities[index]}</td>
+                <td>
+                  {orderHistory[0]?.price[index] }
+                </td>
+                <td>
+                  {
+                    orderHistory[0]?.paid[index]}
+                </td>
               </tr>
             ))}
           </tbody>

@@ -11,18 +11,20 @@ const StaffOrder = () => {
   const [validationError, setValidationError] = useState(null); 
   const translateCondition = (condition) => {
     const translations = {
-      "Cancel is Processing": "Hủy đang xử lý",
+      "Cancel_is_Processing": "Hủy đang xử lý",
       "Cancelled": "Đã hủy",
-      "In Transit": "Đang vận chuyển",
-      "Shipper Delivering": "Shipper đang giao hàng",
-      "First Attempt Failed": "Lần giao hàng đầu tiên thất bại",
-      "Second Attempt Failed": "Lần giao hàng thứ hai thất bại",
-      "Third Attempt Failed": "Lần giao hàng thứ ba thất bại",
-      "Delivered Successfully": "Giao hàng thành công",
-      "Return to shop": "Trả về cửa hàng",
+      "In_Transit": "Đang vận chuyển",
+      "Shipper_Delivering": "Shipper đang giao hàng",
+      "First_Attempt_Failed": "Lần giao hàng đầu tiên thất bại",
+      "Second_Attempt_Failed": "Lần giao hàng thứ hai thất bại",
+      "Third_Attempt_Failed": "Lần giao hàng thứ ba thất bại",
+      "Delivered_Successfully": "Giao hàng thành công",
+      "Return_to_shop": "Trả về cửa hàng",
       "Pending": "Đang chờ xử lý",
       "Processing": "Đang xử lý",
       "Prepare": "Chuẩn bị",
+      "Refund": "Hoàn tiền",
+      "Refund_is_Processing": "Đang chờ hoàn tiền"
     };
     return translations[condition] || condition;
   };
@@ -39,6 +41,8 @@ const StaffOrder = () => {
     "Delivered_Successfully",
     "Return_to_shop",
     "Cancel_is_Processing",
+    "Refund",
+    "Refund_is_Processing"
   ];
 
   useEffect(() => {
@@ -435,12 +439,12 @@ const StaffOrder = () => {
                     >
                       {orderConditions.map((condition) => (
                         <option key={condition} value={condition}>
-                          {condition}
+                          {translateCondition(condition)}
                         </option>
                       ))}
                     </select>
                   ) : (
-                    order.condition
+                    translateCondition(order.condition)
                   )}
                 </td>
 

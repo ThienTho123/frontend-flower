@@ -13,6 +13,8 @@ const RefundOrder = () => {
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false); // Trạng thái hiển thị thông báo thành công
   const [bankList, setBankList] = useState([]);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   useEffect(() => {
     const fetchBankList = async () => {
@@ -30,6 +32,7 @@ const RefundOrder = () => {
   }, []);
 
   const handleRefund = async () => {
+    setShowConfirm(false);
     try {
       const response = await axios.post(
         `http://localhost:8080/account/order/${id}/refund`,
@@ -47,7 +50,7 @@ const RefundOrder = () => {
       );
 
       setMessage(response.data);
-      setSuccess(true); // Hiển thị thông báo thành công
+      setShowSuccessModal(true);
 
       // Điều hướng sau 3 giây
       setTimeout(() => {
@@ -55,10 +58,12 @@ const RefundOrder = () => {
       }, 3000);
     } catch (error) {
       setMessage(error.response?.data || "Có lỗi xảy ra.");
-      setSuccess(false);
+      setShowSuccessModal(false);
     }
   };
-
+  const confirmRefund = () => {
+    setShowConfirm(true);
+  };
   return (
     <div>
       <h2>Yêu cầu hoàn tiền</h2>
@@ -97,17 +102,34 @@ const RefundOrder = () => {
         />
       </label>
 
-      <button onClick={handleRefund}>Gửi yêu cầu</button>
+      <button onClick={confirmRefund}>Gửi yêu cầu</button>
 
-      {/* Hiển thị thông báo */}
-      {success && (
-        <div style={{ backgroundColor: "lightgreen", padding: "10px", marginTop: "10px" }}>
-          <p>✅ Yêu cầu hoàn tiền đã được gửi thành công!</p>
-          <p>Hệ thống sẽ chuyển hướng trong giây lát...</p>
+      {showConfirm && (
+        <div className="modal">
+          <div className="modal-content">
+            <p>Hãy kiểm tra kỹ các thông tin trước khi gửi?</p>
+            <button className="confirm-btn" onClick={handleRefund}>
+              Xác nhận
+            </button>
+            <button className="cancel-btn" onClick={() => setShowConfirm(false)}>
+              Hủy
+            </button>
+          </div>
         </div>
       )}
 
-      {message && !success && <p style={{ color: "red" }}>{message}</p>}
+      {showSuccessModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <p>✅ Yêu cầu hoàn tiền đã được gửi thành công!</p>
+            <p>Hệ thống sẽ chuyển hướng trong giây lát...</p>
+            <button className="confirm-btn" onClick={() => setShowSuccessModal(false)}>
+              Đóng
+            </button>
+          </div>
+        </div>
+      )}
+      {message && !showSuccessModal && <p style={{ color: "red" }}>{message}</p>}
     </div>
   );
 };

@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import deliveryIcon from "./ImageDashboard/delivery.png"; // Hình ảnh cho quản lý Review
 import cancelIcon from "./ImageDashboard/cancel.png"; // Hình ảnh cho quản lý Review
 import refund from "./ImageDashboard/refund.svg"
+import preorder from "./ImageDashboard/preorder.png"
 const StaffDashboard = () => {
   const navigate = useNavigate();
   const [accountInfo, setAccountInfo] = useState(null);
@@ -102,6 +103,9 @@ const StaffDashboard = () => {
             </button>
             <button onClick={() => handleNavigate("/StaffRefund")}>
               <img src={refund} alt="Quản lý hoàn tiền hóa đơn" /> Hoàn tiền
+            </button>
+            <button onClick={() => handleNavigate("/StaffPreorder")}>
+              <img src={preorder} alt="Quản lý hoàn tiền hóa đơn" />Đơn đặt trước
             </button>
           </div>
         </div>

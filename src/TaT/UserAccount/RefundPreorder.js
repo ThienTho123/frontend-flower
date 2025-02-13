@@ -108,7 +108,7 @@ const RefundPreorder = () => {
       {showConfirm && (
         <div className="modal">
           <div className="modal-content">
-            <p>Bạn có chắc chắn muốn gửi yêu cầu hoàn tiền không?</p>
+            <p>Hãy kiểm tra kỹ các thông tin trước khi gửi?</p>
             <button className="confirm-btn" onClick={handleRefund}>
               Xác nhận
             </button>

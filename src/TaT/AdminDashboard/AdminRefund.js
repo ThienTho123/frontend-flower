@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import returnIcon from "./ImageDashboard/return-button.png";
 
-const StaffRefund = () => {
+const AdminRefund = () => {
   const [orders, setOrders] = useState([]);
   const [toastMessage, setToastMessage] = useState(null);
   const [isToastVisible, setIsToastVisible] = useState(false);
@@ -31,7 +31,7 @@ const StaffRefund = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/v1/staff/refund",
+          "http://localhost:8080/api/v1/admin/refund",
           {
             headers: { Authorization: `Bearer ${accesstoken}` },
           }
@@ -53,7 +53,7 @@ const StaffRefund = () => {
   const handleRefund = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/refund/${id}/complete`,
+        `http://localhost:8080/api/v1/admin/refund/${id}/complete`,
         {
           method: "PUT",
           headers: { Authorization: `Bearer ${accesstoken}` },
@@ -92,7 +92,7 @@ const StaffRefund = () => {
   
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/refund/${editingOrder.refund.id}`,
+        `http://localhost:8080/api/v1/admin/refund/${editingOrder.refund.id}`,
         {
           method: "PUT",
           headers: {
@@ -138,7 +138,7 @@ const StaffRefund = () => {
           src={returnIcon}
           alt="Quay Lại"
           className="return-button"
-          onClick={() => navigate("/staff")}
+          onClick={() => navigate("/dashboard")}
         />
         <h2>Quản Lý Yêu Cầu Hoàn tiền</h2>
       </div>
@@ -282,4 +282,4 @@ const StaffRefund = () => {
   );
 };
 
-export default StaffRefund;
+export default AdminRefund;

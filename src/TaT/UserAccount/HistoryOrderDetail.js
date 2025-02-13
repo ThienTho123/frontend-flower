@@ -36,9 +36,9 @@ const HistoryOrderDetail = () => {
           },
         }
       );
-      console.log("rawOrderHistory: " + response.data);
       const rawOrderHistory = response.data?.orderHistory || {};
       const rawOrderDetail = response.data?.orderDetail || [];
+      console.log("rawOrderHistory: " , rawOrderHistory);
 
       if (Object.keys(rawOrderHistory).length === 0) {
         console.error("Order history data is not valid:", rawOrderHistory);
@@ -46,7 +46,6 @@ const HistoryOrderDetail = () => {
         return;
       }
 
-      // Cập nhật state cho orderHistory
       const updatedOrderHistory = {
         id: rawOrderHistory.orderID,
         name: rawOrderHistory.name,
@@ -67,6 +66,7 @@ const HistoryOrderDetail = () => {
         shipperPhone: rawOrderHistory.shipperPhone,
         shipperEmail: rawOrderHistory.shipperEmail,
         shipperNote: rawOrderHistory.shipperNote,
+        paid: rawOrderHistory.paid
       };
 
       setOrderHistory([updatedOrderHistory]);
@@ -75,13 +75,14 @@ const HistoryOrderDetail = () => {
         stt: index + 1,
         productName: item.flowerSize.flower.name,
         quantity: item.quantity,
-        price: item.price,
-        total: item.price * item.quantity,
+        price: item.price/ item.quantity,
+        total: item.price ,
         length: item.flowerSize.length,
         high: item.flowerSize.high,
         width: item.flowerSize.width,
         weight: item.flowerSize.weight,
         sizeName: item.flowerSize.sizeName,
+        paid: item.paid
       }));
 
       setOrderDetail(updatedOrderDetail);
@@ -121,6 +122,12 @@ const HistoryOrderDetail = () => {
             </p>
             <p>
               <strong>Địa Chỉ:</strong> {orderHistory[0].address}
+            </p>
+            <p>
+              <strong>Tổng tiền đã thanh toán:</strong> {orderHistory[0].paid} đ
+            </p>
+            <p>
+              <strong>Số tiền cần trả:</strong> {orderHistory[0].total-orderHistory[0].paid} đ
             </p>
           </div>
           <div className="order-history-right">
@@ -163,11 +170,13 @@ const HistoryOrderDetail = () => {
             <tr>
               <th>STT</th>
               <th>Tên hoa</th>
+              <th>Kích thước</th>
+              <th>Dài x Rộng x Cao</th>
+              <th>Khối lượng</th>
               <th>Số lượng</th>
               <th>Đơn giá</th>
               <th>Tổng</th>
-              <th>Kích thước (DxRxC)</th>
-              <th>Khối lượng</th>
+              <th>Đã thanh toán</th>
             </tr>
           </thead>
           <tbody>
@@ -176,12 +185,14 @@ const HistoryOrderDetail = () => {
                 <td>{item.stt}</td>
                 <td>{item.productName}</td>
                 <td>{item.sizeName}</td>
-                <td>{item.quantity}</td>
-                <td>{item.price}</td>
                 <td>
                   {item.length} x {item.width} x {item.high}
                 </td>
                 <td>{item.weight}</td>
+                <td>{item.quantity}</td>
+                <td>{item.price}</td>
+                <td>{item.total}</td>
+                <td>{item.paid}</td>
               </tr>
             ))}
           </tbody>

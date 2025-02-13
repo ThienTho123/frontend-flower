@@ -252,11 +252,7 @@ const Login = () => {
           >
             Đăng nhập bằng Google
           </button>
-          {error && (
-            <p style={{ color: "red", marginTop: "15px", textAlign: "center" }}>
-              {error}
-            </p>
-          )}
+         
           </form>
           <div style={{ marginTop: "20px", textAlign: "center" }}>
             <h3 style={{ marginBottom: "15px" }}>Quên mật khẩu?</h3>

@@ -30,7 +30,7 @@ import StaffOrder from "./TaT/StaffDashboard/StaffOrder.js";
 import StaffOrderDetail from "./TaT/StaffDashboard/StaffOrderDetail.js";
 import StaffDelivery from "./TaT/StaffDashboard/StaffDelivery.js";
 import StaffCanceldelivery from "./TaT/StaffDashboard/StaffCanceldelivery.js";
-
+import StaffPreorderDetails from "./TaT/StaffDashboard/StaffPreopenDetail.js";
 import AccountStaffLayout from "./TaT/StaffAccount/AccountStaffLayout.js";
 import ChangeStaffPassword from "./TaT/StaffAccount/ChangePassword.js";
 import ProfileStaff from "./TaT/StaffAccount/Profile.js";
@@ -73,6 +73,7 @@ import RefundPreorder from "./TaT/UserAccount/RefundPreorder.js";
 import Preorder from "./TaT/UserAccount/Preorder.js";
 import SendCommentDetail from "./TaT/UserAccount/SendCommentDetail.js";
 import StaffRefund from "./TaT/StaffDashboard/StaffRefund.js";
+import StaffPreorder from "./TaT/StaffDashboard/StaffPreorder.js";
 import {
   BrowserRouter as Router,
   Routes,
@@ -186,6 +187,8 @@ const AppRoutes = () => {
         <Route path="/StaffDelivery" element={<StaffDelivery />} />
         <Route path="/StaffCanceldelivery" element={<StaffCanceldelivery />} />
         <Route path="/StaffRefund" element={<StaffRefund />} />
+        <Route path="/StaffPreOrder" element={<StaffPreorder />} />
+        <Route path="/StaffPreOrder/:id" element={<StaffPreorderDetails />} />
 
         {/* Other Routes */}
         <Route path="/product" element={<ProductList />} />
