@@ -1,0 +1,72 @@
+.blog-flower-carousel {
+    width: 95%;
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    padding: 15px; /* Thêm padding để nội dung không dính vào viền */
+    background: linear-gradient(to bottom, #ffe4e1, #fffaf0); /* Màu nền gradient nhạt */
+    border-radius: 10px; /* Bo góc mềm mại hơn */
+    border: 1px solid #e0cfcf; /* Viền nhẹ hơn */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng để tạo chiều sâu */
+  }
+  
+.flower-item:hover{
+    transform: scale(1.05); 
+
+}
+.flower-item:hover .flower-name{
+    color: red; /* Màu chữ đổi sang đỏ khi hover */
+    transition: color 0.3s ease-in-out;
+  }
+.flower-item {
+  text-align: center;
+  height: 307px; /* Giới hạn chiều cao */
+  overflow: hidden;
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit; 
+  border: 1px solid #888888;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out; /* Hiệu ứng mượt */
+
+}
+.slick-slide {
+  padding: 10px 10px; /* Tạo khoảng cách giữa các items */
+}
+.slick-track {
+  display: flex !important;
+  gap: 20px !important; /* Đảm bảo khoảng cách giữa các items */
+}
+.slick-slide > div {
+  margin: 0 10px; /* Khoảng cách giữa các items */
+}
+
+.flower-image {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.flower-name {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.flower-price {
+  color: red;
+  font-size: 14px;
+}
+
+.slick-dots li button {
+  display: none;
+}
+
+/* Thay đổi màu mũi tên */
+.slick-prev:before,
+.slick-next:before {
+  color: #333 !important;
+  font-size: 24px !important;
+}

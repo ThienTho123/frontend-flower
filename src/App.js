@@ -77,6 +77,7 @@ import AdminRefund from "./TaT/AdminDashboard/AdminRefund.js";
 import AdminPreorder from "./TaT/AdminDashboard/AdminPreorder.js";
 import AdminPreorderDetails from "./TaT/AdminDashboard/AdminPreorderDetail.js";
 import StaffPreorder from "./TaT/StaffDashboard/StaffPreorder.js";
+import BlogFeed from "./TaT/Blog.js";
 import {
   BrowserRouter as Router,
   Routes,
@@ -157,6 +158,7 @@ const AppRoutes = () => {
         <Route path="/find" element={<Find />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot" element={<Forgot />} />
+        <Route path="/blog" element={<BlogFeed />} />
 
         {/* Admin routes */}
         <Route path="/dashboard" element={<Dashboard />} />

@@ -3,30 +3,35 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.13.5",
-    "@emotion/styled": "^11.13.5",
-    "@mui/material": "^6.1.8",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^6.4.5",
     "@react-oauth/google": "^0.12.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "assert": "^2.1.0",
     "axios": "^1.7.9",
+    "bootstrap": "^5.3.3",
     "chart.js": "^4.4.6",
+    "clsx": "^2.1.1",
     "crypto-browserify": "^3.12.1",
     "dayjs": "^1.11.13",
     "facebook-js-sdk": "^1.0.4",
     "file-saver": "^2.0.5",
     "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
+    "react-bootstrap": "^2.10.9",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0",
+    "react-lazy-load": "^4.0.1",
+    "react-modal": "^3.16.3",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.0.1",
     "react-scripts": "5.0.1",
     "react-scroll": "^1.9.0",
-    "react-slick": "^0.30.2",
+    "react-slick": "^0.30.3",
     "react-toastify": "^3.4.3",
     "slick-carousel": "^1.8.1",
     "stream-browserify": "^3.0.0",
@@ -60,6 +65,7 @@
     ]
   },
   "devDependencies": {
-    "react-app-rewired": "^2.2.1"
+    "react-app-rewired": "^2.2.1",
+    "sass": "^1.85.0"
   }
 }
