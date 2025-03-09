@@ -1,677 +1,745 @@
 /* Toàn trang */
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
 
 .prebuy-body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #f0f4f8, #d9e4ec);
-    margin: 0;
-    padding: 0;
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(135deg, #f0f4f8, #d9e4ec);
+  margin: 0;
+  padding: 0;
 }
 
 /* Khu vực chứa giỏ hàng */
 .prebuy-container {
-    width: 160%; /* Đặt chiều rộng 100% để chiếm toàn bộ màn hình */
-    max-width: 1600px; /* Tăng chiều rộng tối đa lên */
-    margin: 20px auto;
-    padding: 30px;
-    background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    overflow: auto; /* Cho phép hiển thị tất cả nội dung bên trong nếu nó vượt quá chiều cao */
+  width: 160%; /* Đặt chiều rộng 100% để chiếm toàn bộ màn hình */
+  max-width: 1600px; /* Tăng chiều rộng tối đa lên */
+  margin: 20px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: auto; /* Cho phép hiển thị tất cả nội dung bên trong nếu nó vượt quá chiều cao */
 }
 
-
 .prebuy-h2 {
-    font-size: 43px;
-    border-bottom: 2px solid #e08804;
-    padding-bottom: 5px;
-    margin-left: 20px;
-    font-family: 'Dancing Script', sans-serif; 
-
+  font-size: 43px;
+  border-bottom: 2px solid #e08804;
+  padding-bottom: 5px;
+  margin-left: 20px;
+  font-family: "Dancing Script", sans-serif;
 }
 
 .prebuy-h3 {
-    font-size: 24px;
-    padding: 10px 0;
-    background-color: #f8f8f8;
-    border-radius: 4px;
-    margin: 10px 0;
+  font-size: 24px;
+  padding: 10px 0;
+  background-color: #f8f8f8;
+  border-radius: 4px;
+  margin: 10px 0;
 }
 
 /* Phần tử giỏ hàng */
 .prebuy-cart-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 30px;
-    width: 1000px;
-    border-radius: 8px;
-    padding: 15px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  width: 1000px;
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .prebuy-cart-item:hover {
-    transform: scale(1.02);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.02);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Hình ảnh sản phẩm */
 .prebuy-cart-item img {
-    width: 250px;
-    height: 250px;
-    border-radius: 10px;
-    margin-right: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 250px;
+  height: 250px;
+  border-radius: 10px;
+  margin-right: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Tiêu đề sản phẩm */
 .prebuy-product-title {
-    font-size: 30px;
-    font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden;
-    font-family: 'Dancing Script', sans-serif; 
-
+  font-size: 30px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  font-family: "Dancing Script", sans-serif;
 }
 
 /* Giá sản phẩm */
 .prebuy-product-price {
-    font-size: 22px;
-    color: #ff5722;
-    font-weight: bold;
-    margin: 5px 0;
+  font-size: 22px;
+  color: #ff5722;
+  font-weight: bold;
+  margin: 5px 0;
 }
 
 .prebuy-product-size-label {
-    font-size: 18px;
-    margin-right: 5px;
+  font-size: 18px;
+  margin-right: 5px;
 }
 
 .prebuy-product-size-select {
-    font-size: 16px; /* Giảm kích thước font chữ */
-    padding: 5px 10px; /* Giảm padding bên trong */
-    width: 160px; /* Điều chỉnh chiều rộng của select */
-    height: 30px; /* Giảm chiều cao của select */
-    border-radius: 5px; /* Bo góc nhẹ */
-    border: 1px solid #ccc; /* Đảm bảo có viền */
-    background-color: #f9f9f9; /* Màu nền nhẹ */
-  }
+  font-size: 16px; /* Giảm kích thước font chữ */
+  padding: 5px 10px; /* Giảm padding bên trong */
+  width: 160px; /* Điều chỉnh chiều rộng của select */
+  height: 30px; /* Giảm chiều cao của select */
+  border-radius: 5px; /* Bo góc nhẹ */
+  border: 1px solid #ccc; /* Đảm bảo có viền */
+  background-color: #f9f9f9; /* Màu nền nhẹ */
+}
 
 /* Khoảng cách và kích thước cho phần số lượng và nút xóa */
 .prebuy-label {
-    font-size: 18px;
-    margin-left: 10px;
+  font-size: 18px;
+  margin-left: 10px;
 }
 
-.prebuy-input[type="number"], .prebuy-select, .prebuy-button {
-    font-size: 18px;
-    padding: 10px;
-    margin-top: 5px;
+.prebuy-input[type="number"],
+.prebuy-select,
+.prebuy-button {
+  font-size: 18px;
+  padding: 10px;
+  margin-top: 5px;
 }
 
 /* Tổng hợp giá */
 .prebuy-price-summary {
-    margin-top: 20px;
-    padding: 25px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    font-size: 20px;
+  margin-top: 20px;
+  padding: 25px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  font-size: 20px;
 }
 
 .prebuy-total-price {
-    color: #333;
-    font-size: 22px;
-    font-weight: bold;
+  color: #333;
+  font-size: 22px;
+  font-weight: bold;
 }
 
 .prebuy-discount-amount {
-    color: #dc3545;
-    font-size: 20px;
-    font-style: italic;
+  color: #dc3545;
+  font-size: 20px;
+  font-style: italic;
 }
 
 .prebuy-total-payment {
-    color: #28a745;
-    font-size: 24px;
-    font-weight: bold;
-    border-top: 2px solid #28a745;
-    padding-top: 10px;
+  color: #28a745;
+  font-size: 24px;
+  font-weight: bold;
+  border-top: 2px solid #28a745;
+  padding-top: 10px;
 }
 
 /* Nút xóa sản phẩm */
 .prebuy-delete-icon {
-    cursor: pointer;
-    width: 80px;
-    height: 80px;
-    margin-right: 50px;
-    transition: transform 0.2s;
-    border-radius: 40px;
+  cursor: pointer;
+  width: 80px;
+  height: 80px;
+  margin-right: 50px;
+  transition: transform 0.2s;
+  border-radius: 40px;
 }
 
 .prebuy-delete-icon:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 /* Danh sách giỏ hàng */
 .prebuy-cart-list {
-    max-height: 1000px;
-    width: 1000px;
-    overflow-y: scroll;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    background-color: #f1f0f0;
+  max-height: 1000px;
+  width: 1000px;
+  overflow-y: scroll;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  background-color: #f1f0f0;
 }
 
 .prebuy-cart-list::-webkit-scrollbar {
-    width: 0;
-    background: transparent;
+  width: 0;
+  background: transparent;
 }
 
 .prebuy-cart-list {
-    scrollbar-width: none;
+  scrollbar-width: none;
 }
 
 /* Nút và màu sắc tổng thể */
 .prebuy-button {
-    padding: 15px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background-color 0.3s ease;
+  padding: 15px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
 }
 
 .prebuy-button:hover {
-    background-color: #218838;
+  background-color: #218838;
 }
 
 /* Phương thức thanh toán */
 .prebuy-payment-options {
-    margin-top: 20px;
-    border: 1px solid #ddd; 
-    border-radius: 10px;
-    padding: 30px; 
-    background-color: #ffffff; 
-    max-width: 480px;
-    width: 100%;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    font-size: 18px; 
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 30px;
+  background-color: #ffffff;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  font-size: 18px;
 }
 
 .prebuy-payment-option {
-    display: flex; 
-    align-items: center; 
-    margin-bottom: 20px; 
-    padding: 10px;
-    border: 1px solid #eee; 
-    border-radius: 8px; 
-    transition: background-color 0.3s; 
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  transition: background-color 0.3s;
 }
 
 .prebuy-payment-option:hover {
-    background-color: #f0f0f0; 
+  background-color: #f0f0f0;
 }
 
 .prebuy-payment-option label {
-    display: flex;
-    align-items: center;
-    margin: 0; 
+  display: flex;
+  align-items: center;
+  margin: 0;
 }
 
 .prebuy-payment-option img {
-    width: 60px; 
-    height: auto;
-    margin-right: 15px;
+  width: 60px;
+  height: auto;
+  margin-right: 15px;
 }
 
 /* Kiểu dáng chung cho radio button */
 /* Kiểu dáng chung cho radio button */
 .prebuy-payment-option input[type="radio"] {
-    appearance: none; /* Loại bỏ giao diện mặc định */
-    width: 20px; /* Chiều rộng */
-    height: 20px; /* Chiều cao */
-    border: 2px solid #ccc; /* Viền mặc định */
-    border-radius: 50%; /* Tạo hình tròn */
-    background-color: white; /* Nền trắng */
-    outline: none; /* Bỏ viền mặc định khi focus */
-    cursor: pointer; /* Hiển thị con trỏ pointer */
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1); /* Vòng tròn mỏng bên ngoài */
-    transition: all 0.3s ease; /* Hiệu ứng mượt */
-    margin-right: 10px;
-  }
-  
-  /* Khi được chọn */
-  .prebuy-payment-option input[type="radio"]:checked {
-    background-color: #ff69b4; /* Nền màu hồng */
-    border-color: #ff1493; /* Viền đậm hơn */
-    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.5); /* Vòng tròn màu hồng */
-  }
-  
-  /* Khi hover */
-  .prebuy-payment-option input[type="radio"]:hover {
-    border-color: #ff69b4; /* Viền hồng nhạt */
-    box-shadow: 0 0 0 4px rgba(255, 105, 180, 0.3); /* Vòng tròn hồng đậm hơn khi hover */
-  }
-  
-  
+  appearance: none; /* Loại bỏ giao diện mặc định */
+  width: 20px; /* Chiều rộng */
+  height: 20px; /* Chiều cao */
+  border: 2px solid #ccc; /* Viền mặc định */
+  border-radius: 50%; /* Tạo hình tròn */
+  background-color: white; /* Nền trắng */
+  outline: none; /* Bỏ viền mặc định khi focus */
+  cursor: pointer; /* Hiển thị con trỏ pointer */
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1); /* Vòng tròn mỏng bên ngoài */
+  transition: all 0.3s ease; /* Hiệu ứng mượt */
+  margin-right: 10px;
+}
+
+/* Khi được chọn */
+.prebuy-payment-option input[type="radio"]:checked {
+  background-color: #ff69b4; /* Nền màu hồng */
+  border-color: #ff1493; /* Viền đậm hơn */
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.5); /* Vòng tròn màu hồng */
+}
+
+/* Khi hover */
+.prebuy-payment-option input[type="radio"]:hover {
+  border-color: #ff69b4; /* Viền hồng nhạt */
+  box-shadow: 0 0 0 4px rgba(255, 105, 180, 0.3); /* Vòng tròn hồng đậm hơn khi hover */
+}
+
 /* Dropdown mã giảm giá */
 .prebuy-discount-select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 18px;
-    color: #333;
-    background-color: #fff;
-    cursor: pointer;
-    width: 510px;
-    transition: border-color 0.3s;
-    margin-bottom: 15px;
-    margin-right: 30px;
-    margin-top: 20px;
-
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 18px;
+  color: #333;
+  background-color: #fff;
+  cursor: pointer;
+  width: 510px;
+  transition: border-color 0.3s;
+  margin-bottom: 15px;
+  margin-right: 30px;
+  margin-top: 20px;
 }
 
 .prebuy-discount-select:focus {
-    border-color: #058f13;
-    outline: none;
+  border-color: #058f13;
+  outline: none;
 }
 
 .prebuy-discount-container {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #f4f4f4;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    font-size: 20px;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 20px;
 }
 
 .prebuy-discount-container h3 {
-    margin-bottom: 15px;
-    color: #333;
+  margin-bottom: 15px;
+  color: #333;
 }
 
-.prebuy-buy-button, .prebuy-payment-button {
-    padding: 15px 20px;
-    font-size: 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: #E32C89;
-    color: white;
-    transition: transform 0.3s, background-color 0.3s;
+.prebuy-buy-button,
+.prebuy-payment-button {
+  padding: 15px 20px;
+  font-size: 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #e32c89;
+  color: white;
+  transition: transform 0.3s, background-color 0.3s;
 }
 
-.prebuy-buy-button:hover, .prebuy-payment-button:hover {
-    background-color: #8b1d54;
-    transform: scale(1.05);
+.prebuy-buy-button:hover,
+.prebuy-payment-button:hover {
+  background-color: #8b1d54;
+  transform: scale(1.05);
 }
 
 .prebuy-cart-item li {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    overflow: visible;
-    white-space: normal;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  overflow: visible;
+  white-space: normal;
 }
 
 .prebuy-cart-item input[type="checkbox"] {
-    width: 30px;
-    height: 30px;
-    margin-right: 35px;
-    margin-left: 25px;
-    
+  width: 30px;
+  height: 30px;
+  margin-right: 35px;
+  margin-left: 25px;
 }
 
 .prebuy-custom-checkbox {
-    position: relative;
-    width: 40px;
-    height: 40px;
-    -webkit-appearance: none;
-    appearance: none;
-    background-color: #e0e0e0;
-    border-radius: 5px;
-    cursor: pointer;
-    outline: none;
-    transition: background-color 0.3s;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s;
 }
 
 .prebuy-custom-checkbox:checked {
-    background-color: #28a745;
+  background-color: #28a745;
 }
 
 .prebuy-custom-checkbox:checked::after {
-    content: '✓';
-    position: absolute;
-    top: -2px;
-    left: 6px;
-    font-size: 25px;
-    color: white;
+  content: "✓";
+  position: absolute;
+  top: -2px;
+  left: 6px;
+  font-size: 25px;
+  color: white;
 }
 
 .prebuy-custom-checkbox:hover {
-    background-color: #d5d5d5;
+  background-color: #d5d5d5;
 }
 
 .prebuy-button-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
 }
 
 .prebuy-payment-button {
-    padding: 15px 20px;
-    font-size: 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: #E32C89;
-    color: white;
-    transition: transform 0.3s, background-color 0.3s;
+  padding: 15px 20px;
+  font-size: 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #e32c89;
+  color: white;
+  transition: transform 0.3s, background-color 0.3s;
 }
 .prebuy-discount-select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 18px;
-    color: #333;
-    background-color: #fff;
-    cursor: pointer;
-    width: 510px;
-    transition: border-color 0.3s;
-    margin-bottom: 15px;
-    margin-right: 30px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 18px;
+  color: #333;
+  background-color: #fff;
+  cursor: pointer;
+  width: 510px;
+  transition: border-color 0.3s;
+  margin-bottom: 15px;
+  margin-right: 30px;
 }
 
 .prebuy-discount-select:focus {
-    border-color: #058f13;
-    outline: none;
+  border-color: #058f13;
+  outline: none;
 }
 .error-popup {
-    position: fixed;
-    top: 30px;
-    right: 30px;
-    background-color: #f8d7da; /* Màu nền đỏ nhạt */
-    color: #721c24; /* Màu chữ đỏ */
-    padding: 15px 20px; /* Thêm padding để có không gian đủ rộng */
-    border: 1px solid #f5c6cb; /* Đường viền đỏ nhạt */
-    border-radius: 5px; /* Bo góc */
-    display: flex;
-    justify-content: space-between; /* Căn chỉnh nội dung sang hai bên */
-    align-items: center; /* Căn giữa theo chiều dọc */
-    z-index: 1000;
-    width: 400px; /* Tăng độ rộng của hộp thông báo */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ nhẹ */
-    height: 30px; /* Tăng độ rộng của hộp thông báo */
-
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  background-color: #f8d7da; /* Màu nền đỏ nhạt */
+  color: #721c24; /* Màu chữ đỏ */
+  padding: 15px 20px; /* Thêm padding để có không gian đủ rộng */
+  border: 1px solid #f5c6cb; /* Đường viền đỏ nhạt */
+  border-radius: 5px; /* Bo góc */
+  display: flex;
+  justify-content: space-between; /* Căn chỉnh nội dung sang hai bên */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  z-index: 1000;
+  width: 400px; /* Tăng độ rộng của hộp thông báo */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ nhẹ */
+  height: 30px; /* Tăng độ rộng của hộp thông báo */
 }
 
 .error-message {
-    font-size: 14px; /* Cỡ chữ */
-    margin-right: 30px; /* Khoảng cách giữa thông báo và nút đóng */
-    flex-grow: 1; /* Làm cho phần thông báo chiếm hết không gian còn lại */
-    word-wrap: break-word; /* Đảm bảo nội dung không bị tràn ra ngoài */
-    margin-bottom: 30px;
-    width: 350px; /* Tăng độ rộng của hộp thông báo */
-    align-items: center; /* Căn giữa theo chiều dọc */
-    margin-top: 100px;
+  font-size: 14px; /* Cỡ chữ */
+  margin-right: 30px; /* Khoảng cách giữa thông báo và nút đóng */
+  flex-grow: 1; /* Làm cho phần thông báo chiếm hết không gian còn lại */
+  word-wrap: break-word; /* Đảm bảo nội dung không bị tràn ra ngoài */
+  margin-bottom: 30px;
+  width: 350px; /* Tăng độ rộng của hộp thông báo */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  margin-top: 100px;
 }
 .custom-error-container {
-    position: fixed;
-    top: 30px;
-    right: 30px; /* Đặt sát bên phải */
-    z-index: 1000; /* Đảm bảo thông báo luôn nằm trên các phần tử khác */
-  }
-  
-  .custom-error-popup {
-    background-color: #f8d7da; /* Màu nền đỏ nhạt */
-    color: #721c24; /* Màu chữ đỏ */
-    padding: 15px 20px; /* Khoảng cách bên trong */
-    border: 1px solid #f5c6cb; /* Đường viền đỏ nhạt */
-    border-radius: 5px; /* Bo góc */
-    display: flex;
-    justify-content: space-between; /* Căn chỉnh nội dung sang hai bên */
-    align-items: center; /* Căn giữa theo chiều dọc */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ */
-    width: 400px; /* Độ rộng của hộp thông báo */
-  }
-  
-  .custom-error-message {
-    font-size: 14px;
-    margin: 0;
-    line-height: 1.5;
-    flex-grow: 1; /* Chiếm không gian còn lại */
-    word-wrap: break-word;
-  }
-  
-  .custom-close-btn {
-    cursor: pointer;
-    font-size: 16px;
-    color: #721c24;
-    background: none;
-    border: none;
-  }
-  
+  position: fixed;
+  top: 30px;
+  right: 30px; /* Đặt sát bên phải */
+  z-index: 1000; /* Đảm bảo thông báo luôn nằm trên các phần tử khác */
+}
+
+.custom-error-popup {
+  background-color: #f8d7da; /* Màu nền đỏ nhạt */
+  color: #721c24; /* Màu chữ đỏ */
+  padding: 15px 20px; /* Khoảng cách bên trong */
+  border: 1px solid #f5c6cb; /* Đường viền đỏ nhạt */
+  border-radius: 5px; /* Bo góc */
+  display: flex;
+  justify-content: space-between; /* Căn chỉnh nội dung sang hai bên */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ */
+  width: 400px; /* Độ rộng của hộp thông báo */
+}
+
+.custom-error-message {
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.5;
+  flex-grow: 1; /* Chiếm không gian còn lại */
+  word-wrap: break-word;
+}
+
+.custom-close-btn {
+  cursor: pointer;
+  font-size: 16px;
+  color: #721c24;
+  background: none;
+  border: none;
+}
+
 .close-btn {
-    font-size: 0px; /* Cỡ chữ của nút đóng */
-    cursor: pointer;
-    color: #721c24;
-    font-weight: bold;
-    transition: color 0.3s;
-    padding: 0 5px; /* Thêm khoảng cách để nút đóng dễ bấm hơn */
+  font-size: 0px; /* Cỡ chữ của nút đóng */
+  cursor: pointer;
+  color: #721c24;
+  font-weight: bold;
+  transition: color 0.3s;
+  padding: 0 5px; /* Thêm khoảng cách để nút đóng dễ bấm hơn */
 }
 
 .close-btn:hover {
-    color: #a71d2a; /* Màu đỏ đậm khi hover */
+  color: #a71d2a; /* Màu đỏ đậm khi hover */
 }
 .prebuy-user-info {
-    background-color: #f9f9f9; /* Màu nền nhẹ */
-    padding: 20px; /* Khoảng cách bên trong */
-    border-radius: 10px; /* Bo góc mềm mại */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ */
-    max-width: 500px; /* Giới hạn chiều rộng */
-    margin: 20px auto; /* Căn giữa */
-    font-size: 18px; /* Cỡ chữ lớn hơn */
-    font-family: 'Times New Roman', serif; /* Font Times New Roman */
-    color: #333; /* Màu chữ tối */
+  background-color: #f9f9f9; /* Màu nền nhẹ */
+  padding: 20px; /* Khoảng cách bên trong */
+  border-radius: 10px; /* Bo góc mềm mại */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ */
+  max-width: 500px; /* Giới hạn chiều rộng */
+  margin: 20px auto; /* Căn giữa */
+  font-size: 18px; /* Cỡ chữ lớn hơn */
+  font-family: "Times New Roman", serif; /* Font Times New Roman */
+  color: #333; /* Màu chữ tối */
 }
 
 .prebuy-user-info h3 {
-    font-size: 22px; /* Cỡ chữ tiêu đề lớn hơn */
-    color: #444; /* Màu tiêu đề */
-    margin-bottom: 15px; /* Khoảng cách dưới */
-    text-align: center; /* Căn giữa tiêu đề */
-    font-family: 'Times New Roman', serif; /* Font Times New Roman */
+  font-size: 22px; /* Cỡ chữ tiêu đề lớn hơn */
+  color: #444; /* Màu tiêu đề */
+  margin-bottom: 15px; /* Khoảng cách dưới */
+  text-align: center; /* Căn giữa tiêu đề */
+  font-family: "Times New Roman", serif; /* Font Times New Roman */
 }
 
 .prebuy-user-info label {
-    display: flex; /* Hiển thị dạng hàng ngang */
-    flex-direction: column; /* Sắp xếp thành cột */
-    margin-bottom: 15px; /* Khoảng cách giữa các nhãn */
-    font-weight: bold; /* Chữ đậm cho nhãn */
+  display: flex; /* Hiển thị dạng hàng ngang */
+  flex-direction: column; /* Sắp xếp thành cột */
+  margin-bottom: 15px; /* Khoảng cách giữa các nhãn */
+  font-weight: bold; /* Chữ đậm cho nhãn */
 }
 
 .prebuy-user-info input,
 .prebuy-user-info textarea {
-    padding: 12px; /* Khoảng cách bên trong */
-    font-size: 17px; /* Cỡ chữ lớn hơn cho input và textarea */
-    font-family: 'Times New Roman', serif; /* Font Times New Roman */
-    border: 1px solid #ccc; /* Viền nhạt */
-    border-radius: 5px; /* Bo góc nhẹ */
-    margin-top: 5px; /* Khoảng cách giữa nhãn và trường nhập */
-    outline: none; /* Loại bỏ viền khi chọn */
-    transition: border-color 0.3s; /* Hiệu ứng viền khi focus */
+  padding: 12px; /* Khoảng cách bên trong */
+  font-size: 17px; /* Cỡ chữ lớn hơn cho input và textarea */
+  font-family: "Times New Roman", serif; /* Font Times New Roman */
+  border: 1px solid #ccc; /* Viền nhạt */
+  border-radius: 5px; /* Bo góc nhẹ */
+  margin-top: 5px; /* Khoảng cách giữa nhãn và trường nhập */
+  outline: none; /* Loại bỏ viền khi chọn */
+  transition: border-color 0.3s; /* Hiệu ứng viền khi focus */
 }
 
 .prebuy-user-info input:focus,
 .prebuy-user-info textarea:focus {
-    border-color: #28a745; /* Màu viền khi focus */
-    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Hiệu ứng đổ bóng khi focus */
+  border-color: #28a745; /* Màu viền khi focus */
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Hiệu ứng đổ bóng khi focus */
 }
 
 .prebuy-user-info textarea {
-    min-height: 120px; /* Chiều cao tối thiểu lớn hơn */
-    resize: vertical; /* Cho phép thay đổi chiều cao */
+  min-height: 120px; /* Chiều cao tối thiểu lớn hơn */
+  resize: vertical; /* Cho phép thay đổi chiều cao */
 }
 
 .prebuy-user-info p {
-    margin-top: 5px; /* Khoảng cách giữa input và thông báo lỗi */
-    color: red; /* Màu chữ lỗi */
-    font-size: 14px; /* Cỡ chữ lớn hơn */
-    font-family: 'Times New Roman', serif; /* Font Times New Roman */
+  margin-top: 5px; /* Khoảng cách giữa input và thông báo lỗi */
+  color: red; /* Màu chữ lỗi */
+  font-size: 14px; /* Cỡ chữ lớn hơn */
+  font-family: "Times New Roman", serif; /* Font Times New Roman */
 }
 .prebuy-quantity-label {
-    display: flex; /* Hiển thị hàng ngang */
-    align-items: center; /* Căn giữa theo chiều dọc */
-    margin-bottom: 10px; /* Khoảng cách dưới */
-    font-size: 18px; /* Cỡ chữ */
-    color: #333; /* Màu chữ */
+  display: flex; /* Hiển thị hàng ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  margin-bottom: 10px; /* Khoảng cách dưới */
+  font-size: 18px; /* Cỡ chữ */
+  color: #333; /* Màu chữ */
 }
 
 .prebuy-quantity-label input[type="number"] {
-    width: 100px; /* Chiều rộng của ô nhập số */
-    margin-left: 10px; /* Khoảng cách giữa nhãn và ô nhập */
-    padding: 5px; /* Khoảng cách bên trong */
-    font-size: 16px; /* Cỡ chữ lớn hơn */
-    border: 1px solid #ccc; /* Viền nhạt */
-    border-radius: 5px; /* Bo góc nhẹ */
-    outline: none; /* Loại bỏ viền mặc định */
-    transition: border-color 0.3s; /* Hiệu ứng chuyển đổi khi focus */
+  width: 100px; /* Chiều rộng của ô nhập số */
+  margin-left: 10px; /* Khoảng cách giữa nhãn và ô nhập */
+  padding: 5px; /* Khoảng cách bên trong */
+  font-size: 16px; /* Cỡ chữ lớn hơn */
+  border: 1px solid #ccc; /* Viền nhạt */
+  border-radius: 5px; /* Bo góc nhẹ */
+  outline: none; /* Loại bỏ viền mặc định */
+  transition: border-color 0.3s; /* Hiệu ứng chuyển đổi khi focus */
 }
 
 .prebuy-quantity-label input[type="number"]:focus {
-    border-color: #28a745; /* Màu viền khi focus */
-    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Bóng mờ khi focus */
+  border-color: #28a745; /* Màu viền khi focus */
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Bóng mờ khi focus */
 }
 
 .prebuy-quantity-error {
-    margin-top: 18px; /* Khoảng cách trên */
-    font-size: 12px; /* Cỡ chữ nhỏ hơn */
-    color: red; /* Màu chữ lỗi */
-    margin-left: 10px;
+  margin-top: 18px; /* Khoảng cách trên */
+  font-size: 12px; /* Cỡ chữ nhỏ hơn */
+  color: red; /* Màu chữ lỗi */
+  margin-left: 10px;
 }
 /* Container bao quanh số lượng và nút */
 .prebuy-quantity-container {
-    display: flex; /* Hiển thị các phần tử ngang hàng */
-    align-items: center; /* Căn giữa các phần tử theo chiều dọc */
-    margin-top: 5px;
+  display: flex; /* Hiển thị các phần tử ngang hàng */
+  align-items: center; /* Căn giữa các phần tử theo chiều dọc */
+  margin-top: 5px;
 }
 
 /* Nút cộng và trừ */
 .prebuy-quantity-btn {
-    width: 35px; /* Chiều rộng nút */
-    height: 35px; /* Chiều cao nút */
-    border: 1px solid #ccc; /* Viền nhạt */
-    background-color: #f9f9f9; /* Màu nền nhạt */
-    color: #333; /* Màu chữ */
-    font-size: 18px; /* Cỡ chữ */
-    font-family: 'Times New Roman', serif; /* Font chữ */
-    border-radius: 5px; /* Bo góc nhẹ */
-    cursor: pointer; /* Con trỏ chuột */
-    transition: all 0.3s ease; /* Hiệu ứng hover */
-    margin-left: 10px;
-    margin-right: 6px;
-
-
+  width: 35px; /* Chiều rộng nút */
+  height: 35px; /* Chiều cao nút */
+  border: 1px solid #ccc; /* Viền nhạt */
+  background-color: #f9f9f9; /* Màu nền nhạt */
+  color: #333; /* Màu chữ */
+  font-size: 18px; /* Cỡ chữ */
+  font-family: "Times New Roman", serif; /* Font chữ */
+  border-radius: 5px; /* Bo góc nhẹ */
+  cursor: pointer; /* Con trỏ chuột */
+  transition: all 0.3s ease; /* Hiệu ứng hover */
+  margin-left: 10px;
+  margin-right: 6px;
 }
 
 .prebuy-quantity-btn:hover {
-    background-color: #e9e9e9; /* Màu nền khi hover */
-    border-color: #28a745; /* Đổi màu viền khi hover */
+  background-color: #e9e9e9; /* Màu nền khi hover */
+  border-color: #28a745; /* Đổi màu viền khi hover */
 }
 
 .prebuy-quantity-btn:disabled {
-    background-color: #ddd; /* Màu nền cho nút bị vô hiệu hóa */
-    cursor: not-allowed; /* Con trỏ không cho phép bấm */
+  background-color: #ddd; /* Màu nền cho nút bị vô hiệu hóa */
+  cursor: not-allowed; /* Con trỏ không cho phép bấm */
 }
 
 /* Input hiển thị số lượng */
 .prebuy-quantity-input {
-    width: 30px; /* Chiều rộng ô nhập */
-    text-align: center; /* Căn giữa số trong ô nhập */
-    font-size: 16px; /* Cỡ chữ */
-    border: 1px solid #ccc; /* Viền nhạt */
-    border-radius: 5px; /* Bo góc nhẹ */
-    margin: 0 10px; /* Khoảng cách giữa nút và ô nhập */
-    padding: 5px; /* Khoảng cách bên trong */
-    outline: none; /* Loại bỏ viền mặc định */
-    transition: border-color 0.3s; /* Hiệu ứng focus */
+  width: 30px; /* Chiều rộng ô nhập */
+  text-align: center; /* Căn giữa số trong ô nhập */
+  font-size: 16px; /* Cỡ chữ */
+  border: 1px solid #ccc; /* Viền nhạt */
+  border-radius: 5px; /* Bo góc nhẹ */
+  margin: 0 10px; /* Khoảng cách giữa nút và ô nhập */
+  padding: 5px; /* Khoảng cách bên trong */
+  outline: none; /* Loại bỏ viền mặc định */
+  transition: border-color 0.3s; /* Hiệu ứng focus */
 }
 
 .prebuy-quantity-input:focus {
-    border-color: #28a745; /* Màu viền khi focus */
-    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Bóng mờ khi focus */
+  border-color: #28a745; /* Màu viền khi focus */
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Bóng mờ khi focus */
 }
 
 .cart-toggle-container {
-    position: relative;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.cart-toggle-buttons {
+  display: flex;
+  position: relative;
+  background: #ddd;
+  padding: 5px;
+  border-radius: 50px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  width: 320px;
+  overflow: hidden;
+}
+
+.cart-toggle-buttons button {
+  position: relative;
+  flex: 1;
+  padding: 15px 25px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 2;
+  color: #6a0dad; /* Màu tím */
+  transition: color 0.3s ease-in-out;
+}
+
+.cart-toggle-buttons button:hover {
+  color: #4b0082; /* Tím đậm */
+}
+
+.cart-toggle-buttons button.active {
+  color: white;
+}
+
+.toggle-bg {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 150px;
+  height: 50px;
+  background: linear-gradient(
+    45deg,
+    #8a2be2,
+    #4b0082
+  ); /* Hiệu ứng gradient tím */
+  border-radius: 50px;
+  transition: transform 0.4s ease-in-out;
+  z-index: 1;
+}
+
+.toggle-triangle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: #ddd;
+  transform: translate(-50%, -50%) rotate(45deg);
+  z-index: 1;
+}
+
+/* Định dạng chung cho modal */
+/* Định dạng overlay để vô hiệu hóa tương tác ngoài modal */
+.modal-overlay {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
+    z-index: 1000; /* Đảm bảo modal luôn trên cùng */
+    pointer-events: auto; /* Ngăn chặn tương tác với phần còn lại */
   }
   
-  .cart-toggle-buttons {
-    display: flex;
-    position: relative;
-    background: #ddd;
-    padding: 5px;
-    border-radius: 50px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    width: 320px;
-    overflow: hidden;
+  /* Modal căn giữa */
+  .delete-modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    text-align: center;
+    z-index: 1001;
+    pointer-events: auto; /* Chỉ cho phép tương tác với modal */
   }
   
-  .cart-toggle-buttons button {
-    position: relative;
-    flex: 1;
-    padding: 15px 25px;
-    font-size: 18px;
-    font-weight: bold;
+  /* Tiêu đề modal */
+  .delete-modal h2 {
+    margin-top: 0;
+    font-size: 20px;
+  }
+  
+  /* Định dạng chung cho nút */
+  .delete-modal button {
+    padding: 8px 15px;
+    margin: 10px;
     border: none;
-    background: transparent;
+    border-radius: 5px;
     cursor: pointer;
-    z-index: 2;
-    color: #6a0dad; /* Màu tím */
-    transition: color 0.3s ease-in-out;
+    font-size: 16px;
+    transition: background 0.2s ease-in-out;
   }
   
-  .cart-toggle-buttons button:hover {
-    color: #4b0082; /* Tím đậm */
-  }
-  
-  .cart-toggle-buttons button.active {
+  /* Nút Xóa (màu đỏ) */
+  .delete-modal button:nth-child(3) {
+    background-color: #e74c3c;
     color: white;
   }
-  
-  .toggle-bg {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    width: 150px;
-    height: 50px;
-    background: linear-gradient(45deg, #8a2be2, #4b0082); /* Hiệu ứng gradient tím */
-    border-radius: 50px;
-    transition: transform 0.4s ease-in-out;
-    z-index: 1;
+  .delete-modal button:nth-child(3):hover {
+    background-color: #c0392b;
   }
   
-  .toggle-triangle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    background: #ddd;
-    transform: translate(-50%, -50%) rotate(45deg);
-    z-index: 1;
+  /* Nút Hủy (màu xám) */
+  .delete-modal button:last-child {
+    background-color: #bdc3c7;
+    color: black;
+  }
+  
+  .delete-modal button:last-child:hover {
+    background-color: #95a5a6;
+  }
+  
+  /* Ngăn cuộn khi modal mở */
+  body.modal-open {
+    overflow: hidden;
   }
   

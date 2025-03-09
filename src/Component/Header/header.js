@@ -6,6 +6,7 @@ import LoginIcon from '../assets/Login.svg';
 import CartIcon from '../assets/Cart.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Client } from '@stomp/stompjs';
 
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState(""); // Đồng bộ tên state là searchTerm
@@ -68,29 +69,53 @@ const Header = () => {
             },
             withCredentials: true,
           });
-  
+
           if (response.status === 200) {
             const { cartorder, cartpreorder } = response.data;
-  
+
             // Tính tổng số lượng sản phẩm từ cả hai giỏ hàng
             const totalCartOrder = cartorder.reduce((sum, item) => sum + item.number, 0);
             const totalCartPreorder = cartpreorder.reduce((sum, item) => sum + item.number, 0);
-  
+
             setCartCount(totalCartOrder + totalCartPreorder);
-          }
-  
-          if (response.data.redirectUrl) {
-            window.location.href = response.data.redirectUrl;
           }
         } catch (error) {
           console.log("Có lỗi xảy ra khi lấy giỏ hàng:", error);
         }
       }
     };
-  
+
     fetchCartData();
-  }, [accesstoken, accountId]);
-  
+
+    const stompClient = new Client({
+      brokerURL: "http://localhost:8080/ws/websocket", // ✅ Đúng giao thức WebSocket
+      reconnectDelay: 5000, // ✅ Tự động kết nối lại
+    });
+
+    stompClient.onConnect = () => {
+      console.log("🟢 WebSocket Connected!");
+
+      stompClient.subscribe("/topic/cart-update", (message) => {
+        const data = JSON.parse(message.body);
+
+        // Kiểm tra accountId hợp lệ trước khi cập nhật giỏ hàng
+        if (accountId && data.accountId.toString() === accountId.toString()) {
+          setCartCount(data.cartCount);
+        }
+      });
+    };
+
+    stompClient.onStompError = (frame) => {
+      console.error("❌ WebSocket STOMP Error:", frame);
+    };
+
+    stompClient.activate();
+
+    return () => {
+      stompClient.deactivate();
+      console.log("🔴 WebSocket Disconnected");
+    };
+  }, [accesstoken, accountId]); 
   
 
   const handleSearch = async () => {
@@ -144,6 +169,8 @@ const Header = () => {
           <button onClick={scrollToFooter} className="header-link">
             Liên hệ
           </button>
+          <Link to="/blog" className="header-link">Blog</Link>
+
         </div>
         <div className="icons-container">
           {/* Tìm kiếm */}

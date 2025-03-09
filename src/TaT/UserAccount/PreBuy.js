@@ -4,6 +4,7 @@ import "./PreBuy.css";
 import payment from "./Image/payment.png";
 import vnpay from "./Image/vnpay.jpg";
 import deleteicon from "./Image/deleteicon.png";
+import Modal from "react-modal";
 
 const PreBuy = () => {
   const navigate = useNavigate();
@@ -22,6 +23,8 @@ const PreBuy = () => {
   const [cartOrderItems, setCartOrderItems] = useState([]);
   const [cartPreOrderItems, setCartPreOrderItems] = useState([]);
   const [paymentOptions, setPaymentOptions] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCartID, setSelectedCartID] = useState(null);
 
   useEffect(() => {
     if (accesstoken) {
@@ -251,32 +254,41 @@ const PreBuy = () => {
       });
   };
 
-  const handleDelete = (cartID) => {
-    const confirmDelete = window.confirm(
-      "Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?"
-    );
-    if (confirmDelete) {
-      fetch(`http://localhost:8080/prebuy/${cartID}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-        },
+  const openModal = (cartID) => {
+    setSelectedCartID(cartID);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCartID(null);
+  };
+
+  const handleDelete = () => {
+    if (!selectedCartID) return;
+
+    fetch(`http://localhost:8080/prebuy/${selectedCartID}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${accesstoken}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Could not delete cart item.");
+        }
+        const updatedCartItems = cartItems.filter(
+          (item) => item.cartID !== selectedCartID
+        );
+        setCartItems(updatedCartItems);
+        localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+        closeModal();
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Could not delete cart item.");
-          }
-          const updatedCartItems = cartItems.filter(
-            (item) => item.cartID !== cartID
-          );
-          setCartItems(updatedCartItems);
-          localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-        })
-        .catch((error) => {
-          setError("Có lỗi xảy ra khi xóa sản phẩm.");
-          console.error(error);
-        });
-    }
+      .catch((error) => {
+        setError("Có lỗi xảy ra khi xóa sản phẩm.");
+        console.error(error);
+        closeModal();
+      });
   };
   const handlePaymentOptionChange = (cartID, value) => {
     setPaymentOptions((prev) => ({
@@ -866,7 +878,7 @@ const PreBuy = () => {
                     <img
                       src={deleteicon}
                       alt="Xóa"
-                      onClick={() => handleDelete(item.cartID)}
+                      onClick={() => openModal(item.cartID)}
                       className="prebuy-delete-icon"
                       style={{
                         cursor: "pointer",
@@ -1017,6 +1029,18 @@ const PreBuy = () => {
       ) : (
         <p>Giỏ hàng của bạn đang trống.</p>
       )}
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        className="delete-modal"
+        overlayClassName="modal-overlay"
+        shouldCloseOnOverlayClick={false}
+      >
+        <h2>Xác nhận xóa</h2>
+        <p>Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?</p>
+        <button onClick={handleDelete}>Xóa</button>
+        <button onClick={closeModal}>Hủy</button>
+      </Modal>
     </div>
   );
 };

@@ -9,11 +9,13 @@ const OrderShippedDetail = () => {
   const access_token = localStorage.getItem("access_token");
   const [orderHistory, setOrderHistory] = useState([]);
   const { id } = useParams();
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [noteText, setNoteText] = useState("");
   const navigate = useNavigate();
   const translateCondition = (condition) => {
     const translations = {
       "Cancel is Processing": "Hủy đang xử lý",
-      "Cancelled": "Đã hủy",
+      Cancelled: "Đã hủy",
       "In Transit": "Đang vận chuyển",
       "Shipper Delivering": "Shipper đang giao hàng",
       "First Attempt Failed": "Lần giao hàng đầu tiên thất bại",
@@ -21,9 +23,9 @@ const OrderShippedDetail = () => {
       "Third Attempt_Failed": "Lần giao hàng thứ ba thất bại",
       "Delivered Successfully": "Giao hàng thành công",
       "Return to shop": "Trả về cửa hàng",
-      "Pending": "Đang chờ xử lý",
-      "Processing": "Đang xử lý",
-      "Prepare": "Chuẩn bị",
+      Pending: "Đang chờ xử lý",
+      Processing: "Đang xử lý",
+      Prepare: "Chuẩn bị",
     };
     return translations[condition] || condition;
   };
@@ -38,7 +40,7 @@ const OrderShippedDetail = () => {
         }
       );
       const rawOrderHistory = response.data?.orderShippingDTO || {};
-      console.log("rawOrderHistory: ",rawOrderHistory);
+      console.log("rawOrderHistory: ", rawOrderHistory);
 
       if (Object.keys(rawOrderHistory).length === 0) {
         console.error("Order history data is not valid:", rawOrderHistory);
@@ -76,7 +78,7 @@ const OrderShippedDetail = () => {
         heights: rawOrderHistory.height || [],
         widths: rawOrderHistory.width || [],
         weights: rawOrderHistory.weight || [],
-        paid: rawOrderHistory.paid|| [],
+        paid: rawOrderHistory.paid || [],
         stt: Array.from(
           { length: rawOrderHistory.FlowerName?.length || 0 },
           (_, index) => index + 1
@@ -106,44 +108,66 @@ const OrderShippedDetail = () => {
     }
   };
 
-  const handleSuccessDelivery = async () => {
+  const handleDeliveryAction = async (status) => {
     try {
-      const response = await axios.request({
-        method: "GET",
-        url: `http://localhost:8080/shipperaccount/haveship/${orderHistory[0]?.id}/success`,
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
+      let imageUrl = await uploadImage(selectedFile);
+      const requestBody = {
+        image: imageUrl || null,
+        text: noteText || null,
+      };
+
+      await axios.post(
+        `http://localhost:8080/shipperaccount/haveship/${orderHistory[0]?.id}/${status}`,
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       getHistoryOrder();
       navigate("/shipperaccount/needship");
     } catch (error) {
-      console.error("Error starting delivery:", error);
-      alert("Có lỗi xảy ra khi bắt đầu giao hàng.");
+      console.error("Lỗi khi cập nhật trạng thái giao hàng:", error);
+      alert("Có lỗi xảy ra, vui lòng thử lại.");
     }
   };
-
-  const handleFailDelivery = async () => {
-    try {
-      const response = await axios.request({
-        method: "GET",
-        url: `http://localhost:8080/shipperaccount/haveship/${orderHistory[0]?.id}/fail`,
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
-      getHistoryOrder();
-      navigate("/shipperaccount/needship");
-    } catch (error) {
-      console.error("Error starting delivery:", error);
-      alert("Có lỗi xảy ra khi bắt đầu giao hàng.");
-    }
-  };
-
   useEffect(() => {
     getHistoryOrder();
   }, [id]);
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
 
+  const handleTextChange = (event) => {
+    setNoteText(event.target.value);
+  };
+
+  const uploadImage = async (file) => {
+    if (!file) return null;
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      return response.data.DT; // Link ảnh từ Firebase
+    } catch (error) {
+      console.error("Lỗi khi upload ảnh:", error);
+      alert("Không thể tải ảnh lên, vui lòng thử lại.");
+      return null;
+    }
+  };
   return (
     <div className="order-history-container">
       {/* Phần Order History */}
@@ -160,7 +184,8 @@ const OrderShippedDetail = () => {
               <strong>Tổng:</strong> {orderHistory[0].total} đ
             </p>
             <p>
-              <strong>Trạng Thái:</strong> {translateCondition(orderHistory[0].condition)}
+              <strong>Trạng Thái:</strong>{" "}
+              {translateCondition(orderHistory[0].condition)}
             </p>
             <p>
               <strong>Ngày Đặt:</strong> {orderHistory[0].date}
@@ -227,7 +252,6 @@ const OrderShippedDetail = () => {
               <th>Đơn giá</th>
               <th>Tổng</th>
               <th>Đã thanh toán</th>
-
             </tr>
           </thead>
           <tbody>
@@ -242,15 +266,12 @@ const OrderShippedDetail = () => {
                 </td>
                 <td>{orderHistory[0]?.weights[index]}</td>
                 <td>{orderHistory[0]?.quantities[index]}</td>
-                <td>{orderHistory[0]?.price[index]/
-                  orderHistory[0]?.quantities[index]}</td>
                 <td>
-                  {orderHistory[0]?.price[index] }
+                  {orderHistory[0]?.price[index] /
+                    orderHistory[0]?.quantities[index]}
                 </td>
-                <td>
-                  {
-                    orderHistory[0]?.paid[index]}
-                </td>
+                <td>{orderHistory[0]?.price[index]}</td>
+                <td>{orderHistory[0]?.paid[index]}</td>
               </tr>
             ))}
           </tbody>
@@ -258,33 +279,43 @@ const OrderShippedDetail = () => {
       </div>
       {orderHistory.length > 0 && (
         <div>
-          {orderHistory[0].condition === "In Transit" && (
-            <button
-              className="start-delivery-button"
-              onClick={handleStartDelivery}
-            >
-              Bắt đầu giao
-            </button>
-          )}
-          {(orderHistory[0].condition === "Shipper Delivering" ||
-            orderHistory[0].condition === "First Attempt Failed" ||
-            orderHistory[0].condition === "Second Attempt Failed" ||
-            orderHistory[0].condition === "Third Attempt Failed") && (
-            <>
+          <div className="order-action-container">
+            {orderHistory[0].condition === "In Transit" && (
               <button
-                className="success-delivery-button"
-                onClick={handleSuccessDelivery}
+                className="start-delivery-button"
+                onClick={handleStartDelivery}
               >
-                Thành công
+                Bắt đầu giao
               </button>
-              <button
-                className="fail-delivery-button"
-                onClick={handleFailDelivery}
-              >
-                Thất bại
-              </button>
-            </>
-          )}
+            )}
+            {(orderHistory[0].condition === "Shipper Delivering" ||
+              orderHistory[0].condition === "First Attempt Failed" ||
+              orderHistory[0].condition === "Second Attempt Failed" ||
+              orderHistory[0].condition === "Third Attempt Failed") && (
+              <>
+                <input type="file" onChange={handleFileChange} />
+                <textarea
+                  placeholder="Nhập ghi chú (tuỳ chọn)"
+                  value={noteText}
+                  onChange={handleTextChange}
+                ></textarea>
+                <div className="order-button-group">
+                  <button
+                    className="fail-delivery-button"
+                    onClick={() => handleDeliveryAction("fail")}
+                  >
+                    Thất bại
+                  </button>
+                  <button
+                    className="success-delivery-button"
+                    onClick={() => handleDeliveryAction("success")}
+                  >
+                    Thành công
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       )}
     </div>

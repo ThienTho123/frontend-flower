@@ -78,6 +78,9 @@ import AdminPreorder from "./TaT/AdminDashboard/AdminPreorder.js";
 import AdminPreorderDetails from "./TaT/AdminDashboard/AdminPreorderDetail.js";
 import StaffPreorder from "./TaT/StaffDashboard/StaffPreorder.js";
 import BlogFeed from "./TaT/Blog.js";
+import BlogDetail from "./TaT/BlogID.js";
+import BlogPin from "./TaT/UserAccount/Blogpin.js";
+import StaffBlog from "./TaT/StaffDashboard/StaffBlog.js";
 import {
   BrowserRouter as Router,
   Routes,
@@ -159,6 +162,7 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/forgot" element={<Forgot />} />
         <Route path="/blog" element={<BlogFeed />} />
+        <Route path="/blog/:id" element={<BlogDetail />} />
 
         {/* Admin routes */}
         <Route path="/dashboard" element={<Dashboard />} />
@@ -196,6 +200,7 @@ const AppRoutes = () => {
         <Route path="/StaffCanceldelivery" element={<StaffCanceldelivery />} />
         <Route path="/StaffRefund" element={<StaffRefund />} />
         <Route path="/StaffPreOrder" element={<StaffPreorder />} />
+        <Route path="/StaffBlog" element={<StaffBlog />} />
         <Route path="/StaffPreOrder/:id" element={<StaffPreorderDetails />} />
 
         {/* Other Routes */}
@@ -218,6 +223,7 @@ const AppRoutes = () => {
           <Route path="history/:id" element={<HistoryOrderDetail />} />
           <Route path="order/refund/:id" element={<RefundOrder />} />
           <Route path="sendcomment" element={<SendComment />} />
+          <Route path="blogpin" element={<BlogPin />} />
           <Route path="sendcomment/:id" element={<SendCommentDetail />} />
         </Route>
 

@@ -148,7 +148,7 @@ const Login = () => {
           width: "80%",
           maxWidth: "900px", 
           justifyContent: "space-between",
-          height: "600px", 
+          height: "700px", 
           marginBottom:"90px",
         }}
       >

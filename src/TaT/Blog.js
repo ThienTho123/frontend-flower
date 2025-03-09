@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import CommentItem from "./CommentBlog";
 import BlogFlowerCarousel from "./FlowerCarousel";
-const BlogFeed = () => {
+const BlogFeed = ({ blogId }) => {
   useBootstrap();
   const [blogs, setBlogs] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -41,11 +41,18 @@ const BlogFeed = () => {
       const headers = accesstoken
         ? { Authorization: `Bearer ${accesstoken}` }
         : {};
-      fetch("http://localhost:8080/blog", { headers })
+      const apiUrl = blogId
+        ? `http://localhost:8080/blog/${blogId}`
+        : "http://localhost:8080/blog";
+
+      fetch(apiUrl, { headers })
         .then((response) => response.json())
         .then((data) => {
-          setBlogs(data.BlogInfo);
-          console.log("data: ",data);
+          if (blogId) {
+            setBlogs(data.BlogInfo);
+          } else {
+            setBlogs(data.BlogInfo);
+          }
           const initialComments = {};
           data.BlogInfo.forEach((blog) => {
             initialComments[blog.blog.blogid] = 1;
@@ -402,6 +409,18 @@ const BlogFeed = () => {
                 </div>
               )}
             </div>
+
+
+            <div className="blog-flower-container">
+              <span className="similar-products-title">
+                Các sản phẩm tương tự
+              </span>
+              {blog.blogFlower && blog.blogFlower.length > 0 ? (
+                <BlogFlowerCarousel blogFlowers={blog.blogFlower} />
+              ) : (
+                <p>Không có sản phẩm nào</p>
+              )}
+            </div>
             <div className="like-container">
               <div className="like-state">
                 <img
@@ -421,16 +440,6 @@ const BlogFeed = () => {
                 </button>
               </div>
             </div>
-
-            <div className="blog-flower-container">
-            <span className="similar-products-title">Các sản phẩm tương tự</span>
-            {blog.blogFlower && blog.blogFlower.length > 0 ? (
-                <BlogFlowerCarousel blogFlowers={blog.blogFlower} />
-              ) : (
-                <p>Không có sản phẩm nào</p>
-              )}
-            </div>
-
             <div className="button-group">
               <button
                 className={`${blog.likeBlog ? "liked" : ""}`}

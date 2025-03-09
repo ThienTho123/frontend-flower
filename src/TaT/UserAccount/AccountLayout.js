@@ -97,6 +97,9 @@ const AccountLayout = () => {
         <button onClick={() => navigate("/account/preorder")}>
           Đơn đặt trước
         </button>
+        <button onClick={() => navigate("/account/blogpin")}>
+          Bài viết được ghim
+        </button>
         <button onClick={() => navigate("/account/sendcomment")}>
           Gửi góp ý
         </button>

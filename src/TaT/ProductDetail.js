@@ -9,7 +9,6 @@ import Grid from "@mui/material/Grid";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -32,9 +31,9 @@ const ProductDetail = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [howManyBought, setHowManyBought] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [isInWishlist, setIsInWishlist] = useState(false);  // Trạng thái để theo dõi có trong wishlist khônghandleAddToWishlist 
+  const [isInWishlist, setIsInWishlist] = useState(false); // Trạng thái để theo dõi có trong wishlist khônghandleAddToWishlist
   const [isToastVisible, setIsToastVisible] = useState(false); // Điều khiển hiển thị thông báo
-  const [toastMessage, setToastMessage] = useState('');  // Lưu thông báo
+  const [toastMessage, setToastMessage] = useState(""); // Lưu thông báo
   const totalPrice = productSizes[selectedSizeIndex]?.price * quantity || 0;
   const [wishlistID, setWishlistID] = useState(null); // Trạng thái để lưu wishlistID
 
@@ -103,7 +102,7 @@ const ProductDetail = () => {
     try {
       const token = localStorage.getItem("access_token");
       const accountID = localStorage.getItem("accountID");
-      const sizeName = productSizes[selectedSizeIndex].sizeName;  // Lấy sizeName
+      const sizeName = productSizes[selectedSizeIndex].sizeName; // Lấy sizeName
       const flowerSizeID = productSizes[selectedSizeIndex].flowerSizeID;
       const productSizeID = productSizes[selectedSizeIndex].flowerSizeID;
 
@@ -117,7 +116,7 @@ const ProductDetail = () => {
         "http://localhost:8080/addToPrebuy",
         {
           productSizeID: productSizeID,
-          accountID: accountID, 
+          accountID: accountID,
           status: null,
           number: quantity,
         },
@@ -148,7 +147,9 @@ const ProductDetail = () => {
         <div className="modal-container">
           <h3>Thông báo</h3>
           <p>{message}</p>
-          <button className="modal-close-btn" onClick={onClose}>Đóng</button>
+          <button className="modal-close-btn" onClick={onClose}>
+            Đóng
+          </button>
         </div>
       </div>
     );
@@ -157,7 +158,7 @@ const ProductDetail = () => {
   const handleAddToCart = async () => {
     try {
       const token = localStorage.getItem("access_token");
-      const sizeName = productSizes[selectedSizeIndex].sizeName;  // Lấy sizeName
+      const sizeName = productSizes[selectedSizeIndex].sizeName; // Lấy sizeName
       const productSizeID = productSizes[selectedSizeIndex].flowerSizeID;
       const flowerSizeID = productSizes[selectedSizeIndex].flowerSizeID;
       const accountID = localStorage.getItem("accountID");
@@ -215,17 +216,17 @@ const ProductDetail = () => {
       try {
         const token = localStorage.getItem("access_token");
         if (!token) return;
-  
+
         const response = await axios.get("http://localhost:8080/wishlist", {
           headers: { Authorization: `Bearer ${token}` },
         });
-  
+
         if (response.status === 200) {
           const wishlists = response.data.wishlists || [];
           const wishlistItem = wishlists.find(
             (item) => item.flower.flowerID === product?.flowerID
           );
-  
+
           setIsInWishlist(!!wishlistItem);
           if (wishlistItem) {
             setWishlistID(wishlistItem.wishListID); // Lưu lại wishlistID nếu sản phẩm có trong wishlist
@@ -235,13 +236,12 @@ const ProductDetail = () => {
         console.error("Error fetching wishlist status:", error.message);
       }
     };
-  
+
     if (product) {
       fetchWishlistStatus();
     }
   }, [product]);
-  
-  
+
   useEffect(() => {
     const maxStock = productSizes[selectedSizeIndex]?.stock || 0;
     if (quantity > maxStock) {
@@ -278,11 +278,10 @@ const ProductDetail = () => {
       }
     });
   };
-  
+
   const handleDecrease = () => {
     setQuantity((prevQuantity) => Math.max(1, prevQuantity - 1)); // Luôn giữ min = 1
   };
-  
 
   const handleChange = (e) => {
     const value = Math.min(Math.max(1, Number(e.target.value)), maxStock);
@@ -306,7 +305,7 @@ const ProductDetail = () => {
     autoplaySpeed: 5000,
     dots: true,
     arrows: true,
-    infinite: false, 
+    infinite: false,
 
     afterChange: (current) => setActiveIndex(current),
   };
@@ -353,12 +352,12 @@ const ProductDetail = () => {
     try {
       const token = localStorage.getItem("access_token");
       const productSizeID = productSizes[selectedSizeIndex].flowerSizeID;
-  
+
       if (!token) {
         navigate("/login");
         return;
       }
-  
+
       await axios.post(
         "http://localhost:8080/addPreorder",
         {
@@ -369,13 +368,13 @@ const ProductDetail = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      alert("Đặt trước thành công!");
+      setSuccessModalVisible(true);
     } catch (error) {
       console.error("Error placing preorder:", error);
       alert("Có lỗi xảy ra, vui lòng thử lại.");
     }
   };
-  
+
   const handleAddToWishlist = async () => {
     try {
       const token = localStorage.getItem("access_token");
@@ -383,20 +382,25 @@ const ProductDetail = () => {
         navigate("/login");
         return;
       }
-  
+
       if (isInWishlist) {
         // Xóa sản phẩm khỏi wishlist
         try {
           await axios.delete(`http://localhost:8080/wishlist/${wishlistID}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
-  
+
           setIsInWishlist(false);
           setWishlistID(null); // Reset wishlistID
           setToastMessage("Sản phẩm đã bị xóa khỏi danh sách yêu thích!");
         } catch (err) {
-          console.error("Error deleting from wishlist:", err.response?.data || err.message);
-          setToastMessage("Có lỗi xảy ra khi xóa sản phẩm khỏi danh sách yêu thích!");
+          console.error(
+            "Error deleting from wishlist:",
+            err.response?.data || err.message
+          );
+          setToastMessage(
+            "Có lỗi xảy ra khi xóa sản phẩm khỏi danh sách yêu thích!"
+          );
         }
       } else {
         // Thêm sản phẩm vào wishlist
@@ -408,16 +412,21 @@ const ProductDetail = () => {
               headers: { Authorization: `Bearer ${token}` },
             }
           );
-  
+
           setIsInWishlist(true);
           setWishlistID(response.data.wishListID); // Lưu wishlistID từ phản hồi
           setToastMessage("Sản phẩm đã được thêm vào danh sách yêu thích!");
         } catch (err) {
-          console.error("Error adding to wishlist:", err.response?.data || err.message);
-          setToastMessage("Có lỗi xảy ra khi thêm sản phẩm vào danh sách yêu thích!");
+          console.error(
+            "Error adding to wishlist:",
+            err.response?.data || err.message
+          );
+          setToastMessage(
+            "Có lỗi xảy ra khi thêm sản phẩm vào danh sách yêu thích!"
+          );
         }
       }
-  
+
       // Hiển thị thông báo
       setIsToastVisible(true);
       setTimeout(() => {
@@ -432,9 +441,7 @@ const ProductDetail = () => {
       }, 3000);
     }
   };
-  
-  
-  
+
   return (
     <>
       <div className="container">
@@ -448,9 +455,7 @@ const ProductDetail = () => {
             </li>
             {product?.categoryID && (
               <li style={{ borderRight: "1px solid #7c7c7c71" }}>
-                <Link
-                  to={`/product?category=${product.categoryID.categoryID}`}
-                >
+                <Link to={`/product?category=${product.categoryID.categoryID}`}>
                   {product.categoryID.categoryName}
                 </Link>
               </li>
@@ -516,34 +521,34 @@ const ProductDetail = () => {
           </Grid>
           <Grid item xs={6} className="grid-col-6">
             <div className="infoProduct">
-            <div class="title-container">
-              <h1 class="titleProduct">{product?.name}</h1>
-            </div>
+              <div class="title-container">
+                <h1 class="titleProduct">{product?.name}</h1>
+              </div>
               <h6>
                 <span className="avgScore">{avgScore.toFixed(1)}/5.0</span>{" "}
                 <span className="star">★</span>
                 <span className="reviewLength">{reviews.length} Đánh giá</span>
                 <span className="bought">{howManyBought} Đã mua</span>
                 <button
-                  className={`heart-icon ${isInWishlist ? 'heart-filled' : ''}`}
+                  className={`heart-icon ${isInWishlist ? "heart-filled" : ""}`}
                   onClick={handleAddToWishlist}
                 >
                   &#9825;
                 </button>
-                {isToastVisible && (                                    
+                {isToastVisible && (
                   <div
                     className="toast"
                     style={{
-                      backgroundColor: isInWishlist ? "green" : "red", 
+                      backgroundColor: isInWishlist ? "green" : "red",
                     }}
                   >
                     {toastMessage}
                   </div>
                 )}
-
               </h6>
               <h2 className="totalPrice" style={{ color: "#ff4c4c" }}>
-                {productSizes[selectedSizeIndex]?.price.toLocaleString()} <span className="currency-symbol">đ</span>
+                {productSizes[selectedSizeIndex]?.price.toLocaleString()}{" "}
+                <span className="currency-symbol">đ</span>
               </h2>
               <h3 className="Size">
                 Size:
@@ -577,38 +582,39 @@ const ProductDetail = () => {
               </h4>
 
               <div className="Number">
-  <h4>Số lượng: </h4>
-  <button
-    onClick={handleDecrease}
-    className="decrease-btn"
-    disabled={quantity <= 1}
-  >
-    -
-  </button>
-  <input
-    className="numberInput"
-    type="number"
-    value={quantity}
-    min="1"
-    onChange={(e) => {
-      const value = Number(e.target.value);
-      if (productSizes[selectedSizeIndex]?.stock > 0) {
-        setQuantity(Math.min(Math.max(1, value), maxStock)); // Kiểm tra maxStock nếu còn hàng
-      } else {
-        setQuantity(Math.max(1, value)); // Không giới hạn nếu Preorder
-      }
-    }}
-  />
-  <button
-    onClick={handleIncrease}
-    className="increase-btn"
-    disabled={productSizes[selectedSizeIndex]?.stock > 0 && quantity >= maxStock}
-  >
-    +
-  </button>
-</div>
-
-
+                <h4>Số lượng: </h4>
+                <button
+                  onClick={handleDecrease}
+                  className="decrease-btn"
+                  disabled={quantity <= 1}
+                >
+                  -
+                </button>
+                <input
+                  className="numberInput"
+                  type="number"
+                  value={quantity}
+                  min="1"
+                  onChange={(e) => {
+                    const value = Number(e.target.value);
+                    if (productSizes[selectedSizeIndex]?.stock > 0) {
+                      setQuantity(Math.min(Math.max(1, value), maxStock)); // Kiểm tra maxStock nếu còn hàng
+                    } else {
+                      setQuantity(Math.max(1, value)); // Không giới hạn nếu Preorder
+                    }
+                  }}
+                />
+                <button
+                  onClick={handleIncrease}
+                  className="increase-btn"
+                  disabled={
+                    productSizes[selectedSizeIndex]?.stock > 0 &&
+                    quantity >= maxStock
+                  }
+                >
+                  +
+                </button>
+              </div>
 
               <div className="buy">
                 {productSizes[selectedSizeIndex]?.stock > 0 && (
@@ -633,7 +639,6 @@ const ProductDetail = () => {
                   onClose={handleSuccessModalClose}
                 />
               </div>
-
             </div>
           </Grid>
         </Grid>
@@ -733,8 +738,10 @@ const ProductDetail = () => {
             <h4 className="infodetail">
               {productSizes.map((size, index) => (
                 <span key={index}>
-                  <strong style={{ fontWeight: 'bold' }}>{size.sizeName}:</strong>
-                  <span style={{ color: '#888', fontSize: '0.9rem' }}>
+                  <strong style={{ fontWeight: "bold" }}>
+                    {size.sizeName}:
+                  </strong>
+                  <span style={{ color: "#888", fontSize: "0.9rem" }}>
                     {` Chiều dài: ${size.length} cm, Chiều cao: ${size.high} cm, Chiều rộng: ${size.width} cm, Cân nặng: ${size.weight} kg`}
                   </span>
                   {index < productSizes.length - 1 && ", "}
@@ -744,7 +751,9 @@ const ProductDetail = () => {
           </h6>
           <h6 className="productinfodetail">
             <h1 className="detail">MÔ TẢ SẢN PHẨM</h1>
-            <p className="infodetail">{product.description || "Mô tả chưa có"}</p>
+            <p className="infodetail">
+              {product.description || "Mô tả chưa có"}
+            </p>
           </h6>
         </div>
         <div className="button-container">
@@ -755,66 +764,66 @@ const ProductDetail = () => {
       </div>
 
       <div className="container">
-  <h1>ĐÁNH GIÁ SẢN PHẨM</h1>
-  <div className="rating">{renderStars(avgScore)}</div>
-  <h3>{avgScore.toFixed(1)}/5.0</h3>
-  <h5>({reviews.length} đánh giá)</h5>
+        <h1>ĐÁNH GIÁ SẢN PHẨM</h1>
+        <div className="rating">{renderStars(avgScore)}</div>
+        <h3>{avgScore.toFixed(1)}/5.0</h3>
+        <h5>({reviews.length} đánh giá)</h5>
 
-  <div className="comment-overview">
-    <div className="cmt-view">
-      {currentComments.map((comment, index) => (
-        <div className="comment_content" key={index}>
-          {/* Avatar và thông tin người dùng */}
-          <div className="reviewer-section">
-            <img
-              src={comment.accountID.avatar}
-              alt={comment.accountID.name}
-              className="avatar-image"
-            />
-            <div className="reviewer-info">
-              <div className="reviewer">{comment.accountID.name}</div>
-              <div className="time">
-                {new Date(comment.date).toLocaleDateString("vi-VN")}
+        <div className="comment-overview">
+          <div className="cmt-view">
+            {currentComments.map((comment, index) => (
+              <div className="comment_content" key={index}>
+                {/* Avatar và thông tin người dùng */}
+                <div className="reviewer-section">
+                  <img
+                    src={comment.accountID.avatar}
+                    alt={comment.accountID.name}
+                    className="avatar-image"
+                  />
+                  <div className="reviewer-info">
+                    <div className="reviewer">{comment.accountID.name}</div>
+                    <div className="time">
+                      {new Date(comment.date).toLocaleDateString("vi-VN")}
+                    </div>
+                    <div className="rating-comment">
+                      {commentStars(comment.rating)}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Nội dung bình luận */}
+                <div className="comment_text">{comment.comment}</div>
+
+                {/* Hình ảnh bình luận nếu có */}
+                {comment.image && (
+                  <div className="comment-image">
+                    <img
+                      src={comment.image}
+                      alt="Comment attachment"
+                      className="attached-image"
+                    />
+                  </div>
+                )}
               </div>
-              <div className="rating-comment">
-                {commentStars(comment.rating)}
-              </div>
-            </div>
+            ))}
           </div>
 
-          {/* Nội dung bình luận */}
-          <div className="comment_text">{comment.comment}</div>
-
-          {/* Hình ảnh bình luận nếu có */}
-          {comment.image && (
-            <div className="comment-image">
-              <img
-                src={comment.image}
-                alt="Comment attachment"
-                className="attached-image"
-              />
-            </div>
-          )}
+          <div className="pagination">
+            <button onClick={goToPreviousPage} disabled={currentPage === 1}>
+              Trang trước
+            </button>
+            <span>
+              Trang {currentPage} / {totalPages}
+            </span>
+            <button
+              onClick={goToNextPage}
+              disabled={currentPage === totalPages}
+            >
+              Trang sau
+            </button>
+          </div>
         </div>
-      ))}
-    </div>
-
-    <div className="pagination">
-      <button onClick={goToPreviousPage} disabled={currentPage === 1}>
-        Trang trước
-      </button>
-      <span>
-        Trang {currentPage} / {totalPages}
-      </span>
-      <button
-        onClick={goToNextPage}
-        disabled={currentPage === totalPages}
-      >
-        Trang sau
-      </button>
-    </div>
-  </div>
-</div>
+      </div>
 
       <div className="product-detail">
         <div className="product-container">
@@ -847,8 +856,8 @@ const ProductDetail = () => {
 
         <div className="product-container">
           <h1 className="other1">Có thể bạn thích</h1>
-          {console.log("Danh sách sản phẩm tương tự:", productSimilar)} {/* In danh sách sản phẩm ra console */}
-
+          {console.log("Danh sách sản phẩm tương tự:", productSimilar)}{" "}
+          {/* In danh sách sản phẩm ra console */}
           {productSimilar.map((product) => (
             <div key={product.flowerID} className="product">
               <a href={`/detail/${product.flowerID}`}>

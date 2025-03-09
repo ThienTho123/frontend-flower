@@ -14,6 +14,7 @@ import deliveryIcon from "./ImageDashboard/delivery.png"; // Hình ảnh cho qu�
 import cancelIcon from "./ImageDashboard/cancel.png"; // Hình ảnh cho quản lý Review
 import refund from "./ImageDashboard/refund.svg"
 import preorder from "./ImageDashboard/preorder.png"
+import blog from "./ImageDashboard/Blog.png"
 const StaffDashboard = () => {
   const navigate = useNavigate();
   const [accountInfo, setAccountInfo] = useState(null);
@@ -106,6 +107,9 @@ const StaffDashboard = () => {
             </button>
             <button onClick={() => handleNavigate("/StaffPreorder")}>
               <img src={preorder} alt="Quản lý hoàn tiền hóa đơn" />Đơn đặt trước
+            </button>
+            <button onClick={() => handleNavigate("/StaffBlog")}>
+              <img src={blog} alt="Quản lý hoàn tiền hóa đơn" />Quản lý Blog
             </button>
           </div>
         </div>
