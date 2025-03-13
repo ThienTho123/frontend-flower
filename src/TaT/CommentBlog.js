@@ -4,6 +4,8 @@ import { Card, Modal } from "react-bootstrap";
 import "./Blog.css";
 import { FaThumbsUp, FaComment, FaThumbtack, FaReply } from "react-icons/fa";
 import useBootstrap from "./useBootstrap";
+import { Link } from "react-router-dom";
+
 import {
   Dialog,
   DialogTitle,
@@ -11,6 +13,7 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
+import { style } from "react-toastify";
 
 const CommentItem = ({ comment, onAction }) => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -186,7 +189,16 @@ const CommentItem = ({ comment, onAction }) => {
           alt="User Avatar"
           className="avatar"
         />
-        <span>{comment.blogComment.account.name}</span>
+        <Link
+          to={`/comment/${comment.blogComment.blogcommentid}`}
+          style={{
+            textDecoration: "none",
+            color: "inherit",
+            fontWeight: "600",
+          }}
+        >
+          <span>{comment.blogComment.account.name}</span>
+        </Link>
         <span className="comment-time">
           {formatTimeAgo(comment.blogComment.date)}
         </span>
@@ -212,8 +224,11 @@ const CommentItem = ({ comment, onAction }) => {
           className={isLiked ? "liked" : ""}
           onClick={handleLikeCommentClick}
         >
-         <FaThumbsUp /> <span>{isLiked ? "Đã thích" : "Thích"} (
-          {countLiked ?? comment.blogComment.like})</span>
+          <FaThumbsUp />{" "}
+          <span>
+            {isLiked ? "Đã thích" : "Thích"} (
+            {countLiked ?? comment.blogComment.like})
+          </span>
         </button>
         <button
           onClick={() =>

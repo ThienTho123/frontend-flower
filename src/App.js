@@ -81,6 +81,12 @@ import BlogFeed from "./TaT/Blog.js";
 import BlogDetail from "./TaT/BlogID.js";
 import BlogPin from "./TaT/UserAccount/Blogpin.js";
 import StaffBlog from "./TaT/StaffDashboard/StaffBlog.js";
+import CommentPage from "./TaT/CommentPage.js";
+import CreateBlogForm from "./TaT/StaffDashboard/NewBlog.js";
+import EditBlogForm from "./TaT/StaffDashboard/EditBlog.js";
+import AdminEditBlogForm from "./TaT/AdminDashboard/AdminEditBlog.js";
+import AdminCreateBlogForm from "./TaT/AdminDashboard/AdminNewBlog.js";
+import AdminBlog from "./TaT/AdminDashboard/AdminBlog.js";
 import {
   BrowserRouter as Router,
   Routes,
@@ -163,6 +169,7 @@ const AppRoutes = () => {
         <Route path="/forgot" element={<Forgot />} />
         <Route path="/blog" element={<BlogFeed />} />
         <Route path="/blog/:id" element={<BlogDetail />} />
+        <Route path="/comment/:id" element={<CommentPage />} />
 
         {/* Admin routes */}
         <Route path="/dashboard" element={<Dashboard />} />
@@ -188,6 +195,9 @@ const AppRoutes = () => {
         <Route path="/AdminRefund" element={<AdminRefund />} />
         <Route path="/AdminPreorder" element={<AdminPreorder />} />
         <Route path="/AdminPreorder/:id" element={<AdminPreorderDetails />} />
+        <Route path="/AdminBlog/new-blog" element={<AdminCreateBlogForm />} />
+        <Route path="/shop-blog/:id" element={<AdminEditBlogForm />} />
+        <Route path="/AdminBlog" element={<AdminBlog />} />
 
         {/* Staff routes */}
         <Route path="/staff" element={<StaffDashboard />} />
@@ -202,6 +212,8 @@ const AppRoutes = () => {
         <Route path="/StaffPreOrder" element={<StaffPreorder />} />
         <Route path="/StaffBlog" element={<StaffBlog />} />
         <Route path="/StaffPreOrder/:id" element={<StaffPreorderDetails />} />
+        <Route path="/StaffBlog/new-blog" element={<CreateBlogForm />} />
+        <Route path="/myblog/:id" element={<EditBlogForm />} />
 
         {/* Other Routes */}
         <Route path="/product" element={<ProductList />} />

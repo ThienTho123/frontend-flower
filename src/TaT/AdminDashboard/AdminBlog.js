@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import returnIcon from "./ImageDashboard/return-button.png";
-import plus from "./ImageDashboard/plus.png"
-const StaffBlog = () => {
+import returnIcon from "../StaffDashboard/ImageDashboard/return-button.png";
+import plus from "../StaffDashboard/ImageDashboard/plus.png"
+const AdminBlog = () => {
   const [blogs, setBlogs] = useState([]);
   const [editingOrderId, setEditingOrderId] = useState(null);
   const [error, setError] = useState(null);
@@ -44,7 +44,7 @@ const StaffBlog = () => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/v1/staff/blog",
+          "http://localhost:8080/api/v1/admin/blog",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -80,7 +80,7 @@ const StaffBlog = () => {
   const handleSoftDelete = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/order/softdelete/${id}`,
+        `http://localhost:8080/api/v1/admin/order/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -105,7 +105,7 @@ const StaffBlog = () => {
   const handleToggleStatus = async (id, currentStatus) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8080/api/v1/staff/blog/${id}`,
+        `http://localhost:8080/api/v1/admin/blog/${id}`,
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -129,7 +129,7 @@ const StaffBlog = () => {
     }
   };
   const handleBackToDashboard = () => {
-    navigate("/staff");
+    navigate("/dashboard");
   };
 
   return (
@@ -141,8 +141,8 @@ const StaffBlog = () => {
           className="return-button"
           onClick={handleBackToDashboard}
         />
-        <h2>Quản Lý Blog - Nhân viên</h2>
-        <Link to={`/StaffBlog/new-blog`}>
+        <h2>Quản Lý Blog - Admin</h2>
+        <Link to={`/AdminBlog/new-blog`}>
           <img
             src={plus}
             alt="Quay Lại"
@@ -190,7 +190,7 @@ const StaffBlog = () => {
                   <td>{order.date}</td>
                   <td>{order.status}</td>
                   <td>
-                  <Link to={`/myblog/${order.blogid}`}>
+                  <Link to={`/shop-blog/${order.blogid}`}>
                     <button>Chỉnh Sửa</button>
                   </Link>                  {order.status === "ENABLE" ? (
                     <button onClick={() => handleToggleStatus(order.blogid, order.status)}>
@@ -212,4 +212,4 @@ const StaffBlog = () => {
   );
 };
 
-export default StaffBlog;
+export default AdminBlog;

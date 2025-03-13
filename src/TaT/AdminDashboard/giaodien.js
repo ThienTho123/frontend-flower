@@ -27,6 +27,7 @@ import preorder from "../StaffDashboard/ImageDashboard/preorder.png"
 import logo from "./ImageDashboard/logo.png"; // Hình ảnh cho quản lý Review
 import exit from "./ImageDashboard/exit.png"; // Hình ảnh cho quản lý Review
 import { Bar } from "react-chartjs-2"; // Biểu đồ cột
+import blog from "../StaffDashboard/ImageDashboard/Blog.png"
 
 import {
   Chart as ChartJS,
@@ -411,6 +412,9 @@ const Dashboard = () => {
               </button>
               <button onClick={() => handleNavigate("/AdminRefund")}>
                 <img src={refund} alt="Quản lý hoàn tiền" /> Quản lý hoàn tiền
+              </button>
+              <button onClick={() => handleNavigate("/AdminBlog")}>
+                <img src={blog} alt="Quản lý bài viết" /> Quản lý bài viết
               </button>
             </div>
           </div>

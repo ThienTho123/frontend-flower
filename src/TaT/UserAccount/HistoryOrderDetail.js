@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import dayjs from "dayjs";
 import "./HistoryOrderDetail.css"; // Import CSS file cho style
@@ -8,6 +8,10 @@ const HistoryOrderDetail = () => {
   const access_token = localStorage.getItem("access_token");
   const [orderHistory, setOrderHistory] = useState([]);
   const [orderDetail, setOrderDetail] = useState([]);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
+
   const { id } = useParams();
   const translateCondition = (condition) => {
     const translations = {
@@ -38,7 +42,7 @@ const HistoryOrderDetail = () => {
       );
       const rawOrderHistory = response.data?.orderHistory || {};
       const rawOrderDetail = response.data?.orderDetail || [];
-      console.log("rawOrderHistory: " , rawOrderHistory);
+      console.log("rawOrderHistory: ", rawOrderHistory);
 
       if (Object.keys(rawOrderHistory).length === 0) {
         console.error("Order history data is not valid:", rawOrderHistory);
@@ -66,7 +70,8 @@ const HistoryOrderDetail = () => {
         shipperPhone: rawOrderHistory.shipperPhone,
         shipperEmail: rawOrderHistory.shipperEmail,
         shipperNote: rawOrderHistory.shipperNote,
-        paid: rawOrderHistory.paid
+        paid: rawOrderHistory.paid,
+        confirm: rawOrderHistory.confirm,
       };
 
       setOrderHistory([updatedOrderHistory]);
@@ -75,14 +80,14 @@ const HistoryOrderDetail = () => {
         stt: index + 1,
         productName: item.flowerSize.flower.name,
         quantity: item.quantity,
-        price: item.price/ item.quantity,
-        total: item.price ,
+        price: item.price / item.quantity,
+        total: item.price,
         length: item.flowerSize.length,
         high: item.flowerSize.high,
         width: item.flowerSize.width,
         weight: item.flowerSize.weight,
         sizeName: item.flowerSize.sizeName,
-        paid: item.paid
+        paid: item.paid,
       }));
 
       setOrderDetail(updatedOrderDetail);
@@ -90,6 +95,30 @@ const HistoryOrderDetail = () => {
       console.error("Error fetching order history:", error);
     }
   };
+
+  const handleConfirmClick = (orderId) => {
+    setSelectedOrderId(orderId);
+    setShowConfirmModal(true);
+  };
+
+  const confirmOrder = async () => {
+    try {
+      await axios.post(
+        "http://localhost:8080/account/confirm-success",
+        { idOrder: selectedOrderId },
+        {
+          headers: { Authorization: `Bearer ${access_token}` },
+        }      );
+
+      setShowConfirmModal(false);
+      setShowSuccessModal(true);
+      getHistoryOrder();
+      // Cập nhật lại trạng thái đơn hàng nếu cần
+    } catch (error) {
+      console.error("Lỗi xác nhận đơn hàng:", error);
+    }
+  };
+
 
   useEffect(() => {
     getHistoryOrder();
@@ -127,7 +156,8 @@ const HistoryOrderDetail = () => {
               <strong>Tổng tiền đã thanh toán:</strong> {orderHistory[0].paid} đ
             </p>
             <p>
-              <strong>Số tiền cần trả:</strong> {orderHistory[0].total-orderHistory[0].paid} đ
+              <strong>Số tiền cần trả:</strong>{" "}
+              {orderHistory[0].total - orderHistory[0].paid} đ
             </p>
           </div>
           <div className="order-history-right">
@@ -198,6 +228,62 @@ const HistoryOrderDetail = () => {
           </tbody>
         </table>
       </div>
+
+      <div>
+      {orderHistory.map((order) => (
+        <div key={order.id}>
+          {order.condition === "Delivered Successfully" && (
+            <div className="button-container">
+              {order.confirm === "No" ? (
+                <button
+                  className="order-button confirm-button"
+                  onClick={() => handleConfirmClick(order.id)}
+                >
+                  Xác nhận
+                </button>
+              ) : (
+                <Link to="/account/orders" className="order-button review-button">
+                  Đánh giá
+                </Link>
+              )}
+
+              <Link to="/account/sendcomment" className="order-button contact-button">
+                Liên hệ
+              </Link>
+            </div>
+          )}
+        </div>
+      ))}
+
+      {/* Modal xác nhận */}
+      {showConfirmModal && (
+        <div className="confirm-modal-overlay">
+          <div className="confirm-modal-container">
+            <h3>Bạn có chắc chắn muốn xác nhận đơn hàng giao thành công?</h3>
+            <div className="confirm-modal-buttons">
+              <button className="confirm-modal-button confirm" onClick={confirmOrder}>
+                OK
+              </button>
+              <button className="confirm-modal-button cancel" onClick={() => setShowConfirmModal(false)}>
+                Hủy
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal thông báo xác nhận thành công */}
+      {showSuccessModal && (
+        <div className="confirm-modal-overlay">
+          <div className="confirm-modal-container">
+            <h3>Xác nhận thành công!</h3>
+            <button className="confirm-modal-button confirm" onClick={() => setShowSuccessModal(false)}>
+              Đóng
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
     </div>
   );
 };

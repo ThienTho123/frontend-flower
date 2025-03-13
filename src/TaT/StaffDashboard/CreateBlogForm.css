@@ -1,0 +1,277 @@
+.blog-form-container {
+  max-width: 42rem;
+  margin: 0 auto;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.blog-form-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.blog-form-input,
+.blog-form-textarea,
+.blog-form-select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  max-height: 100px; /* Giới hạn chiều cao dropdown */
+  overflow-y: auto;
+}
+
+.blog-form-textarea {
+  resize: vertical;
+}
+
+.blog-form-file-input {
+  margin-bottom: 0.5rem;
+}
+
+.blog-form-images {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.blog-form-image-wrapper {
+  position: relative;
+  width: 6rem;
+  height: 6rem;
+}
+
+.blog-form-image {
+  width: 6rem;
+  height: 6rem;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+/* Dấu X có màu trắng, nền đỏ */
+.blog-form-delete-image {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: rgba(255, 255, 255, 0); /* Nền đỏ */
+  color: white; /* Chữ trắng */
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.1s;
+}
+.blog-form-delete-image span {
+  color: white !important; /* Đảm bảo chữ X luôn trắng */
+}
+.blog-form-delete-image:hover {
+  transform: scale(1.1);
+}
+
+.blog-form-subtitle {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.blog-form-selected-flower {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Căn phần tử hai bên */
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  overflow-y: auto;
+  margin-top: 0.5rem;
+  background-color: #1e1e1e; /* Nền tối */
+  color: #ffffff; /* Chữ trắng */
+}
+
+.blog-form-remove-flower {
+  background: none;
+  border: none;
+  color: #f56565;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.2rem 0.5rem;
+  transition: color 0.2s ease-in-out;
+}
+
+.blog-form-remove-flower:hover {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+
+.blog-form-status {
+  margin-top: 1rem;
+}
+
+.blog-form-status-label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.blog-form-status-text {
+  margin-left: 0.5rem;
+}
+
+.blog-form-submit-button {
+  margin-top: 1rem;
+  background-color: #4299e1;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.blog-form-submit-button:hover {
+  background-color: #2b6cb0;
+}
+
+.create-blog-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.create-blog-modal-content {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  width: 400px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transform: scale(0.95);
+  animation: scaleIn 0.3s ease-in-out forwards;
+}
+
+.create-blog-modal h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #333;
+}
+
+.create-blog-modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.create-blog-modal-confirm,
+.create-blog-modal-cancel {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.create-blog-modal-confirm {
+  background: #28a745;
+  color: white;
+}
+
+.create-blog-modal-confirm:hover {
+  background: #218838;
+  transform: scale(1.05);
+}
+
+.create-blog-modal-cancel {
+  background: #dc3545;
+  color: white;
+}
+
+.create-blog-modal-cancel:hover {
+  background: #c82333;
+  transform: scale(1.05);
+}
+
+/* Hiệu ứng mượt mà */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.success-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgb(255, 255, 255);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  width: 350px;
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.success-modal-content h3 {
+  color: #28a745;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.success-modal-button {
+  background: #28a745;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.success-modal-button:hover {
+  background: #218838;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

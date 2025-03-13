@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import CommentItem from "./CommentBlog";
 import BlogFlowerCarousel from "./FlowerCarousel";
+import { Link } from "react-router-dom";
 const BlogFeed = ({ blogId }) => {
   useBootstrap();
   const [blogs, setBlogs] = useState([]);
@@ -363,14 +364,23 @@ const BlogFeed = ({ blogId }) => {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-4 ">
       {blogs.map((blog) => (
         <Card key={blog.blog.blogid} className="mb-4 shadow-sm">
           <Card.Body>
             <Card.Header className="card-header">
               <img src={blog.blog.account.avatar} alt="Avatar" />
               <div className="card-header-content">
-                <span className="name">{blog.blog.account.name}</span>
+                <Link
+                  to={`/blog/${blog.blog.blogid}`}
+                  style={{
+                    textDecoration: "none",
+                    color: "inherit",
+                    fontWeight: "600",
+                  }}
+                >
+                  <span>{blog.blog.account.name}</span>
+                </Link>{" "}
                 <span className="date">{formatTimeAgo(blog.blog.date)}</span>
               </div>
             </Card.Header>
@@ -409,7 +419,6 @@ const BlogFeed = ({ blogId }) => {
                 </div>
               )}
             </div>
-
 
             <div className="blog-flower-container">
               <span className="similar-products-title">

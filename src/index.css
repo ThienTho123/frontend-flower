@@ -11,3 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.header,
+.cart-count,
+.notification-count,
+.search-container {
+  margin: initial;
+  padding: initial;
+  font-size: initial;
+  line-height: initial;
+  box-sizing: initial;
+
+}
+

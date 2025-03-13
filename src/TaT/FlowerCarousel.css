@@ -32,14 +32,14 @@
   transition: transform 0.3s ease-in-out; /* Hiệu ứng mượt */
 
 }
-.slick-slide {
+.blog-flower-carousel .slick-slide {
   padding: 10px 10px; /* Tạo khoảng cách giữa các items */
 }
-.slick-track {
+.blog-flower-carousel .slick-track {
   display: flex !important;
   gap: 20px !important; /* Đảm bảo khoảng cách giữa các items */
 }
-.slick-slide > div {
+.blog-flower-carousel .slick-slide > div {
   margin: 0 10px; /* Khoảng cách giữa các items */
 }
 
@@ -60,13 +60,32 @@
   font-size: 14px;
 }
 
-.slick-dots li button {
+.blog-flower-carousel .slick-dots li button {
   display: none;
 }
 
 /* Thay đổi màu mũi tên */
-.slick-prev:before,
-.slick-next:before {
+.blog-flower-carousel .slick-prev:before,
+.blog-flower-carousel .slick-next:before {
   color: #333 !important;
   font-size: 24px !important;
+}
+
+.blog-flower-carousel .slick-list {
+  padding: 0 20px; /* Tạo khoảng cách 2 bên */
+}
+
+.blog-flower-carousel .slick-slide {
+  padding: 10px;
+}
+
+.blog-flower-carousel .slick-track {
+  display: flex !important;
+  gap: 10px !important; /* Khoảng cách giữa các items */
+}
+
+/* Khi chỉ có 1 item, căn giữa nó */
+.blog-flower-carousel .slick-track .slick-slide {
+  display: flex;
+  justify-content: center;
 }

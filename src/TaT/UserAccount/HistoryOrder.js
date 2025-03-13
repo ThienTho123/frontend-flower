@@ -14,7 +14,7 @@ const HistoryOrder = () => {
 
   const translateCondition = (condition) => {
     const translations = {
-      "Cancel is Processing": "Hủy đang xử lý",
+      "Cancel is Processing": "Đang chờ xác nhận",
       "Cancelled": "Đã hủy",
       "In Transit": "Đang vận chuyển",
       "Shipper Delivering": "Shipper đang giao hàng",
@@ -26,6 +26,8 @@ const HistoryOrder = () => {
       "Pending": "Đang chờ xử lý",
       "Processing": "Đang xử lý",
       "Prepare": "Chuẩn bị",
+      "Refund": "Gửi yêu cầu hoàn tiền",
+      "Refund is Processing": "Đang chờ hoàn tiền"
     };
     return translations[condition] || condition;
   };
