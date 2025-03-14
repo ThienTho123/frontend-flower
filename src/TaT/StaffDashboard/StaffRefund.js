@@ -107,6 +107,7 @@ const StaffRefund = () => {
             <tr>
               <th>ID Hoàn tiền</th>
               <th>Đơn hàng</th>
+              <th>Đơn đặt trước</th>
               <th>Thời gian hoàn tiền</th>
               <th>Số tiền</th>
               <th>Trạng thái</th>
@@ -118,6 +119,8 @@ const StaffRefund = () => {
               <tr key={order.refund.id}>
                 <td>{order.refund.id}</td>
                 <td>{order.refund.orderID?.orderID}</td>
+                <td>{order.refund.preorderID?.id}</td>
+
                 <td>
                   {order.refund.date
                     ? new Date(
