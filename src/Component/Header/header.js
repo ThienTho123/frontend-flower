@@ -391,7 +391,7 @@ const Header = () => {
                         src={
                           notif.blogComment?.blog.account?.avatar ??
                           notif.blog?.account?.avatar ??
-                          notif.comment?.account?.avatar ??
+                          notif.comment?.accountID?.avatar ??
                           notif.preorder?.account?.avatar ??
                           notif.flower?.image ??
                           notif.order?.accountID?.avatar ??
