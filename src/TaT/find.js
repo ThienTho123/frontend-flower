@@ -14,7 +14,7 @@ const Find = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   // Tính toán các sản phẩm trên trang hiện tại
-  const ITEMS_PER_PAGE = 16; 
+  const ITEMS_PER_PAGE = 16;
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
   const currentItems = searchResults.slice(indexOfFirstItem, indexOfLastItem);
@@ -33,34 +33,69 @@ const Find = () => {
     <div>
       <h1 className="KQ-title">Kết quả tìm kiếm</h1>
       <h4 className="KQ-count">
-        Tìm thấy <span style={{ color: "red", padding: "0 5px" }}>{currentItems.length}</span> sản phẩm
+        Tìm thấy{" "}
+        <span style={{ color: "red", padding: "0 5px" }}>
+          {currentItems.length}
+        </span>{" "}
+        sản phẩm
       </h4>
-      <div className="container" style={{maxWidth: "1250px"}}>
+      <div className="container" style={{ maxWidth: "1250px" }}>
         {currentItems.length > 0 ? (
           <>
-          <div className="product-grid">
-            {currentItems.map((product) => (
-              <div key={product.flowerID} className="product">
-                <a href={`/detail/${product.flowerID}`}>
-                  <img
-                    style={{
-                      height: "300px",
-                      width: "250px",
-                      objectFit: "cover",
-                    }}
-                    src={product.image}
-                    alt={product.name}
-                  />
-                  <h3>{product.name}</h3>
-                  <p style={{ color: "red", fontWeight: "bold" }}>
-                    {product.price ? `${product.price.toLocaleString("vi-VN")} đ` : "Liên hệ"}
-                  </p>
-                  <p className="category">Danh mục: {product.category?.categoryName || "Không xác định"}</p>
-                  <p className="purpose">Mục đích: {product.purpose?.purposeName || "Không xác định"}</p>
+            <div className="product-grid">
+              {currentItems.map((product) => (
+                <div key={product.flowerID} className="product">
+                  <a href={`/detail/${product.flowerID}`}>
+                    <img
+                      style={{
+                        height: "300px",
+                        width: "250px",
+                        objectFit: "cover",
+                      }}
+                      src={product.image}
+                      alt={product.name}
+                    />
+                    <h3>{product.name}</h3>
+                    <p>
+                      Giá:{" "}
+                      {product.priceEvent !== null ? (
+                        <>
+                          <span
+                            style={{
+                              textDecoration: "line-through",
+                              color: "gray",
+                              marginRight: "8px",
+                              fontSize: "1rem",
+                            }}
+                          >
+                            {product.price.toLocaleString("vi-VN")} đ
+                          </span>
+                          <span
+                            style={{
+                              color: "red",
+                              fontWeight: "bold",
+                              fontSize: "1.2rem",
+                            }}
+                          >
+                            {product.priceEvent.toLocaleString("vi-VN")} đ
+                          </span>
+                        </>
+                      ) : (
+                        <span>{product.price.toLocaleString("vi-VN")} đ</span>
+                      )}
+                    </p>
+                    <p className="category">
+                      Danh mục:{" "}
+                      {product.category?.categoryName || "Không xác định"}
+                    </p>
+                    <p className="purpose">
+                      Mục đích:{" "}
+                      {product.purpose?.purposeName || "Không xác định"}
+                    </p>
                   </a>
-              </div>
-            ))}
-          </div>
+                </div>
+              ))}
+            </div>
             <div className="pagination">
               <button onClick={handlePrevPage} disabled={currentPage === 1}>
                 Trang trước

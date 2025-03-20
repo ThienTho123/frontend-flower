@@ -5,8 +5,8 @@ import Slider from "react-slick";
 import "./Home.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ImageHome from '../assets/RectangleHome.png'; 
-
+import ImageHome from "../assets/RectangleHome.png";
+import EventCarousel from "./EventCarousel";
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleDateString("vi-VN");
@@ -17,7 +17,7 @@ const HomePage = () => {
   const [news, setNews] = useState([]);
   const [SPProducts, setHotProducts] = useState([]);
   const [error, setError] = useState(null);
-
+  const [eventProducts, setEventProducts] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -26,6 +26,7 @@ const HomePage = () => {
         setBanners(response.data.bannerList);
         setHotProducts(response.data.productList);
         setNews(response.data.newsList);
+        setEventProducts(response.data.eventFlower);
       } catch (err) {
         setError(err.message);
       }
@@ -45,37 +46,37 @@ const HomePage = () => {
     autoplaySpeed: 5000,
   };
   const formatPrice = (price) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ';
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
   };
 
   return (
     <div className="container">
       {error && <p className="error">{error}</p>}
-      
+
       {banners && banners.length > 0 ? (
-      <Slider {...settings} className="banner-slider">
-        {banners.map((banner) => (
-          <div key={banner.bannerID} className="banner">
-            <a
-              href={
-                banner.flower?.flowerID 
-                  ? `/detail/${banner.flower.flowerID}`
-                  : banner.news?.newsID 
-                  ? `/news/${banner.news.newsID}`
-                  : banner.category?.categoryID 
-                  ? `/product?category=${banner.category.categoryID}`
-                  : `/product` 
-              }
-            >
-              <img
-                src={banner.image} 
-                alt={banner.title || 'Banner'} 
-                className="banner-image"
-              />
-            </a>
-          </div>
-        ))}
-      </Slider>
+        <Slider {...settings} className="banner-slider">
+          {banners.map((banner) => (
+            <div key={banner.bannerID} className="banner">
+              <a
+                href={
+                  banner.flower?.flowerID
+                    ? `/detail/${banner.flower.flowerID}`
+                    : banner.news?.newsID
+                    ? `/news/${banner.news.newsID}`
+                    : banner.category?.categoryID
+                    ? `/product?category=${banner.category.categoryID}`
+                    : `/product`
+                }
+              >
+                <img
+                  src={banner.image}
+                  alt={banner.title || "Banner"}
+                  className="banner-image"
+                />
+              </a>
+            </div>
+          ))}
+        </Slider>
       ) : (
         <p>Không có banner để hiển thị</p>
       )}
@@ -110,12 +111,42 @@ const HomePage = () => {
 
       <h2 className="featured-title">Sản phẩm nổi bật</h2>
       <div className="product-container">
-      {SPProducts.slice(0, 9).map((product) => (
+        {SPProducts.slice(0, 9).map((product) => (
           <div key={product.productID} className="product">
             <a href={`/detail/${product.productID}`}>
               <img src={product.avatar} alt={product.title} />
               <h3>{product.title}</h3>
-              <p style={{ color: "red", fontWeight: "bold" }}>{formatPrice(product.price)}</p>
+
+              {product.priceEvent ? (
+                <div>
+                  <p
+                    style={{
+                      textDecoration: "line-through",
+                      color: "gray",
+                      fontSize: "0.9rem",
+                    }}
+                  >
+                    {formatPrice(product.price)}
+                  </p>
+                  <p style={{ color: "red", fontWeight: "bold" }}>
+                    {formatPrice(product.priceEvent)}
+                  </p>
+                  <p
+                    style={{
+                      color: "green",
+                      fontSize: "0.8rem",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Giảm {product.saleOff}%
+                  </p>
+                </div>
+              ) : (
+                <p style={{ color: "red", fontWeight: "bold" }}>
+                  {formatPrice(product.price)}
+                </p>
+              )}
+
               <p className="sold-quantity" style={{ fontSize: "0.8rem" }}>
                 Đã bán: {product.sold}
               </p>
@@ -131,10 +162,14 @@ const HomePage = () => {
         </a>
       </div>
 
+      <EventCarousel eventFlower={eventProducts}></EventCarousel>
+
       {/* News Section */}
       <div className="news">
         <div className="news-header">
-          <h1 className="newsTitle">Khám phá vẻ đẹp của hoa qua từng lăng kính</h1>
+          <h1 className="newsTitle">
+            Khám phá vẻ đẹp của hoa qua từng lăng kính
+          </h1>
         </div>
         <div className="row">
           <div className="col-7">
@@ -165,8 +200,6 @@ const HomePage = () => {
         </div>
       </div>
 
-
-
       <div className="boxXemThem">
         <a href="/news" className="xem-them">
           Xem thêm
@@ -176,14 +209,20 @@ const HomePage = () => {
       <div className="image-banner-container">
         <img src={ImageHome} alt="Beautiful Gifts" className="image-banner" />
         <div className="image-banner-content">
-          <h2>CHÚNG TÔI CUNG CẤP <br /> MỘT BỘ QUÀ TẶNG TUYỆT VỜI <br /> CHO NHỮNG NGƯỜI THÂN YÊU CỦA BẠN.</h2>
-          <a href="/product" className="shop-now-button">Shop now</a>
+          <h2>
+            CHÚNG TÔI CUNG CẤP <br /> MỘT BỘ QUÀ TẶNG TUYỆT VỜI <br /> CHO NHỮNG
+            NGƯỜI THÂN YÊU CỦA BẠN.
+          </h2>
+          <a href="/product" className="shop-now-button">
+            Shop now
+          </a>
         </div>
       </div>
       <div className="subscribe-section">
         <h2>Subscribe</h2>
         <p>
-          <strong>Đăng ký</strong> ngay để cập nhật những thông tin mới nhất về khuyến mãi, sản phẩm mới và nhiều điều thú vị khác...
+          <strong>Đăng ký</strong> ngay để cập nhật những thông tin mới nhất về
+          khuyến mãi, sản phẩm mới và nhiều điều thú vị khác...
         </p>
         <form
           className="subscribe-form"
@@ -202,10 +241,11 @@ const HomePage = () => {
             required
             className="email-input"
           />
-          <button type="submit" className="subscribe-button">Sign up</button>
+          <button type="submit" className="subscribe-button">
+            Sign up
+          </button>
         </form>
       </div>
-
     </div>
   );
 };
