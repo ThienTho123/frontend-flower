@@ -565,8 +565,9 @@ const PreBuy = () => {
     const cartIDs = selectedItems.map((item) => item.cartID);
     const quantities = selectedItems.map((item) => item.number);
     const prices = selectedItems.map((item) => {
-      const totalPrice = item.productPrice * item.number;
-      const discountedPrice = totalPrice * (1 - discountPercent / 100); // Áp dụng giảm giá phần trăm
+      const basePrice = item.productPriceEvent !== null ? item.productPriceEvent : item.productPrice;
+      const totalPrice = basePrice * item.number;
+      const discountedPrice = totalPrice * (1 - discountPercent / 100);
       return Math.max(discountedPrice, 0);
     });
     const paids = selectedItems.map((item, index) => {

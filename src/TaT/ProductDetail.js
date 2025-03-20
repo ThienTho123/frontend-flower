@@ -547,28 +547,29 @@ const ProductDetail = () => {
                 )}
               </h6>
               <h2 className="totalPrice" style={{ color: "#ff4c4c" }}>
-                {product?.priceEvent !== null ? (
-                  <>
-                    <span
-                      style={{
-                        textDecoration: "line-through",
-                        color: "gray",
-                        marginRight: "8px",
-                        fontSize: "1.2rem",
-                      }}
-                    >
-                      {product?.price.toLocaleString("vi-VN")} đ
-                    </span>
-                    <span style={{ color: "red", fontWeight: "bold", fontSize: "1.4rem" }}>
-                      {product?.priceEvent.toLocaleString("vi-VN")} đ
-                    </span>
-                  </>
-                ) : (
-                  <span style={{ fontSize: "1.4rem" }}>
-                    {product?.price.toLocaleString("vi-VN")} đ
-                  </span>
-                )}
-              </h2>
+  {productSizes[selectedSizeIndex]?.priceEvent !== null ? (
+    <>
+      <span
+        style={{
+          textDecoration: "line-through",
+          color: "gray",
+          marginRight: "8px",
+          fontSize: "1.2rem",
+        }}
+      >
+        {productSizes[selectedSizeIndex]?.price.toLocaleString("vi-VN")} đ
+      </span>
+      <span style={{ color: "red", fontWeight: "bold", fontSize: "1.4rem" }}>
+        {productSizes[selectedSizeIndex]?.priceEvent.toLocaleString("vi-VN")} đ
+      </span>
+    </>
+  ) : (
+    <span style={{ fontSize: "1.4rem" }}>
+      {productSizes[selectedSizeIndex]?.price.toLocaleString("vi-VN")} đ
+    </span>
+  )}
+</h2>
+
 
               <h3 className="Size">
                 Size:
