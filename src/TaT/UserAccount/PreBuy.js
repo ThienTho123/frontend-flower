@@ -297,7 +297,8 @@ const PreBuy = () => {
     }));
   };
   const calculateItemPrice = (item) => {
-    let basePrice = item.productPrice * item.number;
+    const price = item.productPriceEvent !== null ? item.productPriceEvent : item.productPrice; 
+    let basePrice = price * item.number;
     if (cartType === "cartpreorder" && paymentOptions[item.cartID] === "half") {
       return basePrice * 0.5; // Chỉ tính 50% giá trị
     }
@@ -308,9 +309,9 @@ const PreBuy = () => {
     if (selectedItems.length === 0) return 0;
 
     return selectedItems.reduce((total, item) => {
-      let itemPrice = item.productPrice * item.number;
+      const price = item.productPriceEvent ?? item.productPrice;
+      let itemPrice = price * item.number;
 
-      // Nếu đang ở chế độ đặt trước, kiểm tra lựa chọn thanh toán
       if (
         cartType === "cartpreorder" &&
         paymentOptions[item.cartID] === "half"
@@ -401,6 +402,27 @@ const PreBuy = () => {
       [field]: value,
     }));
   };
+  const displayPrice = (item) => {
+    if (item.productPriceEvent !== null) {
+      return (
+        `<span style='text-decoration: line-through; color: gray; margin-right: 8px;'>` +
+        item.productPrice.toLocaleString("vi-VN") +
+        ` VND</span>` +
+        `<span style='color: red; font-weight: bold;'>` +
+        item.productPriceEvent.toLocaleString("vi-VN") +
+        ` VND</span>`
+      );
+    }
+    return `<span>${item.productPrice.toLocaleString("vi-VN")} VND</span>`;
+    if (item.productPriceEvent !== null) {
+      return `
+        <span style='text-decoration: line-through; color: gray;'>${item.productPrice.toLocaleString("vi-VN")} VND</span>
+        <span style='color: red; font-weight: bold; margin-left: 8px;'>${item.productPriceEvent.toLocaleString("vi-VN")} VND</span>
+      `;
+    }
+    return `<span>${item.productPrice.toLocaleString("vi-VN")} VND</span>`;
+  };
+  
   const handleBuy = () => {
     // Kiểm tra lỗi tổng thể
     if (Object.keys(errorMessages).length > 0) {
@@ -440,8 +462,9 @@ const PreBuy = () => {
 
     // Chuẩn bị dữ liệu thanh toán
     const cartIDs = selectedItems.map((item) => item.cartID);
-    const prices = selectedItems.map((item) => item.productPrice * item.number);
-
+    const prices = selectedItems.map(
+      (item) => (item.productPriceEvent ?? item.productPrice) * item.number
+    );
     // Tính giá trị `paid` theo từng sản phẩm
     const paids = selectedItems.map((item, index) => {
       if (cartType === "cartorder") return prices[index]; // Thanh toán toàn bộ
@@ -780,8 +803,19 @@ const PreBuy = () => {
                         </a>
                       </p>
                       <p className="prebuy-product-price">
-                        Giá: {calculateItemPrice(item).toLocaleString("vi-VN")}{" "}
-                        VNĐ
+                        Giá:{" "}
+                        {item.productPriceEvent !== null ? (
+                          <>
+                            <span style={{ textDecoration: "line-through", color: "gray", marginRight: "8px" }}>
+                              {item.productPrice.toLocaleString("vi-VN")} VND
+                            </span>
+                            <span style={{ color: "red", fontWeight: "bold" }}>
+                              {item.productPriceEvent.toLocaleString("vi-VN")} VND
+                            </span>
+                          </>
+                        ) : (
+                          <span>{item.productPrice.toLocaleString("vi-VN")} VND</span>
+                        )}
                       </p>
 
                       <label className="prebuy-product-size-label">

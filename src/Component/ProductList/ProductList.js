@@ -145,7 +145,26 @@ export default function ProductList() {
                 </div>
                 <h2>{product.name}</h2>
                 <p>
-                  Giá: {product.price ? `${product.price.toLocaleString('vi-VN')} đ` : 'Giá không có'}
+                  Giá:{" "}
+                  {product.priceEvent !== null ? (
+                    <>
+                      <span
+                        style={{
+                          textDecoration: "line-through",
+                          color: "gray",
+                          marginRight: "8px",
+                          fontSize: "1rem",
+                        }}
+                      >
+                        {product.price.toLocaleString("vi-VN")} đ
+                      </span>
+                      <span style={{ color: "red", fontWeight: "bold", fontSize: "1.2rem" }}>
+                        {product.priceEvent.toLocaleString("vi-VN")} đ
+                      </span>
+                    </>
+                  ) : (
+                    <span>{product.price.toLocaleString("vi-VN")} đ</span>
+                  )}
                 </p>
                 <p>Danh mục: {product.category.categoryName}</p>
                 <p>Mục đích: {product.purpose.purposeName}</p>
