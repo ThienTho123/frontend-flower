@@ -106,7 +106,7 @@ const StaffEvent = () => {
           onClick={handleBackToDashboard}
         />
         <h2>Quản Lý Blog - Nhân viên</h2>
-        <Link to={`/StaffBlog/new-blog`}>
+        <Link to={`/StaffEvent/new-event`}>
           <img
             src={plus}
             alt="Quay Lại"
