@@ -6,7 +6,7 @@ import "./CreateEventForm.css";
 const NewEvent = () => {
   const [eventName, setEventName] = useState("");
   const [description, setDescription] = useState("");
-  const [color, setColor] = useState("#3788d8"); // Màu mặc định
+  const [color, setColor] = useState("#3788d8"); 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [flowerList, setFlowerList] = useState([]);
@@ -37,21 +37,26 @@ const NewEvent = () => {
     }
   };
 
-  const handleAddFlower = (flowerData) => {
-    // Kiểm tra nếu hoa đã được chọn với size đó
+  const handleAddFlower = (flowerData, isAllSize = false) => {
     const exists = selectedFlowers.some(
-      (f) => f.flowerName === flowerData.flowerName && f.sizeIDChoose === flowerData.sizeIDChoose
+      (f) => f.flowerName === flowerData.flowerName && 
+             (isAllSize || f.sizeIDChoose === flowerData.sizeIDChoose)
     );
 
     if (!exists) {
-      setSelectedFlowers([...selectedFlowers, {
+      const newFlowerEntry = {
         flowerName: flowerData.flowerName,
-        sizeIDChoose: flowerData.sizeIDChoose,
-        sizeName: flowerData.sizeName,
-        saleOff: "0.00", // Giá trị mặc định
-      }]);
+        sizeIDChoose: isAllSize ? -1 : flowerData.sizeIDChoose,
+        sizeName: isAllSize ? "Tất cả kích thước" : flowerData.sizeName,
+        saleOff: "0.00",
+        flowerID: flowerData.flowerID,
+        imageUrl: flowerData.imageUrl || flowerData.imageurl 
+      };
+
+      setSelectedFlowers([...selectedFlowers, newFlowerEntry]);
     }
-  };
+};
+
 
   const handleRemoveFlower = (index) => {
     const newSelectedFlowers = [...selectedFlowers];
@@ -67,59 +72,72 @@ const NewEvent = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
+    // Kiểm tra thông tin bắt buộc
     if (!eventName.trim() || !description.trim() || !startDate || !endDate) {
       alert("Vui lòng điền đầy đủ thông tin!");
       return;
     }
-
-    if (new Date(startDate) >= new Date(endDate)) {
+  
+    // Kiểm tra tính hợp lệ của ngày
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+  
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      alert("Ngày không hợp lệ. Vui lòng chọn lại!");
+      return;
+    }
+  
+    if (start >= end) {
       alert("Ngày kết thúc phải sau ngày bắt đầu!");
       return;
     }
-
+  
     setIsModalOpen(true);
   };
 
   const confirmSubmit = async () => {
     try {
-      const accessToken = localStorage.getItem("access_token");
-      
-      // Tạo đối tượng event với ID = 0 (hoặc để trống)
-      const eventData = {
-        // Bỏ dòng id: 0 đi
-        eventName: eventName,
-        description: description,
-        color: color,
-        start: formatDateToLocalDateTime(startDate),
-        end: formatDateToLocalDateTime(endDate),
-        eventFlowerDTOS: selectedFlowers.map(flower => ({
-          // Bỏ dòng idEventFlower: 0 đi
-          flowerName: flower.flowerName,
-          sizeIDChoose: flower.sizeIDChoose,
-          saleOff: parseFloat(flower.saleOff)
-        }))
-      };
-  
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/staff/event",
-        eventData,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-  
-      setIsModalOpen(false);
-      setIsSuccessModalOpen(true);
-      resetForm();
+        const accessToken = localStorage.getItem("access_token");
+
+        const eventData = {
+            eventName: eventName,
+            description: description,
+            color: color,
+            start: formatDateToLocalDateTime(startDate),
+            end: formatDateToLocalDateTime(endDate),
+            eventFlowerDTOS: selectedFlowers.map(flower => {
+                console.log("Flower data:", flower); // Debug log
+                return {
+                    flowerName: flower.flowerName,
+                    sizeIDChoose: flower.sizeIDChoose, 
+                    saleOff: parseFloat(flower.saleOff),
+                    flowerID: flower.flowerID // Kiểm tra nếu là null
+                };
+            })
+        };
+
+        console.log("Sending event data:", eventData); // Debug toàn bộ request
+
+        const response = await axios.post(
+            "http://localhost:8080/api/v1/staff/event",
+            eventData,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+
+        setIsModalOpen(false);
+        setIsSuccessModalOpen(true);
+        resetForm();
     } catch (error) {
-      console.error("Error creating event:", error);
-      setIsModalOpen(false);
-      alert("Có lỗi xảy ra khi tạo sự kiện!");
+        console.error("Error creating event:", error);
+        setIsModalOpen(false);
+        alert("Có lỗi xảy ra khi tạo sự kiện!");
     }
-  };
+};
 
   const resetForm = () => {
     setEventName("");
@@ -132,14 +150,25 @@ const NewEvent = () => {
 
   // Hàm chuyển đổi định dạng ngày giờ từ input datetime-local sang định dạng LocalDateTime của Java
   const formatDateToLocalDateTime = (dateString) => {
+    // Kiểm tra nếu dateString rỗng hoặc không hợp lệ
+    if (!dateString) {
+      return []; // Trả về mảng rỗng nếu không có ngày
+    }
+  
     const date = new Date(dateString);
+  
+    // Kiểm tra xem ngày có hợp lệ không
+    if (isNaN(date.getTime())) {
+      return []; // Trả về mảng rỗng nếu ngày không hợp lệ
+    }
+  
     return [
-      date.getFullYear(),
-      date.getMonth() + 1,
-      date.getDate(),
-      date.getHours(),
-      date.getMinutes(),
-      date.getSeconds()
+      date.getFullYear(),     // Năm
+      date.getMonth() + 1,    // Tháng (do được đánh số từ 0 nên cộng thêm 1)
+      date.getDate(),         // Ngày
+      date.getHours(),        // Giờ
+      date.getMinutes(),      // Phút
+      date.getSeconds() || 0  // Giây (mặc định là 0 nếu không được cung cấp)
     ];
   };
 
@@ -207,8 +236,33 @@ const NewEvent = () => {
       <div className="event-form-flower-select">
         {flowerList.map((flower, flowerIndex) => (
           <div key={flowerIndex} className="flower-item">
-            <h4>{flower.flowerName}</h4>
+            <div className="flower-item-header">
+              <img 
+                src={flower.imageurl} 
+                alt={flower.flowerName} 
+                className="flower-image"
+                style={{
+                  width: '100%', 
+                  height: '150px', 
+                  objectFit: 'cover', 
+                  borderRadius: '6px',
+                  marginBottom: '10px'
+                }} 
+              />
+              <h4>{flower.flowerName}</h4>
+            </div>
             <div className="size-options">
+              <button
+                type="button"
+                className="size-button all-size-button"
+                onClick={() => handleAddFlower({
+                  flowerName: flower.flowerName,
+                  flowerID: flower.flowerID,
+                  imageUrl: flower.imageurl
+                }, true)}
+              >
+                All Sizes
+              </button>
               {flower.size?.map((size, sizeIndex) => (
                 <button
                   key={sizeIndex}
@@ -217,7 +271,9 @@ const NewEvent = () => {
                   onClick={() => handleAddFlower({
                     flowerName: flower.flowerName,
                     sizeIDChoose: size.flowerSizeID,
-                    sizeName: size.sizeName
+                    sizeName: size.sizeName,
+                    flowerID: flower.flowerID,
+                    imageUrl: flower.imageurl
                   })}
                 >
                   {size.sizeName}
@@ -236,6 +292,7 @@ const NewEvent = () => {
           <table className="selected-flowers-table">
             <thead>
               <tr>
+                <th>Ảnh</th>
                 <th>Tên Hoa</th>
                 <th>Kích Thước</th>
                 <th>Giảm Giá (%)</th>
@@ -245,6 +302,18 @@ const NewEvent = () => {
             <tbody>
               {selectedFlowers.map((flower, index) => (
                 <tr key={index}>
+                  <td>
+                    <img 
+                      src={flower.imageUrl} 
+                      alt={flower.flowerName} 
+                      style={{
+                        width: '50px', 
+                        height: '50px', 
+                        objectFit: 'cover', 
+                        borderRadius: '4px'
+                      }} 
+                    />
+                  </td>
                   <td>{flower.flowerName}</td>
                   <td>{flower.sizeName}</td>
                   <td>
@@ -346,55 +415,24 @@ const NewEvent = () => {
 )}
 
       {/* Modal thành công */}
-      {/* Modal thành công - sửa lại để căn giữa */}
+{/* Modal thành công - sửa lại để căn giữa */}
 {isSuccessModalOpen && (
   <div 
-    className="success-modal"
-    style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 1000
-    }}
+    className="event-success-modal"
   >
-    <div 
-      className="success-modal-content"
-      style={{
-        backgroundColor: 'white',
-        padding: '2rem',
-        borderRadius: '8px',
-        maxWidth: '400px',
-        width: '90%',
-        textAlign: 'center',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
-      }}
-    >
+    <div className="event-success-modal-content">
       <h3>🎉 Thành công!</h3>
       <p>Sự kiện đã được tạo thành công.</p>
       <button
         onClick={() => setIsSuccessModalOpen(false)}
-        className="success-modal-button"
-        style={{
-          marginTop: '1rem',
-          backgroundColor: '#4CAF50',
-          color: 'white',
-          border: 'none',
-          padding: '0.5rem 1rem',
-          borderRadius: '4px',
-          cursor: 'pointer'
-        }}
+        className="event-success-modal-button"
       >
         Đóng
       </button>
     </div>
   </div>
 )}
+
     </div>
   );
 };

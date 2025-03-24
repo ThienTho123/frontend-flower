@@ -74,7 +74,7 @@
 
 /* Style cho phần chọn hoa - ĐƯỢC CẢI TIẾN */
 .event-form-flower-select {
-  max-height: 300px;
+  max-height: 600px;
   overflow-y: auto;
   border: 1px solid #e0e0e0;
   border-radius: 5px;
@@ -202,21 +202,16 @@
 }
 
 /* Style cho modal */
-.event-modal,
 .success-modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  inset: 0; /* Thay cho top, left, right, bottom = 0 */
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
 }
 
-.event-modal-content,
 .success-modal-content {
   background-color: white;
   padding: 2rem;
@@ -226,6 +221,7 @@
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
 
 .event-modal-content h3,
 .success-modal-content h3 {
@@ -289,4 +285,41 @@
   padding: 50px;
   font-size: 18px;
   color: #666;
+}
+/* Định dạng modal */
+.event-success-modal {
+  position: fixed;
+  inset: 0; /* Căn giữa modal */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+/* Nội dung modal */
+.event-success-modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Nút đóng modal */
+.event-success-modal-button {
+  margin-top: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.event-success-modal-button:hover {
+  background-color: #45a049;
 }

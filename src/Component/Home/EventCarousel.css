@@ -14,7 +14,7 @@
 
 /* Event container */
 .event-flower-carousel {
-  width: 100%;
+  width: 90%;
   margin: 40px auto;
   padding: 30px;
   border-radius: 16px;
@@ -252,16 +252,15 @@
 .slick-next {
   width: 40px;
   height: 40px;
-  background: #fff;
   border-radius: 50%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   z-index: 1;
   transition: all 0.3s ease;
+  top: 50% !important;
+
 }
 
 .slick-prev:hover, 
 .slick-next:hover {
-  background: #fff;
   transform: scale(1.1);
 }
 
@@ -275,11 +274,11 @@
 }
 
 .slick-prev {
-  left: -5px;
+  left: -15px !important;
 }
 
 .slick-next {
-  right: -5px;
+  right: -15px !important;
 }
 
 .slick-list {
@@ -292,7 +291,7 @@
 
 .slick-track {
   display: flex !important;
-  gap: 15px !important;
+  gap: 50px !important;
 }
 
 /* Empty state */

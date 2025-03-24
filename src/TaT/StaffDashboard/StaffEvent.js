@@ -10,30 +10,19 @@ const StaffEvent = () => {
   const navigate = useNavigate();
 
   const formatTimeAgo = (dateArray) => {
-    if (!Array.isArray(dateArray) || dateArray.length < 6)
+    if (!Array.isArray(dateArray) || dateArray.length < 5) 
       return "Ngày không hợp lệ";
 
-    const postDate = new Date(
-      dateArray[0],
-      dateArray[1] - 1,
-      dateArray[2],
-      dateArray[3],
-      dateArray[4],
-      dateArray[5]
-    );
+    // Giải nén với giá trị mặc định cho giây
+    const [year, month, day, hour, minute, second = 0] = dateArray;
+
+    const postDate = new Date(year, month - 1, day, hour, minute, second);
 
     if (isNaN(postDate.getTime())) return "Ngày không hợp lệ";
 
-    // Lấy từng thành phần của ngày tháng năm và giờ phút giây
-    const day = String(postDate.getDate()).padStart(2, "0");
-    const month = String(postDate.getMonth() + 1).padStart(2, "0");
-    const year = postDate.getFullYear();
-    const hours = String(postDate.getHours()).padStart(2, "0");
-    const minutes = String(postDate.getMinutes()).padStart(2, "0");
-    const seconds = String(postDate.getSeconds()).padStart(2, "0");
-
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-  };
+    // Định dạng ngày giờ kiểu Việt Nam
+    return postDate.toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
+};
 
   useEffect(() => {
     fetchEvents();
