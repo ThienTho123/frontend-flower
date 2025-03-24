@@ -1,0 +1,292 @@
+/* Thiết lập chung cho form */
+.event-form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.event-form-title {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+}
+
+.event-form-subtitle {
+  color: #3498db;
+  margin: 20px 0 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Thiết lập style cho các nhóm form */
+.event-form-group {
+  margin-bottom: 15px;
+}
+
+.event-form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #555;
+}
+
+.event-form-input,
+.event-form-textarea,
+.event-form-date {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.event-form-textarea {
+  resize: vertical;
+}
+
+/* Style cho color picker */
+.event-form-color {
+  width: 60px;
+  height: 30px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.color-value {
+  margin-left: 10px;
+  font-family: monospace;
+}
+
+/* Container cho ngày tháng */
+.event-form-date-container {
+  display: flex;
+  gap: 15px;
+}
+
+.event-form-date-container .event-form-group {
+  flex: 1;
+}
+
+/* Style cho phần chọn hoa - ĐƯỢC CẢI TIẾN */
+.event-form-flower-select {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+}
+
+/* Grid layout cho danh sách hoa */
+.event-form-flower-select {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.flower-item {
+  background-color: white;
+  border-radius: 6px;
+  padding: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.flower-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.flower-item h4 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Style cho size options */
+.size-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.size-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.size-button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Style cho sản phẩm đã chọn */
+.event-form-selected-flowers {
+  margin-top: 20px;
+}
+
+.event-form-selected-flowers h4 {
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.selected-flowers-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.selected-flowers-table th,
+.selected-flowers-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.selected-flowers-table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+.sale-off-input {
+  width: 70px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.remove-flower-button {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.remove-flower-button:hover {
+  background-color: #ff5252;
+}
+
+/* Button tạo sự kiện */
+.event-form-submit-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto 0;
+  width: 200px;
+  transition: background-color 0.3s;
+}
+
+.event-form-submit-button:hover {
+  background-color: #2980b9;
+}
+
+/* Style cho modal */
+.event-modal,
+.success-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.event-modal-content,
+.success-modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.event-modal-content h3,
+.success-modal-content h3 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+.event-modal-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.event-modal-confirm {
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.event-modal-cancel {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.success-modal-button {
+  margin-top: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.success-modal-button:hover {
+  background-color: #45a049;
+}
+/* Responsive styling */
+@media (max-width: 768px) {
+  .event-form-date-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .event-form-flower-select {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+/* Loading state */
+.loading {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #666;
+}

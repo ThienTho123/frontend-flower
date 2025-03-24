@@ -88,6 +88,10 @@ import AdminEditBlogForm from "./TaT/AdminDashboard/AdminEditBlog.js";
 import AdminCreateBlogForm from "./TaT/AdminDashboard/AdminNewBlog.js";
 import AdminBlog from "./TaT/AdminDashboard/AdminBlog.js";
 import StaffEvent from "./TaT/StaffDashboard/StaffEvent.js";
+
+import NewEvent from "./TaT/StaffDashboard/NewEvent.js";
+import EditEvent from "./TaT/StaffDashboard/EditEvent.js";
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -213,6 +217,8 @@ const AppRoutes = () => {
         <Route path="/StaffPreOrder" element={<StaffPreorder />} />
         <Route path="/StaffBlog" element={<StaffBlog />} />
         <Route path="/StaffEvent" element={<StaffEvent />} />
+        <Route path="/StaffEvent/new-event" element={<NewEvent />} />
+        <Route path="/StaffEvent/edit/:id" element={<EditEvent />} />
         <Route path="/StaffPreOrder/:id" element={<StaffPreorderDetails />} />
         <Route path="/StaffBlog/new-blog" element={<CreateBlogForm />} />
         <Route path="/myblog/:id" element={<EditBlogForm />} />
