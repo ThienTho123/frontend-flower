@@ -27,7 +27,27 @@ const BlogFlowerCarousel = ({ blogFlowers }) => {
             <img src={flower.avatar} alt={flower.title} className="flower-image" />
             <p className="flower-name">{flower.title}</p>
             <p className="flower-sold">Đã bán: {flower.sold}</p>
-            <p className="flower-price">Giá: {flower.price} VNĐ</p>
+            <p className="flower-price">
+            {flower.priceEvent !== null ? (
+              <>
+                <div
+                  style={{
+                    textDecoration: "line-through",
+                    color: "gray",
+                  }}
+                >
+                  {flower.price.toLocaleString("vi-VN")} VNĐ
+                </div>
+                <div style={{ color: "red", fontWeight: "bold" }}>
+                  Giá: {flower.priceEvent.toLocaleString("vi-VN")} VNĐ
+                </div>
+              </>
+            ) : (
+              <span>Giá: {flower.price.toLocaleString("vi-VN")} VNĐ</span>
+            )}
+          </p>
+
+
           </Link>
         ))}
       </Slider>
