@@ -88,7 +88,7 @@ import AdminEditBlogForm from "./TaT/AdminDashboard/AdminEditBlog.js";
 import AdminCreateBlogForm from "./TaT/AdminDashboard/AdminNewBlog.js";
 import AdminBlog from "./TaT/AdminDashboard/AdminBlog.js";
 import StaffEvent from "./TaT/StaffDashboard/StaffEvent.js";
-
+import AdminEvent from "./TaT/AdminDashboard/AdminEvent.js";
 import NewEvent from "./TaT/StaffDashboard/NewEvent.js";
 import EditEvent from "./TaT/StaffDashboard/EditEvent.js";
 
@@ -203,6 +203,7 @@ const AppRoutes = () => {
         <Route path="/AdminBlog/new-blog" element={<AdminCreateBlogForm />} />
         <Route path="/shop-blog/:id" element={<AdminEditBlogForm />} />
         <Route path="/AdminBlog" element={<AdminBlog />} />
+        <Route path="/AdminEvent" element={<AdminEvent />} />
 
         {/* Staff routes */}
         <Route path="/staff" element={<StaffDashboard />} />

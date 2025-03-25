@@ -187,7 +187,7 @@ const EditEvent = () => {
           flowerID: flower.flowerID
         }))
       };
-
+      console.log("eventData",eventData)
       const response = await axios.put(
         `http://localhost:8080/api/v1/staff/event/${id}`,
         eventData,

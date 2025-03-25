@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import returnIcon from "./ImageDashboard/return-button.png";
-import plus from "./ImageDashboard/plus.png";
-const StaffEvent = () => {
+import plus from "../StaffDashboard/ImageDashboard/plus.png"
+const AdminEvent = () => {
   const [event, setEvents] = useState([]);
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
@@ -32,7 +32,7 @@ const StaffEvent = () => {
   const fetchEvents = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/staff/event",
+        "http://localhost:8080/api/v1/admin/event",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -68,7 +68,7 @@ const StaffEvent = () => {
     if (!selectedEvent) return;
     try {
       const response = await axios.delete(
-        `http://localhost:8080/api/v1/staff/event/${selectedEvent.id}`,
+        `http://localhost:8080/api/v1/admin/event/${selectedEvent.id}`,
         {
           headers: { Authorization: `Bearer ${accesstoken}` },
         }
@@ -84,7 +84,7 @@ const StaffEvent = () => {
   };
 
   const handleBackToDashboard = () => {
-    navigate("/staff");
+    navigate("/dashboard");
   };
 
   return (
@@ -96,8 +96,8 @@ const StaffEvent = () => {
           className="return-button"
           onClick={handleBackToDashboard}
         />
-        <h2>Quản Lý Sự kiện - Nhân viên</h2>
-        <Link to={`/StaffEvent/new-event`}>
+        <h2>Quản Lý Sự kiện</h2>
+        <Link to={`/AdminEvent/new-event`}>
           <img
             src={plus}
             alt="Quay Lại"
@@ -131,7 +131,7 @@ const StaffEvent = () => {
                   <td>{event.stt}</td>
                   <td>
                     <a
-                      href={`/StaffEvent/edit/${event.id}`}
+                      href={`/AdminEvent/edit/${event.id}`}
                       className="history-link"
                     >
                       {event.id}
@@ -152,7 +152,7 @@ const StaffEvent = () => {
                   <td>{event.end}</td>
                   <td>{event.status}</td>
                   <td>
-                    <Link to={`/StaffEvent/edit/${event.id}`}>
+                    <Link to={`/AdminEvent/edit/${event.id}`}>
                       <button>Chỉnh Sửa</button>
                     </Link>
                     <button
@@ -204,4 +204,4 @@ const StaffEvent = () => {
   );
 };
 
-export default StaffEvent;
+export default AdminEvent;

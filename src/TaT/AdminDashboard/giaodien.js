@@ -28,6 +28,7 @@ import logo from "./ImageDashboard/logo.png"; // Hình ảnh cho quản lý Revi
 import exit from "./ImageDashboard/exit.png"; // Hình ảnh cho quản lý Review
 import { Bar } from "react-chartjs-2"; // Biểu đồ cột
 import blog from "../StaffDashboard/ImageDashboard/Blog.png"
+import event from "../StaffDashboard/ImageDashboard/event.png"
 
 import {
   Chart as ChartJS,
@@ -415,6 +416,9 @@ const Dashboard = () => {
               </button>
               <button onClick={() => handleNavigate("/AdminBlog")}>
                 <img src={blog} alt="Quản lý bài viết" /> Quản lý bài viết
+              </button>
+              <button onClick={() => handleNavigate("/AdminEvent")}>
+                <img src={event} alt="Quản lý sự kiện" /> Quản lý sự kiện
               </button>
             </div>
           </div>
