@@ -92,6 +92,8 @@ import AdminEvent from "./TaT/AdminDashboard/AdminEvent.js";
 import NewEvent from "./TaT/StaffDashboard/NewEvent.js";
 import EditEvent from "./TaT/StaffDashboard/EditEvent.js";
 
+import AdminNewEvent from "./TaT/AdminDashboard/AdminNewEvent.js";
+import AdminEditEvent from "./TaT/AdminDashboard/AdminEditEvent.js";
 import {
   BrowserRouter as Router,
   Routes,
@@ -204,6 +206,9 @@ const AppRoutes = () => {
         <Route path="/shop-blog/:id" element={<AdminEditBlogForm />} />
         <Route path="/AdminBlog" element={<AdminBlog />} />
         <Route path="/AdminEvent" element={<AdminEvent />} />
+        <Route path="/AdminEvent/new-event" element={<AdminNewEvent />} />
+        <Route path="/AdminEvent/edit/:id" element={<AdminEditEvent />} />
+
 
         {/* Staff routes */}
         <Route path="/staff" element={<StaffDashboard />} />

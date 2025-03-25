@@ -14,6 +14,9 @@ const NewEvent = () => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   useBootstrap();
 
   useEffect(() => {
@@ -73,69 +76,59 @@ const NewEvent = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
   
-    // Kiểm tra thông tin bắt buộc
     if (!eventName.trim() || !description.trim() || !startDate || !endDate) {
-      alert("Vui lòng điền đầy đủ thông tin!");
-      return;
+        setErrorMessage("Vui lòng điền đầy đủ thông tin!");
+        setIsErrorModalOpen(true);
+        return;
     }
-  
-    // Kiểm tra tính hợp lệ của ngày
+
     const start = new Date(startDate);
     const end = new Date(endDate);
   
     if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-      alert("Ngày không hợp lệ. Vui lòng chọn lại!");
-      return;
+        setErrorMessage("Ngày không hợp lệ. Vui lòng chọn lại!");
+        setIsErrorModalOpen(true);
+        return;
     }
-  
+
     if (start >= end) {
-      alert("Ngày kết thúc phải sau ngày bắt đầu!");
-      return;
+        setErrorMessage("Ngày kết thúc phải sau ngày bắt đầu!");
+        setIsErrorModalOpen(true);
+        return;
     }
-  
+
     setIsModalOpen(true);
-  };
+};
+
 
   const confirmSubmit = async () => {
     try {
         const accessToken = localStorage.getItem("access_token");
-
         const eventData = {
             eventName: eventName,
             description: description,
             color: color,
             start: formatDateToLocalDateTime(startDate),
             end: formatDateToLocalDateTime(endDate),
-            eventFlowerDTOS: selectedFlowers.map(flower => {
-                console.log("Flower data:", flower); // Debug log
-                return {
-                    flowerName: flower.flowerName,
-                    sizeIDChoose: flower.sizeIDChoose, 
-                    saleOff: parseFloat(flower.saleOff),
-                    flowerID: flower.flowerID // Kiểm tra nếu là null
-                };
-            })
+            eventFlowerDTOS: selectedFlowers.map(flower => ({
+                flowerName: flower.flowerName,
+                sizeIDChoose: flower.sizeIDChoose, 
+                saleOff: parseFloat(flower.saleOff),
+                flowerID: flower.flowerID
+            }))
         };
 
-        console.log("Sending event data:", eventData); // Debug toàn bộ request
-
-        const response = await axios.post(
-            "http://localhost:8080/api/v1/staff/event",
-            eventData,
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            }
-        );
+        await axios.post("http://localhost:8080/api/v1/staff/event", eventData, {
+            headers: { Authorization: `Bearer ${accessToken}` },
+        });
 
         setIsModalOpen(false);
         setIsSuccessModalOpen(true);
         resetForm();
     } catch (error) {
-        console.error("Error creating event:", error);
         setIsModalOpen(false);
-        alert("Có lỗi xảy ra khi tạo sự kiện!");
+        setErrorMessage(error.response?.data || "Có lỗi xảy ra khi tạo sự kiện!");
+        setIsErrorModalOpen(true);
     }
 };
 
@@ -432,6 +425,21 @@ const NewEvent = () => {
     </div>
   </div>
 )}
+{isErrorModalOpen && (
+  <div className="event-error-modal">
+    <div className="event-error-modal-content">
+      <h3>❌ Thất bại!</h3>
+      <p>{errorMessage}</p>
+      <button
+        onClick={() => setIsErrorModalOpen(false)}
+        className="event-error-modal-button"
+      >
+        Đóng
+      </button>
+    </div>
+  </div>
+)}
+
 
     </div>
   );

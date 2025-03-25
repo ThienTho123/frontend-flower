@@ -4,7 +4,7 @@ import axios from "axios";
 import useBootstrap from "../useBootstrap";
 import "./CreateEventForm.css";
 
-const EditEvent = () => {
+const AdminEditEvent = () => {
   const { id } = useParams();
   const [eventName, setEventName] = useState("");
   const [description, setDescription] = useState("");
@@ -30,7 +30,7 @@ const EditEvent = () => {
     try {
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.get(
-        "http://localhost:8080/api/v1/staff/event/getflowersize",
+        "http://localhost:8080/api/v1/admin/event/getflowersize",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -40,6 +40,8 @@ const EditEvent = () => {
       setFlowerList(response.data.AllFlower || []);
     } catch (error) {
       console.error("Error fetching flowers:", error);
+      setErrorMessage("Không thể tải danh sách hoa");
+      setIsErrorModalOpen(true);
     }
   };
 
@@ -47,7 +49,7 @@ const EditEvent = () => {
     try {
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.get(
-        `http://localhost:8080/api/v1/staff/event/${id}`,
+        `http://localhost:8080/api/v1/admin/event/${id}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -63,7 +65,6 @@ const EditEvent = () => {
         setDescription(eventData.description);
         setColor(eventData.color);
         
-        // Chuyển đổi mảng ngày tháng từ backend thành dạng datetime-local
         setStartDate(formatDateArrayToString(eventData.start));
         setEndDate(formatDateArrayToString(eventData.end));
       }
@@ -85,23 +86,21 @@ const EditEvent = () => {
     } catch (error) {
       console.error("Error fetching event details:", error);
       setLoading(false);
+      setErrorMessage("Không thể tải chi tiết sự kiện");
+      setIsErrorModalOpen(true);
     }
   };
 
-  // Chuyển đổi mảng ngày tháng sang chuỗi datetime-local
   const formatDateArrayToString = (dateArray) => {
     const [year, month, day, hour, minute, second] = dateArray;
-    // Định dạng tháng và ngày để đảm bảo có 2 chữ số
     const formattedMonth = String(month).padStart(2, '0');
     const formattedDay = String(day).padStart(2, '0');
     const formattedHour = String(hour).padStart(2, '0');
     const formattedMinute = String(minute).padStart(2, '0');
     
-    // Định dạng chuỗi datetime-local: YYYY-MM-DDThh:mm
     return `${year}-${formattedMonth}-${formattedDay}T${formattedHour}:${formattedMinute}`;
   };
 
-  // Chuyển đổi chuỗi datetime-local sang mảng ngày tháng
   const formatDateToLocalDateTime = (dateString) => {
     const date = new Date(dateString);
     return [
@@ -171,8 +170,7 @@ const EditEvent = () => {
     }
 
     setIsModalOpen(true);
-};
-
+  };
 
   const confirmSubmit = async () => {
     try {
@@ -192,7 +190,7 @@ const EditEvent = () => {
             }))
         };
 
-        await axios.put(`http://localhost:8080/api/v1/staff/event/${id}`, eventData, {
+        await axios.put(`http://localhost:8080/api/v1/admin/event/${id}`, eventData, {
             headers: { Authorization: `Bearer ${accessToken}` },
         });
 
@@ -203,15 +201,6 @@ const EditEvent = () => {
         setErrorMessage(error.response?.data || "Có lỗi xảy ra khi cập nhật sự kiện!");
         setIsErrorModalOpen(true);
     }
-};
-
-  const resetForm = () => {
-    setEventName("");
-    setDescription("");
-    setColor("#3788d8");
-    setStartDate("");
-    setEndDate("");
-    setSelectedFlowers([]);
   };
 
   if (loading) {
@@ -220,7 +209,7 @@ const EditEvent = () => {
 
   return (
     <div className="event-form-container">
-      <h2 className="event-form-title">Chỉnh Sửa Sự Kiện</h2>
+      <h2 className="event-form-title">Chỉnh Sửa Sự Kiện (Admin)</h2>
 
       <div className="event-form-group">
         <label>Tên Sự Kiện:</label>
@@ -307,7 +296,7 @@ const EditEvent = () => {
                   imageUrl: flower.imageurl
                 }, true)}
               >
-                All Sizes
+                Tất Cả Kích Thước
               </button>
               {flower.size?.map((size, sizeIndex) => (
                 <button
@@ -525,4 +514,4 @@ const EditEvent = () => {
   );
 };
 
-export default EditEvent;
+export default AdminEditEvent;

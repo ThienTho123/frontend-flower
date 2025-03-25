@@ -1,36 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 import useBootstrap from "../useBootstrap";
-import "./CreateEventForm.css";
+import "./CreateEventForm.css"; 
 
-const EditEvent = () => {
-  const { id } = useParams();
+const AdminNewEvent = () => {
   const [eventName, setEventName] = useState("");
   const [description, setDescription] = useState("");
-  const [color, setColor] = useState("#3788d8");
+  const [color, setColor] = useState("#3788d8"); 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [flowerList, setFlowerList] = useState([]);
   const [selectedFlowers, setSelectedFlowers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  
+
   useBootstrap();
 
   useEffect(() => {
     fetchFlowers();
-    fetchEventDetails();
-  }, [id]);
+  }, []);
 
   const fetchFlowers = async () => {
     try {
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.get(
-        "http://localhost:8080/api/v1/staff/event/getflowersize",
+        "http://localhost:8080/api/v1/admin/event/getflowersize",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -40,78 +37,9 @@ const EditEvent = () => {
       setFlowerList(response.data.AllFlower || []);
     } catch (error) {
       console.error("Error fetching flowers:", error);
+      setErrorMessage("Không thể tải danh sách hoa");
+      setIsErrorModalOpen(true);
     }
-  };
-
-  const fetchEventDetails = async () => {
-    try {
-      const accessToken = localStorage.getItem("access_token");
-      const response = await axios.get(
-        `http://localhost:8080/api/v1/staff/event/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-
-      const eventData = response.data.Event;
-      const eventFlowers = response.data.EventFlower || [];
-
-      if (eventData) {
-        setEventName(eventData.name);
-        setDescription(eventData.description);
-        setColor(eventData.color);
-        
-        // Chuyển đổi mảng ngày tháng từ backend thành dạng datetime-local
-        setStartDate(formatDateArrayToString(eventData.start));
-        setEndDate(formatDateArrayToString(eventData.end));
-      }
-
-      const processedFlowers = eventFlowers.map(flower => ({
-        flowerName: flower.flowerName,
-        flowerID: flower.flowerID,
-        sizeIDChoose: flower.size && flower.size.length > 0 
-          ? flower.size.find(s => s.sizeName === flower.sizeChoose)?.flowerSizeID 
-          : null,
-        sizeName: flower.sizeChoose || "Tất cả kích thước",
-        saleOff: flower.saleOff || "0.00",
-        imageUrl: flower.imageurl,
-        idEventFlower: flower.idEventFlower
-      }));
-
-      setSelectedFlowers(processedFlowers);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching event details:", error);
-      setLoading(false);
-    }
-  };
-
-  // Chuyển đổi mảng ngày tháng sang chuỗi datetime-local
-  const formatDateArrayToString = (dateArray) => {
-    const [year, month, day, hour, minute, second] = dateArray;
-    // Định dạng tháng và ngày để đảm bảo có 2 chữ số
-    const formattedMonth = String(month).padStart(2, '0');
-    const formattedDay = String(day).padStart(2, '0');
-    const formattedHour = String(hour).padStart(2, '0');
-    const formattedMinute = String(minute).padStart(2, '0');
-    
-    // Định dạng chuỗi datetime-local: YYYY-MM-DDThh:mm
-    return `${year}-${formattedMonth}-${formattedDay}T${formattedHour}:${formattedMinute}`;
-  };
-
-  // Chuyển đổi chuỗi datetime-local sang mảng ngày tháng
-  const formatDateToLocalDateTime = (dateString) => {
-    const date = new Date(dateString);
-    return [
-      date.getFullYear(),
-      date.getMonth() + 1,
-      date.getDate(),
-      date.getHours(),
-      date.getMinutes(),
-      date.getSeconds()
-    ];
   };
 
   const handleAddFlower = (flowerData, isAllSize = false) => {
@@ -127,7 +55,7 @@ const EditEvent = () => {
         sizeName: isAllSize ? "Tất cả kích thước" : flowerData.sizeName,
         saleOff: "0.00",
         flowerID: flowerData.flowerID,
-        imageUrl: flowerData.imageUrl || flowerData.imageurl
+        imageUrl: flowerData.imageUrl || flowerData.imageurl 
       };
 
       setSelectedFlowers([...selectedFlowers, newFlowerEntry]);
@@ -171,8 +99,7 @@ const EditEvent = () => {
     }
 
     setIsModalOpen(true);
-};
-
+  };
 
   const confirmSubmit = async () => {
     try {
@@ -184,7 +111,6 @@ const EditEvent = () => {
             start: formatDateToLocalDateTime(startDate),
             end: formatDateToLocalDateTime(endDate),
             eventFlowerDTOS: selectedFlowers.map(flower => ({
-                idEventFlower: flower.idEventFlower,
                 flowerName: flower.flowerName,
                 sizeIDChoose: flower.sizeIDChoose, 
                 saleOff: parseFloat(flower.saleOff),
@@ -192,18 +118,19 @@ const EditEvent = () => {
             }))
         };
 
-        await axios.put(`http://localhost:8080/api/v1/staff/event/${id}`, eventData, {
+        await axios.post("http://localhost:8080/api/v1/admin/event", eventData, {
             headers: { Authorization: `Bearer ${accessToken}` },
         });
 
         setIsModalOpen(false);
         setIsSuccessModalOpen(true);
+        resetForm();
     } catch (error) {
         setIsModalOpen(false);
-        setErrorMessage(error.response?.data || "Có lỗi xảy ra khi cập nhật sự kiện!");
+        setErrorMessage(error.response?.data || "Có lỗi xảy ra khi tạo sự kiện!");
         setIsErrorModalOpen(true);
     }
-};
+  };
 
   const resetForm = () => {
     setEventName("");
@@ -214,13 +141,30 @@ const EditEvent = () => {
     setSelectedFlowers([]);
   };
 
-  if (loading) {
-    return <div className="loading">Đang tải dữ liệu...</div>;
-  }
+  const formatDateToLocalDateTime = (dateString) => {
+    if (!dateString) {
+      return []; 
+    }
+  
+    const date = new Date(dateString);
+  
+    if (isNaN(date.getTime())) {
+      return []; 
+    }
+  
+    return [
+      date.getFullYear(),    
+      date.getMonth() + 1,   
+      date.getDate(),        
+      date.getHours(),       
+      date.getMinutes(),     
+      date.getSeconds() || 0 
+    ];
+  };
 
   return (
     <div className="event-form-container">
-      <h2 className="event-form-title">Chỉnh Sửa Sự Kiện</h2>
+      <h2 className="event-form-title">Tạo Sự Kiện Mới (Admin)</h2>
 
       <div className="event-form-group">
         <label>Tên Sự Kiện:</label>
@@ -307,7 +251,7 @@ const EditEvent = () => {
                   imageUrl: flower.imageurl
                 }, true)}
               >
-                All Sizes
+                Tất Cả Kích Thước
               </button>
               {flower.size?.map((size, sizeIndex) => (
                 <button
@@ -390,7 +334,7 @@ const EditEvent = () => {
       </div>
 
       <button onClick={handleSubmit} className="event-form-submit-button">
-        Cập Nhật Sự Kiện
+        Tạo Sự Kiện
       </button>
 
       {/* Modal xác nhận */}
@@ -422,8 +366,8 @@ const EditEvent = () => {
               boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
             }}
           >
-            <h3>Xác nhận cập nhật Sự Kiện</h3>
-            <p>Bạn có chắc muốn cập nhật sự kiện này không?</p>
+            <h3>Xác nhận tạo Sự Kiện</h3>
+            <p>Bạn có chắc muốn tạo sự kiện này không?</p>
             <div className="event-modal-buttons">
               <button
                 onClick={confirmSubmit}
@@ -461,52 +405,21 @@ const EditEvent = () => {
 
       {/* Modal thành công */}
       {isSuccessModalOpen && (
-        <div 
-          className="event-success-modal"
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 1000
-          }}
-        >
-          <div 
-            className="event-success-modal-content"
-            style={{
-              backgroundColor: 'white',
-              padding: '2rem',
-              borderRadius: '8px',
-              maxWidth: '400px',
-              width: '90%',
-              textAlign: 'center',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
-            }}
-          >
+        <div className="event-success-modal">
+          <div className="event-success-modal-content">
             <h3>🎉 Thành công!</h3>
-            <p>Sự kiện đã được cập nhật thành công.</p>
+            <p>Sự kiện đã được tạo thành công.</p>
             <button
               onClick={() => setIsSuccessModalOpen(false)}
               className="event-success-modal-button"
-              style={{
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                border: 'none',
-                padding: '0.5rem 1rem',
-                borderRadius: '4px',
-                cursor: 'pointer'
-              }}
             >
               Đóng
             </button>
           </div>
         </div>
       )}
+
+      {/* Modal lỗi */}
       {isErrorModalOpen && (
         <div className="event-error-modal">
           <div className="event-error-modal-content">
@@ -525,4 +438,4 @@ const EditEvent = () => {
   );
 };
 
-export default EditEvent;
+export default AdminNewEvent;
