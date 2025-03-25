@@ -78,41 +78,16 @@ const EventCarousel = ({ eventFlower = [] }) => {
 
         // Responsive settings
         const settings = {
-          dots: true,
-          infinite: itemCount > 1,
-          speed: 600,
-          slidesToShow: 4,
-          slidesToScroll: 1,
-          autoplay: itemCount > 1,
-          autoplaySpeed: 4000,
-          nextArrow: <NextArrow />,
-          prevArrow: <PrevArrow />,
-          pauseOnHover: true,
-          responsive: [
-            {
-              breakpoint: 1024,
-              settings: {
-                slidesToShow: 3,
-                slidesToScroll: 1
-              }
-            },
-            {
-              breakpoint: 768,
-              settings: {
-                slidesToShow: 2,
-                slidesToScroll: 1
-              }
-            },
-            {
-              breakpoint: 480,
-              settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1
-              }
-            }
-          ]
-        };
-
+           dots: true,
+           infinite: itemCount > 4 ,
+           speed: 600,
+           slidesToShow: itemCount === 1 ? 1 : itemCount === 2 ? 2 : 4,
+           slidesToScroll: 1,
+           autoplay: itemCount > 1,
+           autoplaySpeed: 4000,
+           centerMode: itemCount === 2,
+           centerPadding: itemCount === 2 ? "25%" : "0px",
+         };
         // Generate a gradient based on the event color
         const eventColor = event?.color || "#ffe4e1";
         const gradientStyle = {

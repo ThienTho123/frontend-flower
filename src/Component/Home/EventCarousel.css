@@ -259,10 +259,6 @@
 
 }
 
-.slick-prev:hover, 
-.slick-next:hover {
-  transform: scale(1.1);
-}
 
 .slick-prev:before,
 .slick-next:before {
