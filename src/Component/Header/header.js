@@ -4,6 +4,7 @@ import Logo from "../assets/logo.png";
 import SearchIcon from "../assets/Search.svg";
 import LoginIcon from "../assets/Login.svg";
 import CartIcon from "../assets/Cart.svg";
+import Detect from "../assets/generative.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Client } from "@stomp/stompjs";
@@ -60,6 +61,7 @@ const Header = () => {
       console.log("Đăng nhập thất bại:", error);
     }
   };
+
 
   useEffect(() => {
     const fetchCartData = async () => {
@@ -325,6 +327,9 @@ const Header = () => {
           <Link to="/blog" className="header-link">
             Blog
           </Link>
+          <Link to="/detect" className="header-link">
+            Nhận diện hoa
+          </Link> 
         </div>
         <div className="icons-container">
           {/* Tìm kiếm */}
@@ -347,7 +352,6 @@ const Header = () => {
           <button className="login-button" onClick={handleLoginClick}>
             <img src={LoginIcon} alt="Login" className="icon login-icon" />
           </button>
-
           {/* Giỏ hàng */}
           <button className="cart-button" onClick={handlePrebuy}>
             <img src={CartIcon} alt="Cart" className="icon cart-icon" />

@@ -91,7 +91,7 @@ import StaffEvent from "./TaT/StaffDashboard/StaffEvent.js";
 import AdminEvent from "./TaT/AdminDashboard/AdminEvent.js";
 import NewEvent from "./TaT/StaffDashboard/NewEvent.js";
 import EditEvent from "./TaT/StaffDashboard/EditEvent.js";
-
+import DetectPage from "./TaT/DetectPage.js";
 import AdminNewEvent from "./TaT/AdminDashboard/AdminNewEvent.js";
 import AdminEditEvent from "./TaT/AdminDashboard/AdminEditEvent.js";
 import {
@@ -177,6 +177,7 @@ const AppRoutes = () => {
         <Route path="/blog" element={<BlogFeed />} />
         <Route path="/blog/:id" element={<BlogDetail />} />
         <Route path="/comment/:id" element={<CommentPage />} />
+        <Route path="/detect" element={<DetectPage />} />
 
         {/* Admin routes */}
         <Route path="/dashboard" element={<Dashboard />} />
