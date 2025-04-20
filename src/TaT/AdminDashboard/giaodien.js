@@ -29,7 +29,7 @@ import exit from "./ImageDashboard/exit.png"; // Hình ảnh cho quản lý Revi
 import { Bar } from "react-chartjs-2"; // Biểu đồ cột
 import blog from "../StaffDashboard/ImageDashboard/Blog.png"
 import event from "../StaffDashboard/ImageDashboard/event.png"
-
+import generate from "../../Component/assets/generative.png"
 import {
   Chart as ChartJS,
   ArcElement,
@@ -419,6 +419,9 @@ const Dashboard = () => {
               </button>
               <button onClick={() => handleNavigate("/AdminEvent")}>
                 <img src={event} alt="Quản lý sự kiện" /> Quản lý sự kiện
+              </button>
+              <button onClick={() => handleNavigate("/AdminDetect")}>
+                <img src={generate} alt="Quản lý nhận diện hoa" /> Quản lý nhận diện hoa
               </button>
             </div>
           </div>

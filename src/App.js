@@ -94,6 +94,9 @@ import EditEvent from "./TaT/StaffDashboard/EditEvent.js";
 import DetectPage from "./TaT/DetectPage.js";
 import AdminNewEvent from "./TaT/AdminDashboard/AdminNewEvent.js";
 import AdminEditEvent from "./TaT/AdminDashboard/AdminEditEvent.js";
+import AdminDetect from "./TaT/AdminDashboard/AdminDetect.js";
+import AdminCreateDetect from "./TaT/AdminDashboard/AdminNewDetect.js";
+import AdminEditDetect from "./TaT/AdminDashboard/AdminEditDetect.js";
 import {
   BrowserRouter as Router,
   Routes,
@@ -209,6 +212,9 @@ const AppRoutes = () => {
         <Route path="/AdminEvent" element={<AdminEvent />} />
         <Route path="/AdminEvent/new-event" element={<AdminNewEvent />} />
         <Route path="/AdminEvent/edit/:id" element={<AdminEditEvent />} />
+        <Route path="/AdminDetect" element={<AdminDetect />} />
+        <Route path="/AdminDetect/new" element={<AdminCreateDetect />} />
+        <Route path="/AdminDetect/edit/:id" element={<AdminEditDetect />} />
 
 
         {/* Staff routes */}

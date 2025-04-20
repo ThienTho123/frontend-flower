@@ -37,6 +37,7 @@ const DetectPage = () => {
         (obj) => obj.flowerDTOList
       );
       setFlowerList(allFlowers);
+      console.log(response.data.objects);
     } catch (error) {
       console.error("Upload error", error);
     } finally {
@@ -94,12 +95,12 @@ const DetectPage = () => {
             <button onClick={handlePrev}>&lt;</button>
             <div className="detect-card">
               <h3 style={{ marginBottom: "10px", color: "#2e7d32" }}>
-                {detectObjects[currentDetectIndex].detect.flowerdetect}
+                {detectObjects[currentDetectIndex].detect?.flowerdetect}
               </h3>
 
               <img
-                src={detectObjects[currentDetectIndex].detect.imageurl}
-                alt={detectObjects[currentDetectIndex].detect.flowerdetect}
+                src={detectObjects[currentDetectIndex].detect?.imageurl}
+                alt={detectObjects[currentDetectIndex].detect?.flowerdetect}
                 style={{
                   width: "100%",
                   height: "auto",
@@ -110,31 +111,31 @@ const DetectPage = () => {
 
               <p>
                 <strong>Tên tiếng Việt:</strong>{" "}
-                {detectObjects[currentDetectIndex].detect.vietnamname}
+                {detectObjects[currentDetectIndex].detect?.vietnamname}
               </p>
               <p>
                 <strong>Xuất xứ:</strong>{" "}
-                {detectObjects[currentDetectIndex].detect.origin}
+                {detectObjects[currentDetectIndex].detect?.origin}
               </p>
               <p>
                 <strong>Mùa nở:</strong>{" "}
-                {detectObjects[currentDetectIndex].detect.timebloom}
+                {detectObjects[currentDetectIndex].detect?.timebloom}
               </p>
               <p>
                 <strong>Đặc điểm:</strong>{" "}
-                {detectObjects[currentDetectIndex].detect.characteristic}
+                {detectObjects[currentDetectIndex].detect?.characteristic}
               </p>
               <p>
                 <strong>Ý nghĩa:</strong>{" "}
-                {detectObjects[currentDetectIndex].detect.flowerlanguage}
+                {detectObjects[currentDetectIndex].detect?.flowerlanguage}
               </p>
               <p>
                 <strong>Bổ sung:</strong>{" "}
-                {detectObjects[currentDetectIndex].detect.bonus}
+                {detectObjects[currentDetectIndex].detect?.bonus}
               </p>
               <p>
                 <strong>Công dụng:</strong>{" "}
-                {detectObjects[currentDetectIndex].detect.uses}
+                {detectObjects[currentDetectIndex].detect?.uses}
               </p>
 
               <p>
