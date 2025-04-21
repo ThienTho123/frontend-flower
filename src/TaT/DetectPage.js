@@ -33,10 +33,7 @@ const DetectPage = () => {
       setResultImage(`data:image/jpeg;base64,${response.data.image}`);
       setDetectObjects(response.data.objects);
       setCurrentDetectIndex(0);
-      const allFlowers = response.data.objects.flatMap(
-        (obj) => obj.flowerDTOList
-      );
-      setFlowerList(allFlowers);
+
       console.log(response.data.objects);
     } catch (error) {
       console.error("Upload error", error);
@@ -102,10 +99,14 @@ const DetectPage = () => {
                 src={detectObjects[currentDetectIndex].detect?.imageurl}
                 alt={detectObjects[currentDetectIndex].detect?.flowerdetect}
                 style={{
-                  width: "100%",
-                  height: "auto",
+                  width: "450px",
+                  height: "300px",
+                  objectFit: "contain",
+                  objectPosition: "center",
                   borderRadius: "8px",
                   marginBottom: "12px",
+                  border: "1px solid #ccc",
+                  backgroundColor: "#f4f4f4",
                 }}
               />
 
@@ -148,12 +149,11 @@ const DetectPage = () => {
           </div>
         </div>
       )}
-
       <div className="flower-list">
         <h3>Sản phẩm gợi ý</h3>
         <div className="product-recommend-grid">
-          {flowerList.length > 0 ? (
-            flowerList.map((product) => (
+          {detectObjects[currentDetectIndex]?.flowerDTOList?.length > 0 ? (
+            detectObjects[currentDetectIndex].flowerDTOList.map((product) => (
               <div key={product.flowerID} className="product-recommend-card">
                 <Link
                   to={`/detail/${product.flowerID}`}
