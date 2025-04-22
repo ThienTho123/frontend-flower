@@ -1,157 +1,326 @@
 .detect-container {
-  padding: 20px;
-  max-width: 1000px;
+  padding: 20px 20px;
+  max-width: 1200px;
   margin: auto;
-  font-family: Arial;
+  font-family: 'Montserrat', Arial, sans-serif;
+  color: #444;
+  background-color: #fff;
+}
+
+.detect-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.detect-header h2 {
+  font-size: 2.5rem;
+  color: #6a1e55;
+  font-family: 'Dancing Script', cursive;
+  margin-bottom: 10px;
+}
+
+.detect-header p {
+  color: #666;
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f9f7fa;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.upload-section h3 {
+  margin-bottom: 15px;
+  color: #6a1e55;
+}
+
+.upload-icon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  color: #6a1e55;
+}
+
+.info-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+  color: #999;
+}
+
+.custom-file-input {
+  padding: 12px;
+  background-color: #fff;
+  border: 2px dashed #d4b8d0;
+  cursor: pointer;
+  border-radius: 10px;
+  margin: 10px 0;
+  width: 100%;
+  max-width: 500px;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  text-align: center;
+  color: #666;
+}
+
+.custom-file-input:hover, .custom-file-input.active {
+  border-color: #6a1e55;
+  background-color: #faf5f9;
+}
+
+.upload-button {
+  padding: 10px 30px;
+  background-color: #6a1e55;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 600;
+  margin: 15px 0;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  box-shadow: 0 4px 10px rgba(106, 30, 85, 0.2);
+}
+
+.upload-button:hover {
+  background-color: #8c2973;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(106, 30, 85, 0.3);
+}
+
+.upload-button:active {
+  transform: translateY(1px);
+}
+
+.upload-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .image-section {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-.image-section div {
+.image-section > div {
   flex: 1;
-  margin: 0 10px;
+  min-width: 300px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  padding-bottom: 15px;
+}
+
+.image-section h3 {
+  background-color: #f0e6f0;
+  color: #6a1e55;
+  padding: 12px;
+  margin: 0 0 10px 0;
+  text-align: center;
+  font-size: 1.2rem;
 }
 
 .image-section img {
-  width: 100%;
+  width: calc(100% - 30px);
   height: auto;
-  border: 1px solid #ccc;
+  max-height: 350px;
+  object-fit: contain;
+  margin: 0 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.detect-result {
-  margin-top: 30px;
-  background-color: #f7f7f7;
-  padding: 15px;
-  border-radius: 5px;
-}
-
-.detect-info {
-  margin-bottom: 10px;
-}
-
-.flower-list {
-  margin-top: 30px;
-}
-
-.flower-grid {
+.no-image-placeholder {
+  width: calc(100% - 30px);
+  height: 250px;
+  margin: 0 15px;
+  border-radius: 8px;
+  border: 2px dashed #ddd;
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-.flower-card {
-  width: 200px;
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 5px;
-  text-align: center;
-  background: #fff;
-}
-
-.flower-card img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-style: italic;
 }
 
 .detect-carousel {
   margin-top: 30px;
-  padding: 20px;
-  background-color: #f0f8ff;
-  border-radius: 10px;
+  padding: 25px;
+  background-color: #f9f7fa;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.detect-carousel h3 {
+  text-align: center;
+  color: #6a1e55;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  font-family: 'Dancing Script', cursive;
 }
 
 .carousel-content {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 15px;
+  gap: 15px;
 }
 
 .carousel-content button {
-  font-size: 24px;
-  background-color: #ddd;
+  font-size: 1.8rem;
+  background-color: #f0e6f0;
+  color: #6a1e55;
   border: none;
-  padding: 10px 15px;
-  margin: 0 10px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-content button:hover {
+  background-color: #6a1e55;
+  color: #fff;
+  transform: scale(1.05);
 }
 
 .detect-card {
-  background: #f9f9f9;
+  background: #fff;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
   width: 100%;
-  max-width: 450px;
-}
-.flower-list {
-  padding: 40px 20px;
+  max-width: 900px;
 }
 
-.flower-list h3 {
-  font-size: 2rem;
-  margin-bottom: 30px;
-  text-align: center;
+.detect-card h3 {
+  font-family: 'Dancing Script', cursive;
   color: #6a1e55;
+  text-align: center;
+  margin-bottom: 12px;
+  font-size: 2rem;
 }
-.detect-card h4 {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 10px;
+
+.detect-card img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
 .detect-card p {
-  margin: 6px 0;
+  margin: 12px 0;
   font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
 }
 
 .detect-card strong {
-  color: #333;
-}
-.flower-list .product-recommend-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 32px;
-  padding: 0 10px;
-  justify-items: center;
-  align-items: stretch;
-  background-color: #fdfdfd;
-  border-radius: 10px;
-  padding: 0 20px 50px 20px; /* padding trái/phải rộng hơn */
+  color: #6a1e55;
+  font-weight: 600;
 }
 
-/* Card từng sản phẩm */
+.flower-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.flower-info-item {
+  background-color: #f9f5f9;
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 3px solid #d4b8d0;
+}
+
+.carousel-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ddd;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.carousel-dot.active {
+  background-color: #6a1e55;
+  transform: scale(1.2);
+}
+
+.flower-list {
+  padding: 50px 20px;
+  background-color: #fff;
+  margin-top: 50px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.flower-list h3 {
+  font-size: 2.2rem;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #6a1e55;
+  font-family: 'Dancing Script', cursive;
+}
+
+.flower-list .product-recommend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
+  padding: 10px;
+  justify-items: center;
+}
+
 .flower-list .product-recommend-card {
   background-color: #fff;
-  border: 1px solid #eee;
+  border: 1px solid #f0e6f0;
   border-radius: 12px;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
-  padding: 24px;
+  padding: 0;
   width: 100%;
   max-width: 300px;
-  box-sizing: border-box; /* quan trọng để padding không phá layout */
 }
 
 .flower-list .product-recommend-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(106, 30, 85, 0.15);
 }
 
-/* Hình ảnh */
 .flower-list .img-recommend-wrapper {
   width: 100%;
-  height: 260px;
+  height: 220px;
   overflow: hidden;
-  border-radius: 8px;
-  margin-bottom: 20px;
 }
 
 .flower-list .img-recommend-wrapper img {
@@ -162,86 +331,65 @@
 }
 
 .flower-list .product-recommend-card:hover .img-recommend-wrapper img {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
-/* Tên sản phẩm */
+.flower-list .product-info {
+  padding: 20px;
+}
+
 .flower-list .product-recommend-card h2 {
-  font-family: "Dancing Script", cursive;
-  font-size: 1.5em;
-  margin: 10px 0 16px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.5rem;
+  margin: 10px 0;
   font-weight: 700;
   color: #6a1e55;
 }
 
-/* Thông tin */
 .flower-list .product-recommend-card p {
   color: #666;
-  font-size: 1em;
+  font-size: 0.95rem;
   margin: 8px 0;
 }
 
-.flower-list .product-recommend-card p.price {
+.flower-list .price-tag {
+  margin: 15px 0;
+}
+
+.flower-list .current-price {
   color: #e60000;
   font-weight: bold;
-  font-size: 1.2em;
-  margin-bottom: 8px;
+  font-size: 1.2rem;
 }
 
-.flower-list .product-recommend-card p.original-price {
+.flower-list .original-price {
   text-decoration: line-through;
-  color: gray;
-  font-size: 0.95em;
+  color: #999;
+  font-size: 0.9rem;
+  margin-right: 8px;
 }
 
-.flower-list .product-recommend-card p.sale-off {
-  color: green;
-  font-size: 0.9em;
-  font-weight: bold;
-  margin-top: 6px;
+.flower-list .product-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  font-size: 0.85rem;
+  color: #777;
 }
 
-/* Link */
-.product-recommend-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-/* Nút chọn ảnh */
-.custom-file-input {
-  padding: 10px;
-  background-color: #f0f0f0;
-  border: 2px dashed #ccc;
-  cursor: pointer;
-  border-radius: 8px;
-  margin: 10px 0;
+.flower-list .product-meta span {
+  background-color: #f9f5f9;
+  padding: 4px 8px;
+  border-radius: 20px;
 }
 
-/* Nút phân tích */
-.upload-button {
-  padding: 10px 20px;
-  background-color: #2e7d32;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  margin-bottom: 20px;
-  transition: background-color 0.3s ease;
-}
-
-.upload-button:hover {
-  background-color: #1b5e20;
-}
-
-/* Loading overlay */
 .loading-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* làm tối */
+  background-color: rgba(106, 30, 85, 0.7);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -251,18 +399,54 @@
   font-size: 1.2rem;
 }
 
-/* Loader animation */
 .loader {
-  border: 8px solid #221f1f;
-  border-top: 8px solid #ffffff;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top: 5px solid #ffffff;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   animation: spin 1s linear infinite;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.empty-result-message {
+  text-align: center;
+  padding: 30px;
+  color: #888;
+  font-style: italic;
+}
+
+.pagination-info {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #6a1e55;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .image-section {
+    flex-direction: column;
+  }
+  
+  .detect-carousel {
+    padding: 5px;
+  }
+  
+  .carousel-content {
+    flex-direction: column;
+  }
+  
+  .carousel-content button {
+    margin: 10px 0;
+  }
+  
+  .flower-list .product-recommend-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
 }

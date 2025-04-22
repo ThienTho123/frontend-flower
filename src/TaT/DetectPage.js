@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./DetectPage.css";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpload, faCamera, faArrowLeft, faArrowRight, faLeaf, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const DetectPage = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -9,21 +11,49 @@ const DetectPage = () => {
   const [resultImage, setResultImage] = useState(null);
   const [detectObjects, setDetectObjects] = useState([]);
   const [currentDetectIndex, setCurrentDetectIndex] = useState(0);
-  const [flowerList, setFlowerList] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [dragActive, setDragActive] = useState(false);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setSelectedImage(file);
-    setPreviewUrl(URL.createObjectURL(file));
+    if (file) {
+      setSelectedImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      const file = e.dataTransfer.files[0];
+      setSelectedImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
   };
 
   const handleUpload = async () => {
-    if (!selectedImage) return;
+    if (!selectedImage) {
+      alert("Vui lòng chọn ảnh trước khi phân tích");
+      return;
+    }
+    
     const formData = new FormData();
     formData.append("file", selectedImage);
 
-    setLoading(true); // Bắt đầu loading
+    setLoading(true);
 
     try {
       const response = await axios.post(
@@ -35,10 +65,18 @@ const DetectPage = () => {
       setCurrentDetectIndex(0);
 
       console.log(response.data.objects);
+      
+      // Scroll to results
+      if (response.data.objects.length > 0) {
+        setTimeout(() => {
+          document.querySelector('.detect-carousel').scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+      }
     } catch (error) {
       console.error("Upload error", error);
+      alert("Đã xảy ra lỗi khi phân tích ảnh. Vui lòng thử lại sau.");
     } finally {
-      setLoading(false); // Kết thúc loading
+      setLoading(false);
     }
   };
 
@@ -55,101 +93,177 @@ const DetectPage = () => {
     );
   };
 
+  const handleDotClick = (index) => {
+    setCurrentDetectIndex(index);
+  };
+
   return (
     <div className="detect-container">
-      <h2>Nhận diện hoa</h2>
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleImageChange}
-        className="custom-file-input"
-      />
-      <button onClick={handleUpload} className="upload-button">
-        Phân tích ảnh
-      </button>
+      <div className="detect-header">
+        <h2>Nhận Diện Loài Hoa</h2>
+        <p>Tải lên hình ảnh để nhận diện loài hoa và khám phá các sản phẩm tương tự trong cửa hàng của chúng tôi</p>
+      </div>
+
+      <div className="upload-section">
+        <h3><FontAwesomeIcon icon={faCamera} /> Tải lên ảnh hoa cần nhận diện</h3>
+        
+        <label 
+          htmlFor="image-upload" 
+          className={`custom-file-input ${dragActive ? 'active' : ''}`}
+          onDragEnter={handleDrag}
+          onDragLeave={handleDrag}
+          onDragOver={handleDrag}
+          onDrop={handleDrop}
+        >
+          <div>
+            <FontAwesomeIcon icon={faUpload} size="2x" style={{ marginBottom: '10px', color: '#6a1e55' }} />
+            <p>Kéo thả ảnh vào đây hoặc click để chọn ảnh</p>
+            <p style={{ fontSize: '0.8rem', color: '#888' }}>Hỗ trợ định dạng JPG, PNG</p>
+          </div>
+          <input
+            id="image-upload"
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            style={{ display: 'none' }}
+          />
+        </label>
+        
+        <button 
+          onClick={handleUpload} 
+          className="upload-button"
+          disabled={!selectedImage}
+        >
+          <FontAwesomeIcon icon={faLeaf} /> Phân tích ảnh
+        </button>
+      </div>
+
       {loading && (
         <div className="loading-overlay">
           <div className="loader"></div>
-          <p>Đang xử lý ảnh, vui lòng chờ...</p>
+          <p>Đang phân tích hình ảnh của bạn...</p>
+          <p style={{ fontSize: '0.9rem' }}>Vui lòng đợi trong giây lát</p>
         </div>
       )}
 
-      <div className="image-section">
-        <div>
-          <h3>Ảnh gốc</h3>
-          {previewUrl && <img src={previewUrl} alt="Uploaded" />}
+      {(previewUrl || resultImage) && (
+        <div className="image-section">
+          <div>
+            <h3>Ảnh gốc</h3>
+            {previewUrl ? (
+              <img src={previewUrl} alt="Ảnh đã tải lên" />
+            ) : (
+              <div className="no-image-placeholder">Chưa có ảnh được tải lên</div>
+            )}
+          </div>
+          <div>
+            <h3>Kết quả nhận diện</h3>
+            {resultImage ? (
+              <img src={resultImage} alt="Kết quả nhận diện" />
+            ) : (
+              <div className="no-image-placeholder">Chưa có kết quả nhận diện</div>
+            )}
+          </div>
         </div>
-        <div>
-          <h3>Kết quả nhận diện</h3>
-          {resultImage && <img src={resultImage} alt="Detected" />}
-        </div>
-      </div>
+      )}
 
       {detectObjects.length > 0 && (
         <div className="detect-carousel">
-          <h3>Thông tin đối tượng nhận diện</h3>
+          <h3>Thông Tin Chi Tiết</h3>
+          
           <div className="carousel-content">
-            <button onClick={handlePrev}>&lt;</button>
+            <button onClick={handlePrev} aria-label="Previous flower">
+              <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+            
             <div className="detect-card">
-              <h3 style={{ marginBottom: "10px", color: "#2e7d32" }}>
-                {detectObjects[currentDetectIndex].detect?.flowerdetect}
+              <h3>
+                {detectObjects[currentDetectIndex].detect?.vietnamname}
               </h3>
 
               <img
                 src={detectObjects[currentDetectIndex].detect?.imageurl}
                 alt={detectObjects[currentDetectIndex].detect?.flowerdetect}
-                style={{
-                  width: "450px",
-                  height: "300px",
-                  objectFit: "contain",
-                  objectPosition: "center",
-                  borderRadius: "8px",
-                  marginBottom: "12px",
-                  border: "1px solid #ccc",
-                  backgroundColor: "#f4f4f4",
-                }}
               />
 
-              <p>
-                <strong>Tên tiếng Việt:</strong>{" "}
-                {detectObjects[currentDetectIndex].detect?.vietnamname}
-              </p>
-              <p>
-                <strong>Xuất xứ:</strong>{" "}
-                {detectObjects[currentDetectIndex].detect?.origin}
-              </p>
-              <p>
-                <strong>Mùa nở:</strong>{" "}
-                {detectObjects[currentDetectIndex].detect?.timebloom}
-              </p>
+              <div className="flower-info-grid">
+                <div className="flower-info-item">
+                  <p>
+                    <strong>Tên tiếng Việt:</strong><br />
+                    {detectObjects[currentDetectIndex].detect?.vietnamname || "Không có thông tin"}
+                  </p>
+                </div>
+                
+                <div className="flower-info-item">
+                  <p>
+                    <strong>Xuất xứ:</strong><br />
+                    {detectObjects[currentDetectIndex].detect?.origin || "Không có thông tin"}
+                  </p>
+                </div>
+                
+                <div className="flower-info-item">
+                  <p>
+                    <strong>Mùa nở:</strong><br />
+                    {detectObjects[currentDetectIndex].detect?.timebloom || "Không có thông tin"}
+                  </p>
+                </div>
+                
+                <div className="flower-info-item">
+                  <p>
+                    <strong>Số lượng nhận diện:</strong><br />
+                    {detectObjects[currentDetectIndex].numberFound} hoa
+                  </p>
+                </div>
+              </div>
+
               <p>
                 <strong>Đặc điểm:</strong>{" "}
-                {detectObjects[currentDetectIndex].detect?.characteristic}
+                {detectObjects[currentDetectIndex].detect?.characteristic || "Không có thông tin"}
               </p>
+              
               <p>
                 <strong>Ý nghĩa:</strong>{" "}
-                {detectObjects[currentDetectIndex].detect?.flowerlanguage}
+                {detectObjects[currentDetectIndex].detect?.flowerlanguage || "Không có thông tin"}
               </p>
+              
               <p>
                 <strong>Bổ sung:</strong>{" "}
-                {detectObjects[currentDetectIndex].detect?.bonus}
+                {detectObjects[currentDetectIndex].detect?.bonus || "Không có thông tin"}
               </p>
+              
               <p>
                 <strong>Công dụng:</strong>{" "}
-                {detectObjects[currentDetectIndex].detect?.uses}
-              </p>
-
-              <p>
-                <strong>Số lượng nhận diện:</strong>{" "}
-                {detectObjects[currentDetectIndex].numberFound}
+                {detectObjects[currentDetectIndex].detect?.uses || "Không có thông tin"}
               </p>
             </div>
-
-            <button onClick={handleNext}>&gt;</button>
+            
+            <button onClick={handleNext} aria-label="Next flower">
+              <FontAwesomeIcon icon={faArrowRight} />
+            </button>
+          </div>
+          
+          {detectObjects.length > 1 && (
+            <div className="carousel-indicator">
+              {detectObjects.map((_, index) => (
+                <div 
+                  key={index} 
+                  className={`carousel-dot ${index === currentDetectIndex ? 'active' : ''}`}
+                  onClick={() => handleDotClick(index)}
+                ></div>
+              ))}
+            </div>
+          )}
+          
+          <div className="pagination-info">
+            {detectObjects.length > 1 ? (
+              <p>{currentDetectIndex + 1}/{detectObjects.length}</p>
+            ) : null}
           </div>
         </div>
       )}
-      <div className="flower-list">
+
+      {detectObjects.length > 0 && (
+        <div className="flower-list">
         <h3>Sản phẩm gợi ý</h3>
         <div className="product-recommend-grid">
           {detectObjects[currentDetectIndex]?.flowerDTOList?.length > 0 ? (
@@ -201,6 +315,7 @@ const DetectPage = () => {
           )}
         </div>
       </div>
+      )}
     </div>
   );
 };
