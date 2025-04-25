@@ -180,7 +180,7 @@
   gap: 15px;
 }
 
-.carousel-content button {
+.carousel-content .arrow-btn {
   font-size: 1.8rem;
   background-color: #f0e6f0;
   color: #6a1e55;
@@ -196,7 +196,7 @@
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
-.carousel-content button:hover {
+.carousel-content .arrow-btn:hover {
   background-color: #6a1e55;
   color: #fff;
   transform: scale(1.05);
@@ -429,6 +429,22 @@
   color: #6a1e55;
 }
 
+.see-more-btn,
+.collapse-btn {
+  all: unset;
+  margin-top: 1rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.more-info-toggle {
+  text-align: center;
+  margin-top: 1rem;
+}
 /* Responsive styles */
 @media (max-width: 768px) {
   .image-section {
@@ -443,7 +459,7 @@
     flex-direction: column;
   }
   
-  .carousel-content button {
+  .carousel-content .arrow-btn {
     margin: 10px 0;
   }
   

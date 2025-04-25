@@ -97,6 +97,7 @@ import AdminEditEvent from "./TaT/AdminDashboard/AdminEditEvent.js";
 import AdminDetect from "./TaT/AdminDashboard/AdminDetect.js";
 import AdminCreateDetect from "./TaT/AdminDashboard/AdminNewDetect.js";
 import AdminEditDetect from "./TaT/AdminDashboard/AdminEditDetect.js";
+import Chatbot from "./TaT/Chatbot.js";
 import {
   BrowserRouter as Router,
   Routes,
@@ -291,6 +292,7 @@ const App = () => {
   return (
     <Router>
       <AppRoutes />
+      <Chatbot />
     </Router>
   );
 };
