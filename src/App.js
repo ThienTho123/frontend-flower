@@ -98,6 +98,7 @@ import AdminDetect from "./TaT/AdminDashboard/AdminDetect.js";
 import AdminCreateDetect from "./TaT/AdminDashboard/AdminNewDetect.js";
 import AdminEditDetect from "./TaT/AdminDashboard/AdminEditDetect.js";
 import Chatbot from "./TaT/Chatbot.js";
+import OrderDelivery from "./TaT/UserAccount/OrderDelivery.js";
 import {
   BrowserRouter as Router,
   Routes,
@@ -241,6 +242,7 @@ const AppRoutes = () => {
         <Route path="/product" element={<ProductList />} />
         <Route path="/detail/:id" element={<ProductDetail />} />
         <Route path="/prebuy" element={<PreBuy />} />
+        <Route path="/orderdelivery" element={<OrderDelivery />} />
         <Route path="/news" element={<NewsList />} />
         <Route path="/news/:id" element={<NewsDetail />} />
         <Route path="/PaymentFailure" element={<PaymentFailure />} />

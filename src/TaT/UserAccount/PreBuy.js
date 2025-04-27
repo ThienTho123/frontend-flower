@@ -741,9 +741,18 @@ const PreBuy = () => {
   console.log("Tổng thanh toán (totalPayment):", totalPayment);
   return (
     <div className="prebuy-container">
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
       <h2 className="prebuy-h2">
         Giỏ hoa của bạn: <span>({cartItems.length} bó hoa)</span>
       </h2>
+      <button 
+        onClick={() => navigate("/orderdelivery")} 
+        className="schedule-delivery-button"
+      >
+        <i className="fa fa-calendar" style={{ marginRight: "5px" }}></i>
+        Đặt hoa theo lịch
+      </button>
+    </div>
       <div className="cart-toggle-container">
         <div className="cart-toggle-buttons">
           <div
