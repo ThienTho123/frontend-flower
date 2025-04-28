@@ -41,15 +41,22 @@ const OrderDelivery = () => {
   };
 
   useEffect(() => {
+    const accesstoken = localStorage.getItem("access_token");
+    
     if (!accesstoken) {
+      alert("Vui lòng đăng nhập để sử dụng chức năng này");
       navigate("/login");
       return;
     }
-
+  
+    // Log để kiểm tra token
+    console.log("Access token:", accesstoken);
+    
     setLoading(true);
     fetch("http://localhost:8080/orderdelivery", {
       headers: {
-        Authorization: `Bearer ${accesstoken}`,
+        "Authorization": `Bearer ${accesstoken}`,
+        "Account-ID": localStorage.getItem("user_id") || "" // Thêm Account-ID nếu có
       },
     })
       .then((response) => {
@@ -63,20 +70,24 @@ const OrderDelivery = () => {
   
         // Check if flower data exists and map it
         if (data.allFlowers) {
-          const mappedFlowers = data.allFlowers.map(flower => ({
-            productID: flower.id,
-            productTitle: flower.name,
-            avatar: flower.image,
-            sizes: flower.flowerSizeDTOS.map(size => ({
-              id: size.flowerSizeID,
-              name: size.sizeName,
-              price: size.price,
-            })),
-            selected: false,
-            quantity: 0,
-            selectedSizeId: flower.flowerSizeDTOS.length > 0 ? flower.flowerSizeDTOS[0].flowerSizeID : null,
-            selectedSize: flower.flowerSizeDTOS.length > 0 ? flower.flowerSizeDTOS[0].sizeName : "",
-          }));
+          const mappedFlowers = data.allFlowers.map(flower => {
+            const defaultSize = flower.flowerSizeDTOS.length > 0 ? flower.flowerSizeDTOS[0] : null;
+            return {
+              productID: flower.id,
+              productTitle: flower.name,
+              avatar: flower.image,
+              sizes: flower.flowerSizeDTOS.map(size => ({
+                id: size.flowerSizeID,
+                name: size.sizeName,
+                price: size.price,
+              })),
+              selected: false,
+              quantity: 0,  // Mantener en 0 hasta que el usuario seleccione el producto
+              selectedSizeId: defaultSize ? defaultSize.flowerSizeID : null,
+              selectedSize: defaultSize ? defaultSize.sizeName : "",
+              selectedPrice: defaultSize ? defaultSize.price : 0  // Inicializar el precio seleccionado
+            };
+          });
           setFlowers(mappedFlowers);
         }
   
@@ -154,11 +165,14 @@ const OrderDelivery = () => {
   const handleProductSelection = (productID) => {
     setFlowers(flowers.map(flower => 
       flower.productID === productID 
-        ? { ...flower, selected: !flower.selected } 
+        ? { 
+            ...flower, 
+            selected: !flower.selected,
+            quantity: !flower.selected ? 1 : flower.quantity // Establecer cantidad a 1 si se selecciona
+          } 
         : flower
     ));
   };
-
   const handleQuantityChange = (productID, quantity) => {
     const newQuantity = Math.max(0, parseInt(quantity) || 0);
     
@@ -198,6 +212,9 @@ const OrderDelivery = () => {
   };
 
   const handleOrder = () => {
+    console.log("Access token:", accesstoken);
+    console.log("Current user role:", localStorage.getItem("user_role"));
+
     // Validate delivery date
     if (!startDate) {
       setError("Vui lòng chọn ngày bắt đầu giao hàng.");
@@ -247,7 +264,7 @@ const OrderDelivery = () => {
       note: buyInfo.note,
       orderDeliveryTypeID: selectedDeliveryTypeId,
       dateStart: formattedDate,
-      deliverper: deliveryInterval, // Send the interval type (DAY, WEEK, etc.) instead of intervalValue
+      deliverper: deliveryInterval,
       flowerChooses: selectedFlowersWithQty.map(flower => ({
         flowersizeid: flower.selectedSizeId,
         quantity: flower.quantity
@@ -256,47 +273,56 @@ const OrderDelivery = () => {
 
     console.log("Order Data:", orderData);
 
-    // Calculate total payment
     const totalPayment = calculateTotalPrice();
+    const prices = [totalPayment]; // Array de precios como espera el back-end
 
     // Send to API
-    fetch("http://localhost:8080/orderdelivery/create", {
+    fetch(`http://localhost:8080/orderdelivery/setOrderDelivery?price=${totalPayment}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accesstoken}`
+        "Authorization": `Bearer ${accesstoken}`,
+        "Account-ID": localStorage.getItem("user_id") || ""
       },
-      body: JSON.stringify(orderData)
+      body: JSON.stringify(orderData),
+      credentials: "include"
     })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Failed to create order delivery");
+    .then(response => {
+      if (!response.ok) {
+        if (response.status === 403) {
+          throw new Error("Không có quyền truy cập. Vui lòng đăng nhập lại hoặc liên hệ quản trị viên.");
         }
-        return response.json();
-      })
-      .then(data => {
-        // After successful order creation, initiate VNPay payment
-        return fetch(`http://localhost:8080/pay?totalPayment=${totalPayment}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accesstoken}`
-          }
+        return response.text().then(text => {
+          throw new Error(`Lỗi (${response.status}): ${text || response.statusText}`);
         });
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Failed to initiate payment");
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log("Order set successfully:", data);
+      // Sau đó, khởi tạo thanh toán với VNPay
+      return fetch(`http://localhost:8080/pay?totalPayment=${totalPayment}`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${accesstoken}`,
+          "Account-ID": localStorage.getItem("user_id") || "" // Thêm Account-ID nếu có
         }
-        return response.text();
-      })
-      .then(vnpayUrl => {
-        console.log("VNPay URL:", vnpayUrl);
-        window.location.href = vnpayUrl;
-      })
-      .catch(error => {
-        setError("Có lỗi xảy ra khi đặt lịch giao hoa: " + error.message);
-        console.error("Order error:", error);
       });
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Failed to initiate payment");
+      }
+      return response.text();
+    })
+    .then(vnpayUrl => {
+      console.log("VNPay URL:", vnpayUrl);
+      window.location.href = vnpayUrl;
+    })
+    .catch(error => {
+      setError("Có lỗi xảy ra khi đặt lịch giao hoa: " + error.message);
+      console.error("Order error:", error);
+    });
   };
 
   if (loading) {

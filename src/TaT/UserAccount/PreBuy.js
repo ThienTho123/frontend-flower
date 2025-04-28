@@ -5,6 +5,7 @@ import payment from "./Image/payment.png";
 import vnpay from "./Image/vnpay.jpg";
 import deleteicon from "./Image/deleteicon.png";
 import Modal from "react-modal";
+import axios from 'axios';
 
 const PreBuy = () => {
   const navigate = useNavigate();
@@ -739,6 +740,32 @@ const PreBuy = () => {
 
   const totalPayment = totalPrice - discountAmount;
   console.log("Tổng thanh toán (totalPayment):", totalPayment);
+  // Trong component PreBuy
+const handleOrderDeliveryClick = () => {
+  const accessToken = localStorage.getItem("access_token");
+  if (!accessToken) {
+    alert("Vui lòng đăng nhập để sử dụng chức năng này");
+    navigate("/login");
+  } else {
+    // Trước tiên gọi API /order để kiểm tra quyền và nhận URL điều hướng
+    fetch("http://localhost:8080/order", {
+      headers: {
+        "Account-ID": localStorage.getItem("user_id") || "",
+        "Authorization": `Bearer ${accessToken}`
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.redirectUrl) {
+        window.location.href = data.redirectUrl; // Sử dụng window.location thay vì navigate
+      }
+    })
+    .catch(error => {
+      console.error("Error checking order permission:", error);
+      alert("Có lỗi xảy ra khi kiểm tra quyền truy cập");
+    });
+  }
+};
   return (
     <div className="prebuy-container">
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -746,12 +773,36 @@ const PreBuy = () => {
         Giỏ hoa của bạn: <span>({cartItems.length} bó hoa)</span>
       </h2>
       <button 
-        onClick={() => navigate("/orderdelivery")} 
-        className="schedule-delivery-button"
-      >
-        <i className="fa fa-calendar" style={{ marginRight: "5px" }}></i>
-        Đặt hoa theo lịch
-      </button>
+  onClick={async () => {
+    try {
+      const accountId = localStorage.getItem("accountID");
+      const accessToken = localStorage.getItem("access_token");
+      
+      const response = await axios.get("http://localhost:8080/order", {
+        headers: {
+          "Account-ID": accountId,
+          "Authorization": `Bearer ${accessToken}`
+        },
+        withCredentials: true,
+      });
+
+      if (response.data.redirectUrl) {
+        window.location.href = response.data.redirectUrl;
+      }
+    } catch (error) {
+      console.log("Không thể xử lý yêu cầu:", error);
+      // Nếu gặp lỗi 403, có thể chuyển hướng người dùng đến trang đăng nhập
+      if (error.response && error.response.status === 403) {
+        alert("Vui lòng đăng nhập để sử dụng chức năng này");
+        window.location.href = "http://localhost:8000/login";
+      }
+    }
+  }} 
+  className="schedule-delivery-button"
+>
+  <i className="fa fa-calendar" style={{ marginRight: "5px" }}></i>
+  Đặt hoa theo lịch
+</button>
     </div>
       <div className="cart-toggle-container">
         <div className="cart-toggle-buttons">
