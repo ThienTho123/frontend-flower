@@ -55,8 +55,8 @@ const OrderDelivery = () => {
     setLoading(true);
     fetch("http://localhost:8080/orderdelivery", {
       headers: {
+        "Content-Type": "application/json",
         "Authorization": `Bearer ${accesstoken}`,
-        "Account-ID": localStorage.getItem("user_id") || "" // Thêm Account-ID nếu có
       },
     })
       .then((response) => {
@@ -254,7 +254,7 @@ const OrderDelivery = () => {
     }
 
     // Format the date as yyyy-MM-dd
-    const formattedDate = startDate.toISOString().split('T')[0];
+    const formattedDate = startDate.toISOString().split('.')[0]; 
 
     // Prepare order data
     const orderData = {
@@ -275,17 +275,16 @@ const OrderDelivery = () => {
 
     const totalPayment = calculateTotalPrice();
     const prices = [totalPayment]; // Array de precios como espera el back-end
+    console.log("Access token:", accesstoken);
 
     // Send to API
-    fetch(`http://localhost:8080/orderdelivery/setOrderDelivery?price=${totalPayment}`, {
+    fetch(`http://localhost:8080/setOrderDelivery?price=${totalPayment}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${accesstoken}`,
-        "Account-ID": localStorage.getItem("user_id") || ""
       },
       body: JSON.stringify(orderData),
-      credentials: "include"
     })
     .then(response => {
       if (!response.ok) {
@@ -296,16 +295,15 @@ const OrderDelivery = () => {
           throw new Error(`Lỗi (${response.status}): ${text || response.statusText}`);
         });
       }
-      return response.json();
+      return response.text();
     })
     .then(data => {
       console.log("Order set successfully:", data);
-      // Sau đó, khởi tạo thanh toán với VNPay
       return fetch(`http://localhost:8080/pay?totalPayment=${totalPayment}`, {
         method: "GET",
         headers: {
+          "Content-Type": "application/json",
           "Authorization": `Bearer ${accesstoken}`,
-          "Account-ID": localStorage.getItem("user_id") || "" // Thêm Account-ID nếu có
         }
       });
     })
