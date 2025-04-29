@@ -10,8 +10,8 @@ const OrderDelivery = () => {
   const [flowers, setFlowers] = useState([]);
   const [deliveryTypesList, setDeliveryTypesList] = useState([]);
   const [selectedDeliveryTypeId, setSelectedDeliveryTypeId] = useState("");
-  const [deliveryInterval, setDeliveryInterval] = useState("DAY"); // DAY, WEEK, HALF_MONTH, MONTH
-  const [intervalValue, setIntervalValue] = useState("1"); // 1, 2, 3 days
+  const [deliveryInterval, setDeliveryInterval] = useState("1"); // 1, 2, 3 for days
+  const [intervalValue, setIntervalValue] = useState("every_day"); // every_day, two_day, three_day
   const [startDate, setStartDate] = useState(null);
   const [deliveryTime, setDeliveryTime] = useState("9:00"); // Default delivery time
   const [error, setError] = useState(null);
@@ -82,10 +82,10 @@ const OrderDelivery = () => {
                 price: size.price,
               })),
               selected: false,
-              quantity: 0,  // Mantener en 0 hasta que el usuario seleccione el producto
+              quantity: 0,
               selectedSizeId: defaultSize ? defaultSize.flowerSizeID : null,
               selectedSize: defaultSize ? defaultSize.sizeName : "",
-              selectedPrice: defaultSize ? defaultSize.price : 0  // Inicializar el precio seleccionado
+              selectedPrice: defaultSize ? defaultSize.price : 0
             };
           });
           setFlowers(mappedFlowers);
@@ -168,11 +168,12 @@ const OrderDelivery = () => {
         ? { 
             ...flower, 
             selected: !flower.selected,
-            quantity: !flower.selected ? 1 : flower.quantity // Establecer cantidad a 1 si se selecciona
+            quantity: !flower.selected ? 1 : flower.quantity
           } 
         : flower
     ));
   };
+  
   const handleQuantityChange = (productID, quantity) => {
     const newQuantity = Math.max(0, parseInt(quantity) || 0);
     
@@ -253,18 +254,23 @@ const OrderDelivery = () => {
       return;
     }
 
-    // Format the date as yyyy-MM-dd
-    const formattedDate = startDate.toISOString().split('.')[0]; 
+    // Format the date as yyyy-MM-dd'T'HH:mm:ss (ISO format)
+    const dateObj = new Date(startDate);
+    // Extract time parts from deliveryTime (assuming format like "9:00")
+    const [hours, minutes] = deliveryTime.split(':').map(Number);
+    dateObj.setHours(hours, minutes, 0, 0);
+    
+    const formattedDate = dateObj.toISOString();
 
-    // Prepare order data
+    // Prepare order data with correct enum value
     const orderData = {
       name: buyInfo.name,
       phone: buyInfo.phone,
       address: buyInfo.address,
       note: buyInfo.note,
-      orderDeliveryTypeID: selectedDeliveryTypeId,
+      orderDeliveryTypeID: parseInt(selectedDeliveryTypeId),
       dateStart: formattedDate,
-      deliverper: deliveryInterval,
+      deliverper: intervalValue,  // Using the exact enum value: every_day, two_day, three_day
       flowerChooses: selectedFlowersWithQty.map(flower => ({
         flowersizeid: flower.selectedSizeId,
         quantity: flower.quantity
@@ -274,8 +280,6 @@ const OrderDelivery = () => {
     console.log("Order Data:", orderData);
 
     const totalPayment = calculateTotalPrice();
-    const prices = [totalPayment]; // Array de precios como espera el back-end
-    console.log("Access token:", accesstoken);
 
     // Send to API
     fetch(`http://localhost:8080/setOrderDelivery?price=${totalPayment}`, {
@@ -315,6 +319,7 @@ const OrderDelivery = () => {
     })
     .then(vnpayUrl => {
       console.log("VNPay URL:", vnpayUrl);
+      // Chuyển hướng đến trang thanh toán VNPay
       window.location.href = vnpayUrl;
     })
     .catch(error => {
@@ -420,10 +425,10 @@ const OrderDelivery = () => {
                 value={deliveryInterval} 
                 onChange={(e) => setDeliveryInterval(e.target.value)}
               >
-                <option value="DAY">Theo ngày</option>
-                <option value="WEEK">Theo tuần</option>
-                <option value="HALF_MONTH">Nửa tháng</option>
-                <option value="MONTH">Theo tháng</option>
+                <option value="1">Theo ngày</option>
+                <option value="2">Theo tuần</option>
+                <option value="4">Nửa tháng</option>
+                <option value="3">Theo tháng</option>
               </select>
             </div>
             
@@ -433,9 +438,9 @@ const OrderDelivery = () => {
                 value={intervalValue} 
                 onChange={(e) => setIntervalValue(e.target.value)}
               >
-                <option value="1">Mỗi ngày</option>
-                <option value="2">Mỗi 2 ngày</option>
-                <option value="3">Mỗi 3 ngày</option>
+                <option value="every_day">Mỗi ngày</option>
+                <option value="two_day">Mỗi 2 ngày</option>
+                <option value="three_day">Mỗi 3 ngày</option>
               </select>
             </div>
             
