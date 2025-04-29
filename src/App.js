@@ -98,7 +98,9 @@ import AdminDetect from "./TaT/AdminDashboard/AdminDetect.js";
 import AdminCreateDetect from "./TaT/AdminDashboard/AdminNewDetect.js";
 import AdminEditDetect from "./TaT/AdminDashboard/AdminEditDetect.js";
 import Chatbot from "./TaT/Chatbot.js";
+import AccountOrderDelivery from "./TaT/UserAccount/AccountOrderDelivery.js";
 import OrderDelivery from "./TaT/UserAccount/OrderDelivery.js";
+import RefundOrDe from "./TaT/UserAccount/RefundOrDe.js";
 import {
   BrowserRouter as Router,
   Routes,
@@ -108,6 +110,7 @@ import {
 } from "react-router-dom";
 import React, { useEffect } from "react";
 import OrderDetail from "./TaT/ShipperAccount/OrderDetail.js";
+import OrderDeliveryDetail from "./TaT/UserAccount/OrderDeliveryDetail.js";
 const AppRoutes = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location
@@ -253,6 +256,9 @@ const AppRoutes = () => {
           <Route path="wishlist" element={<Wishlist />} />
           <Route path="orders" element={<PurchaseHistory />} />
           <Route path="history" element={<HistoryOrder />} />
+          <Route path="orde" element={<AccountOrderDelivery/>}/>
+          <Route path ="orde/:id" element={<OrderDeliveryDetail/>}/>
+          <Route path ="orde/refund/:id" element={<RefundOrDe/>}/>
           <Route path="preorder" element={<Preorder />} />
           <Route path="preorder/:id" element={<PreorderDetail />} />
           <Route path="preorder/refund/:id" element={<RefundPreorder />} />
