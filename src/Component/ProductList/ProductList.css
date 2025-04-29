@@ -31,10 +31,8 @@
 
 .product-list-wrapper .product-grid {
   display: grid;
-  /* Adjust to fit more products per row with consistent sizing */
-  grid-template-columns: repeat(auto-fill, minmax(190px, 2fr));
-  /* Reduced gap between items */
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Tăng kích thước từ 190px lên 240px */
+  gap: 15px; /* Tăng khoảng cách giữa các sản phẩm từ 12px lên 20px */
   padding: 16px 0;
 }
 
@@ -46,10 +44,8 @@
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
-  /* Reduced padding for more compact appearance */
-  padding: 14px;
-  /* Set a consistent height */
-  height: 300px;
+  padding: 15px; /* Tăng padding từ 14px lên 18px */
+  height: 340px; /* Tăng chiều cao từ 300px lên 380px */
   display: flex;
   flex-direction: column;
 }
@@ -61,11 +57,10 @@
 
 .product-list-wrapper .img-wrapper {
   width: 100%;
-  /* Reduced height for better proportions */
-  height: 180px;
+  height: 220px; /* Tăng chiều cao hình ảnh từ 180px lên 220px */
   overflow: hidden;
   border-radius: 6px;
-  margin-bottom: 8px;
+  margin-bottom: 8px; /* Tăng margin từ 8px lên 12px */
 }
 
 .product-list-wrapper .img-wrapper img {
@@ -81,16 +76,15 @@
 
 .product-list-wrapper .product-card h2 {
   font-family: 'Dancing Script', cursive;
-  /* Smaller font size */
-  font-size: 1.2em;
+  font-size: 1.4em; /* Tăng kích thước font từ 1.2em lên 1.4em */
   margin: 8px 0;
   font-weight: bold;
   color: #6A1E55;
-  /* Prevent long titles from breaking layout */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 
 .product-list-wrapper .product-card p {
   color: #555;

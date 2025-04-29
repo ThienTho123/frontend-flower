@@ -150,16 +150,31 @@ export default function ProductList() {
                             color: "gray",
                             marginRight: "8px",
                             fontSize: "1rem",
+                            display: "inline-block",
                           }}
                         >
                           {product.price.toLocaleString("vi-VN")} đ
                         </span>
-                        <span style={{ color: "red", fontWeight: "bold", fontSize: "1.2rem" }}>
+                        <span
+                          style={{
+                            color: "red",
+                            fontWeight: "bold",
+                            fontSize: "1.2rem",
+                            display: "inline-block",
+                          }}
+                        >
                           {product.priceEvent.toLocaleString("vi-VN")} đ
                         </span>
                       </>
                     ) : (
-                      <span>{product.price.toLocaleString("vi-VN")} đ</span>
+                      <span
+                        style={{
+                          fontSize: "1.2rem",
+                          display: "inline-block",
+                        }}
+                      >
+                        {product.price.toLocaleString("vi-VN")} đ
+                      </span>
                     )}
                   </p>
                   <p>Danh mục: {product.category.categoryName}</p>

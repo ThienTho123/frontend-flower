@@ -119,6 +119,13 @@ const OrderDelivery = () => {
       });
   }, [accesstoken, navigate]);
 
+  // Tự động đặt giá trị intervalValue khi chọn deliveryInterval
+  useEffect(() => {
+    if (deliveryInterval === "1") {
+      setIntervalValue("every_day");
+    }
+  }, [deliveryInterval]);
+
   const validateInput = (field, value) => {
     let error = "";
 
@@ -261,6 +268,7 @@ const OrderDelivery = () => {
     dateObj.setHours(hours, minutes, 0, 0);
     
     const formattedDate = dateObj.toISOString();
+    const accountId = account?.id || 0;
 
     // Prepare order data with correct enum value
     const orderData = {
@@ -274,7 +282,9 @@ const OrderDelivery = () => {
       flowerChooses: selectedFlowersWithQty.map(flower => ({
         flowersizeid: flower.selectedSizeId,
         quantity: flower.quantity
-      }))
+      })),
+      accountId: accountId,
+
     };
 
     console.log("Order Data:", orderData);
@@ -339,79 +349,83 @@ const OrderDelivery = () => {
       <div className="od-sections">
         <div className="od-products">
           <h3>Chọn Sản Phẩm</h3>
-          <div className="od-product-grid">
-            {flowers.map((flower) => (
-              <div 
-                key={flower.productID} 
-                className={`od-product-card ${flower.selected ? 'selected' : ''}`}
-              >
-                <div className="od-product-select">
-                  <input
-                    type="checkbox"
-                    checked={flower.selected}
-                    onChange={() => handleProductSelection(flower.productID)}
-                    className="od-custom-checkbox"
-                  />
-                </div>
-                <div className="od-product-image">
-                  <img src={flower.avatar} alt={flower.productTitle} />
-                </div>
-                <div className="od-product-info">
-                    <h3>{flower.productTitle}</h3>
+          <div className="od-product-scroll">
+            <div className="od-product-grid">
+              {flowers.map((flower) => (
+                <div 
+                  key={flower.productID} 
+                  className={`od-product-card ${flower.selected ? 'selected' : ''}`}
+                >
+                  <div className="od-product-select">
+                    <input
+                      type="checkbox"
+                      checked={flower.selected}
+                      onChange={() => handleProductSelection(flower.productID)}
+                      className="od-custom-checkbox"
+                    />
+                  </div>
+                  <div className="od-product-image">
+                    <img src={flower.avatar} alt={flower.productTitle} />
+                  </div>
+                  <div className="od-product-info">
+                      <h3>{flower.productTitle}</h3>
 
-                    <div className="od-product-price">
-                    {flower.selectedPrice ? flower.selectedPrice.toLocaleString("vi-VN") : "0 VND"}
-                    </div>
+                      <div className="od-product-price">
+                      {flower.selected && flower.quantity > 0 
+                        ? (flower.selectedPrice * flower.quantity).toLocaleString("vi-VN") 
+                        : flower.selectedPrice ? flower.selectedPrice.toLocaleString("vi-VN") : "0"} VND
+                      </div>
 
-                    <div className="od-product-options">
-                        <div className="od-size-select">
-                        <label>Kích thước:</label>
-                        <select
-                            value={flower.selectedSizeId}
-                            onChange={(e) => handleSizeChange(flower.productID, e.target.value)}
+                      <div className="od-product-options">
+                          <div className="od-size-select">
+                          <label>Kích thước:</label>
+                          <select
+                              value={flower.selectedSizeId}
+                              onChange={(e) => handleSizeChange(flower.productID, e.target.value)}
+                              disabled={!flower.selected}
+                          >
+                              {flower.sizes && flower.sizes.map((size) => (
+                              <option key={size.id} value={size.id}>
+                                  {size.name} - {size.price.toLocaleString("vi-VN")} VND
+                              </option>
+                              ))}
+                          </select>
+                          </div>
+                      
+                      <div className="od-quantity-select">
+                        <label>Số lượng:</label>
+                        <div className="od-quantity-container">
+                          <button
+                            type="button"
+                            className="od-quantity-btn"
+                            onClick={() => handleQuantityChange(flower.productID, flower.quantity - 1)}
+                            disabled={!flower.selected || flower.quantity <= 0}
+                          >
+                            -
+                          </button>
+                          <input
+                            type="number"
+                            min="0"
+                            value={flower.quantity}
+                            onChange={(e) => handleQuantityChange(flower.productID, e.target.value)}
                             disabled={!flower.selected}
-                        >
-                            {flower.sizes && flower.sizes.map((size) => (
-                            <option key={size.id} value={size.id}>
-                                {size.name} - {size.price.toLocaleString("vi-VN")} VND
-                            </option>
-                            ))}
-                        </select>
+                            className="od-quantity-input"
+                          />
+                          <button
+                            type="button"
+                            className="od-quantity-btn"
+                            onClick={() => handleQuantityChange(flower.productID, flower.quantity + 1)}
+                            disabled={!flower.selected}
+                          >
+                            +
+                          </button>
                         </div>
-                    
-                    <div className="od-quantity-select">
-                      <label>Số lượng:</label>
-                      <div className="od-quantity-container">
-                        <button
-                          type="button"
-                          className="od-quantity-btn"
-                          onClick={() => handleQuantityChange(flower.productID, flower.quantity - 1)}
-                          disabled={!flower.selected || flower.quantity <= 0}
-                        >
-                          -
-                        </button>
-                        <input
-                          type="number"
-                          min="0"
-                          value={flower.quantity}
-                          onChange={(e) => handleQuantityChange(flower.productID, e.target.value)}
-                          disabled={!flower.selected}
-                          className="od-quantity-input"
-                        />
-                        <button
-                          type="button"
-                          className="od-quantity-btn"
-                          onClick={() => handleQuantityChange(flower.productID, flower.quantity + 1)}
-                          disabled={!flower.selected}
-                        >
-                          +
-                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
@@ -432,17 +446,19 @@ const OrderDelivery = () => {
               </select>
             </div>
             
-            <div className="od-schedule-option">
-              <label>Khoảng cách giao hàng:</label>
-              <select 
-                value={intervalValue} 
-                onChange={(e) => setIntervalValue(e.target.value)}
-              >
-                <option value="every_day">Mỗi ngày</option>
-                <option value="two_day">Mỗi 2 ngày</option>
-                <option value="three_day">Mỗi 3 ngày</option>
-              </select>
-            </div>
+            {deliveryInterval !== "1" && (
+              <div className="od-schedule-option">
+                <label>Khoảng cách giao hàng:</label>
+                <select 
+                  value={intervalValue} 
+                  onChange={(e) => setIntervalValue(e.target.value)}
+                >
+                  <option value="every_day">Mỗi ngày</option>
+                  <option value="two_day">Mỗi 2 ngày</option>
+                  <option value="three_day">Mỗi 3 ngày</option>
+                </select>
+              </div>
+            )}
             
             <div className="od-schedule-option">
               <label>Ngày bắt đầu giao:</label>
