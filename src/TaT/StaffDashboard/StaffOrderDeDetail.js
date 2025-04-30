@@ -210,16 +210,12 @@ const StaffOrderDeDetail = () => {
     navigate("/StaffOrderDe");
   };
 
-  // Format datetime từ đối tượng datetime
-  const formatDateTime = (dateTime) => {
-    if (!dateTime) return "Không có dữ liệu";
+  // Format datetime từ mảng [năm, tháng, ngày, giờ, phút]
+  const formatDateTime = (dateArray) => {
+    if (!dateArray || !Array.isArray(dateArray)) return "Không có dữ liệu";
     
-    // Giả sử dateTime là chuỗi ISO hoặc đối tượng Date hợp lệ
-    try {
-      return new Date(dateTime).toLocaleString();
-    } catch (e) {
-      return "Định dạng không hợp lệ";
-    }
+    // Format theo chuẩn DD/MM/YYYY HH:MM
+    return `${dateArray[2].toString().padStart(2, '0')}/${dateArray[1].toString().padStart(2, '0')}/${dateArray[0]} ${dateArray[3].toString().padStart(2, '0')}:${dateArray[4].toString().padStart(2, '0')}`;
   };
 
   // Hiển thị các nút tương tác dựa trên trạng thái

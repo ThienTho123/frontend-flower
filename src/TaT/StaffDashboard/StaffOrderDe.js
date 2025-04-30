@@ -20,9 +20,28 @@ const StaffOrderDe = () => {
       ONGOING: "Đang tiến hành",
       REFUND: "Hoàn tiền",
       CANCEL_REQUEST_IS_WAITING: "Chờ xác nhận hủy",
+      REFUND_IS_WAITING: "Đang xử lý hoàn tiền",
       null: "Chờ xác nhận",
     };
     return translations[condition] || condition;
+  };
+
+  // Hàm chuyển đổi tần suất giao hàng sang tiếng Việt
+  const translateDeliverper = (deliverper) => {
+    const translations = {
+      every_day: "Mỗi ngày",
+      two_day: "2 ngày một lần",
+      three_day: "3 ngày một lần",
+    };
+    return translations[deliverper] || deliverper;
+  };
+
+  // Format datetime từ mảng [year, month, day, hour, minute, second]
+  const formatDateTime = (dateArray) => {
+    if (!dateArray || !Array.isArray(dateArray)) return "Không có dữ liệu";
+    
+    // Format theo chuẩn DD/MM/YYYY HH:MM
+    return `${dateArray[2].toString().padStart(2, '0')}/${dateArray[1].toString().padStart(2, '0')}/${dateArray[0]} ${dateArray[3].toString().padStart(2, '0')}:${dateArray[4].toString().padStart(2, '0')}`;
   };
 
   useEffect(() => {
@@ -227,6 +246,9 @@ const StaffOrderDe = () => {
       "Số điện thoại": order.phoneNumber || "Không có",
       "Trạng thái": translateCondition(order.condition),
       "Tổng tiền": order.total || 0,
+      "Loại giao hàng": order.orderDeliveryType?.type || "Không có",
+      "Khoảng cách giao": translateDeliverper(order.deliverper) || "Không có",
+      "Ngày bắt đầu": order.start ? formatDateTime(order.start) : "Không có",
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(formattedData);
@@ -247,20 +269,6 @@ const StaffOrderDe = () => {
   // Quay lại dashboard
   const handleBackToDashboard = () => {
     navigate("/staff");
-  };
-
-  // Format datetime từ mảng [year, month, day, hour, minute, second]
-  const formatDateTime = (dateArray) => {
-    if (!dateArray || !Array.isArray(dateArray)) return "Không có dữ liệu";
-    
-    return new Date(
-      dateArray[0],
-      dateArray[1] - 1,
-      dateArray[2],
-      dateArray[3],
-      dateArray[4],
-      dateArray[5]
-    ).toLocaleString();
   };
 
   return (
@@ -290,8 +298,9 @@ const StaffOrderDe = () => {
               <tr>
                 <th>ID</th>
                 <th>Tên người nhận</th>
-                <th>Địa chỉ</th>
                 <th>Số điện thoại</th>
+                <th>Loại giao</th>
+                <th>Khoảng cách</th>
                 <th>Tổng tiền</th>
                 <th>Trạng thái</th>
                 <th>Hành động</th>
@@ -309,9 +318,10 @@ const StaffOrderDe = () => {
                     </Link>
                   </td>
                   <td>{order.name || "Không có"}</td>
-                  <td>{order.address || "Không có"}</td>
                   <td>{order.phoneNumber || "Không có"}</td>
-                  <td>{order.total || 0}</td>
+                  <td>{order.orderDeliveryType?.type || "Không có"}</td>
+                  <td>{translateDeliverper(order.deliverper) || "Không có"}</td>
+                  <td>{order.total ? order.total.toLocaleString() + " VND" : "0 VND"}</td>
                   <td>{translateCondition(order.condition)}</td>
                   <td>
                     <button
@@ -345,10 +355,11 @@ const StaffOrderDe = () => {
               <tr>
                 <th>ID</th>
                 <th>Tên người nhận</th>
-                <th>Địa chỉ</th>
                 <th>Số điện thoại</th>
+                <th>Loại giao</th>
+                <th>Khoảng cách</th>
+                <th>Ngày bắt đầu</th>
                 <th>Tổng tiền</th>
-                <th>Ghi chú</th>
                 <th>Hành động</th>
               </tr>
             </thead>
@@ -364,10 +375,11 @@ const StaffOrderDe = () => {
                     </Link>
                   </td>
                   <td>{order.name || "Không có"}</td>
-                  <td>{order.address || "Không có"}</td>
                   <td>{order.phoneNumber || "Không có"}</td>
-                  <td>{order.total || 0}</td>
-                  <td>{order.note || "Không có"}</td>
+                  <td>{order.orderDeliveryType?.type || "Không có"}</td>
+                  <td>{translateDeliverper(order.deliverper) || "Không có"}</td>
+                  <td>{order.start ? formatDateTime(order.start) : "Không có"}</td>
+                  <td>{order.total ? order.total.toLocaleString() + " VND" : "0 VND"}</td>
                   <td>
                     <button
                       className="deliver-button"
@@ -394,8 +406,10 @@ const StaffOrderDe = () => {
               <tr>
                 <th>ID</th>
                 <th>Tên người nhận</th>
-                <th>Địa chỉ</th>
                 <th>Số điện thoại</th>
+                <th>Loại giao</th>
+                <th>Khoảng cách</th>
+                <th>Ngày bắt đầu</th>
                 <th>Tổng tiền</th>
                 <th>Trạng thái</th>
                 <th>Hành động</th>
@@ -413,9 +427,11 @@ const StaffOrderDe = () => {
                     </Link>
                   </td>
                   <td>{order.name || "Không có"}</td>
-                  <td>{order.address || "Không có"}</td>
                   <td>{order.phoneNumber || "Không có"}</td>
-                  <td>{order.total || 0}</td>
+                  <td>{order.orderDeliveryType?.type || "Không có"}</td>
+                  <td>{translateDeliverper(order.deliverper) || "Không có"}</td>
+                  <td>{order.start ? formatDateTime(order.start) : "Không có"}</td>
+                  <td>{order.total ? order.total.toLocaleString() + " VND" : "0 VND"}</td>
                   <td>{translateCondition(order.condition)}</td>
                   <td>
                     <button
@@ -440,5 +456,4 @@ const StaffOrderDe = () => {
     </div>
   );
 };
-
 export default StaffOrderDe;
