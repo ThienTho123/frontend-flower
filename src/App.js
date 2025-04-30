@@ -101,6 +101,10 @@ import Chatbot from "./TaT/Chatbot.js";
 import AccountOrderDelivery from "./TaT/UserAccount/AccountOrderDelivery.js";
 import OrderDelivery from "./TaT/UserAccount/OrderDelivery.js";
 import RefundOrDe from "./TaT/UserAccount/RefundOrDe.js";
+import StaffOrderDe from "./TaT/StaffDashboard/StaffOrderDe.js";
+import StaffOrderDeDetail from "./TaT/StaffDashboard/StaffOrderDeDetail.js";
+
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -240,6 +244,10 @@ const AppRoutes = () => {
         <Route path="/StaffPreOrder/:id" element={<StaffPreorderDetails />} />
         <Route path="/StaffBlog/new-blog" element={<CreateBlogForm />} />
         <Route path="/myblog/:id" element={<EditBlogForm />} />
+        <Route path="/StaffOrderDe" element={<StaffOrderDe/>} />
+        <Route path="/StaffOrderDe/:id" element={<StaffOrderDeDetail/>} />
+
+
 
         {/* Other Routes */}
         <Route path="/product" element={<ProductList />} />
