@@ -865,9 +865,9 @@ const ProductDetail = () => {
                   />
                   <div className="product-overlay">
                     <h3>{product.name}</h3>
-                    <p style={{ color: "red" }}>
-                      {product.price.toLocaleString("vi-VN")} đ
-                    </p>
+                    <div className="flower-prices">
+                      {product.price.toLocaleString("vi-VN")}
+                    </div>
                   </div>
                 </div>
               </a>
@@ -877,8 +877,6 @@ const ProductDetail = () => {
 
         <div className="product-container">
           <h1 className="other1">Có thể bạn thích</h1>
-          {console.log("Danh sách sản phẩm tương tự:", productSimilar)}{" "}
-          {/* In danh sách sản phẩm ra console */}
           {productSimilar.map((product) => (
             <div key={product.flowerID} className="product">
               <a href={`/detail/${product.flowerID}`}>
@@ -892,9 +890,9 @@ const ProductDetail = () => {
                   alt={product.name}
                 />
                 <h3>{product.name}</h3>
-                <p style={{ color: "red" }}>
-                  {product.price.toLocaleString("vi-VN")} đ
-                </p>
+                <div className="flower-prices">
+                  {product.price.toLocaleString("vi-VN")}
+                </div>
               </a>
             </div>
           ))}

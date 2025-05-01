@@ -83,16 +83,16 @@ export default function ProductList() {
   }, [allProducts, visibleCount]);
 
   return (
-    <div className="product-list-wrapper">
-      <div className="product-list-container">
-        <div className="flower-title">Thế giới của sắc màu</div>
+    <div className="flw-product-list-wrapper">
+      <div className="flw-product-list-container">
+        <div className="flw-flower-title">Thế giới của sắc màu</div>
 
-        <div className="filters-modern">
+        <div className="flw-filters-modern">
           <FormControl fullWidth>
-            <InputLabel id="category-label">Danh Mục</InputLabel>
+            <InputLabel id="flw-category-label">Danh Mục</InputLabel>
             <Select
-              labelId="category-label"
-              id="category"
+              labelId="flw-category-label"
+              id="flw-category"
               value={filterParams.category}
               onChange={(e) => handleFilterParamChange("category", e.target.value)}
             >
@@ -110,10 +110,10 @@ export default function ProductList() {
           </FormControl>
 
           <FormControl fullWidth>
-            <InputLabel id="purpose-label">Mục Đích</InputLabel>
+            <InputLabel id="flw-purpose-label">Mục Đích</InputLabel>
             <Select
-              labelId="purpose-label"
-              id="purpose"
+              labelId="flw-purpose-label"
+              id="flw-purpose"
               value={filterParams.purpose}
               onChange={(e) => handleFilterParamChange("purpose", e.target.value)}
             >
@@ -131,20 +131,21 @@ export default function ProductList() {
           </FormControl>
         </div>
 
-        <div className="product-grid">
+        <div className="flw-product-grid">
           {products.length > 0 ? (
             products.map((product) => (
-              <div key={product.flowerID} className="product-card">
-                <Link to={`/detail/${product.flowerID}`} className="product-link">
-                  <div className="img-wrapper">
+              <div key={product.flowerID} className="flw-product-card">
+                <Link to={`/detail/${product.flowerID}`} className="flw-product-link">
+                  <div className="flw-img-wrapper">
                     <img src={product.image} alt={product.name} />
                   </div>
-                  <h2>{product.name}</h2>
-                  <p>
+                  <h2 className="flw-product-title">{product.name}</h2>
+                  <p className="flw-product-price">
                     Giá:{" "}
                     {product.priceEvent !== null ? (
                       <>
                         <span
+                          className="flw-price-original"
                           style={{
                             textDecoration: "line-through",
                             color: "gray",
@@ -156,6 +157,7 @@ export default function ProductList() {
                           {product.price.toLocaleString("vi-VN")} đ
                         </span>
                         <span
+                          className="flw-price-event"
                           style={{
                             color: "red",
                             fontWeight: "bold",
@@ -168,6 +170,7 @@ export default function ProductList() {
                       </>
                     ) : (
                       <span
+                        className="flw-price-normal"
                         style={{
                           fontSize: "1.2rem",
                           display: "inline-block",
@@ -177,17 +180,17 @@ export default function ProductList() {
                       </span>
                     )}
                   </p>
-                  <p>Danh mục: {product.category.categoryName}</p>
-                  <p>Mục đích: {product.purpose.purposeName}</p>
+                  <p className="flw-product-category">Danh mục: {product.category.categoryName}</p>
+                  <p className="flw-product-purpose">Mục đích: {product.purpose.purposeName}</p>
                 </Link>
               </div>
             ))
           ) : (
-            <p>Không có sản phẩm bạn cần tìm.</p>
+            <p className="flw-no-products">Không có sản phẩm bạn cần tìm.</p>
           )}
         </div>
 
-        <div className="load-button">
+        <div className="flw-load-button">
           <button onClick={() => setVisibleCount(visibleCount + sizePage)}>
             Tải thêm
           </button>

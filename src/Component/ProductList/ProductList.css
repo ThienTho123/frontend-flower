@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 
-.product-list-wrapper .product-list-container {
+.flw-product-list-wrapper {
+  width: 100%;
+}
+
+.flw-product-list-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
@@ -9,17 +13,45 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.product-list-wrapper .filters-modern {
+.flw-filters {
   display: flex;
-  gap: 24px;
-  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 30px;
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.product-list-wrapper .flower-title {
+.flw-filter-group {
+  display: flex;
+  flex-direction: column;
+  min-width: fit-content;
+  width: 140px;
+}
+
+.flw-filter-group label {
+  margin-bottom: 30px;
+  font-weight: bold;
+  color: #333;
+}
+
+.flw-filter-group select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #555;
+  transition: border-color 0.3s ease;
+}
+
+.flw-filter-group select:focus {
+  border-color: #333;
+  outline: none;
+}
+
+.flw-flower-title {
   font-family: 'Dancing Script', cursive;
   font-size: 48px;
   font-weight: bold;
@@ -29,89 +61,80 @@
   margin-bottom: 20px;
 }
 
-.product-list-wrapper .product-grid {
+.flw-product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Tăng kích thước từ 190px lên 240px */
-  gap: 15px; /* Tăng khoảng cách giữa các sản phẩm từ 12px lên 20px */
-  padding: 16px 0;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px 0;
 }
 
-.product-list-wrapper .product-card {
+.flw-product-card {
   background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
-  padding: 15px; /* Tăng padding từ 14px lên 18px */
-  height: 340px; /* Tăng chiều cao từ 300px lên 380px */
-  display: flex;
-  flex-direction: column;
+  padding: 20px;
 }
 
-.product-list-wrapper .product-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+.flw-product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.product-list-wrapper .img-wrapper {
+.flw-img-wrapper {
   width: 100%;
-  height: 220px; /* Tăng chiều cao hình ảnh từ 180px lên 220px */
+  height: 300px;
   overflow: hidden;
-  border-radius: 6px;
-  margin-bottom: 8px; /* Tăng margin từ 8px lên 12px */
+  border-radius: 8px;
+  margin-bottom: 15px;
 }
 
-.product-list-wrapper .img-wrapper img {
+.flw-img-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
 }
 
-.product-list-wrapper .product-card:hover .img-wrapper img {
-  transform: scale(1.05);
+.flw-product-card:hover .flw-img-wrapper img {
+  transform: scale(1.1);
 }
 
-.product-list-wrapper .product-card h2 {
+.flw-product-title {
   font-family: 'Dancing Script', cursive;
-  font-size: 1.4em; /* Tăng kích thước font từ 1.2em lên 1.4em */
-  margin: 8px 0;
+  font-size: 1.6em;
+  margin: 15px 0;
   font-weight: bold;
   color: #6A1E55;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  text-decoration: none;
 }
 
-
-.product-list-wrapper .product-card p {
+.flw-product-card p {
   color: #555;
-  font-size: 0.9em;
-  margin: 3px 0;
-  /* Prevent text overflow */
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 1em;
+  margin: 5px 0;
 }
 
-.product-list-wrapper .product-card p:nth-of-type(1) {
+.flw-product-price {
   color: #e60000;
   font-weight: bold;
-  font-size: 1.05em;
+  font-size: 1.2em;
 }
 
-.product-list-wrapper .load-button {
+.flw-load-button {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 24px 0;
+  margin: 40px 0;
 }
 
-.product-list-wrapper .load-button button {
-  width: 40%;
-  padding: 10px 20px;
-  font-size: 1em;
+.flw-load-button button {
+  width: 60%;
+  padding: 14px 28px;
+  font-size: 1.1em;
   font-weight: bold;
   color: #ffffff;
   background-color: #E32C89;
@@ -121,54 +144,129 @@
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.product-list-wrapper .load-button button:hover {
+.flw-load-button button:hover {
   background-color: #8c2156;
   transform: translateY(-3px);
   box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.3);
 }
 
-.product-list-wrapper .load-button button:active {
+.flw-load-button button:active {
   background-color: #8c1751;
   transform: translateY(0);
   box-shadow: none;
 }
 
+.flw-product-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.flw-filters-modern {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.flw-filters-modern .MuiFormControl-root {
+  min-width: 200px;
+  margin-bottom: 24px;
+}
+
+.flw-filters-modern .MuiInputLabel-root {
+  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
+
+.flw-filters-modern .MuiSelect-root {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  color: #555;
+  background-color: #fff;
+}
+
+.flw-filters-modern .MuiSelect-root:focus {
+  border-color: #007bff;
+  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+.flw-filters-modern label {
+  font-size: 20px;
+  font-weight: 500;
+  color: #333;
+}
+
+.flw-filter-label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 60px;
+}
+
+.flw-filter-select {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #555;
+  background-color: #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.flw-filter-select:focus {
+  border-color: #007bff;
+  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+.flw-price-original {
+  text-decoration: line-through;
+  color: gray;
+  margin-right: 8px;
+  font-size: 1rem;
+  display: inline-block;
+}
+
+.flw-price-event {
+  color: red;
+  font-weight: bold;
+  font-size: 1.2rem;
+  display: inline-block;
+}
+
+.flw-price-normal {
+  font-size: 1.4rem;
+  display: inline-block;
+  color: red;
+
+}
+
+.flw-no-products {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 1.2em;
+  color: #555;
+  padding: 30px 0;
+}
+
 @media (max-width: 768px) {
-  .product-list-wrapper .product-grid {
-    /* Smaller cards on mobile */
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 10px;
+  .flw-product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
 
-  .product-list-wrapper .product-card {
-    padding: 8px;
-    height: 320px;
+  .flw-product-card {
+    padding: 15px;
   }
 
-  .product-list-wrapper .img-wrapper {
-    height: 140px;
-  }
-
-  .product-list-wrapper .load-button button {
+  .flw-load-button button {
     width: 70%;
   }
-}
-
-@media (max-width: 480px) {
-  .product-list-wrapper .product-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 8px;
-  }
-  
-  .product-list-wrapper .product-card {
-    height: 300px;
-  }
-  
-  .product-list-wrapper .img-wrapper {
-    height: 120px;
-  }
-}
-
-a {
-  text-decoration: none;
 }
