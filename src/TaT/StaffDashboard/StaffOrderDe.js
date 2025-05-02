@@ -19,6 +19,8 @@ const StaffOrderDe = () => {
   const [modalOrderId, setModalOrderId] = useState(null);
   const [modalTitle, setModalTitle] = useState("");
   const [modalMessage, setModalMessage] = useState("");
+  // Tab state để chuyển đổi giữa các danh sách
+  const [activeTab, setActiveTab] = useState("all"); // "all", "new", "deliver", "cancel"
 
   const translateCondition = (condition) => {
     const translations = {
@@ -27,6 +29,8 @@ const StaffOrderDe = () => {
       CANCEL_REQUEST_IS_WAITING: "Chờ xác nhận hủy",
       REFUND_IS_WAITING: "Đang xử lý hoàn tiền",
       null: "Chờ xác nhận",
+      CANCEL: "Hủy",
+      SUCCESS: "Thành Công"
     };
     return translations[condition] || condition;
   };
@@ -94,7 +98,7 @@ const StaffOrderDe = () => {
     fetchOrders();
   }, [accesstoken]);
 
-  // Chức năng đồng ý đơn hàng mới (done)
+  // Chức năng đồng ý đơn hàng mới
   const handleAcceptNewOrder = async (id) => {
     try {
       const response = await fetch(
@@ -112,16 +116,14 @@ const StaffOrderDe = () => {
         throw new Error("Không thể xác nhận đơn hàng.");
       }
 
-      const updatedNewOrders = newOrders.filter(order => order.id !== id);
-      setNewOrders(updatedNewOrders);
-
+      // Tải lại danh sách đơn hàng
       refreshOrderLists();
     } catch (err) {
       setError(err.message);
     }
   };
 
-  // Chức năng từ chối đơn hàng mới (done)
+  // Chức năng từ chối đơn hàng mới
   const handleDeclineNewOrder = async (id) => {
     try {
       const response = await fetch(
@@ -139,9 +141,7 @@ const StaffOrderDe = () => {
         throw new Error("Không thể từ chối đơn hàng.");
       }
 
-      const updatedNewOrders = newOrders.filter(order => order.id !== id);
-      setNewOrders(updatedNewOrders);
-
+      // Tải lại danh sách đơn hàng
       refreshOrderLists();
     } catch (err) {
       setError(err.message);
@@ -166,11 +166,7 @@ const StaffOrderDe = () => {
         throw new Error("Không thể xác nhận yêu cầu hủy đơn hàng.");
       }
 
-      // Cập nhật lại danh sách đơn hàng
-      const updatedCancelReqOrders = cancelReqOrders.filter(order => order.id !== id);
-      setCancelReqOrders(updatedCancelReqOrders);
-
-      // Tải lại tất cả danh sách
+      // Tải lại danh sách đơn hàng
       refreshOrderLists();
     } catch (err) {
       setError(err.message);
@@ -195,11 +191,7 @@ const StaffOrderDe = () => {
         throw new Error("Không thể từ chối yêu cầu hủy đơn hàng.");
       }
 
-      // Cập nhật lại danh sách đơn hàng
-      const updatedCancelReqOrders = cancelReqOrders.filter(order => order.id !== id);
-      setCancelReqOrders(updatedCancelReqOrders);
-
-      // Tải lại tất cả danh sách
+      // Tải lại danh sách đơn hàng
       refreshOrderLists();
     } catch (err) {
       setError(err.message);
@@ -224,7 +216,7 @@ const StaffOrderDe = () => {
         throw new Error("Không thể giao hàng ngay bây giờ.");
       }
 
-      // Tải lại tất cả danh sách
+      // Tải lại danh sách đơn hàng
       refreshOrderLists();
     } catch (err) {
       setError(err.message);
@@ -292,27 +284,8 @@ const StaffOrderDe = () => {
   const handleBackToDashboard = () => {
     navigate("/staff");
   };
-  const executeAction = () => {
-    switch (modalAction) {
-      case 'acceptNew':
-        handleAcceptNewOrder(modalOrderId);
-        break;
-      case 'declineNew':
-        handleDeclineNewOrder(modalOrderId);
-        break;
-      case 'acceptCancel':
-        handleAcceptCancelRequest(modalOrderId);
-        break;
-      case 'declineCancel':
-        handleDeclineCancelRequest(modalOrderId);
-        break;
-      case 'deliver':
-        handleDeliverNow(modalOrderId);
-        break;
-      default:
-        break;
-    }
-  };
+
+  // Hiển thị modal xác nhận
   const showConfirmationModal = (action, orderId) => {
     let title = '';
     let message = '';
@@ -347,6 +320,85 @@ const StaffOrderDe = () => {
     setModalMessage(message);
     setShowModal(true);
   };
+
+  // Thực hiện hành động từ modal
+  const executeAction = () => {
+    switch (modalAction) {
+      case 'acceptNew':
+        handleAcceptNewOrder(modalOrderId);
+        break;
+      case 'declineNew':
+        handleDeclineNewOrder(modalOrderId);
+        break;
+      case 'acceptCancel':
+        handleAcceptCancelRequest(modalOrderId);
+        break;
+      case 'declineCancel':
+        handleDeclineCancelRequest(modalOrderId);
+        break;
+      case 'deliver':
+        handleDeliverNow(modalOrderId);
+        break;
+      default:
+        break;
+    }
+  };
+
+  // Hiển thị các nút tương ứng với trạng thái đơn hàng
+  const renderActionButtons = (order) => {
+    if (order.condition === null) {
+      return (
+        <>
+          <button
+            className="accept-button"
+            onClick={() => showConfirmationModal('acceptNew', order.id)}
+          >
+            Đồng ý
+          </button>
+          <button
+            className="decline-button"
+            onClick={() => showConfirmationModal('declineNew', order.id)}
+          >
+            Từ chối
+          </button>
+        </>
+      );
+    } else if (order.condition === "CANCEL_REQUEST_IS_WAITING") {
+      return (
+        <>
+          <button
+            className="accept-button"
+            onClick={() => showConfirmationModal('acceptCancel', order.id)}
+          >
+            Đồng ý hủy
+          </button>
+          <button
+            className="decline-button"
+            onClick={() => showConfirmationModal('declineCancel', order.id)}
+          >
+            Từ chối hủy
+          </button>
+        </>
+      );
+    } else if (order.condition === "ONGOING") {
+      // Kiểm tra xem đơn hàng có trong danh sách giao hôm nay không
+      const canDeliver = haveDeliOrders.some(deli => deli.id === order.id);
+      
+      if (canDeliver) {
+        return (
+          <button
+            className="deliver-button"
+            onClick={() => showConfirmationModal('deliver', order.id)}
+          >
+            Giao ngay
+          </button>
+        );
+      }
+    }
+    
+    return null;
+  };
+
   return (
     <div className="admin-ql-container">
       <div className="title-container">
@@ -359,207 +411,299 @@ const StaffOrderDe = () => {
         <h2>Quản Lý Đơn Đặt Hàng Theo Lịch - Nhân viên</h2>
       </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <button onClick={handleExportExcel} className="export-btn">
-        Xuất Excel
-      </button>
+      
+      <div className="actions-container">
+        <button onClick={handleExportExcel} className="export-btn">
+          Xuất Excel
+        </button>
+      </div>
 
-      {/* Danh sách đơn hàng mới chờ xác nhận */}
-      <div className="order-section">
-        <h3>Đơn Hàng Mới Chờ Xác Nhận</h3>
-        {newOrders.length === 0 ? (
-          <p>Không có đơn hàng mới nào.</p>
-        ) : (
-          <table border="1" cellPadding="10" cellSpacing="0">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Tên người nhận</th>
-                <th>Số điện thoại</th>
-                <th>Loại giao</th>
-                <th>Khoảng cách</th>
-                <th>Tổng tiền</th>
-                <th>Trạng thái</th>
-                <th>Hành động</th>
-              </tr>
-            </thead>
-            <tbody>
-              {newOrders.map((order) => (
-                <tr key={order.id}>
-                  <td>
-                    <Link
-                      to={`/StaffOrderDe/${order.id}`}
-                      className="order-link"
-                    >
-                      {order.id}
-                    </Link>
-                  </td>
-                  <td>{order.name || "Không có"}</td>
-                  <td>{order.phoneNumber || "Không có"}</td>
-                  <td>{order.orderDeliveryType?.type || "Không có"}</td>
-                  <td>{translateDeliverper(order.deliverper) || "Không có"}</td>
-                  <td>{order.total ? order.total.toLocaleString() + " VND" : "0 VND"}</td>
-                  <td>{translateCondition(order.condition)}</td>
-                  <td>
-                  <button
-                      className="accept-button"
-                      onClick={() => showConfirmationModal('acceptNew', order.id)}
-                    >
-                      Đồng ý
-                    </button>
-                    <button
-                      className="decline-button"
-                      onClick={() => showConfirmationModal('deliver', order.id)}
-                      >
-                      Từ chối
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* Tab Navigation */}
+      <div className="tab-navigation">
+        <button 
+          className={`tab-button ${activeTab === 'all' ? 'active' : ''}`}
+          onClick={() => setActiveTab('all')}
+        >
+          Tất cả đơn hàng ({allOrders.length})
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'new' ? 'active' : ''}`}
+          onClick={() => setActiveTab('new')}
+        >
+          Đơn hàng mới ({newOrders.length})
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'deliver' ? 'active' : ''}`}
+          onClick={() => setActiveTab('deliver')}
+        >
+          Cần giao hôm nay ({haveDeliOrders.length})
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'cancel' ? 'active' : ''}`}
+          onClick={() => setActiveTab('cancel')}
+        >
+          Yêu cầu hủy ({cancelReqOrders.length})
+        </button>
+      </div>
+
+      {/* Danh sách đơn hàng hiển thị theo tab */}
+      <div className="order-list-container">
+        {/* Tất cả đơn hàng */}
+        {activeTab === 'all' && (
+          <div className="order-section">
+            <h3>Tất Cả Đơn Hàng</h3>
+            {allOrders.length === 0 ? (
+              <p>Không có đơn hàng nào.</p>
+            ) : (
+              <table border="1" cellPadding="10" cellSpacing="0">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên người nhận</th>
+                    <th>Số điện thoại</th>
+                    <th>Loại giao</th>
+                    <th>Khoảng cách</th>
+                    <th>Ngày bắt đầu</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {allOrders.map((order) => (
+                    <tr key={order.id}>
+                      <td>
+                        <Link
+                          to={`/StaffOrderDe/${order.id}`}
+                          className="order-link"
+                        >
+                          {order.id}
+                        </Link>
+                      </td>
+                      <td>{order.name || "Không có"}</td>
+                      <td>{order.phoneNumber || "Không có"}</td>
+                      <td>{order.orderDeliveryType?.type || "Không có"}</td>
+                      <td>{translateDeliverper(order.deliverper) || "Không có"}</td>
+                      <td>{order.start ? formatDate(order.start) : "Không có"}</td>
+                      <td>{order.total ? order.total.toLocaleString() + " VND" : "0 VND"}</td>
+                      <td>{translateCondition(order.condition)}</td>
+                      <td>
+                        {renderActionButtons(order)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
+
+        {/* Đơn hàng mới chờ xác nhận */}
+        {activeTab === 'new' && (
+          <div className="order-section">
+            <h3>Đơn Hàng Mới Chờ Xác Nhận</h3>
+            {newOrders.length === 0 ? (
+              <p>Không có đơn hàng mới nào.</p>
+            ) : (
+              <table border="1" cellPadding="10" cellSpacing="0">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên người nhận</th>
+                    <th>Số điện thoại</th>
+                    <th>Loại giao</th>
+                    <th>Khoảng cách</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {newOrders.map((order) => (
+                    <tr key={order.id}>
+                      <td>
+                        <Link
+                          to={`/StaffOrderDe/${order.id}`}
+                          className="order-link"
+                        >
+                          {order.id}
+                        </Link>
+                      </td>
+                      <td>{order.name || "Không có"}</td>
+                      <td>{order.phoneNumber || "Không có"}</td>
+                      <td>{order.orderDeliveryType?.type || "Không có"}</td>
+                      <td>{translateDeliverper(order.deliverper) || "Không có"}</td>
+                      <td>{order.total ? order.total.toLocaleString() + " VND" : "0 VND"}</td>
+                      <td>{translateCondition(order.condition)}</td>
+                      <td>
+                        <button
+                          className="accept-button"
+                          onClick={() => showConfirmationModal('acceptNew', order.id)}
+                        >
+                          Đồng ý
+                        </button>
+                        <button
+                          className="decline-button"
+                          onClick={() => showConfirmationModal('declineNew', order.id)}
+                        >
+                          Từ chối
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
+
+        {/* Đơn hàng cần giao hôm nay */}
+        {activeTab === 'deliver' && (
+          <div className="order-section">
+            <h3>Đơn Hàng Cần Giao Hôm Nay</h3>
+            {haveDeliOrders.length === 0 ? (
+              <p>Không có đơn hàng nào cần giao hôm nay.</p>
+            ) : (
+              <table border="1" cellPadding="10" cellSpacing="0">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên người nhận</th>
+                    <th>Số điện thoại</th>
+                    <th>Loại giao</th>
+                    <th>Khoảng cách</th>
+                    <th>Ngày bắt đầu</th>
+                    <th>Thời gian giao</th>
+                    <th>Tổng tiền</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {haveDeliOrders.map((order) => (
+                    <tr key={order.id}>
+                      <td>
+                        <Link
+                          to={`/StaffOrderDe/${order.id}`}
+                          className="order-link"
+                        >
+                          {order.id}
+                        </Link>
+                      </td>
+                      <td>{order.name || "Không có"}</td>
+                      <td>{order.phoneNumber || "Không có"}</td>
+                      <td>{order.orderDeliveryType?.type || "Không có"}</td>
+                      <td>{translateDeliverper(order.deliverper) || "Không có"}</td>
+                      <td>{order.start ? formatDate(order.start) : "Không có"}</td>
+                      <td>{order.start ? formatTime(order.start) : "Không có"}</td>
+                      <td>{order.total ? order.total.toLocaleString() + " VND" : "0 VND"}</td>
+                      <td>
+                        <button
+                          className="deliver-button"
+                          onClick={() => showConfirmationModal('deliver', order.id)}
+                        >
+                          Giao ngay
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
+
+        {/* Yêu cầu hủy đơn */}
+        {activeTab === 'cancel' && (
+          <div className="order-section">
+            <h3>Yêu Cầu Hủy Đơn</h3>
+            {cancelReqOrders.length === 0 ? (
+              <p>Không có yêu cầu hủy đơn nào.</p>
+            ) : (
+              <table border="1" cellPadding="10" cellSpacing="0">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên người nhận</th>
+                    <th>Số điện thoại</th>
+                    <th>Loại giao</th>
+                    <th>Khoảng cách</th>
+                    <th>Ngày bắt đầu</th>
+                    <th>Thời gian giao</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cancelReqOrders.map((order) => (
+                    <tr key={order.id}>
+                      <td>
+                        <Link
+                          to={`/StaffOrderDe/${order.id}`}
+                          className="order-link"
+                        >
+                          {order.id}
+                        </Link>
+                      </td>
+                      <td>{order.name || "Không có"}</td>
+                      <td>{order.phoneNumber || "Không có"}</td>
+                      <td>{order.orderDeliveryType?.type || "Không có"}</td>
+                      <td>{translateDeliverper(order.deliverper) || "Không có"}</td>
+                      <td>{order.start ? formatDate(order.start) : "Không có"}</td>
+                      <td>{order.start ? formatTime(order.start) : "Không có"}</td>
+                      <td>{order.total ? order.total.toLocaleString() + " VND" : "0 VND"}</td>
+                      <td>{translateCondition(order.condition)}</td>
+                      <td>
+                        <button
+                          className="accept-button"
+                          onClick={() => showConfirmationModal('acceptCancel', order.id)}
+                        >
+                          Đồng ý hủy
+                        </button>
+                        <button
+                          className="decline-button"
+                          onClick={() => showConfirmationModal('declineCancel', order.id)}
+                        >
+                          Từ chối hủy
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
         )}
       </div>
 
-      {/* Danh sách đơn hàng cần giao hôm nay */}
-      <div className="order-section">
-        <h3>Đơn Hàng Cần Giao Hôm Nay</h3>
-        {haveDeliOrders.length === 0 ? (
-          <p>Không có đơn hàng nào cần giao hôm nay.</p>
-        ) : (
-          <table border="1" cellPadding="10" cellSpacing="0">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Tên người nhận</th>
-                <th>Số điện thoại</th>
-                <th>Loại giao</th>
-                <th>Khoảng cách</th>
-                <th>Ngày bắt đầu</th>
-                <th>Thời gian giao</th>
-                <th>Tổng tiền</th>
-                <th>Hành động</th>
-              </tr>
-            </thead>
-            <tbody>
-              {haveDeliOrders.map((order) => (
-                <tr key={order.id}>
-                  <td>
-                    <Link
-                      to={`/StaffOrderDe/${order.id}`}
-                      className="order-link"
-                    >
-                      {order.id}
-                    </Link>
-                  </td>
-                  <td>{order.name || "Không có"}</td>
-                  <td>{order.phoneNumber || "Không có"}</td>
-                  <td>{order.orderDeliveryType?.type || "Không có"}</td>
-                  <td>{translateDeliverper(order.deliverper) || "Không có"}</td>
-                  <td>{order.start ? formatDate(order.start) : "Không có"}</td>
-                  <td>{order.start ? formatTime(order.start) : "Không có"}</td>
-                  <td>{order.total ? order.total.toLocaleString() + " VND" : "0 VND"}</td>
-                  <td>
-                    <button
-                      className="deliver-button"
-                      onClick={() => showConfirmationModal('deliver', order.id)}
-                      >
-                      Giao ngay
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
-
-      {/* Danh sách yêu cầu hủy đơn */}
-      <div className="order-section">
-        <h3>Yêu Cầu Hủy Đơn</h3>
-        {cancelReqOrders.length === 0 ? (
-          <p>Không có yêu cầu hủy đơn nào.</p>
-        ) : (
-          <table border="1" cellPadding="10" cellSpacing="0">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Tên người nhận</th>
-                <th>Số điện thoại</th>
-                <th>Loại giao</th>
-                <th>Khoảng cách</th>
-                <th>Ngày bắt đầu</th>
-                <th>Thời gian giao</th>
-                <th>Tổng tiền</th>
-                <th>Trạng thái</th>
-                <th>Hành động</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cancelReqOrders.map((order) => (
-                <tr key={order.id}>
-                  <td>
-                    <Link
-                      to={`/StaffOrderDe/${order.id}`}
-                      className="order-link"
-                    >
-                      {order.id}
-                    </Link>
-                  </td>
-                  <td>{order.name || "Không có"}</td>
-                  <td>{order.phoneNumber || "Không có"}</td>
-                  <td>{order.orderDeliveryType?.type || "Không có"}</td>
-                  <td>{translateDeliverper(order.deliverper) || "Không có"}</td>
-                  <td>{order.start ? formatDate(order.start) : "Không có"}</td>
-                  <td>{order.start ? formatTime(order.start) : "Không có"}</td>
-                  <td>{order.total ? order.total.toLocaleString() + " VND" : "0 VND"}</td>
-                  <td>{translateCondition(order.condition)}</td>
-                  <td>
-                    <button
-                      className="accept-button"
-                      onClick={() => showConfirmationModal('acceptCancel', order.id)}
-                      >
-                      Đồng ý hủy
-                    </button>
-                    <button
-                      className="decline-button"
-                      onClick={() => showConfirmationModal('declineCancel', order.id)}
-                      >
-                      Từ chối hủy
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      {/* Modal xác nhận */}
       {showModal && (
-      <div className="modal-overlay">
-        <div className="modal-container">
-          <div className="modal-header">{modalTitle}</div>
-          <div className="modal-body">{modalMessage}</div>
-          <div className="modal-footer">
-            <button 
-              className="modal-confirm" 
-              onClick={() => {
-                setShowModal(false);
-                executeAction();
-              }}
-            >
-              Xác nhận
-            </button>
-            <button 
-              className="modal-cancel" 
-              onClick={() => setShowModal(false)}
-            >
-              Hủy
-            </button>
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">{modalTitle}</div>
+            <div className="modal-body">{modalMessage}</div>
+            <div className="modal-footer">
+              <button 
+                className="modal-confirm" 
+                onClick={() => {
+                  setShowModal(false);
+                  executeAction();
+                }}
+              >
+                Xác nhận
+              </button>
+              <button 
+                className="modal-cancel" 
+                onClick={() => setShowModal(false)}
+              >
+                Hủy
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    )}
+      )}
     </div>
-    
   );
 };
+
 export default StaffOrderDe;
