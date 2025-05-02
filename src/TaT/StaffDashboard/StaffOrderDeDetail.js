@@ -8,6 +8,10 @@ const StaffOrderDeDetail = () => {
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [modalAction, setModalAction] = useState(null);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
 
   // Hàm chuyển đổi trạng thái sang tiếng Việt
   const translateCondition = (condition) => {
@@ -204,7 +208,61 @@ const StaffOrderDeDetail = () => {
       setError(err.message);
     }
   };
-
+  const executeAction = () => {
+    switch (modalAction) {
+      case 'acceptNew':
+        handleAcceptNewOrder();
+        break;
+      case 'declineNew':
+        handleDeclineNewOrder();
+        break;
+      case 'acceptCancel':
+        handleAcceptCancelRequest();
+        break;
+      case 'declineCancel':
+        handleDeclineCancelRequest();
+        break;
+      case 'deliver':
+        handleDeliverNow();
+        break;
+      default:
+        break;
+    }
+  };
+  const showConfirmationModal = (action) => {
+    let title = '';
+    let message = '';
+    
+    switch (action) {
+      case 'acceptNew':
+        title = "Xác nhận đồng ý đơn hàng";
+        message = `Bạn có chắc chắn muốn đồng ý đơn hàng #${id} không?`;
+        break;
+      case 'declineNew':
+        title = "Xác nhận từ chối đơn hàng";
+        message = `Bạn có chắc chắn muốn từ chối đơn hàng #${id} không?`;
+        break;
+      case 'acceptCancel':
+        title = "Xác nhận đồng ý hủy đơn hàng";
+        message = `Bạn có chắc chắn muốn đồng ý hủy đơn hàng #${id} không?`;
+        break;
+      case 'declineCancel':
+        title = "Xác nhận từ chối hủy đơn hàng";
+        message = `Bạn có chắc chắn muốn từ chối yêu cầu hủy đơn hàng #${id} không?`;
+        break;
+      case 'deliver':
+        title = "Xác nhận giao hàng";
+        message = `Bạn có chắc chắn muốn giao đơn hàng #${id} ngay bây giờ không?`;
+        break;
+      default:
+        break;
+    }
+    
+    setModalAction(action);
+    setModalTitle(title);
+    setModalMessage(message);
+    setShowModal(true);
+  };  
   // Quay lại trang danh sách
   const handleBack = () => {
     navigate("/StaffOrderDe");
@@ -225,30 +283,30 @@ const StaffOrderDeDetail = () => {
     if (orderDetails.orDeCondition === null) {
       return (
         <div className="action-buttons">
-          <button className="accept-button" onClick={handleAcceptNewOrder}>
-            Đồng ý
+        <button className="accept-button" onClick={() => showConfirmationModal('acceptNew')}>
+        Đồng ý
           </button>
-          <button className="decline-button" onClick={handleDeclineNewOrder}>
-            Từ chối
+          <button className="decline-button" onClick={() => showConfirmationModal('declineNew')}>
+          Từ chối
           </button>
         </div>
       );
     } else if (orderDetails.orDeCondition === "CANCEL_REQUEST_IS_WAITING") {
       return (
         <div className="action-buttons">
-          <button className="accept-button" onClick={handleAcceptCancelRequest}>
-            Đồng ý hủy
+        <button className="accept-button" onClick={() => showConfirmationModal('acceptCancel')}>
+        Đồng ý hủy
           </button>
-          <button className="decline-button" onClick={handleDeclineCancelRequest}>
-            Từ chối hủy
+          <button className="decline-button" onClick={() => showConfirmationModal('declineCancel')}>
+          Từ chối hủy
           </button>
         </div>
       );
     } else if (orderDetails.orDeCondition === "ONGOING" && orderDetails.deliver) {
       return (
         <div className="action-buttons">
-          <button className="deliver-button" onClick={handleDeliverNow}>
-            Giao hàng ngay
+        <button className="deliver-button" onClick={() => showConfirmationModal('deliver')}>
+        Giao hàng ngay
           </button>
         </div>
       );
@@ -406,6 +464,31 @@ const StaffOrderDeDetail = () => {
       </div>
 
       {renderActionButtons()}
+      {showModal && (
+  <div className="modal-overlay">
+    <div className="modal-container">
+      <div className="modal-header">{modalTitle}</div>
+      <div className="modal-body">{modalMessage}</div>
+      <div className="modal-footer">
+        <button 
+          className="modal-confirm" 
+          onClick={() => {
+            setShowModal(false);
+            executeAction();
+          }}
+        >
+          Xác nhận
+        </button>
+        <button 
+          className="modal-cancel" 
+          onClick={() => setShowModal(false)}
+        >
+          Hủy
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 };

@@ -14,6 +14,11 @@ const StaffOrderDe = () => {
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [modalAction, setModalAction] = useState(null);
+  const [modalOrderId, setModalOrderId] = useState(null);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
 
   const translateCondition = (condition) => {
     const translations = {
@@ -287,7 +292,61 @@ const StaffOrderDe = () => {
   const handleBackToDashboard = () => {
     navigate("/staff");
   };
-
+  const executeAction = () => {
+    switch (modalAction) {
+      case 'acceptNew':
+        handleAcceptNewOrder(modalOrderId);
+        break;
+      case 'declineNew':
+        handleDeclineNewOrder(modalOrderId);
+        break;
+      case 'acceptCancel':
+        handleAcceptCancelRequest(modalOrderId);
+        break;
+      case 'declineCancel':
+        handleDeclineCancelRequest(modalOrderId);
+        break;
+      case 'deliver':
+        handleDeliverNow(modalOrderId);
+        break;
+      default:
+        break;
+    }
+  };
+  const showConfirmationModal = (action, orderId) => {
+    let title = '';
+    let message = '';
+    
+    switch (action) {
+      case 'acceptNew':
+        title = "Xác nhận đồng ý đơn hàng";
+        message = `Bạn có chắc chắn muốn đồng ý đơn hàng #${orderId} không?`;
+        break;
+      case 'declineNew':
+        title = "Xác nhận từ chối đơn hàng";
+        message = `Bạn có chắc chắn muốn từ chối đơn hàng #${orderId} không?`;
+        break;
+      case 'acceptCancel':
+        title = "Xác nhận đồng ý hủy đơn hàng";
+        message = `Bạn có chắc chắn muốn đồng ý hủy đơn hàng #${orderId} không?`;
+        break;
+      case 'declineCancel':
+        title = "Xác nhận từ chối hủy đơn hàng";
+        message = `Bạn có chắc chắn muốn từ chối yêu cầu hủy đơn hàng #${orderId} không?`;
+        break;
+      case 'deliver':
+        title = "Xác nhận giao hàng";
+        message = `Bạn có chắc chắn muốn giao đơn hàng #${orderId} ngay bây giờ không?`;
+        break;
+      default:
+        break;
+    }
+    setModalAction(action);
+    setModalOrderId(orderId);
+    setModalTitle(title);
+    setModalMessage(message);
+    setShowModal(true);
+  };
   return (
     <div className="admin-ql-container">
       <div className="title-container">
@@ -341,16 +400,16 @@ const StaffOrderDe = () => {
                   <td>{order.total ? order.total.toLocaleString() + " VND" : "0 VND"}</td>
                   <td>{translateCondition(order.condition)}</td>
                   <td>
-                    <button
+                  <button
                       className="accept-button"
-                      onClick={() => handleAcceptNewOrder(order.id)}
+                      onClick={() => showConfirmationModal('acceptNew', order.id)}
                     >
                       Đồng ý
                     </button>
                     <button
                       className="decline-button"
-                      onClick={() => handleDeclineNewOrder(order.id)}
-                    >
+                      onClick={() => showConfirmationModal('deliver', order.id)}
+                      >
                       Từ chối
                     </button>
                   </td>
@@ -402,8 +461,8 @@ const StaffOrderDe = () => {
                   <td>
                     <button
                       className="deliver-button"
-                      onClick={() => handleDeliverNow(order.id)}
-                    >
+                      onClick={() => showConfirmationModal('deliver', order.id)}
+                      >
                       Giao ngay
                     </button>
                   </td>
@@ -457,14 +516,14 @@ const StaffOrderDe = () => {
                   <td>
                     <button
                       className="accept-button"
-                      onClick={() => handleAcceptCancelRequest(order.id)}
-                    >
+                      onClick={() => showConfirmationModal('acceptCancel', order.id)}
+                      >
                       Đồng ý hủy
                     </button>
                     <button
                       className="decline-button"
-                      onClick={() => handleDeclineCancelRequest(order.id)}
-                    >
+                      onClick={() => showConfirmationModal('declineCancel', order.id)}
+                      >
                       Từ chối hủy
                     </button>
                   </td>
@@ -474,7 +533,33 @@ const StaffOrderDe = () => {
           </table>
         )}
       </div>
+      {showModal && (
+      <div className="modal-overlay">
+        <div className="modal-container">
+          <div className="modal-header">{modalTitle}</div>
+          <div className="modal-body">{modalMessage}</div>
+          <div className="modal-footer">
+            <button 
+              className="modal-confirm" 
+              onClick={() => {
+                setShowModal(false);
+                executeAction();
+              }}
+            >
+              Xác nhận
+            </button>
+            <button 
+              className="modal-cancel" 
+              onClick={() => setShowModal(false)}
+            >
+              Hủy
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
     </div>
+    
   );
 };
 export default StaffOrderDe;
