@@ -352,12 +352,12 @@ const ProductDetail = () => {
     try {
       const token = localStorage.getItem("access_token");
       const productSizeID = productSizes[selectedSizeIndex].flowerSizeID;
-
+  
       if (!token) {
         navigate("/login");
         return;
       }
-
+  
       await axios.post(
         "http://localhost:8080/addPreorder",
         {
@@ -368,10 +368,14 @@ const ProductDetail = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+      
+      // Set success message before showing the modal
+      setSuccessMessage("Đặt hàng trước thành công!");
       setSuccessModalVisible(true);
     } catch (error) {
       console.error("Error placing preorder:", error);
-      alert("Có lỗi xảy ra, vui lòng thử lại.");
+      setSuccessMessage("Có lỗi xảy ra, vui lòng thử lại.");
+      setSuccessModalVisible(true);
     }
   };
 

@@ -30,6 +30,8 @@ import { Bar } from "react-chartjs-2"; // Biểu đồ cột
 import blog from "../StaffDashboard/ImageDashboard/Blog.png"
 import event from "../StaffDashboard/ImageDashboard/event.png"
 import generate from "../../Component/assets/generative.png"
+import orderDeIcon from "./ImageDashboard/orderde.png";
+
 import {
   Chart as ChartJS,
   ArcElement,
@@ -422,6 +424,9 @@ const Dashboard = () => {
               </button>
               <button onClick={() => handleNavigate("/AdminDetect")}>
                 <img src={generate} alt="Quản lý nhận diện hoa" /> Quản lý nhận diện hoa
+              </button>
+              <button onClick={() => handleNavigate("/AdminOrderDe")}>
+                <img src={orderDeIcon} alt="Đơn đặt trước mới" /> Đơn theo lịch
               </button>
             </div>
           </div>
