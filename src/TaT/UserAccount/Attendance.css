@@ -1,0 +1,107 @@
+.calendar-container {
+  padding: 30px;
+  max-width: 650px;
+  margin: 40px auto; /* Added vertical margin for better spacing */
+  background-color: #fff;
+  border-radius: 16px; /* Slightly more rounded corners */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px; /* More space below the title */
+  color: #2c3e50; /* Darker, more professional title color */
+  font-size: 2.2em; /* Slightly larger title */
+  font-weight: 600; /* Semi-bold title */
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: 500; /* Slightly lighter font weight for weekdays */
+  color: #777; /* Muted weekday color */
+  margin-bottom: 15px; /* More space below weekdays */
+}
+
+.weekday {
+  padding: 12px 0;
+  border-bottom: 1px solid #ddd; 
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px; 
+}
+
+.calendar-day {
+  padding: 16px; /* Slightly larger padding */
+  border-radius: 10px; /* More rounded day cells */
+  text-align: center;
+  background-color: #f9f9f9; /* Lighter background */
+  color: #555;
+  font-weight: 500;
+  height: 55px; /* Slightly taller day cells */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+
+.calendar-day.attended {
+  background-color: #27ae60; /* Brighter, more noticeable green */
+  color: #fff;
+  font-weight: 600; /* Bold text for attended days */
+  box-shadow: 0 2px 6px rgba(39, 174, 96, 0.4); /* Subtle shadow for attended days */
+  position: relative; /* For the checkmark */
+}
+
+.calendar-day.attended::after {
+  content: '✔'; /* Checkmark icon */
+  font-size: 1.2em;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #fff;
+}
+
+.calendar-day:not(.attended):hover {
+  background-color: #eee; 
+  cursor: pointer; 
+}
+
+.calendar-day.today {
+  border: 2px solid #3498db;
+  font-weight: bold;
+  animation: pulse 1.5s infinite;
+  cursor: pointer;
+}
+.success-banner {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #dff0d8;
+  color: #3c763d;
+  border: 1px solid #3c763d;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+  animation: fadeInOut 3s ease-in-out forwards;
+}
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+  }
+}
+@keyframes fadeInOut {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { opacity: 0; }
+}

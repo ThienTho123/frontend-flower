@@ -126,6 +126,16 @@
   color: #2c3e50;
   font-weight: 600;
 }
+.od-product-title-link {
+  text-decoration: none; /* Bỏ gạch chân mặc định */
+  color: #333; /* Màu chữ mặc định */
+  transition: color 0.3s ease;
+}
+
+.od-product-title-link:hover {
+  color: #e91e63; /* Màu khi hover (có thể thay đổi tùy ý) */
+  cursor: pointer;
+}
 
 .od-product-price {
   font-size: 16px;

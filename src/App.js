@@ -103,7 +103,7 @@ import OrderDelivery from "./TaT/UserAccount/OrderDelivery.js";
 import RefundOrDe from "./TaT/UserAccount/RefundOrDe.js";
 import StaffOrderDe from "./TaT/StaffDashboard/StaffOrderDe.js";
 import StaffOrderDeDetail from "./TaT/StaffDashboard/StaffOrderDeDetail.js";
-
+import Attendance from "./TaT/UserAccount/Attendance.js";
 
 import {
   BrowserRouter as Router,
@@ -275,6 +275,8 @@ const AppRoutes = () => {
           <Route path="sendcomment" element={<SendComment />} />
           <Route path="blogpin" element={<BlogPin />} />
           <Route path="sendcomment/:id" element={<SendCommentDetail />} />
+          <Route path="attendance" element={<Attendance />} />
+
         </Route>
 
         <Route path="/staffaccount" element={<AccountStaffLayout />}>
