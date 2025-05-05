@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import returnIcon from "./ImageDashboard/return-button.png"; // Điều chỉnh đường dẫn nếu cần
 
-const StaffOrderDeDetail = () => {
+const AdminOrderDeDetail = () => {
   const { id } = useParams();
   const [orderDetails, setOrderDetails] = useState(null);
   const [error, setError] = useState(null);
@@ -39,7 +39,7 @@ const StaffOrderDeDetail = () => {
     const fetchOrderDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/staff/orde/${id}`,
+          `http://localhost:8080/api/v1/admin/orde/${id}`,
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -65,7 +65,7 @@ const StaffOrderDeDetail = () => {
   const handleAcceptNewOrder = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/orde/${id}/acceptNew`,
+        `http://localhost:8080/api/v1/admin/orde/${id}/acceptNew`,
         {
           method: "POST",
           headers: {
@@ -90,7 +90,7 @@ const StaffOrderDeDetail = () => {
   const handleDeclineNewOrder = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/orde/${id}/declineNew`,
+        `http://localhost:8080/api/v1/admin/orde/${id}/declineNew`,
         {
           method: "POST",
           headers: {
@@ -115,7 +115,7 @@ const StaffOrderDeDetail = () => {
   const handleAcceptCancelRequest = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/orde/${id}/acceptCancelRequest`,
+        `http://localhost:8080/api/v1/admin/orde/${id}/acceptCancelRequest`,
         {
           method: "POST",
           headers: {
@@ -140,7 +140,7 @@ const StaffOrderDeDetail = () => {
   const handleDeclineCancelRequest = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/orde/${id}/declineCancelRequest`,
+        `http://localhost:8080/api/v1/admin/orde/${id}/declineCancelRequest`,
         {
           method: "POST",
           headers: {
@@ -165,7 +165,7 @@ const StaffOrderDeDetail = () => {
   const handleDeliverNow = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/orde/${id}/deli`,
+        `http://localhost:8080/api/v1/admin/orde/${id}/deli`,
         {
           method: "POST",
           headers: {
@@ -190,7 +190,7 @@ const StaffOrderDeDetail = () => {
   const fetchUpdatedDetails = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/orde/${id}`,
+        `http://localhost:8080/api/v1/admin/orde/${id}`,
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -265,7 +265,7 @@ const StaffOrderDeDetail = () => {
   };  
   // Quay lại trang danh sách
   const handleBack = () => {
-    navigate("/StaffOrderDe");
+    navigate("/AdminOrderDe");
   };
 
   // Format datetime từ mảng [năm, tháng, ngày, giờ, phút]
@@ -493,4 +493,4 @@ const StaffOrderDeDetail = () => {
   );
 };
 
-export default StaffOrderDeDetail;
+export default AdminOrderDeDetail;

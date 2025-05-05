@@ -798,3 +798,41 @@
   .schedule-delivery-button:hover i {
     transform: rotate(15deg);
   }
+  .prebuy-discount-input input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 19px; /* Tăng kích thước chữ từ 14px lên 16px */
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .prebuy-discount-input input:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+  }
+  
+  .prebuy-discount-input input::placeholder {
+    color: #999;
+  }
+  
+  .prebuy-discount-input .prebuy-button {
+    margin-left: 15px; /* Increased spacing between input and button */
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+  }
+  
+  .prebuy-discount-input .prebuy-button:hover {
+    background-color: #146f29;
+  }
+  
+  .prebuy-discount-input .prebuy-button:active {
+    background-color: #156929;
+  }

@@ -103,6 +103,8 @@ import OrderDelivery from "./TaT/UserAccount/OrderDelivery.js";
 import RefundOrDe from "./TaT/UserAccount/RefundOrDe.js";
 import StaffOrderDe from "./TaT/StaffDashboard/StaffOrderDe.js";
 import StaffOrderDeDetail from "./TaT/StaffDashboard/StaffOrderDeDetail.js";
+import AdminOrderDe from "./TaT/AdminDashboard/AdminOrderDe.js";
+import AdminOrderDeDetail from "./TaT/AdminDashboard/AdminOrderDeDetail.js";
 import Attendance from "./TaT/UserAccount/Attendance.js";
 
 import {
@@ -141,6 +143,8 @@ const AppRoutes = () => {
     "/AdminType",
     "/AdminDelivery",
     "/AdminCanceldelivery",
+    "/AdminOrderDe",
+    "/AdminOrderDeDetail",
     "/StaffFlower",
     "/staff",
     "/StaffFlowerImage",
@@ -224,7 +228,8 @@ const AppRoutes = () => {
         <Route path="/AdminDetect" element={<AdminDetect />} />
         <Route path="/AdminDetect/new" element={<AdminCreateDetect />} />
         <Route path="/AdminDetect/edit/:id" element={<AdminEditDetect />} />
-
+        <Route path="/AdminOrderDe" element={<AdminOrderDe/>} />
+        <Route path="/AdminOrderDe/:id" element={<AdminOrderDeDetail/>} />
 
         {/* Staff routes */}
         <Route path="/staff" element={<StaffDashboard />} />

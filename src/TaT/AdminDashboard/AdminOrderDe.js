@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import returnIcon from "./ImageDashboard/return-button.png"; 
-import "./StaffOrderDe.css";
+import "./AdminOrderDe.css"; // Đảm bảo tạo file CSS tương ứng
 import { Link } from "react-router-dom";
 
-const StaffOrderDe = () => {
+const AdminOrderDe = () => {
   const [allOrders, setAllOrders] = useState([]);
   const [haveDeliOrders, setHaveDeliOrders] = useState([]);
   const [newOrders, setNewOrders] = useState([]);
@@ -73,7 +73,7 @@ const StaffOrderDe = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/v1/staff/orde",
+          "http://localhost:8080/api/v1/admin/orde",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -102,7 +102,7 @@ const StaffOrderDe = () => {
   const handleAcceptNewOrder = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/orde/${id}/acceptNew`,
+        `http://localhost:8080/api/v1/admin/orde/${id}/acceptNew`,
         {
           method: "POST",
           headers: {
@@ -127,7 +127,7 @@ const StaffOrderDe = () => {
   const handleDeclineNewOrder = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/orde/${id}/declineNew`,
+        `http://localhost:8080/api/v1/admin/orde/${id}/declineNew`,
         {
           method: "POST",
           headers: {
@@ -152,7 +152,7 @@ const StaffOrderDe = () => {
   const handleAcceptCancelRequest = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/orde/${id}/acceptCancelRequest`,
+        `http://localhost:8080/api/v1/admin/orde/${id}/acceptCancelRequest`,
         {
           method: "POST",
           headers: {
@@ -177,7 +177,7 @@ const StaffOrderDe = () => {
   const handleDeclineCancelRequest = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/orde/${id}/declineCancelRequest`,
+        `http://localhost:8080/api/v1/admin/orde/${id}/declineCancelRequest`,
         {
           method: "POST",
           headers: {
@@ -202,7 +202,7 @@ const StaffOrderDe = () => {
   const handleDeliverNow = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/orde/${id}/deli`,
+        `http://localhost:8080/api/v1/admin/orde/${id}/deli`,
         {
           method: "POST",
           headers: {
@@ -227,7 +227,7 @@ const StaffOrderDe = () => {
   const refreshOrderLists = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/v1/staff/orde",
+        "http://localhost:8080/api/v1/admin/orde",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -282,7 +282,7 @@ const StaffOrderDe = () => {
 
   // Quay lại dashboard
   const handleBackToDashboard = () => {
-    navigate("/staff");
+    navigate("/admin");
   };
 
   // Hiển thị modal xác nhận
@@ -408,7 +408,7 @@ const StaffOrderDe = () => {
           className="return-button"
           onClick={handleBackToDashboard}
         />
-        <h2>Quản Lý Đơn Đặt Hàng Theo Lịch - Nhân viên</h2>
+        <h2>Quản Lý Đơn Đặt Hàng Theo Lịch - Admin</h2>
       </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
       
@@ -474,7 +474,7 @@ const StaffOrderDe = () => {
                     <tr key={order.id}>
                       <td>
                         <Link
-                          to={`/StaffOrderDe/${order.id}`}
+                          to={`/AdminOrderDe/${order.id}`}
                           className="order-link"
                         >
                           {order.id}
@@ -523,7 +523,7 @@ const StaffOrderDe = () => {
                     <tr key={order.id}>
                       <td>
                         <Link
-                          to={`/StaffOrderDe/${order.id}`}
+                          to={`/AdminOrderDe/${order.id}`}
                           className="order-link"
                         >
                           {order.id}
@@ -583,7 +583,7 @@ const StaffOrderDe = () => {
                     <tr key={order.id}>
                       <td>
                         <Link
-                          to={`/StaffOrderDe/${order.id}`}
+                          to={`/AdminOrderDe/${order.id}`}
                           className="order-link"
                         >
                           {order.id}
@@ -639,7 +639,7 @@ const StaffOrderDe = () => {
                     <tr key={order.id}>
                       <td>
                         <Link
-                          to={`/StaffOrderDe/${order.id}`}
+                          to={`/AdminOrderDe/${order.id}`}
                           className="order-link"
                         >
                           {order.id}
@@ -706,4 +706,4 @@ const StaffOrderDe = () => {
   );
 };
 
-export default StaffOrderDe;
+export default AdminOrderDe;
