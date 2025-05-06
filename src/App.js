@@ -106,6 +106,10 @@ import StaffOrderDeDetail from "./TaT/StaffDashboard/StaffOrderDeDetail.js";
 import AdminOrderDe from "./TaT/AdminDashboard/AdminOrderDe.js";
 import AdminOrderDeDetail from "./TaT/AdminDashboard/AdminOrderDeDetail.js";
 
+import StaffAccountGift from "./TaT/StaffDashboard/StaffAccountGift.js";
+import StaffNewAccountGift from "./TaT/StaffDashboard/NewAccountGift.js";
+import StaffEditAccountGift from "./TaT/StaffDashboard/EditAccountGift.js";
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -250,6 +254,10 @@ const AppRoutes = () => {
         <Route path="/myblog/:id" element={<EditBlogForm />} />
         <Route path="/StaffOrderDe" element={<StaffOrderDe/>} />
         <Route path="/StaffOrderDe/:id" element={<StaffOrderDeDetail/>} />
+
+        <Route path="/StaffAccountGift" element={<StaffAccountGift/>} />
+        <Route path="/StaffAccountGift/new" element={<StaffNewAccountGift/>} />
+        <Route path="/StaffAccountGift/edit/:id" element={<StaffEditAccountGift/>} />
 
 
 

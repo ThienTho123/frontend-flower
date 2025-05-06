@@ -17,6 +17,8 @@ import preorder from "./ImageDashboard/preorder.png"
 import blog from "./ImageDashboard/Blog.png"
 import event from "./ImageDashboard/event.png"
 import orderDeIcon from "./ImageDashboard/orderde.png";
+import giftIcon from "./ImageDashboard/gift.png";
+
 const StaffDashboard = () => {
   const navigate = useNavigate();
   const [accountInfo, setAccountInfo] = useState(null);
@@ -118,6 +120,9 @@ const StaffDashboard = () => {
             </button>
             <button onClick={() => handleNavigate("/StaffOrderDe")}>
               <img src={orderDeIcon} alt="Đơn đặt trước mới" /> Đơn theo lịch
+            </button>
+            <button onClick={() => handleNavigate("/StaffAccountGift")}>
+              <img src={giftIcon} alt="Quản lý quà tặng" /> Quản lý quà tặng
             </button>
           </div>
         </div>
