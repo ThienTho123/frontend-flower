@@ -105,3 +105,60 @@ h2 {
   90%  { opacity: 1; }
   100% { opacity: 0; }
 }
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.discount-code {
+  color: #007bff;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.tooltip-box {
+  visibility: hidden;
+  opacity: 0;
+  width: 240px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  padding: 10px;
+  border-radius: 8px;
+  position: absolute;
+  z-index: 1000;
+  top: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  font-size: 13px;
+  line-height: 1.4;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.tooltip-wrapper:hover .tooltip-box {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+.toast-copy {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4BB543;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  z-index: 9999;
+  animation: fadeOut 3s ease forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}

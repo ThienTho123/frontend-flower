@@ -106,7 +106,7 @@ import StaffOrderDeDetail from "./TaT/StaffDashboard/StaffOrderDeDetail.js";
 import AdminOrderDe from "./TaT/AdminDashboard/AdminOrderDe.js";
 import AdminOrderDeDetail from "./TaT/AdminDashboard/AdminOrderDeDetail.js";
 import Attendance from "./TaT/UserAccount/Attendance.js";
-
+import RollBar from "./TaT/UserAccount/RollBar.js";
 import {
   BrowserRouter as Router,
   Routes,
@@ -117,6 +117,7 @@ import {
 import React, { useEffect } from "react";
 import OrderDetail from "./TaT/ShipperAccount/OrderDetail.js";
 import OrderDeliveryDetail from "./TaT/UserAccount/OrderDeliveryDetail.js";
+import WheelComponent from "./TaT/UserAccount/RollBarDetail..js";
 const AppRoutes = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location
@@ -263,6 +264,9 @@ const AppRoutes = () => {
         <Route path="/news/:id" element={<NewsDetail />} />
         <Route path="/PaymentFailure" element={<PaymentFailure />} />
         <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
+        <Route path="/rollbar" element={<RollBar />} />
+        <Route path="/rollbar/:id" element={<WheelComponent />} />
+
         <Route path="/account" element={<AccountLayout />}>
           <Route index element={<Profile />} />
           <Route path="changepassword" element={<ChangePassword />} />

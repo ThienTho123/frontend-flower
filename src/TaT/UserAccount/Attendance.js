@@ -8,24 +8,27 @@ const Attendance = () => {
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [showSuccess, setShowSuccess] = useState(false); // 👈 New
-
+  const [accountGifts, setAccountGifts] = useState([]);
   const today = dayjs();
 
   const reloadAttendance = () => {
     const token = localStorage.getItem("access_token");
 
-    axios.get("http://localhost:8080/attendance", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
+    axios
+      .get("http://localhost:8080/attendance", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         const list = response.data.attendanceList || [];
-        const filtered = list.filter(item => {
+        const filtered = list.filter((item) => {
           const [year, month] = item.date;
-          return year === selectedDate.year() && month === selectedDate.month() + 1;
+          return (
+            year === selectedDate.year() && month === selectedDate.month() + 1
+          );
         });
-        const dates = filtered.map(item => item.date[2]);
+        const dates = filtered.map((item) => item.date[2]);
         setAttendanceDates(dates);
       })
       .catch((error) => {
@@ -33,11 +36,34 @@ const Attendance = () => {
       });
   };
 
+  const getAccountGifts = () => {
+    const token = localStorage.getItem("access_token");
+
+    axios
+      .get("http://localhost:8080/attendance/gift", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        const gifts = response.data.accountGifts || [];
+        console.log("gifts: ", gifts);
+
+        setAccountGifts(gifts);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi lấy dữ liệu quà:", error);
+      });
+    console.log("gifts: ", accountGifts);
+  };
+
   useEffect(() => {
     reloadAttendance();
-
+    getAccountGifts();
     const totalDays = selectedDate.daysInMonth();
-    const startDay = dayjs(`${selectedDate.year()}-${selectedDate.month() + 1}-01`).day();
+    const startDay = dayjs(
+      `${selectedDate.year()}-${selectedDate.month() + 1}-01`
+    ).day();
     const days = [];
 
     for (let i = 0; i < startDay; i++) {
@@ -52,11 +78,11 @@ const Attendance = () => {
   }, [selectedDate]);
 
   const handlePrevMonth = () => {
-    setSelectedDate(prev => prev.subtract(1, "month"));
+    setSelectedDate((prev) => prev.subtract(1, "month"));
   };
 
   const handleNextMonth = () => {
-    setSelectedDate(prev => prev.add(1, "month"));
+    setSelectedDate((prev) => prev.add(1, "month"));
   };
 
   const handleClickToday = () => {
@@ -69,11 +95,16 @@ const Attendance = () => {
 
     const token = localStorage.getItem("access_token");
 
-    axios.post("http://localhost:8080/attendance/check", {}, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
+    axios
+      .post(
+        "http://localhost:8080/attendance/check",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then(() => {
         reloadAttendance();
         setShowSuccess(true); // 👈 Hiện thông báo
@@ -83,6 +114,37 @@ const Attendance = () => {
         console.error("Lỗi khi điểm danh:", error);
       });
   };
+  const formatDate = (dateArray) => {
+    if (!Array.isArray(dateArray) || dateArray.length !== 3) return "-";
+
+    const [year, month, day] = dateArray;
+
+    // Đảm bảo có định dạng dd/MM/yyyy với số có 2 chữ số
+    const dd = String(day).padStart(2, "0");
+    const mm = String(month).padStart(2, "0");
+
+    return `${dd}/${mm}/${year}`;
+  };
+  const formatDateTime = (dateTimeArray) => {
+    if (!Array.isArray(dateTimeArray) || dateTimeArray.length < 6) return "-";
+    const [year, month, day, hour, minute, second] = dateTimeArray;
+    return `${String(day).padStart(2, "0")}/${String(month).padStart(
+      2,
+      "0"
+    )}/${year} ${String(hour).padStart(2, "0")}:${String(minute).padStart(
+      2,
+      "0"
+    )}:${String(second).padStart(2, "0")}`;
+  };
+  function showCopyToast() {
+    const toast = document.createElement("div");
+    toast.className = "toast-copy";
+    toast.innerText = "✅ Mã giảm giá đã được sao chép!";
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
+  }
 
   const weekDays = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
 
@@ -97,7 +159,9 @@ const Attendance = () => {
 
       <div className="weekdays">
         {weekDays.map((day, index) => (
-          <div key={index} className="weekday">{day}</div>
+          <div key={index} className="weekday">
+            {day}
+          </div>
         ))}
       </div>
 
@@ -114,7 +178,7 @@ const Attendance = () => {
           const classNames = [
             "calendar-day",
             isAttended ? "attended" : "",
-            isToday ? "today" : ""
+            isToday ? "today" : "",
           ].join(" ");
 
           return (
@@ -132,10 +196,96 @@ const Attendance = () => {
 
       {/* ✅ Hiển thị layout khi điểm danh thành công */}
       {showSuccess && (
-        <div className="success-banner">
-          ✅ Điểm danh thành công!
-        </div>
+        <div className="success-banner">✅ Điểm danh thành công!</div>
       )}
+
+      <div className="account-gift">
+        <h3>🎁 Quà bạn nhận được:</h3>
+        {accountGifts.length === 0 ? (
+          <p>Chưa có quà nào.</p>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Ngày</th>
+                <th>Tên quà</th>
+                <th>Mô tả</th>
+                <th>Mã giảm giá</th>
+                <th>Hoa</th>
+              </tr>
+            </thead>
+            <tbody>
+              {accountGifts.map((gift, index) => {
+                const discount = gift.accountGift.discount;
+                const order = gift.accountGift.order;
+
+                return (
+                  <tr key={index}>
+                    <td>{formatDate(gift.accountGift.date)}</td>
+                    <td>{gift.accountGift.gift?.name || "-"}</td>
+                    <td>{gift.accountGift.gift?.description || "-"}</td>
+
+                    {/* ✅ Discount có tooltip + click để copy (hiện toast) */}
+                    <td>
+                      {discount ? (
+                        <div className="tooltip-wrapper">
+                          <span
+                            className="discount-code"
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                discount.discountcode
+                              );
+                              showCopyToast();
+                            }}
+                          >
+                            {discount.discountcode}
+                          </span>
+                          <div className="tooltip-box">
+                            <p>
+                              <strong>Hết hạn:</strong>{" "}
+                              {formatDateTime(discount.endDate)}
+                            </p>
+                            <p>
+                              <strong>Dành cho:</strong> {gift.disfor || "-"}
+                            </p>
+                            <p>
+                              <strong>Giảm:</strong>{" "}
+                              {discount.discountPercent || "-"}%
+                            </p>
+                            <p>
+                              <strong>Tình trạng:</strong>{" "}
+                              {discount.status || "-"}
+                            </p>
+                          </div>
+                        </div>
+                      ) : (
+                        "-"
+                      )}
+                    </td>
+
+                    {/* ✅ Order chuyển trang */}
+                    <td>
+                      {order ? (
+                        <a
+                          href={`/account/history/${order.orderID}`}
+                          style={{
+                            color: "green",
+                            textDecoration: "underline",
+                          }}
+                        >
+                          {order.orderID}
+                        </a>
+                      ) : (
+                        "-"
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 };

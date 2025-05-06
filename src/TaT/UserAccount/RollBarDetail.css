@@ -1,0 +1,62 @@
+/* WheelComponent.css */
+
+.modal-rollbar-content {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    padding: 2rem;
+    text-align: center;
+    border-radius: 10px;
+    background-color: #f0fff0;
+    border: 2px solid #4CAF50;
+    position: absolute;
+  }
+  
+  .modal-rollbar-close-button {
+    margin-top: 20px;
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .attendance-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.gift-info-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.gift-info-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+}
+
+.gift-info-form input,
+.gift-info-form textarea {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.gift-info-form button[type="submit"] {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
