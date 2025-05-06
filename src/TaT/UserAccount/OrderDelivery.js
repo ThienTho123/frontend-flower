@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./OrderDelivery.css"; 
+import "./OrderDelivery.css";
 import vnpay from "./Image/vnpay.jpg";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Link } from "react-router-dom";
 
 const OrderDelivery = () => {
   const navigate = useNavigate();
@@ -42,21 +43,21 @@ const OrderDelivery = () => {
 
   useEffect(() => {
     const accesstoken = localStorage.getItem("access_token");
-    
+
     if (!accesstoken) {
       alert("Vui lòng đăng nhập để sử dụng chức năng này");
       navigate("/login");
       return;
     }
-  
+
     // Log để kiểm tra token
     console.log("Access token:", accesstoken);
-    
+
     setLoading(true);
     fetch("http://localhost:8080/orderdelivery", {
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${accesstoken}`,
+        Authorization: `Bearer ${accesstoken}`,
       },
     })
       .then((response) => {
@@ -67,16 +68,19 @@ const OrderDelivery = () => {
       })
       .then((data) => {
         console.log("API Response:", data);
-  
+
         // Check if flower data exists and map it
         if (data.allFlowers) {
-          const mappedFlowers = data.allFlowers.map(flower => {
-            const defaultSize = flower.flowerSizeDTOS.length > 0 ? flower.flowerSizeDTOS[0] : null;
+          const mappedFlowers = data.allFlowers.map((flower) => {
+            const defaultSize =
+              flower.flowerSizeDTOS.length > 0
+                ? flower.flowerSizeDTOS[0]
+                : null;
             return {
               productID: flower.id,
               productTitle: flower.name,
               avatar: flower.image,
-              sizes: flower.flowerSizeDTOS.map(size => ({
+              sizes: flower.flowerSizeDTOS.map((size) => ({
                 id: size.flowerSizeID,
                 name: size.sizeName,
                 price: size.price,
@@ -85,12 +89,12 @@ const OrderDelivery = () => {
               quantity: 0,
               selectedSizeId: defaultSize ? defaultSize.flowerSizeID : null,
               selectedSize: defaultSize ? defaultSize.sizeName : "",
-              selectedPrice: defaultSize ? defaultSize.price : 0
+              selectedPrice: defaultSize ? defaultSize.price : 0,
             };
           });
           setFlowers(mappedFlowers);
         }
-  
+
         // Set delivery types
         if (data.orderDeliveryTypeList) {
           setDeliveryTypesList(data.orderDeliveryTypeList);
@@ -98,7 +102,7 @@ const OrderDelivery = () => {
             setSelectedDeliveryTypeId(data.orderDeliveryTypeList[0].id);
           }
         }
-  
+
         // Set account data if available
         if (data.account) {
           setAccount(data.account);
@@ -109,7 +113,7 @@ const OrderDelivery = () => {
             note: "",
           });
         }
-  
+
         setLoading(false);
       })
       .catch((error) => {
@@ -170,25 +174,29 @@ const OrderDelivery = () => {
   };
 
   const handleProductSelection = (productID) => {
-    setFlowers(flowers.map(flower => 
-      flower.productID === productID 
-        ? { 
-            ...flower, 
-            selected: !flower.selected,
-            quantity: !flower.selected ? 1 : flower.quantity
-          } 
-        : flower
-    ));
+    setFlowers(
+      flowers.map((flower) =>
+        flower.productID === productID
+          ? {
+              ...flower,
+              selected: !flower.selected,
+              quantity: !flower.selected ? 1 : flower.quantity,
+            }
+          : flower
+      )
+    );
   };
-  
+
   const handleQuantityChange = (productID, quantity) => {
     const newQuantity = Math.max(0, parseInt(quantity) || 0);
-    
-    setFlowers(flowers.map(flower => 
-      flower.productID === productID 
-        ? { ...flower, quantity: newQuantity } 
-        : flower
-    ));
+
+    setFlowers(
+      flowers.map((flower) =>
+        flower.productID === productID
+          ? { ...flower, quantity: newQuantity }
+          : flower
+      )
+    );
   };
 
   const handleSizeChange = (productID, sizeId) => {
@@ -252,8 +260,8 @@ const OrderDelivery = () => {
     }
 
     // Validate products
-    const selectedFlowersWithQty = flowers.filter(flower => 
-      flower.selected && flower.quantity > 0
+    const selectedFlowersWithQty = flowers.filter(
+      (flower) => flower.selected && flower.quantity > 0
     );
 
     if (selectedFlowersWithQty.length === 0) {
@@ -264,9 +272,9 @@ const OrderDelivery = () => {
     // Format the date as yyyy-MM-dd'T'HH:mm:ss (ISO format)
     const dateObj = new Date(startDate);
     // Extract time parts from deliveryTime (assuming format like "9:00")
-    const [hours, minutes] = deliveryTime.split(':').map(Number);
+    const [hours, minutes] = deliveryTime.split(":").map(Number);
     dateObj.setHours(hours, minutes, 0, 0);
-    
+
     const formattedDate = dateObj.toISOString();
     const accountId = account?.id || 0;
 
@@ -278,13 +286,12 @@ const OrderDelivery = () => {
       note: buyInfo.note,
       orderDeliveryTypeID: parseInt(selectedDeliveryTypeId),
       dateStart: formattedDate,
-      deliverper: intervalValue,  // Using the exact enum value: every_day, two_day, three_day
-      flowerChooses: selectedFlowersWithQty.map(flower => ({
+      deliverper: intervalValue, // Using the exact enum value: every_day, two_day, three_day
+      flowerChooses: selectedFlowersWithQty.map((flower) => ({
         flowersizeid: flower.selectedSizeId,
-        quantity: flower.quantity
+        quantity: flower.quantity,
       })),
       accountId: accountId,
-
     };
 
     console.log("Order Data:", orderData);
@@ -296,46 +303,50 @@ const OrderDelivery = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${accesstoken}`,
+        Authorization: `Bearer ${accesstoken}`,
       },
       body: JSON.stringify(orderData),
     })
-    .then(response => {
-      if (!response.ok) {
-        if (response.status === 403) {
-          throw new Error("Không có quyền truy cập. Vui lòng đăng nhập lại hoặc liên hệ quản trị viên.");
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 403) {
+            throw new Error(
+              "Không có quyền truy cập. Vui lòng đăng nhập lại hoặc liên hệ quản trị viên."
+            );
+          }
+          return response.text().then((text) => {
+            throw new Error(
+              `Lỗi (${response.status}): ${text || response.statusText}`
+            );
+          });
         }
-        return response.text().then(text => {
-          throw new Error(`Lỗi (${response.status}): ${text || response.statusText}`);
+        return response.text();
+      })
+      .then((data) => {
+        console.log("Order set successfully:", data);
+        return fetch(`http://localhost:8080/pay?totalPayment=${totalPayment}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accesstoken}`,
+          },
         });
-      }
-      return response.text();
-    })
-    .then(data => {
-      console.log("Order set successfully:", data);
-      return fetch(`http://localhost:8080/pay?totalPayment=${totalPayment}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${accesstoken}`,
+      })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to initiate payment");
         }
+        return response.text();
+      })
+      .then((vnpayUrl) => {
+        console.log("VNPay URL:", vnpayUrl);
+        // Chuyển hướng đến trang thanh toán VNPay
+        window.location.href = vnpayUrl;
+      })
+      .catch((error) => {
+        setError("Có lỗi xảy ra khi đặt lịch giao hoa: " + error.message);
+        console.error("Order error:", error);
       });
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error("Failed to initiate payment");
-      }
-      return response.text();
-    })
-    .then(vnpayUrl => {
-      console.log("VNPay URL:", vnpayUrl);
-      // Chuyển hướng đến trang thanh toán VNPay
-      window.location.href = vnpayUrl;
-    })
-    .catch(error => {
-      setError("Có lỗi xảy ra khi đặt lịch giao hoa: " + error.message);
-      console.error("Order error:", error);
-    });
   };
 
   if (loading) {
@@ -345,16 +356,18 @@ const OrderDelivery = () => {
   return (
     <div className="od-container">
       <h2 className="od-heading">Đặt Hoa Theo Lịch</h2>
-      
+
       <div className="od-sections">
         <div className="od-products">
           <h3>Chọn Sản Phẩm</h3>
           <div className="od-product-scroll">
             <div className="od-product-grid">
               {flowers.map((flower) => (
-                <div 
-                  key={flower.productID} 
-                  className={`od-product-card ${flower.selected ? 'selected' : ''}`}
+                <div
+                  key={flower.productID}
+                  className={`od-product-card ${
+                    flower.selected ? "selected" : ""
+                  }`}
                 >
                   <div className="od-product-select">
                     <input
@@ -364,41 +377,66 @@ const OrderDelivery = () => {
                       className="od-custom-checkbox"
                     />
                   </div>
-                  <div className="od-product-image">
-                    <img src={flower.avatar} alt={flower.productTitle} />
-                  </div>
-                  <div className="od-product-info">
-                      <h3>{flower.productTitle}</h3>
 
-                      <div className="od-product-price">
-                      {flower.selected && flower.quantity > 0 
-                        ? (flower.selectedPrice * flower.quantity).toLocaleString("vi-VN") 
-                        : flower.selectedPrice ? flower.selectedPrice.toLocaleString("vi-VN") : "0"} VND
+                  <div className="od-product-image">
+                    <Link to={`/detail/${flower.productID}`}>
+                      <img src={flower.avatar} alt={flower.productTitle} />
+                    </Link>
+                  </div>
+
+                  <div className="od-product-info">
+                    <h3>
+                      <Link
+                        to={`/detail/${flower.productID}`}
+                        className="od-product-title-link"
+                      >
+                        {flower.productTitle}
+                      </Link>
+                    </h3>
+
+                    <div className="od-product-price">
+                      {flower.selected && flower.quantity > 0
+                        ? (
+                            flower.selectedPrice * flower.quantity
+                          ).toLocaleString("vi-VN")
+                        : flower.selectedPrice
+                        ? flower.selectedPrice.toLocaleString("vi-VN")
+                        : "0"}{" "}
+                      VND
+                    </div>
+
+                    <div className="od-product-options">
+                      <div className="od-size-select">
+                        <label>Kích thước:</label>
+                        <select
+                          value={flower.selectedSizeId}
+                          onChange={(e) =>
+                            handleSizeChange(flower.productID, e.target.value)
+                          }
+                          disabled={!flower.selected}
+                        >
+                          {flower.sizes &&
+                            flower.sizes.map((size) => (
+                              <option key={size.id} value={size.id}>
+                                {size.name} -{" "}
+                                {size.price.toLocaleString("vi-VN")} VND
+                              </option>
+                            ))}
+                        </select>
                       </div>
 
-                      <div className="od-product-options">
-                          <div className="od-size-select">
-                          <label>Kích thước:</label>
-                          <select
-                              value={flower.selectedSizeId}
-                              onChange={(e) => handleSizeChange(flower.productID, e.target.value)}
-                              disabled={!flower.selected}
-                          >
-                              {flower.sizes && flower.sizes.map((size) => (
-                              <option key={size.id} value={size.id}>
-                                  {size.name} - {size.price.toLocaleString("vi-VN")} VND
-                              </option>
-                              ))}
-                          </select>
-                          </div>
-                      
                       <div className="od-quantity-select">
                         <label>Số lượng:</label>
                         <div className="od-quantity-container">
                           <button
                             type="button"
                             className="od-quantity-btn"
-                            onClick={() => handleQuantityChange(flower.productID, flower.quantity - 1)}
+                            onClick={() =>
+                              handleQuantityChange(
+                                flower.productID,
+                                flower.quantity - 1
+                              )
+                            }
                             disabled={!flower.selected || flower.quantity <= 0}
                           >
                             -
@@ -407,14 +445,24 @@ const OrderDelivery = () => {
                             type="number"
                             min="0"
                             value={flower.quantity}
-                            onChange={(e) => handleQuantityChange(flower.productID, e.target.value)}
+                            onChange={(e) =>
+                              handleQuantityChange(
+                                flower.productID,
+                                e.target.value
+                              )
+                            }
                             disabled={!flower.selected}
                             className="od-quantity-input"
                           />
                           <button
                             type="button"
                             className="od-quantity-btn"
-                            onClick={() => handleQuantityChange(flower.productID, flower.quantity + 1)}
+                            onClick={() =>
+                              handleQuantityChange(
+                                flower.productID,
+                                flower.quantity + 1
+                              )
+                            }
                             disabled={!flower.selected}
                           >
                             +
@@ -432,11 +480,11 @@ const OrderDelivery = () => {
         <div className="od-options">
           <div className="od-delivery-schedule">
             <h3>Lịch Giao Hàng</h3>
-            
+
             <div className="od-schedule-option">
               <label>Loại lịch giao:</label>
-              <select 
-                value={deliveryInterval} 
+              <select
+                value={deliveryInterval}
                 onChange={(e) => setDeliveryInterval(e.target.value)}
               >
                 <option value="1">Theo ngày</option>
@@ -445,12 +493,12 @@ const OrderDelivery = () => {
                 <option value="3">Theo tháng</option>
               </select>
             </div>
-            
+
             {deliveryInterval !== "1" && (
               <div className="od-schedule-option">
                 <label>Khoảng cách giao hàng:</label>
-                <select 
-                  value={intervalValue} 
+                <select
+                  value={intervalValue}
                   onChange={(e) => setIntervalValue(e.target.value)}
                 >
                   <option value="every_day">Mỗi ngày</option>
@@ -459,7 +507,7 @@ const OrderDelivery = () => {
                 </select>
               </div>
             )}
-            
+
             <div className="od-schedule-option">
               <label>Ngày bắt đầu giao:</label>
               <DatePicker
@@ -471,11 +519,11 @@ const OrderDelivery = () => {
                 className="od-date-picker"
               />
             </div>
-            
+
             <div className="od-schedule-option">
               <label>Thời gian giao hàng:</label>
-              <select 
-                value={deliveryTime} 
+              <select
+                value={deliveryTime}
                 onChange={(e) => setDeliveryTime(e.target.value)}
               >
                 <option value="9:00">9:00</option>
@@ -515,7 +563,9 @@ const OrderDelivery = () => {
                 value={buyInfo.address}
                 onChange={(e) => handleInputChange("address", e.target.value)}
               />
-              {errors.address && <p style={{ color: "red" }}>{errors.address}</p>}
+              {errors.address && (
+                <p style={{ color: "red" }}>{errors.address}</p>
+              )}
             </label>
             <label>
               Ghi chú:
@@ -528,19 +578,15 @@ const OrderDelivery = () => {
 
           <div className="od-price-summary">
             <h3 className="od-total-payment">
-              Tổng thanh toán: {calculateTotalPrice().toLocaleString("vi-VN")} VND
+              Tổng thanh toán: {calculateTotalPrice().toLocaleString("vi-VN")}{" "}
+              VND
             </h3>
           </div>
 
           <div className="od-payment-options">
             <h3>Phương thức thanh toán</h3>
             <label className="od-payment-option">
-              <input
-                type="radio"
-                value="vnpay"
-                checked={true}
-                readOnly
-              />
+              <input type="radio" value="vnpay" checked={true} readOnly />
               <img src={vnpay} alt="VNPay" className="od-payment-icon" />
               VNPay
             </label>

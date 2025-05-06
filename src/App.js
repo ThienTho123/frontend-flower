@@ -105,6 +105,7 @@ import StaffOrderDe from "./TaT/StaffDashboard/StaffOrderDe.js";
 import StaffOrderDeDetail from "./TaT/StaffDashboard/StaffOrderDeDetail.js";
 import AdminOrderDe from "./TaT/AdminDashboard/AdminOrderDe.js";
 import AdminOrderDeDetail from "./TaT/AdminDashboard/AdminOrderDeDetail.js";
+import Attendance from "./TaT/UserAccount/Attendance.js";
 
 import StaffAccountGift from "./TaT/StaffDashboard/StaffAccountGift.js";
 import StaffNewAccountGift from "./TaT/StaffDashboard/NewAccountGift.js";
@@ -287,6 +288,8 @@ const AppRoutes = () => {
           <Route path="sendcomment" element={<SendComment />} />
           <Route path="blogpin" element={<BlogPin />} />
           <Route path="sendcomment/:id" element={<SendCommentDetail />} />
+          <Route path="attendance" element={<Attendance />} />
+
         </Route>
 
         <Route path="/staffaccount" element={<AccountStaffLayout />}>

@@ -492,8 +492,10 @@ const PreBuy = () => {
     });
     
     // Luôn thêm tham số discount, sử dụng giá trị 0 nếu không có discount được chọn
-    params.append("discount", selectedDiscount || 1);
-    
+    if (selectedDiscount !== null && selectedDiscount !== undefined) {
+      params.append("discount", selectedDiscount);
+    }
+        
     const url = `http://localhost:8080/prebuy/buy?${params.toString()}`;
   
     console.log("POST URL:", url);
@@ -612,9 +614,11 @@ const PreBuy = () => {
       `cartID=${encodeURIComponent(id)}&quantities=${encodeURIComponent(quantities[index])}&price=${encodeURIComponent(prices[index])}&paid=${encodeURIComponent(paids[index])}`
     ).join("&");
     
-    // Sử dụng giá trị mặc định 1 cho discount nếu không có discount được chọn
-    const discountParam = `discount=${encodeURIComponent(selectedDiscount || 1)}`;
-    const finalUrl = `${baseUrl}${cartParams}&${discountParam}`;
+    let finalUrl = `${baseUrl}${cartParams}`;
+    if (selectedDiscount !== null && selectedDiscount !== undefined) {
+      finalUrl += `&discount=${encodeURIComponent(selectedDiscount)}`;
+    }
+    
     
     console.log("URL thanh toán:", finalUrl);
     console.log("Thông tin người mua:", buyInfoBody);

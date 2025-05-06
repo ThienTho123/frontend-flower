@@ -109,6 +109,9 @@ const AccountLayout = () => {
         <button onClick={() => navigate("/account/changepassword")}>
           Đổi mật khẩu
         </button>
+        <button onClick={() => navigate("/account/attendance")}>
+          Điểm danh
+        </button>
         <button onClick={handleLogout}>Đăng xuất</button>
       </div>
       <div className="account-outlet">
