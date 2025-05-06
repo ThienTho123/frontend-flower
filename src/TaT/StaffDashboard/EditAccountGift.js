@@ -9,7 +9,7 @@ const EditAccountGift = () => {
   const navigate = useNavigate();
   const [accountGift, setAccountGift] = useState({
     account: null,
-    gift: null,  // Thay đổi từ string sang object để lưu đối tượng Gift
+    gift: null,
     order: null,
     discount: null,
     status: "ENABLE"
@@ -76,10 +76,11 @@ const EditAccountGift = () => {
       const giftData = response.data.accountGift;
       
       if (giftData) {
+        // Đảm bảo rằng chúng ta chỉ lưu những thông tin cần thiết
         setAccountGift({
           account: giftData.account,
           gift: giftData.gift,
-          order: giftData.order,
+          order: giftData.order ? { orderID: giftData.order.orderID } : null,
           discount: giftData.discount,
           status: giftData.status || "ENABLE"
         });
@@ -127,7 +128,8 @@ const EditAccountGift = () => {
         break;
       case "order":
         selectedItem = orderList.find(order => order.orderID === parseInt(value));
-        updatedAccountGift.order = selectedItem;
+        // Chỉ lấy orderID thay vì toàn bộ đối tượng order
+        updatedAccountGift.order = { orderID: selectedItem.orderID };
         // Khi chọn order, đặt discount về null
         updatedAccountGift.discount = null;
         break;
@@ -156,10 +158,14 @@ const EditAccountGift = () => {
       
       // Gửi đúng định dạng mà backend mong đợi
       const dataToSend = {
-        account: accountGift.account,
-        gift: accountGift.gift,
+        account: {
+          accountID: accountGift.account.accountID
+        },
+        gift: {
+          id: accountGift.gift.id
+        },
         order: accountGift.order,
-        discount: accountGift.discount,
+        discount: accountGift.discount ? { discountID: accountGift.discount.discountID } : null,
         status: accountGift.status
       };
       
@@ -245,7 +251,7 @@ const EditAccountGift = () => {
           <option value="">-- Chọn đơn hàng (không bắt buộc) --</option>
           {orderList.map(order => (
             <option key={order.orderID} value={order.orderID}>
-              {order.orderID} - {order.total ? `${order.total} VND` : 'N/A'}
+              {order.orderID} - {order.total ? `${order.total} VND` : order.totalAmount ? `${order.totalAmount} VND` : ''}
             </option>
           ))}
         </select>
@@ -398,23 +404,40 @@ const EditAccountGift = () => {
           >
             <h3>🎉 Thành công!</h3>
             <p>Quà tặng đã được cập nhật thành công.</p>
-            <button
-              onClick={() => {
-                setIsSuccessModalOpen(false);
-                navigate("/StaffAccountGift");
-              }}
-              className="event-success-modal-button"
-              style={{
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                border: 'none',
-                padding: '0.5rem 1rem',
-                borderRadius: '4px',
-                cursor: 'pointer'
-              }}
-            >
-              Đóng
-            </button>
+            <div className="event-success-modal-buttons">
+              <button
+                onClick={() => {
+                  setIsSuccessModalOpen(false);
+                  handleBackToList();
+                }}
+                className="event-success-modal-list-button"
+                style={{
+                  marginRight: '0.5rem',
+                  backgroundColor: '#2196F3',
+                  color: 'white',
+                  border: 'none',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Về Danh Sách
+              </button>
+              <button
+                onClick={() => setIsSuccessModalOpen(false)}
+                className="event-success-modal-continue-button"
+                style={{
+                  backgroundColor: '#4CAF50',
+                  color: 'white',
+                  border: 'none',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Tiếp Tục Chỉnh Sửa
+              </button>
+            </div>
           </div>
         </div>
       )}

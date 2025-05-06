@@ -6,7 +6,7 @@ import "./CreateEventForm.css";
 const NewAccountGift = () => {
   const [accountGift, setAccountGift] = useState({
     account: null,
-    gift: null, // Thay đổi từ string sang object để lưu đối tượng Gift
+    gift: null,
     order: null,
     discount: null,
     status: "ENABLE"
@@ -93,7 +93,8 @@ const NewAccountGift = () => {
         break;
       case "order":
         selectedItem = orderList.find(order => order.orderID === parseInt(value));
-        updatedAccountGift.order = selectedItem;
+        // Chỉ lấy orderID thay vì toàn bộ đối tượng order
+        updatedAccountGift.order = { orderID: selectedItem.orderID };
         // Khi chọn order, đặt discount về null
         updatedAccountGift.discount = null;
         break;
@@ -121,12 +122,16 @@ const NewAccountGift = () => {
     try {
       const accessToken = localStorage.getItem("access_token");
       
-      // Gửi đúng định dạng mà backend mong đợi
+      // Chuẩn bị dữ liệu để gửi
       const dataToSend = {
-        account: accountGift.account,
-        gift: accountGift.gift, // Giờ đây là đối tượng Gift
+        account: {
+          accountID: accountGift.account.accountID
+        },
+        gift: {
+          id: accountGift.gift.id
+        },
         order: accountGift.order,
-        discount: accountGift.discount,
+        discount: accountGift.discount ? { discountID: accountGift.discount.discountID } : null,
         status: accountGift.status
       };
       
@@ -221,7 +226,7 @@ const NewAccountGift = () => {
           <option value="">-- Chọn đơn hàng (không bắt buộc) --</option>
           {orderList.map(order => (
             <option key={order.orderID} value={order.orderID}>
-              {order.orderID} - {order.total ? `${order.total} VND` : 'N/A'}
+              {order.orderID} - {order.total ? `${order.total} VND` : ''}
             </option>
           ))}
         </select>

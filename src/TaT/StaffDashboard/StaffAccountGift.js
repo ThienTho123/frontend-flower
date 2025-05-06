@@ -47,13 +47,13 @@ const StaffAccountGift = () => {
       const updatedAccountGifts = rawAccountGifts.map((item, index) => ({
         stt: index + 1,
         id: item.id,
-        account: item.account ? item.account.username : "N/A",
+        account: item.account ? item.account.username : "",
         // Xử lý gift là một đối tượng thay vì chuỗi
-        gift: item.gift ? (item.gift.name || `Quà #${item.gift.id}`) : "N/A",
+        gift: item.gift ? (item.gift.name || `Quà #${item.gift.id}`) : "",
         giftObject: item.gift || null,
-        order: item.order ? `${item.order.orderID}` : "N/A",
+        order: item.order ? `${item.order.orderID}` : "",
         date: formatDate(item.date),
-        discount: item.discount ? `${item.discount.discountcode} (${item.discount.discountPercent}%)` : "N/A",
+        discount: item.discount ? `${item.discount.discountcode} (${item.discount.discountPercent}%)` : "",
         status: item.status,
       }));
 

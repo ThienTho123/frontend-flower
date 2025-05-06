@@ -111,6 +111,10 @@ import StaffAccountGift from "./TaT/StaffDashboard/StaffAccountGift.js";
 import StaffNewAccountGift from "./TaT/StaffDashboard/NewAccountGift.js";
 import StaffEditAccountGift from "./TaT/StaffDashboard/EditAccountGift.js";
 
+import StaffRollBar from "./TaT/StaffDashboard/StaffRollBar.js";
+import StaffNewRollBar from "./TaT/StaffDashboard/NewRollBar.js";
+import StaffEditRollBar from "./TaT/StaffDashboard/EditRollBar.js";
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -260,6 +264,9 @@ const AppRoutes = () => {
         <Route path="/StaffAccountGift/new" element={<StaffNewAccountGift/>} />
         <Route path="/StaffAccountGift/edit/:id" element={<StaffEditAccountGift/>} />
 
+        <Route path="/StaffRollBar" element={<StaffRollBar/>} />
+        <Route path="/StaffRollBar/new-rollbar" element={<StaffNewRollBar/>} />
+        <Route path="/StaffRollBar/edit/:id" element={<StaffEditRollBar/>} />
 
 
         {/* Other Routes */}
