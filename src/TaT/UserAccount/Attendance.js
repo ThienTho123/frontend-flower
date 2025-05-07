@@ -7,9 +7,10 @@ const Attendance = () => {
   const [attendanceDates, setAttendanceDates] = useState([]);
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [selectedDate, setSelectedDate] = useState(dayjs());
-  const [showSuccess, setShowSuccess] = useState(false); 
-  const [showSubmit, setShowSubmit] = useState(false); 
+  const [showSuccess, setShowSuccess] = useState(false); // 👈 New
   const [accountGifts, setAccountGifts] = useState([]);
+  const today = dayjs();
+  const [showSubmit, setShowSubmit] = useState(false);
   const [showForm, setShowForm] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
@@ -17,7 +18,31 @@ const Attendance = () => {
     address: "",
     note: "",
   });
-  const today = dayjs();
+
+  const reloadAttendance = () => {
+    const token = localStorage.getItem("access_token");
+
+    axios
+      .get("http://localhost:8080/attendance", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        const list = response.data.attendanceList || [];
+        const filtered = list.filter((item) => {
+          const [year, month] = item.date;
+          return (
+            year === selectedDate.year() && month === selectedDate.month() + 1
+          );
+        });
+        const dates = filtered.map((item) => item.date[2]);
+        setAttendanceDates(dates);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi lấy dữ liệu điểm danh:", error);
+      });
+  };
 
   const getAccountGifts = () => {
     const token = localStorage.getItem("access_token");
@@ -49,32 +74,16 @@ const Attendance = () => {
     ).day();
     const days = [];
 
-    for (let i = 0; i < startDay; i++) days.push(null);
-    for (let i = 1; i <= totalDays; i++) days.push(i);
+    for (let i = 0; i < startDay; i++) {
+      days.push(null);
+    }
+
+    for (let i = 1; i <= totalDays; i++) {
+      days.push(i);
+    }
 
     setDaysInMonth(days);
   }, [selectedDate]);
-
-  const reloadAttendance = () => {
-    const token = localStorage.getItem("access_token");
-
-    axios
-      .get("http://localhost:8080/attendance", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        const list = response.data.attendanceList || [];
-        const filtered = list.filter((item) => {
-          const [year, month] = item.date;
-          return (
-            year === selectedDate.year() && month === selectedDate.month() + 1
-          );
-        });
-        const dates = filtered.map((item) => item.date[2]);
-        setAttendanceDates(dates);
-      })
-      .catch((error) => console.error("Lỗi khi lấy dữ liệu điểm danh:", error));
-  };
 
   const handlePrevMonth = () => {
     setSelectedDate((prev) => prev.subtract(1, "month"));
@@ -239,18 +248,12 @@ const Attendance = () => {
             </thead>
             <tbody>
               {accountGifts.map((gift, index) => {
-                const {
-                  typeGift,
-                  order,
-                  gift: giftDetails,
-                  accountGift,
-                } = gift.accountGift || {};
-                const giftId = gift.id;
-                const discount = accountGift?.discount;
+                const discount = gift.accountGift.discount;
+                const order = gift.accountGift.order;
 
                 return (
                   <tr key={index}>
-                    <td>{dayjs(gift.accountGift.date).format("DD/MM/YYYY")}</td>
+                    <td>{formatDate(gift.accountGift.date)}</td>
                     <td>
                       {gift.accountGift.gift.typeGift !== "discount" &&
                       !gift.accountGift.order ? (
@@ -260,17 +263,62 @@ const Attendance = () => {
                             setShowForm(gift.accountGift.id);
                           }}
                         >
-                          {giftDetails?.name || "-"}
+                          {gift.accountGift.gift?.name || "-"}
                         </span>
                       ) : (
-                        giftDetails?.name || "-"
+                        gift.accountGift.gift?.name || "-"
                       )}
                     </td>
-                    <td>{giftDetails?.description || "-"}</td>
-                    <td>{discount?.discountcode || "-"}</td>
+                    <td>{gift.accountGift.gift?.description || "-"}</td>
+
+                    {/* ✅ Discount có tooltip + click để copy (hiện toast) */}
+                    <td>
+                      {discount ? (
+                        <div className="tooltip-wrapper">
+                          <span
+                            className="discount-code"
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                discount.discountcode
+                              );
+                              showCopyToast();
+                            }}
+                          >
+                            {discount.discountcode}
+                          </span>
+                          <div className="tooltip-box">
+                            <p>
+                              <strong>Hết hạn:</strong>{" "}
+                              {formatDateTime(discount.endDate)}
+                            </p>
+                            <p>
+                              <strong>Dành cho:</strong> {gift.disfor || "-"}
+                            </p>
+                            <p>
+                              <strong>Giảm:</strong>{" "}
+                              {discount.discountPercent || "-"}%
+                            </p>
+                            <p>
+                              <strong>Tình trạng:</strong>{" "}
+                              {discount.status || "-"}
+                            </p>
+                          </div>
+                        </div>
+                      ) : (
+                        "-"
+                      )}
+                    </td>
+
+                    {/* ✅ Order chuyển trang */}
                     <td>
                       {order ? (
-                        <a href={`/account/history/${order.orderID}`}>
+                        <a
+                          href={`/account/history/${order.orderID}`}
+                          style={{
+                            color: "green",
+                            textDecoration: "underline",
+                          }}
+                        >
                           {order.orderID}
                         </a>
                       ) : (
@@ -280,67 +328,66 @@ const Attendance = () => {
                   </tr>
                 );
               })}
+              {showForm && (
+                <>
+                  <div
+                    className="gift-account-form-overlay"
+                    onClick={() => setShowForm(null)}
+                  ></div>
+                  <div className="gift-account-form">
+                    <h4>Nhập thông tin nhận quà</h4>
+                    <form onSubmit={(e) => handleFormSubmit(e, showForm)}>
+                      <input
+                        type="text"
+                        name="name"
+                        placeholder="Tên"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
+                      />
+                      <input
+                        type="text"
+                        name="phone"
+                        placeholder="Số điện thoại"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        required
+                      />
+                      <input
+                        type="text"
+                        name="address"
+                        placeholder="Địa chỉ"
+                        value={formData.address}
+                        onChange={handleInputChange}
+                        required
+                      />
+                      <textarea
+                        name="note"
+                        placeholder="Ghi chú"
+                        value={formData.note}
+                        onChange={handleInputChange}
+                      />
+                      <button type="submit">Gửi</button>
+                      <button
+                        type="button"
+                        className="gift-close-button"
+                        onClick={() => setShowForm(null)}
+                      >
+                        Đóng
+                      </button>
+                    </form>
+                  </div>
+                </>
+              )}
+
+              {/* Thông báo thành công */}
+              {showSubmit && (
+                <div className="gift-account-modal-success">
+                  🎉 Thông tin đã được gửi thành công!
+                </div>
+              )}
             </tbody>
           </table>
-        )}
-
-        {showForm && (
-          <>
-            <div
-              className="gift-account-form-overlay"
-              onClick={() => setShowForm(null)}
-            ></div>
-            <div className="gift-account-form">
-              <h4>Nhập thông tin nhận quà</h4>
-              <form onSubmit={(e) => handleFormSubmit(e, showForm)}>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Tên"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="phone"
-                  placeholder="Số điện thoại"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="address"
-                  placeholder="Địa chỉ"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  required
-                />
-                <textarea
-                  name="note"
-                  placeholder="Ghi chú"
-                  value={formData.note}
-                  onChange={handleInputChange}
-                />
-                <button type="submit">Gửi</button>
-                <button
-                  type="button"
-                  className="gift-close-button"
-                  onClick={() => setShowForm(null)}
-                >
-                  Đóng
-                </button>
-              </form>
-            </div>
-          </>
-        )}
-
-        {/* Thông báo thành công */}
-        {showSubmit && (
-          <div className="gift-account-modal-success">
-            🎉 Thông tin đã được gửi thành công!
-          </div>
         )}
       </div>
     </div>
