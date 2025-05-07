@@ -1,82 +1,160 @@
 .rollbar-container {
-    padding: 40px 20px;
-    background: #f0f2f5;
-    min-height: 100vh;
+  padding: 50px 30px;
+  background: linear-gradient(120deg, #f0f2f5, #e6e9ed);
+  min-height: 100vh;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+.rollbar-title {
+  text-align: center;
+  margin-bottom: 50px;
+  font-size: 36px;
+  font-weight: 800;
+  color: #333;
+  letter-spacing: 1.2px;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.rollbar-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #ff9a9e, #fad0c4);
+  border-radius: 2px;
+}
+
+.rollbar-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 35px;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.rollbar-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,255,255,0.4));
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 24px;
+  width: 340px;
+  padding: 30px;
+  color: #333;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.rollbar-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: -1;
+  opacity: 0.08;
+  transform: rotate(20deg);
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.rollbar-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.rollbar-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.rollbar-card h3 {
+  margin-bottom: 18px;
+  font-size: 26px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #333, #777);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
+}
+
+.rollbar-card p {
+  margin: 10px 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.rollbar-card h4 {
+  margin-top: 20px;
+  margin-bottom: 12px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.gift-list {
+  padding-left: 5px;
+  margin-top: 12px;
+  list-style: none;
+}
+
+.gift-list li {
+  margin-bottom: 10px;
+  font-size: 15px;
+  padding-left: 25px;
+  position: relative;
+  line-height: 1.4;
+}
+
+.gift-list li::before {
+  content: '🎁';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 16px;
+}
+
+.gift-list li strong {
+  font-weight: 600;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .rollbar-container {
+    padding: 30px 15px;
   }
   
   .rollbar-title {
-    text-align: center;
+    font-size: 30px;
     margin-bottom: 40px;
-    font-size: 32px;
-    font-weight: bold;
-    color: #333;
-    letter-spacing: 1px;
-  }
-  
-  .rollbar-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    justify-content: center;
   }
   
   .rollbar-card {
-    background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
-    border: 1px solid rgba(255,255,255,0.18);
-    border-radius: 24px;
-    width: 320px;
-    padding: 25px;
-    color: #fff;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    overflow: hidden;
+    width: 100%;
+    max-width: 340px;
   }
-  
-  .rollbar-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    z-index: -1;
-    opacity: 0.6;
-    transform: rotate(20deg);
-  }
-  .rollbar-link {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  .rollbar-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
-  }
-  
-  .rollbar-card h3 {
-    margin-bottom: 10px;
-    font-size: 24px;
-  }
-  
-  .rollbar-card p {
-    margin: 5px 0;
-  }
-  
-  .rollbar-card h4 {
-    margin-top: 15px;
-    font-size: 18px;
-  }
-  
-  .gift-list {
-    padding-left: 20px;
-    margin-top: 8px;
-    list-style: disc;
-  }
-  
-  .gift-list li {
-    margin-bottom: 5px;
-    font-size: 15px;
-  }
-  
+}
+
+/* Animation for empty state */
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.rollbar-list p {
+  font-size: 18px;
+  color: #777;
+  text-align: center;
+  animation: pulse 2s infinite;
+  width: 100%;
+  padding: 40px 0;
+}
