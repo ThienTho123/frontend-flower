@@ -11,6 +11,7 @@ const WheelComponent = () => {
   const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
   const [days, setDays] = useState(0);
+  const [rolled, setRolled] = useState(false);
   const [requiredDays, setRequiredDays] = useState(0);
   const [canSpin, setCanSpin] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -36,9 +37,9 @@ const WheelComponent = () => {
         },
       })
       .then((response) => {
-        const { dayNeeds, rollBarInfoDTO } = response.data;
+        const { dayNeeds, rollBarInfoDTO, rolled } = response.data;
         const giftList = rollBarInfoDTO.giftInfoDTOList;
-
+        
         const wheelData = giftList.map((gift) => ({
           option: gift.name,
           typegift: gift.typegift, // Thêm typegift để kiểm tra
@@ -49,9 +50,10 @@ const WheelComponent = () => {
         setGifts(giftList);
         setDays(dayNeeds);
         setRequiredDays(rollBarInfoDTO.days);
-        setCanSpin(dayNeeds >= rollBarInfoDTO.days);
+        setCanSpin(dayNeeds >= rollBarInfoDTO.days && rolled === false);
         setWheelColor(rollBarInfoDTO.color || "#FFDDC1");
         setLoading(false);
+        setRolled(rolled)
       })
       .catch((error) => {
         console.error("Error loading rollbar data", error);
@@ -140,6 +142,7 @@ const WheelComponent = () => {
     <div style={{ textAlign: "center", paddingTop: 50 }}>
       <h2>Vòng quay phần thưởng</h2>
       <p>Ngày tham gia: {days} / {requiredDays}</p>
+      {rolled && <p style={{ color: "red" }}>Tháng này bạn đã quay, hãy đợi tháng sau nhé!</p>}
 
       <Wheel
         mustStartSpinning={mustSpin}

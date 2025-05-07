@@ -7,34 +7,17 @@ const Attendance = () => {
   const [attendanceDates, setAttendanceDates] = useState([]);
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [selectedDate, setSelectedDate] = useState(dayjs());
-  const [showSuccess, setShowSuccess] = useState(false); // 👈 New
+  const [showSuccess, setShowSuccess] = useState(false); 
+  const [showSubmit, setShowSubmit] = useState(false); 
   const [accountGifts, setAccountGifts] = useState([]);
+  const [showForm, setShowForm] = useState(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    address: "",
+    note: "",
+  });
   const today = dayjs();
-
-  const reloadAttendance = () => {
-    const token = localStorage.getItem("access_token");
-
-    axios
-      .get("http://localhost:8080/attendance", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        const list = response.data.attendanceList || [];
-        const filtered = list.filter((item) => {
-          const [year, month] = item.date;
-          return (
-            year === selectedDate.year() && month === selectedDate.month() + 1
-          );
-        });
-        const dates = filtered.map((item) => item.date[2]);
-        setAttendanceDates(dates);
-      })
-      .catch((error) => {
-        console.error("Lỗi khi lấy dữ liệu điểm danh:", error);
-      });
-  };
 
   const getAccountGifts = () => {
     const token = localStorage.getItem("access_token");
@@ -66,16 +49,32 @@ const Attendance = () => {
     ).day();
     const days = [];
 
-    for (let i = 0; i < startDay; i++) {
-      days.push(null);
-    }
-
-    for (let i = 1; i <= totalDays; i++) {
-      days.push(i);
-    }
+    for (let i = 0; i < startDay; i++) days.push(null);
+    for (let i = 1; i <= totalDays; i++) days.push(i);
 
     setDaysInMonth(days);
   }, [selectedDate]);
+
+  const reloadAttendance = () => {
+    const token = localStorage.getItem("access_token");
+
+    axios
+      .get("http://localhost:8080/attendance", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        const list = response.data.attendanceList || [];
+        const filtered = list.filter((item) => {
+          const [year, month] = item.date;
+          return (
+            year === selectedDate.year() && month === selectedDate.month() + 1
+          );
+        });
+        const dates = filtered.map((item) => item.date[2]);
+        setAttendanceDates(dates);
+      })
+      .catch((error) => console.error("Lỗi khi lấy dữ liệu điểm danh:", error));
+  };
 
   const handlePrevMonth = () => {
     setSelectedDate((prev) => prev.subtract(1, "month"));
@@ -136,6 +135,30 @@ const Attendance = () => {
       "0"
     )}:${String(second).padStart(2, "0")}`;
   };
+
+  const handleFormSubmit = (e, giftId) => {
+    e.preventDefault();
+    const token = localStorage.getItem("access_token");
+
+    axios
+      .post(`http://localhost:8080/attendance/sendInfo/${giftId}`, formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(() => {
+        setShowForm(null);
+        setFormData({ name: "", phone: "", address: "", note: "" });
+        setShowSubmit(true); // ✅ Hiện modal thành công
+        getAccountGifts(); // Tải lại danh sách quà
+        setTimeout(() => setShowSubmit(false), 3000); // Tự ẩn sau 3s
+      })
+      .catch((error) => console.error("Lỗi khi gửi thông tin:", error));
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   function showCopyToast() {
     const toast = document.createElement("div");
     toast.className = "toast-copy";
@@ -216,63 +239,38 @@ const Attendance = () => {
             </thead>
             <tbody>
               {accountGifts.map((gift, index) => {
-                const discount = gift.accountGift.discount;
-                const order = gift.accountGift.order;
+                const {
+                  typeGift,
+                  order,
+                  gift: giftDetails,
+                  accountGift,
+                } = gift.accountGift || {};
+                const giftId = gift.id;
+                const discount = accountGift?.discount;
 
                 return (
                   <tr key={index}>
-                    <td>{formatDate(gift.accountGift.date)}</td>
-                    <td>{gift.accountGift.gift?.name || "-"}</td>
-                    <td>{gift.accountGift.gift?.description || "-"}</td>
-
-                    {/* ✅ Discount có tooltip + click để copy (hiện toast) */}
+                    <td>{dayjs(gift.accountGift.date).format("DD/MM/YYYY")}</td>
                     <td>
-                      {discount ? (
-                        <div className="tooltip-wrapper">
-                          <span
-                            className="discount-code"
-                            onClick={() => {
-                              navigator.clipboard.writeText(
-                                discount.discountcode
-                              );
-                              showCopyToast();
-                            }}
-                          >
-                            {discount.discountcode}
-                          </span>
-                          <div className="tooltip-box">
-                            <p>
-                              <strong>Hết hạn:</strong>{" "}
-                              {formatDateTime(discount.endDate)}
-                            </p>
-                            <p>
-                              <strong>Dành cho:</strong> {gift.disfor || "-"}
-                            </p>
-                            <p>
-                              <strong>Giảm:</strong>{" "}
-                              {discount.discountPercent || "-"}%
-                            </p>
-                            <p>
-                              <strong>Tình trạng:</strong>{" "}
-                              {discount.status || "-"}
-                            </p>
-                          </div>
-                        </div>
-                      ) : (
-                        "-"
-                      )}
-                    </td>
-
-                    {/* ✅ Order chuyển trang */}
-                    <td>
-                      {order ? (
-                        <a
-                          href={`/account/history/${order.orderID}`}
-                          style={{
-                            color: "green",
-                            textDecoration: "underline",
+                      {gift.accountGift.gift.typeGift !== "discount" &&
+                      !gift.accountGift.order ? (
+                        <span
+                          style={{ color: "blue", cursor: "pointer" }}
+                          onClick={() => {
+                            setShowForm(gift.accountGift.id);
                           }}
                         >
+                          {giftDetails?.name || "-"}
+                        </span>
+                      ) : (
+                        giftDetails?.name || "-"
+                      )}
+                    </td>
+                    <td>{giftDetails?.description || "-"}</td>
+                    <td>{discount?.discountcode || "-"}</td>
+                    <td>
+                      {order ? (
+                        <a href={`/account/history/${order.orderID}`}>
                           {order.orderID}
                         </a>
                       ) : (
@@ -284,6 +282,65 @@ const Attendance = () => {
               })}
             </tbody>
           </table>
+        )}
+
+        {showForm && (
+          <>
+            <div
+              className="gift-account-form-overlay"
+              onClick={() => setShowForm(null)}
+            ></div>
+            <div className="gift-account-form">
+              <h4>Nhập thông tin nhận quà</h4>
+              <form onSubmit={(e) => handleFormSubmit(e, showForm)}>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Tên"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                />
+                <input
+                  type="text"
+                  name="phone"
+                  placeholder="Số điện thoại"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  required
+                />
+                <input
+                  type="text"
+                  name="address"
+                  placeholder="Địa chỉ"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  required
+                />
+                <textarea
+                  name="note"
+                  placeholder="Ghi chú"
+                  value={formData.note}
+                  onChange={handleInputChange}
+                />
+                <button type="submit">Gửi</button>
+                <button
+                  type="button"
+                  className="gift-close-button"
+                  onClick={() => setShowForm(null)}
+                >
+                  Đóng
+                </button>
+              </form>
+            </div>
+          </>
+        )}
+
+        {/* Thông báo thành công */}
+        {showSubmit && (
+          <div className="gift-account-modal-success">
+            🎉 Thông tin đã được gửi thành công!
+          </div>
         )}
       </div>
     </div>
