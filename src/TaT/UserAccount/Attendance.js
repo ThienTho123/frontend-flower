@@ -7,7 +7,7 @@ const Attendance = () => {
   const [attendanceDates, setAttendanceDates] = useState([]);
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [selectedDate, setSelectedDate] = useState(dayjs());
-  const [showSuccess, setShowSuccess] = useState(false); // 👈 New
+  const [showSuccess, setShowSuccess] = useState(false); 
   const [accountGifts, setAccountGifts] = useState([]);
   const today = dayjs();
   const [showSubmit, setShowSubmit] = useState(false);
@@ -115,8 +115,8 @@ const Attendance = () => {
       )
       .then(() => {
         reloadAttendance();
-        setShowSuccess(true); // 👈 Hiện thông báo
-        setTimeout(() => setShowSuccess(false), 3000); // Tự ẩn sau 3s
+        setShowSuccess(true);
+        setTimeout(() => setShowSuccess(false), 3000);
       })
       .catch((error) => {
         console.error("Lỗi khi điểm danh:", error);
@@ -156,9 +156,9 @@ const Attendance = () => {
       .then(() => {
         setShowForm(null);
         setFormData({ name: "", phone: "", address: "", note: "" });
-        setShowSubmit(true); // ✅ Hiện modal thành công
-        getAccountGifts(); // Tải lại danh sách quà
-        setTimeout(() => setShowSubmit(false), 3000); // Tự ẩn sau 3s
+        setShowSubmit(true);
+        getAccountGifts();
+        setTimeout(() => setShowSubmit(false), 3000);
       })
       .catch((error) => console.error("Lỗi khi gửi thông tin:", error));
   };
@@ -180,6 +180,11 @@ const Attendance = () => {
 
   const weekDays = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
 
+  // Hàm xử lý chuyển đến trang vòng quay
+  const navigateToRollbar = () => {
+    window.location.href = "/rollbar";
+  };
+
   return (
     <div className="calendar-container">
       <h2>📅 Lịch điểm danh - {selectedDate.format("MM/YYYY")}</h2>
@@ -187,6 +192,15 @@ const Attendance = () => {
       <div className="month-navigation">
         <button onClick={handlePrevMonth}>⬅️ Tháng trước</button>
         <button onClick={handleNextMonth}>Tháng sau ➡️</button>
+      </div>
+
+      {/* Thêm nút đến trang vòng quay */}
+      <div className="rollbar-button-container">
+        <button className="rollbar-button" onClick={navigateToRollbar}>
+          <span className="rollbar-icon">🎡</span>
+          <span className="rollbar-text">Đi đến Vòng Quay May Mắn</span>
+          <span className="rollbar-arrow">→</span>
+        </button>
       </div>
 
       <div className="weekdays">
@@ -226,7 +240,6 @@ const Attendance = () => {
         })}
       </div>
 
-      {/* ✅ Hiển thị layout khi điểm danh thành công */}
       {showSuccess && (
         <div className="success-banner">✅ Điểm danh thành công!</div>
       )}
@@ -271,7 +284,6 @@ const Attendance = () => {
                     </td>
                     <td>{gift.accountGift.gift?.description || "-"}</td>
 
-                    {/* ✅ Discount có tooltip + click để copy (hiện toast) */}
                     <td>
                       {discount ? (
                         <div className="tooltip-wrapper">
@@ -309,7 +321,6 @@ const Attendance = () => {
                       )}
                     </td>
 
-                    {/* ✅ Order chuyển trang */}
                     <td>
                       {order ? (
                         <a
@@ -380,7 +391,6 @@ const Attendance = () => {
                 </>
               )}
 
-              {/* Thông báo thành công */}
               {showSubmit && (
                 <div className="gift-account-modal-success">
                   🎉 Thông tin đã được gửi thành công!
@@ -389,6 +399,13 @@ const Attendance = () => {
             </tbody>
           </table>
         )}
+      </div>
+
+      {/* Thêm nút vòng quay ở cuối trang */}
+      <div className="rollbar-footer">
+        <button className="rollbar-button-bottom" onClick={navigateToRollbar}>
+          🎡 Thử vận may với Vòng Quay May Mắn
+        </button>
       </div>
     </div>
   );

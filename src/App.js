@@ -108,6 +108,14 @@ import AdminOrderDeDetail from "./TaT/AdminDashboard/AdminOrderDeDetail.js";
 import Attendance from "./TaT/UserAccount/Attendance.js";
 import RollBar from "./TaT/UserAccount/RollBar.js";
 
+import AdminAccountGift from "./TaT/AdminDashboard/AdminAccountGift.js";
+import AdminNewAccountGift from "./TaT/AdminDashboard/NewAccountGift.js";
+import AdminEditAccountGift from "./TaT/AdminDashboard/EditAccountGift.js";
+
+import AdminRollBar from "./TaT/AdminDashboard/AdminRollBar.js";
+import AdminNewRollBar from "./TaT/AdminDashboard/NewRollBar.js";
+import AdminEditRollBar from "./TaT/AdminDashboard/EditRollBar.js";
+
 import StaffAccountGift from "./TaT/StaffDashboard/StaffAccountGift.js";
 import StaffNewAccountGift from "./TaT/StaffDashboard/NewAccountGift.js";
 import StaffEditAccountGift from "./TaT/StaffDashboard/EditAccountGift.js";
@@ -240,6 +248,14 @@ const AppRoutes = () => {
         <Route path="/AdminDetect/edit/:id" element={<AdminEditDetect />} />
         <Route path="/AdminOrderDe" element={<AdminOrderDe/>} />
         <Route path="/AdminOrderDe/:id" element={<AdminOrderDeDetail/>} />
+
+        <Route path="/AdminAccountGift" element={<AdminAccountGift/>} />
+        <Route path="/AdminAccountGift/new" element={<AdminNewAccountGift/>} />
+        <Route path="/AdminAccountGift/edit/:id" element={<AdminEditAccountGift/>} />
+
+        <Route path="/AdminRollBar" element={<AdminRollBar/>} />
+        <Route path="/AdminRollBar/new-rollbar" element={<AdminNewRollBar/>} />
+        <Route path="/AdminRollBar/edit/:id" element={<AdminEditRollBar/>} />
 
         {/* Staff routes */}
         <Route path="/staff" element={<StaffDashboard />} />
