@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef,Suspense  } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 import Slider from "react-slick";
@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Grid from "@mui/material/Grid";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-
+import GltfModel  from "./FlowerModel";
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -36,6 +36,8 @@ const ProductDetail = () => {
   const [toastMessage, setToastMessage] = useState(""); // Lưu thông báo
   const totalPrice = productSizes[selectedSizeIndex]?.price * quantity || 0;
   const [wishlistID, setWishlistID] = useState(null); // Trạng thái để lưu wishlistID
+ 
+
 
   const commentsPerPage = 5;
   useEffect(() => {
@@ -352,12 +354,12 @@ const ProductDetail = () => {
     try {
       const token = localStorage.getItem("access_token");
       const productSizeID = productSizes[selectedSizeIndex].flowerSizeID;
-  
+
       if (!token) {
         navigate("/login");
         return;
       }
-  
+
       await axios.post(
         "http://localhost:8080/addPreorder",
         {
@@ -368,7 +370,7 @@ const ProductDetail = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      
+
       // Set success message before showing the modal
       setSuccessMessage("Đặt hàng trước thành công!");
       setSuccessModalVisible(true);
@@ -551,29 +553,43 @@ const ProductDetail = () => {
                 )}
               </h6>
               <h2 className="totalPrice" style={{ color: "#ff4c4c" }}>
-  {productSizes[selectedSizeIndex]?.priceEvent !== null ? (
-    <>
-      <span
-        style={{
-          textDecoration: "line-through",
-          color: "gray",
-          marginRight: "8px",
-          fontSize: "1.2rem",
-        }}
-      >
-        {productSizes[selectedSizeIndex]?.price.toLocaleString("vi-VN")} đ
-      </span>
-      <span style={{ color: "red", fontWeight: "bold", fontSize: "1.4rem" }}>
-        {productSizes[selectedSizeIndex]?.priceEvent.toLocaleString("vi-VN")} đ
-      </span>
-    </>
-  ) : (
-    <span style={{ fontSize: "1.4rem" }}>
-      {productSizes[selectedSizeIndex]?.price.toLocaleString("vi-VN")} đ
-    </span>
-  )}
-</h2>
-
+                {productSizes[selectedSizeIndex]?.priceEvent !== null ? (
+                  <>
+                    <span
+                      style={{
+                        textDecoration: "line-through",
+                        color: "gray",
+                        marginRight: "8px",
+                        fontSize: "1.2rem",
+                      }}
+                    >
+                      {productSizes[selectedSizeIndex]?.price.toLocaleString(
+                        "vi-VN"
+                      )}{" "}
+                      đ
+                    </span>
+                    <span
+                      style={{
+                        color: "red",
+                        fontWeight: "bold",
+                        fontSize: "1.4rem",
+                      }}
+                    >
+                      {productSizes[
+                        selectedSizeIndex
+                      ]?.priceEvent.toLocaleString("vi-VN")}{" "}
+                      đ
+                    </span>
+                  </>
+                ) : (
+                  <span style={{ fontSize: "1.4rem" }}>
+                    {productSizes[selectedSizeIndex]?.price.toLocaleString(
+                      "vi-VN"
+                    )}{" "}
+                    đ
+                  </span>
+                )}
+              </h2>
 
               <h3 className="Size">
                 Size:
@@ -682,7 +698,6 @@ const ProductDetail = () => {
           </div>
         )}
       </div>
-
       <div className="container" style={{ alignItems: "center" }}>
         <h1 className="detail">CHI TIẾT SẢN PHẨM</h1>
 
