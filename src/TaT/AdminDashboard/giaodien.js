@@ -31,6 +31,8 @@ import blog from "../StaffDashboard/ImageDashboard/Blog.png"
 import event from "../StaffDashboard/ImageDashboard/event.png"
 import generate from "../../Component/assets/generative.png"
 import orderDeIcon from "./ImageDashboard/orderde.png";
+import giftIcon from "./ImageDashboard/gift.png";
+import rollbarIcon from "./ImageDashboard/rollbar.png";
 
 import {
   Chart as ChartJS,
@@ -428,6 +430,12 @@ const Dashboard = () => {
               <button onClick={() => handleNavigate("/AdminOrderDe")}>
                 <img src={orderDeIcon} alt="Đơn đặt trước mới" /> Đơn theo lịch
               </button>
+              <button onClick={() => handleNavigate("/AdminAccountGift")}>
+              <img src={giftIcon} alt="Quản lý quà tặng" /> Quản lý quà tặng
+            </button>
+            <button onClick={() => handleNavigate("/AdminRollBar")}>
+              <img src={rollbarIcon} alt="Quản lý quay thưởng" /> Quản lý quay thưởng
+            </button>
             </div>
           </div>
 
