@@ -8,7 +8,6 @@ import "slick-carousel/slick/slick-theme.css";
 import Grid from "@mui/material/Grid";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import GltfModel  from "./FlowerModel";
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
