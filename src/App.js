@@ -1,5 +1,5 @@
 import "./App.css";
-
+import { AnimatePresence } from "framer-motion";
 import Dashboard from "./TaT/AdminDashboard/giaodien";
 import AdminOder from "./TaT/AdminDashboard/AdminOder";
 import AdminBanner from "./TaT/AdminDashboard/AdminBanner";
@@ -107,7 +107,8 @@ import AdminOrderDe from "./TaT/AdminDashboard/AdminOrderDe.js";
 import AdminOrderDeDetail from "./TaT/AdminDashboard/AdminOrderDeDetail.js";
 import Attendance from "./TaT/UserAccount/Attendance.js";
 import RollBar from "./TaT/UserAccount/RollBar.js";
-
+import VideoList from "./TaT/FlowShort/VideoList .js";
+import VideoDetail from "./TaT/FlowShort/VideoCard.js";
 import AdminAccountGift from "./TaT/AdminDashboard/AdminAccountGift.js";
 import AdminNewAccountGift from "./TaT/AdminDashboard/NewAccountGift.js";
 import AdminEditAccountGift from "./TaT/AdminDashboard/EditAccountGift.js";
@@ -176,7 +177,7 @@ const AppRoutes = () => {
 
   // Check if the current route is an admin route
   const isAdminRoute = adminRoutes.includes(location.pathname);
-
+  const hideHeaderFooter = location.pathname.startsWith("/flowshort");
   useEffect(() => {
     const loginTime = localStorage.getItem("loginTime");
     const expirationTime = 86400000;
@@ -198,9 +199,13 @@ const AppRoutes = () => {
 
   return (
     <>
-      {/* Only render Header and Footer if it's not an admin route */}
-      {!isAdminRoute && <Header />}
+      {!isAdminRoute && !hideHeaderFooter && <Header />}
       <BackToTop />
+      <AnimatePresence mode="wait">
+        <Routes>
+          <Route path="/flowshort/:id" element={<VideoDetail />} />
+        </Routes>
+      </AnimatePresence>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<SignUp />} />
@@ -212,7 +217,7 @@ const AppRoutes = () => {
         <Route path="/blog/:id" element={<BlogDetail />} />
         <Route path="/comment/:id" element={<CommentPage />} />
         <Route path="/detect" element={<DetectPage />} />
-
+        <Route path="/flowshort" element={<VideoList />} />
         {/* Admin routes */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/AdminOder" element={<AdminOder />} />
@@ -246,16 +251,19 @@ const AppRoutes = () => {
         <Route path="/AdminDetect" element={<AdminDetect />} />
         <Route path="/AdminDetect/new" element={<AdminCreateDetect />} />
         <Route path="/AdminDetect/edit/:id" element={<AdminEditDetect />} />
-        <Route path="/AdminOrderDe" element={<AdminOrderDe/>} />
-        <Route path="/AdminOrderDe/:id" element={<AdminOrderDeDetail/>} />
+        <Route path="/AdminOrderDe" element={<AdminOrderDe />} />
+        <Route path="/AdminOrderDe/:id" element={<AdminOrderDeDetail />} />
 
-        <Route path="/AdminAccountGift" element={<AdminAccountGift/>} />
-        <Route path="/AdminAccountGift/new" element={<AdminNewAccountGift/>} />
-        <Route path="/AdminAccountGift/edit/:id" element={<AdminEditAccountGift/>} />
+        <Route path="/AdminAccountGift" element={<AdminAccountGift />} />
+        <Route path="/AdminAccountGift/new" element={<AdminNewAccountGift />} />
+        <Route
+          path="/AdminAccountGift/edit/:id"
+          element={<AdminEditAccountGift />}
+        />
 
-        <Route path="/AdminRollBar" element={<AdminRollBar/>} />
-        <Route path="/AdminRollBar/new-rollbar" element={<AdminNewRollBar/>} />
-        <Route path="/AdminRollBar/edit/:id" element={<AdminEditRollBar/>} />
+        <Route path="/AdminRollBar" element={<AdminRollBar />} />
+        <Route path="/AdminRollBar/new-rollbar" element={<AdminNewRollBar />} />
+        <Route path="/AdminRollBar/edit/:id" element={<AdminEditRollBar />} />
 
         {/* Staff routes */}
         <Route path="/staff" element={<StaffDashboard />} />
@@ -275,17 +283,19 @@ const AppRoutes = () => {
         <Route path="/StaffPreOrder/:id" element={<StaffPreorderDetails />} />
         <Route path="/StaffBlog/new-blog" element={<CreateBlogForm />} />
         <Route path="/myblog/:id" element={<EditBlogForm />} />
-        <Route path="/StaffOrderDe" element={<StaffOrderDe/>} />
-        <Route path="/StaffOrderDe/:id" element={<StaffOrderDeDetail/>} />
+        <Route path="/StaffOrderDe" element={<StaffOrderDe />} />
+        <Route path="/StaffOrderDe/:id" element={<StaffOrderDeDetail />} />
 
-        <Route path="/StaffAccountGift" element={<StaffAccountGift/>} />
-        <Route path="/StaffAccountGift/new" element={<StaffNewAccountGift/>} />
-        <Route path="/StaffAccountGift/edit/:id" element={<StaffEditAccountGift/>} />
+        <Route path="/StaffAccountGift" element={<StaffAccountGift />} />
+        <Route path="/StaffAccountGift/new" element={<StaffNewAccountGift />} />
+        <Route
+          path="/StaffAccountGift/edit/:id"
+          element={<StaffEditAccountGift />}
+        />
 
-        <Route path="/StaffRollBar" element={<StaffRollBar/>} />
-        <Route path="/StaffRollBar/new-rollbar" element={<StaffNewRollBar/>} />
-        <Route path="/StaffRollBar/edit/:id" element={<StaffEditRollBar/>} />
-
+        <Route path="/StaffRollBar" element={<StaffRollBar />} />
+        <Route path="/StaffRollBar/new-rollbar" element={<StaffNewRollBar />} />
+        <Route path="/StaffRollBar/edit/:id" element={<StaffEditRollBar />} />
 
         {/* Other Routes */}
         <Route path="/product" element={<ProductList />} />
@@ -305,9 +315,9 @@ const AppRoutes = () => {
           <Route path="wishlist" element={<Wishlist />} />
           <Route path="orders" element={<PurchaseHistory />} />
           <Route path="history" element={<HistoryOrder />} />
-          <Route path="orde" element={<AccountOrderDelivery/>}/>
-          <Route path ="orde/:id" element={<OrderDeliveryDetail/>}/>
-          <Route path ="orde/refund/:id" element={<RefundOrDe/>}/>
+          <Route path="orde" element={<AccountOrderDelivery />} />
+          <Route path="orde/:id" element={<OrderDeliveryDetail />} />
+          <Route path="orde/refund/:id" element={<RefundOrDe />} />
           <Route path="preorder" element={<Preorder />} />
           <Route path="preorder/:id" element={<PreorderDetail />} />
           <Route path="preorder/refund/:id" element={<RefundPreorder />} />
@@ -317,7 +327,6 @@ const AppRoutes = () => {
           <Route path="blogpin" element={<BlogPin />} />
           <Route path="sendcomment/:id" element={<SendCommentDetail />} />
           <Route path="attendance" element={<Attendance />} />
-
         </Route>
 
         <Route path="/staffaccount" element={<AccountStaffLayout />}>
@@ -342,7 +351,7 @@ const AppRoutes = () => {
         </Route>
       </Routes>
       {/* Only render Footer if it's not an admin route */}
-      {!isAdminRoute && <Footer />}
+      {!isAdminRoute && !hideHeaderFooter && <Footer />}
     </>
   );
 };

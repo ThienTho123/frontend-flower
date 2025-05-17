@@ -1,0 +1,334 @@
+.comment-modal .ant-modal-content{
+  width: 580px;
+  height: 750px;
+}
+
+.ant-modal {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-confirm-delete .ant-modal-content
+{
+  width: 380px;
+  height: 150px;
+}
+.video-detail-container {
+  position: relative;
+  width: 30vw;
+  height: 100vh;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.video-player {
+  width: 100%;
+  height: 100vh;
+  max-height: 100%;
+  object-fit: contain; /* Hiển thị toàn bộ video */
+  user-select: none;
+  border-radius: 12px;
+  background-color: black; /* Đặt màu nền để tránh khoảng trống */
+}
+
+.video-overlay-right {
+  position: absolute;
+  right: 16px;
+  bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  color: white;
+}
+.action-btn.liked {
+  color: hotpink;
+}
+.action-btn {
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 14px;
+  user-select: none;
+}
+
+.action-btn span {
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.video-progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background-color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+}
+
+.video-progress-bar {
+  height: 100%;
+  background-color: #00aaff;
+  transition: width 0.2s;
+}
+
+.video-caption {
+  position: absolute;
+  bottom: 40px;
+  left: 16px;
+  max-width: 70%;
+  color: white;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  font-size: 14px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+  border: 2px solid white;
+}
+
+.user-name {
+  font-weight: 700;
+}
+
+.comment-modal .ant-modal-body {
+  max-height: 700px;
+  overflow-y: auto;
+  padding: 16px;
+  z-index: 1000 !important;
+}
+
+.comment-container {
+  padding: 10px;
+}
+
+.comment-item {
+  margin-bottom: 15px;
+}
+
+.comment-author {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+
+
+.author-name {
+  font-weight: bold;
+}
+
+.comment-replies {
+  margin-left: 30px;
+  margin-top: 5px;
+}
+
+.reply-item {
+  margin-bottom: 16px;
+  padding-left: 40px;
+}
+.reply-author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.reply-author-name {
+  font-weight: 600;
+  color: #555;
+  font-size: 14px;
+}
+
+.reply-text {
+  margin-left: 40px;
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.reply-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 0px;
+}
+
+.reply-like-count {
+  font-size: 14px;
+  color: #777;
+  font-weight: 500;
+}
+
+.comment-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999; /* Đặt trên cùng */
+  pointer-events: none;
+}
+
+.video-disabled {
+  pointer-events: none;
+  filter: blur(4px);
+  opacity: 0.5;
+}
+
+.comment-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+}
+
+.action-btn .like-count {
+  margin-left: 4px;
+  font-size: 14px;
+  color: gray;
+}
+
+.action-btn.liked .like-count {
+  color: hotpink;
+}
+
+.action-btn:hover .like-count {
+  color: #ff69b4;
+}
+.reply-count {
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  margin-left: 8px;
+}
+.reply-count:hover {
+  color: #000;
+}
+.comment-text,
+.reply-text{
+    margin-left:60px;
+}
+
+.comment-modal .comment-container {
+  display: flex;
+  flex-direction: column;
+  height: 600px; /* Điều chỉnh theo chiều cao bạn muốn */
+}
+
+.comment-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 10px; /* Để tránh bị che bởi thanh cuộn */
+  margin-bottom: 10px;
+}
+
+
+.comment-input-container {
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reply-to {
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+}
+
+.reply-to strong {
+  color: #007bff;
+}
+
+.video-textarea {
+  width: 95%;
+  min-height: 50px;
+  padding: 10px;
+  resize: none;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.send-btn {
+  align-self: flex-end;
+  background-color: #007bff;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.send-btn:hover {
+  background-color: #0056b3;
+}
+
+.comment-options {
+  position: relative;
+}
+
+.comment-options-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  overflow: hidden;
+}
+
+.comment-options:hover .comment-options-menu {
+  display: block;
+}
+
+.comment-options-menu button {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.3s;
+}
+
+.comment-options-menu button:hover {
+  background-color: #f0f0f0;
+}
+
