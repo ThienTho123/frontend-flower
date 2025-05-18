@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import "./VideoCard.css";
 import { Modal } from "antd";
-const VideoDetail = () => {
+const VideoAccountDetail = () => {
   const { id } = useParams();
   const [videoDTO, setVideoDTO] = useState(null);
   const [account, setAccount] = useState(null);
@@ -84,19 +84,20 @@ const VideoDetail = () => {
   useEffect(() => {
     const handleScroll = async (e) => {
       // Chỉ cho phép cuộn nếu modal không mở
-      if (isCommentModalVisible) return;
+    if (!isDataLoaded || !videoDTO || !videoDTO.video) return; // Đợi fetch xong
 
       try {
         const isNext = e.deltaY > 0;
         setDirection(isNext ? "next" : "prev");
-
+        const accountid = videoDTO.video.accountID.accountID;
+        console.log("accountID: ", accountid);
         const directionPath = isNext ? "next" : "prev";
         const response = await axios.get(
-          `http://localhost:8080/flowshort/${id}/${directionPath}`
+          `http://localhost:8080/flowshort/account/${accountid}/video/${id}/${directionPath}`
         );
         const nextVideoDTO = response.data;
         if (nextVideoDTO && nextVideoDTO.video.id) {
-          navigate(`/flowshort/${nextVideoDTO.video.id}`);
+          navigate(`/flowshortaccount/${nextVideoDTO.video.id}`);
         }
       } catch (error) {
         console.error(
@@ -868,4 +869,4 @@ const VideoDetail = () => {
   );
 };
 
-export default VideoDetail;
+export default VideoAccountDetail;

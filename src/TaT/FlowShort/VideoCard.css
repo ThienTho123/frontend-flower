@@ -1,4 +1,4 @@
-.comment-modal .ant-modal-content{
+.comment-modal .ant-modal-content {
   width: 580px;
   height: 750px;
 }
@@ -9,8 +9,7 @@
   justify-content: center;
 }
 
-.modal-confirm-delete .ant-modal-content
-{
+.modal-confirm-delete .ant-modal-content {
   width: 380px;
   height: 150px;
 }
@@ -134,8 +133,6 @@
   margin-bottom: 5px;
 }
 
-
-
 .author-name {
   font-weight: bold;
 }
@@ -211,7 +208,6 @@
   border: none;
   background: transparent;
   cursor: pointer;
-
 }
 
 .action-btn .like-count {
@@ -238,8 +234,8 @@
   color: #000;
 }
 .comment-text,
-.reply-text{
-    margin-left:60px;
+.reply-text {
+  margin-left: 60px;
 }
 
 .comment-modal .comment-container {
@@ -254,7 +250,6 @@
   padding-right: 10px; /* Để tránh bị che bởi thanh cuộn */
   margin-bottom: 10px;
 }
-
 
 .comment-input-container {
   border-top: 1px solid #ccc;
@@ -332,3 +327,37 @@
   background-color: #f0f0f0;
 }
 
+.image-player {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Giữ tỷ lệ ảnh */
+  border-radius: 8px;
+  background-color: #000000; /* Màu nền khi ảnh chưa load */
+}
+
+.comment-options {
+  bottom: 450px;
+}
+
+.comment-options .comment-options-menu {
+  width: 200px;
+}
+.author-info,
+.reply-author-info
+.user-info-name {
+  display: flex;
+  flex-direction: column;
+}
+
+.author-name,
+.reply-author-name 
+{
+  font-weight: 600;
+}
+
+.comment-date,
+.reply-date {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 2px;
+}

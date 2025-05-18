@@ -1,0 +1,119 @@
+
+
+.form-upload-video {
+  width: 100%;
+  max-width: 400px;
+  background-color: #ffffff;
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Tiêu đề form */
+.form-upload-video h2 {
+  margin-bottom: 20px;
+  color: #333333;
+  font-size: 1.8em;
+  text-align: center;
+}
+
+/* Label */
+.form-upload-video label {
+  font-weight: bold;
+  color: #555555;
+}
+
+/* Input và Textarea */
+.form-upload-video input[type="text"],
+.form-upload-video input[type="file"],
+.form-upload-video textarea,
+.form-upload-video select {
+  width: 95%;
+  margin-bottom: 15px;
+  padding: 10px 15px;
+  font-size: 14px;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  transition: border 0.3s;
+}
+
+.form-upload-video input[type="text"]:focus,
+.form-upload-video textarea:focus,
+.form-upload-video select:focus {
+  border-color: #4a90e2;
+  background-color: #ffffff;
+  outline: none;
+}
+
+/* Nút submit */
+.form-upload-video button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4a90e2;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Hiệu ứng hover */
+.form-upload-video button:hover {
+  background-color: #3a78d2;
+  transform: translateY(-2px);
+}
+
+/* Trạng thái loading */
+.form-upload-video button:disabled {
+  background-color: #dddddd;
+  cursor: not-allowed;
+}
+
+/* Khoảng cách giữa các phần */
+.form-upload-video label,
+.form-upload-video input,
+.form-upload-video textarea,
+.form-upload-video select,
+.form-upload-video button {
+  margin-bottom: 20px;
+}
+
+/* Đổ bóng khi hover input file */
+.form-upload-video input[type="file"]:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.modal-upload-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-upload-content {
+  background-color: #ffffff;
+  padding: 20px 30px;
+  border-radius: 12px;
+  text-align: center;
+  min-width: 300px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.3s ease-out;
+}
+
+.modal-content.success {
+  border-left: 8px solid #28a745;
+}
+
+.modal-content.error {
+  border-left: 8px solid #dc3545;
+}

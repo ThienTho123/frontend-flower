@@ -10,9 +10,9 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import axios from "axios";
-import "./VideoCard.css";
+import "../FlowShort/VideoCard.css";
 import { Modal } from "antd";
-const VideoDetail = () => {
+const MyVideo = () => {
   const { id } = useParams();
   const [videoDTO, setVideoDTO] = useState(null);
   const [account, setAccount] = useState(null);
@@ -83,20 +83,21 @@ const VideoDetail = () => {
 
   useEffect(() => {
     const handleScroll = async (e) => {
-      // Chỉ cho phép cuộn nếu modal không mở
-      if (isCommentModalVisible) return;
+      if (!isDataLoaded || !videoDTO || !videoDTO.video) return; // Đợi fetch xong
 
       try {
         const isNext = e.deltaY > 0;
         setDirection(isNext ? "next" : "prev");
-
         const directionPath = isNext ? "next" : "prev";
+        const token = localStorage.getItem("access_token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
         const response = await axios.get(
-          `http://localhost:8080/flowshort/${id}/${directionPath}`
+          `http://localhost:8080/user/flowshort/getall/${id}/${directionPath}`,
+          { headers }
         );
         const nextVideoDTO = response.data;
         if (nextVideoDTO && nextVideoDTO.video.id) {
-          navigate(`/flowshort/${nextVideoDTO.video.id}`);
+          navigate(`/account/myvideo/${nextVideoDTO.video.id}`);
         }
       } catch (error) {
         console.error(
@@ -868,4 +869,4 @@ const VideoDetail = () => {
   );
 };
 
-export default VideoDetail;
+export default MyVideo;

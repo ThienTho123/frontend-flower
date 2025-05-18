@@ -112,7 +112,7 @@ import VideoDetail from "./TaT/FlowShort/VideoCard.js";
 import AdminAccountGift from "./TaT/AdminDashboard/AdminAccountGift.js";
 import AdminNewAccountGift from "./TaT/AdminDashboard/NewAccountGift.js";
 import AdminEditAccountGift from "./TaT/AdminDashboard/EditAccountGift.js";
-
+import EditVideoForm from "./TaT/FlowShort/EditVideo.js";
 import AdminRollBar from "./TaT/AdminDashboard/AdminRollBar.js";
 import AdminNewRollBar from "./TaT/AdminDashboard/NewRollBar.js";
 import AdminEditRollBar from "./TaT/AdminDashboard/EditRollBar.js";
@@ -124,7 +124,7 @@ import StaffEditAccountGift from "./TaT/StaffDashboard/EditAccountGift.js";
 import StaffRollBar from "./TaT/StaffDashboard/StaffRollBar.js";
 import StaffNewRollBar from "./TaT/StaffDashboard/NewRollBar.js";
 import StaffEditRollBar from "./TaT/StaffDashboard/EditRollBar.js";
-
+import VideoUploadComponent from "./TaT/FlowShort/VideoUpload.js";
 import {
   BrowserRouter as Router,
   Routes,
@@ -136,6 +136,8 @@ import React, { useEffect } from "react";
 import OrderDetail from "./TaT/ShipperAccount/OrderDetail.js";
 import OrderDeliveryDetail from "./TaT/UserAccount/OrderDeliveryDetail.js";
 import WheelComponent from "./TaT/UserAccount/RollBarDetail..js";
+import VideoAccountDetail from "./TaT/FlowShort/VideoAccountDetail.js";
+import MyVideo from "./TaT/UserAccount/MyVideo.js";
 const AppRoutes = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location
@@ -177,7 +179,10 @@ const AppRoutes = () => {
 
   // Check if the current route is an admin route
   const isAdminRoute = adminRoutes.includes(location.pathname);
-  const hideHeaderFooter = location.pathname.startsWith("/flowshort");
+  const hideHeaderFooter =
+    location.pathname.startsWith("/flowshort/") ||
+    location.pathname.startsWith("/flowshortaccount/") ||
+    location.pathname.startsWith("/account/myvideo/");
   useEffect(() => {
     const loginTime = localStorage.getItem("loginTime");
     const expirationTime = 86400000;
@@ -204,6 +209,11 @@ const AppRoutes = () => {
       <AnimatePresence mode="wait">
         <Routes>
           <Route path="/flowshort/:id" element={<VideoDetail />} />
+          <Route
+            path="/flowshortaccount/:id"
+            element={<VideoAccountDetail />}
+          />
+          <Route path="/account/myvideo/:id" element={<MyVideo />} />
         </Routes>
       </AnimatePresence>
       <Routes>
@@ -218,6 +228,8 @@ const AppRoutes = () => {
         <Route path="/comment/:id" element={<CommentPage />} />
         <Route path="/detect" element={<DetectPage />} />
         <Route path="/flowshort" element={<VideoList />} />
+        <Route path="/flowshort/edit/:id" element={<EditVideoForm />} />
+        <Route path="/flowshortupload" element={<VideoUploadComponent />} />
         {/* Admin routes */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/AdminOder" element={<AdminOder />} />
