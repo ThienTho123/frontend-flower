@@ -108,6 +108,7 @@ import AdminOrderDeDetail from "./TaT/AdminDashboard/AdminOrderDeDetail.js";
 import Attendance from "./TaT/UserAccount/Attendance.js";
 import RollBar from "./TaT/UserAccount/RollBar.js";
 import VideoList from "./TaT/FlowShort/VideoList .js";
+import UserVideoList from "./TaT/FlowShort/UserVideoList.js";
 import VideoDetail from "./TaT/FlowShort/VideoCard.js";
 import AdminAccountGift from "./TaT/AdminDashboard/AdminAccountGift.js";
 import AdminNewAccountGift from "./TaT/AdminDashboard/NewAccountGift.js";
@@ -228,6 +229,7 @@ const AppRoutes = () => {
         <Route path="/comment/:id" element={<CommentPage />} />
         <Route path="/detect" element={<DetectPage />} />
         <Route path="/flowshort" element={<VideoList />} />
+        <Route path="/soflowshort/:id" element={<UserVideoList />} />
         <Route path="/flowshort/edit/:id" element={<EditVideoForm />} />
         <Route path="/flowshortupload" element={<VideoUploadComponent />} />
         {/* Admin routes */}

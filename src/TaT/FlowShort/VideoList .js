@@ -143,19 +143,7 @@ const VideoList = () => {
 
             {userInfo ? (
               <>
-                <div className="fs-user-profile-mini">
-                  <div className="fs-avatar">
-                    {userInfo.avatar ? (
-                      <img src={userInfo.avatar} alt="Avatar" />
-                    ) : (
-                      <User size={18} />
-                    )}
-                  </div>
-                  <div className="fs-user-info">
-                    <p className="fs-user-name">{userInfo.username}</p>
-                    <p className="fs-user-email">#{accountID}</p>
-                  </div>
-                </div>
+                
 
                 <button onClick={handleCreateVideo} className="fs-create-btn">
                   <Plus size={18} />
