@@ -1,0 +1,524 @@
+/* VideoList.css */
+:root {
+  --fs-primary-color: #fe2c55;
+  --fs-primary-color-hover: #ff527a;
+  --fs-secondary-color: #25f4ee;
+  --fs-background-color: #f8f8f8;
+  --fs-card-background: #ffffff;
+  --fs-text-color: #121212;
+  --fs-text-secondary: #767676;
+  --fs-border-color: #e6e6e6;
+  --fs-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --fs-header-height: 70px; /* Tăng chiều cao header */
+  --fs-border-radius: 10px; /* Tăng bo góc */
+  --fs-transition: all 0.3s ease;
+}
+
+/* Base Styles */
+.fs-flowshort-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: var(--fs-background-color);
+  color: var(--fs-text-color);
+  line-height: 1.5;
+  font-size: 16px; /* Tăng kích thước font mặc định */
+}
+
+.fs-flowshort-container a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.fs-flowshort-container button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  font-family: inherit;
+  font-size: 16px; /* Tăng kích thước font cho nút */
+}
+
+/* Header Styles */
+.fs-flowshort-header {
+  height: var(--fs-header-height);
+  background-color: var(--fs-card-background);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); /* Tăng shadow */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.fs-header-content {
+  max-width: 1400px; /* Tăng chiều rộng tối đa */
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 24px; /* Tăng padding */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fs-header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Tăng khoảng cách */
+}
+
+.fs-logo-icon {
+  color: var(--fs-primary-color);
+  width: 28px; /* Tăng kích thước icon */
+  height: 28px;
+}
+
+.fs-header-logo h1 {
+  font-size: 26px; /* Tăng kích thước tiêu đề */
+  font-weight: 700;
+  background: linear-gradient(to right, var(--fs-primary-color), var(--fs-secondary-color));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.fs-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Tăng khoảng cách */
+}
+
+.fs-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Tăng khoảng cách */
+  padding: 10px 16px; /* Tăng padding */
+  background-color: #f1f1f2;
+  border-radius: 24px; /* Tăng bo góc */
+  font-size: 15px; /* Tăng kích thước font */
+  font-weight: 500;
+  color: var(--fs-text-color);
+  transition: var(--fs-transition);
+}
+
+.fs-toggle-btn:hover {
+  background-color: #e6e6e6;
+}
+
+.fs-toggle-btn.active {
+  background-color: rgba(254, 44, 85, 0.1);
+  color: var(--fs-primary-color);
+}
+
+.fs-create-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Tăng khoảng cách */
+  padding: 12px 20px; /* Tăng padding */
+  background-color: var(--fs-primary-color);
+  color: rgb(197, 5, 76); /* Sửa màu chữ cho đúng */
+  border-radius: 6px; /* Tăng bo góc */
+  font-size: 16px; /* Tăng kích thước font */
+  font-weight: 600;
+  transition: var(--fs-transition);
+}
+
+.fs-create-btn:hover {
+  background-color: var(--fs-primary-color-hover);
+  color: rgb(255, 255, 255);
+}
+
+.fs-login-btn {
+  padding: 12px 20px; /* Tăng padding */
+  background-color: var(--fs-primary-color);
+  color: white;
+  border-radius: 6px; /* Tăng bo góc */
+  font-size: 16px; /* Tăng kích thước font */
+  font-weight: 600;
+  transition: var(--fs-transition);
+}
+
+.fs-login-btn:hover {
+  background-color: var(--fs-primary-color-hover);
+}
+
+/* User Profile Mini */
+.fs-user-profile-mini {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Tăng khoảng cách */
+}
+
+.fs-avatar {
+  width: 38px; /* Tăng kích thước avatar */
+  height: 38px;
+  border-radius: 50%;
+  background-color: #f1f1f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--fs-border-color); /* Thêm viền */
+}
+
+.fs-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fs-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.fs-user-name {
+  font-size: 16px; /* Tăng kích thước font */
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.fs-user-email {
+  font-size: 14px; /* Tăng kích thước font */
+  color: var(--fs-text-secondary);
+}
+
+/* User Profile Banner */
+.fs-user-profile-banner {
+  background-color: var(--fs-card-background);
+  border-bottom: 1px solid var(--fs-border-color);
+  padding: 32px 0; /* Tăng padding */
+  margin-bottom: 32px; /* Tăng margin */
+}
+
+.fs-banner-content {
+  max-width: 1400px; /* Tăng chiều rộng tối đa */
+  margin: 0 auto;
+  padding: 0 24px; /* Tăng padding */
+  display: flex;
+  align-items: center;
+  gap: 24px; /* Tăng khoảng cách */
+}
+
+.fs-profile-avatar {
+  width: 100px; /* Tăng kích thước avatar */
+  height: 100px;
+  border-radius: 50%;
+  background-color: #f1f1f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 2px solid var(--fs-border-color); /* Thêm viền */
+}
+
+.fs-profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fs-profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px; /* Tăng khoảng cách */
+}
+
+.fs-profile-info h2 {
+  font-size: 28px; /* Tăng kích thước tiêu đề */
+  font-weight: 700;
+}
+
+.fs-profile-email {
+  font-size: 16px; /* Tăng kích thước font */
+  color: var(--fs-text-secondary);
+  margin-bottom: 6px; /* Tăng margin */
+}
+
+.fs-profile-stats {
+  font-size: 16px; /* Tăng kích thước font */
+  color: var(--fs-text-secondary);
+}
+
+.fs-stats-number {
+  font-weight: 600;
+  color: var(--fs-text-color);
+}
+
+/* Main Content */
+.fs-flowshort-content {
+  flex: 1;
+  max-width: 1400px; /* Tăng chiều rộng tối đa */
+  margin: 0 auto;
+  padding: 32px 24px; /* Tăng padding */
+}
+
+.fs-section-title {
+  font-size: 24px; /* Tăng kích thước tiêu đề */
+  font-weight: 700;
+  margin-bottom: 24px; /* Tăng margin */
+}
+
+/* Loading State */
+.fs-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 0; /* Tăng padding */
+  gap: 20px; /* Tăng khoảng cách */
+}
+
+.fs-loading-spinner {
+  animation: spin 1s linear infinite;
+  color: var(--fs-primary-color);
+  width: 36px; /* Tăng kích thước spinner */
+  height: 36px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Empty State */
+.fs-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 0; /* Tăng padding */
+  gap: 20px; /* Tăng khoảng cách */
+  text-align: center;
+}
+
+.fs-empty-state svg {
+  color: var(--fs-text-secondary);
+  opacity: 0.6;
+  width: 64px; /* Tăng kích thước icon */
+  height: 64px;
+}
+
+.fs-empty-state h3 {
+  font-size: 22px; /* Tăng kích thước tiêu đề */
+  font-weight: 600;
+}
+
+.fs-empty-state p {
+  font-size: 16px; /* Tăng kích thước font */
+  color: var(--fs-text-secondary);
+  margin-bottom: 20px; /* Tăng margin */
+}
+
+.fs-create-first-btn {
+  padding: 14px 24px; /* Tăng padding */
+  background-color: var(--fs-primary-color);
+  color: white;
+  border-radius: 6px; /* Tăng bo góc */
+  font-size: 16px; /* Tăng kích thước font */
+  font-weight: 600;
+  transition: var(--fs-transition);
+}
+
+.fs-create-first-btn:hover {
+  background-color: var(--fs-primary-color-hover);
+}
+
+/* Video Grid */
+.fs-video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); /* Tăng kích thước card */
+  gap: 24px; /* Tăng khoảng cách */
+}
+
+/* Video Card */
+.fs-video-card {
+  background-color: var(--fs-card-background);
+  border-radius: var(--fs-border-radius);
+  box-shadow: var(--fs-shadow);
+  overflow: hidden;
+  transition: var(--fs-transition);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.fs-video-card:hover {
+  transform: translateY(-5px); /* Tăng hiệu ứng */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); /* Tăng shadow */
+}
+
+.fs-thumbnail-container {
+  position: relative;
+  padding-top: 133.33%; /* 3:4 aspect ratio */
+  overflow: hidden;
+}
+
+.fs-thumbnail-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fs-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--fs-transition);
+}
+
+.fs-video-card:hover .fs-overlay {
+  opacity: 1;
+}
+
+.fs-play-icon {
+  width: 60px; /* Tăng kích thước icon play */
+  height: 60px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fs-play-icon svg {
+  color: var(--fs-primary-color);
+  width: 24px; /* Tăng kích thước icon */
+  height: 24px;
+}
+
+.fs-video-info {
+  padding: 20px; /* Tăng padding */
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.fs-video-title {
+  font-size: 18px; /* Tăng kích thước tiêu đề */
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 10px; /* Tăng margin */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.fs-video-description {
+  font-size: 15px; /* Tăng kích thước font */
+  color: var(--fs-text-secondary);
+  margin-bottom: 14px; /* Tăng margin */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.fs-video-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* Tăng khoảng cách */
+  margin-bottom: 14px; /* Tăng margin */
+}
+
+.fs-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* Tăng khoảng cách */
+  font-size: 14px; /* Tăng kích thước font */
+  color: var(--fs-text-secondary);
+}
+
+.fs-stat-item svg {
+  width: 18px; /* Tăng kích thước icon */
+  height: 18px;
+}
+
+.fs-video-author {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Tăng khoảng cách */
+  margin-top: auto;
+  padding-top: 14px; /* Tăng padding */
+  border-top: 1px solid var(--fs-border-color);
+}
+
+.fs-author-avatar {
+  width: 28px; /* Tăng kích thước avatar */
+  height: 28px;
+  border-radius: 50%;
+  background-color: #f1f1f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--fs-border-color); /* Thêm viền */
+}
+
+.fs-author-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fs-video-author span {
+  font-size: 14px; /* Tăng kích thước font */
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .fs-video-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Tăng kích thước card */
+    gap: 20px; /* Tăng khoảng cách */
+  }
+
+  .fs-user-profile-mini .fs-user-info {
+    display: none;
+  }
+  
+  .fs-toggle-btn span {
+    display: none;
+  }
+  
+  .fs-toggle-btn {
+    padding: 10px; /* Tăng padding */
+  }
+}
+
+@media (max-width: 480px) {
+  .fs-video-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Tăng kích thước card */
+    gap: 16px;
+  }
+  
+  .fs-create-btn span {
+    display: none;
+  }
+  
+  .fs-create-btn {
+    padding: 10px; /* Tăng padding */
+  }
+  
+  .fs-flowshort-content {
+    padding: 20px 16px; /* Tăng padding */
+  }
+  
+  .fs-video-info {
+    padding: 16px; /* Tăng padding */
+  }
+  
+  .fs-video-title {
+    font-size: 16px; /* Tăng kích thước font */
+  }
+}

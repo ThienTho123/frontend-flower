@@ -327,6 +327,9 @@ const Header = () => {
           <Link to="/blog" className="header-link">
             Blog
           </Link>
+          <Link to="/flowshort" className="header-link">
+            Video
+          </Link>
           <Link to="/detect" className="header-link">
             Nhận diện hoa
           </Link> 
