@@ -40,13 +40,13 @@ const VideoList = () => {
           try {
             // Lấy thông tin người dùng từ API
             const userInfoResponse = await axios.get(
-              "http://localhost:8080/account",
+              "http://localhost:8080/account/getInfo",
               {
                 params: { accountID },
                 headers: { Authorization: `Bearer ${access_token}` },
               }
             );
-
+            console.log(userInfoResponse.data)
             setUserInfo(userInfoResponse.data);
 
             // Lấy video của người dùng
@@ -152,7 +152,7 @@ const VideoList = () => {
                     )}
                   </div>
                   <div className="fs-user-info">
-                    <p className="fs-user-name">{userInfo.username}</p>
+                    <p className="fs-user-name">{userInfo.name}</p>
                     <p className="fs-user-email">#{accountID}</p>
                   </div>
                 </div>
@@ -183,7 +183,7 @@ const VideoList = () => {
               )}
             </div>
             <div className="fs-profile-info">
-              <h2>{userInfo.username}</h2>
+              <h2>{userInfo.name}</h2>
               <p className="fs-profile-email">#{userInfo.email}</p>
               <p className="fs-profile-stats">
                 <span className="fs-stats-number">{userVideos.length}</span>{" "}
