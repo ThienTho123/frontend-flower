@@ -182,7 +182,7 @@ const AppRoutes = () => {
   const hideHeaderFooter =
     location.pathname.startsWith("/flowshort/") ||
     location.pathname.startsWith("/flowshortaccount/") ||
-    location.pathname.startsWith("/account/myvideo/");
+    location.pathname.startsWith("/myvideo/");
   useEffect(() => {
     const loginTime = localStorage.getItem("loginTime");
     const expirationTime = 86400000;
@@ -213,7 +213,7 @@ const AppRoutes = () => {
             path="/flowshortaccount/:id"
             element={<VideoAccountDetail />}
           />
-          <Route path="/account/myvideo/:id" element={<MyVideo />} />
+          <Route path="/myvideo/:id" element={<MyVideo />} />
         </Routes>
       </AnimatePresence>
       <Routes>

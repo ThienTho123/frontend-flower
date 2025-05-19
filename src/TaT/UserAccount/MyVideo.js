@@ -12,6 +12,9 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import "../FlowShort/VideoCard.css";
 import { Modal } from "antd";
+import { Link } from "react-router-dom";
+import returnIcon from "../StaffDashboard/ImageDashboard/return-button.png";
+
 const MyVideo = () => {
   const { id } = useParams();
   const [videoDTO, setVideoDTO] = useState(null);
@@ -97,7 +100,7 @@ const MyVideo = () => {
         );
         const nextVideoDTO = response.data;
         if (nextVideoDTO && nextVideoDTO.video.id) {
-          navigate(`/account/myvideo/${nextVideoDTO.video.id}`);
+          navigate(`/myvideo/${nextVideoDTO.video.id}`);
         }
       } catch (error) {
         console.error(
@@ -428,7 +431,9 @@ const MyVideo = () => {
     navigate(`/flowshort/edit/${commentId}`);
     setShowOptions(false);
   };
-
+ const handleBackToDashboard = () => {
+    navigate("/flowshort");
+  };
   const handleDisableComments = async (videoId) => {
     const accessToken = localStorage.getItem("access_token");
     try {
@@ -489,6 +494,14 @@ const MyVideo = () => {
     }, 3000);
   }
   return (
+        <div className="video-page-container">
+          {/* Return Button */}
+          <img
+            src={returnIcon}
+            alt="Quay Lại"
+            className="video-return-button"
+            onClick={handleBackToDashboard}
+          />
     <motion.div
       key={id}
       className={`video-detail-container ${
@@ -857,15 +870,19 @@ const MyVideo = () => {
             className="user-avatar"
           />
           <div className="user-info-name">
-            <span className="user-name">
-              {video.accountID.name || "unknown"}
-            </span>
+            <Link
+                to={`/soflowshort/${video.accountID.accountID}`}
+                className="user-name"
+              >
+                {video.accountID.name || "unknown"}
+              </Link>
             <div className="reply-date">{formatTimeAgo(video.date)}</div>
           </div>
         </div>
         <p className="caption-text">{video.description}</p>
       </div>
     </motion.div>
+    </div>
   );
 };
 

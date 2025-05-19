@@ -109,7 +109,14 @@
 }
 
 .user-name {
-  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.user-name:hover {
+  text-decoration: underline;
 }
 
 .comment-modal .ant-modal-body {
@@ -343,15 +350,13 @@
   width: 200px;
 }
 .author-info,
-.reply-author-info
-.user-info-name {
+.reply-author-info .user-info-name {
   display: flex;
   flex-direction: column;
 }
 
 .author-name,
-.reply-author-name 
-{
+.reply-author-name {
   font-weight: 600;
 }
 
@@ -360,4 +365,13 @@
   font-size: 0.75rem;
   color: #888;
   margin-top: 2px;
+}
+.video-return-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 10;
 }

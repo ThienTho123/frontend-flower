@@ -12,6 +12,9 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import "./VideoCard.css";
 import { Modal } from "antd";
+import { Link } from "react-router-dom";
+import returnIcon from "../StaffDashboard/ImageDashboard/return-button.png";
+
 const VideoAccountDetail = () => {
   const { id } = useParams();
   const [videoDTO, setVideoDTO] = useState(null);
@@ -488,7 +491,18 @@ const VideoAccountDetail = () => {
       toast.remove();
     }, 3000);
   }
+   const handleBackToDashboard = () => {
+    navigate(`/soflowshort/${video.accountID.accountID}`);
+  };
   return (
+    <div className="video-page-container">
+          {/* Return Button */}
+          <img
+            src={returnIcon}
+            alt="Quay Lại"
+            className="video-return-button"
+            onClick={handleBackToDashboard}
+          />
     <motion.div
       key={id}
       className={`video-detail-container ${
@@ -857,15 +871,19 @@ const VideoAccountDetail = () => {
             className="user-avatar"
           />
           <div className="user-info-name">
-            <span className="user-name">
-              {video.accountID.name || "unknown"}
-            </span>
+           <Link
+                to={`/soflowshort/${video.accountID.accountID}`}
+                className="user-name"
+              >
+                {video.accountID.name || "unknown"}
+              </Link>
             <div className="reply-date">{formatTimeAgo(video.date)}</div>
           </div>
         </div>
         <p className="caption-text">{video.description}</p>
       </div>
     </motion.div>
+    </div>
   );
 };
 
