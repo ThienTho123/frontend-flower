@@ -46,7 +46,7 @@ const VideoList = () => {
                 headers: { Authorization: `Bearer ${access_token}` },
               }
             );
-            console.log(userInfoResponse.data)
+
             setUserInfo(userInfoResponse.data);
 
             // Lấy video của người dùng
@@ -143,23 +143,7 @@ const VideoList = () => {
 
             {userInfo ? (
               <>
-<<<<<<< HEAD
                 
-=======
-                <div className="fs-user-profile-mini">
-                  <div className="fs-avatar">
-                    {userInfo.avatar ? (
-                      <img src={userInfo.avatar} alt="Avatar" />
-                    ) : (
-                      <User size={18} />
-                    )}
-                  </div>
-                  <div className="fs-user-info">
-                    <p className="fs-user-name">{userInfo.name}</p>
-                    <p className="fs-user-email">#{accountID}</p>
-                  </div>
-                </div>
->>>>>>> 57e2b35dae59de34fddafab3baf6b90fa6feefb4
 
                 <button onClick={handleCreateVideo} className="fs-create-btn">
                   <Plus size={18} />

@@ -326,8 +326,8 @@
 /* Video Grid */
 .fs-video-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); /* Tăng kích thước card */
-  gap: 24px; /* Tăng khoảng cách */
+  grid-template-columns: repeat(4, 1fr); /* Display 4 videos per row */
+  gap: 20px; /* Reduced gap slightly for better fit */
 }
 
 /* Video Card */
@@ -477,12 +477,17 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .fs-video-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Tăng kích thước card */
-    gap: 20px; /* Tăng khoảng cách */
+    grid-template-columns: repeat(3, 1fr); /* 3 per row on medium screens */
   }
+}
 
+@media (max-width: 900px) {
+  .fs-video-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 per row on smaller screens */
+  }
+  
   .fs-user-profile-mini .fs-user-info {
     display: none;
   }
@@ -498,7 +503,7 @@
 
 @media (max-width: 480px) {
   .fs-video-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Tăng kích thước card */
+    grid-template-columns: repeat(1, 1fr); /* 1 per row on mobile */
     gap: 16px;
   }
   

@@ -229,9 +229,11 @@ const AppRoutes = () => {
         <Route path="/comment/:id" element={<CommentPage />} />
         <Route path="/detect" element={<DetectPage />} />
         <Route path="/flowshort" element={<VideoList />} />
-        <Route path="/soflowshort/:id" element={<UserVideoList />} />
         <Route path="/flowshort/edit/:id" element={<EditVideoForm />} />
         <Route path="/flowshortupload" element={<VideoUploadComponent />} />
+        <Route path="/soflowshort/:accountId" element={<UserVideoList />} />
+
+
         {/* Admin routes */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/AdminOder" element={<AdminOder />} />
