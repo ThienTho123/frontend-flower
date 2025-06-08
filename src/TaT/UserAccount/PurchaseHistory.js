@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { FaStar } from "react-icons/fa";
-import './PurchaseHistory.css';
+import "./PurchaseHistory.css";
 
 const PurchaseHistory = () => {
   const access_token = localStorage.getItem("access_token");
@@ -170,67 +170,72 @@ const PurchaseHistory = () => {
     } catch (error) {
       console.error("Error deleting review:", error);
     }
-
   };
 
   return (
     <div className="purchase-history-container">
-    <h3>Sản phẩm đã mua</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Sản phẩm</th>
-          <th>Số lượng</th>
-          <th>Đơn Giá</th>
-          <th>Thời gian</th>
-          <th>Đánh giá</th>
-        </tr>
-      </thead>
-      <tbody>
-        {billInfo.map((bill, index) => (
-          <tr key={index}>
-            <td>{index + 1}</td>
-            <td>
-              <a href={`/detail/${bill.productID}`} className="linkToProduct">
-                {bill.title}
-              </a>
-            </td>
-            <td>{bill.number}</td>
-            <td>{bill.price}</td>
-            <td>{bill.date}</td>
-            <td>
-              {bill.review ? (
-                <button onClick={() => handleReviewClick(bill.review)}>
-                  Chỉnh sửa
-                </button>
-              ) : (
-                <button onClick={() => handleAddReviewClick(bill.productID)}>
-                  Đánh giá
-                </button>
-              )}
-            </td>
+      <h3>Sản phẩm đã mua</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Đơn Giá</th>
+            <th>Thời gian</th>
+            <th>Đánh giá</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
-    <ModalEditReview
-      isVisible={isModalVisible}
-      onClose={handleModalClose}
-      review={selectedReview}
-      onSubmit={handleUpdateReview}
-      onDelete={handleDeleteReview}
-    />
-    <ModalAddReview
-      isVisible={isAddReviewVisible}
-      onClose={handleAddReviewClose}
-      onSubmit={handleSubmitReview}
-    />
-  </div>
-);
+        </thead>
+        <tbody>
+          {billInfo.map((bill, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                <a href={`/detail/${bill.productID}`} className="linkToProduct">
+                  {bill.title}
+                </a>
+              </td>
+              <td>{bill.number}</td>
+              <td>{bill.price}</td>
+              <td>{bill.date}</td>
+              <td>
+                {bill.review ? (
+                  <button onClick={() => handleReviewClick(bill.review)}>
+                    Chỉnh sửa
+                  </button>
+                ) : (
+                  <button onClick={() => handleAddReviewClick(bill.productID)}>
+                    Đánh giá
+                  </button>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <ModalEditReview
+        isVisible={isModalVisible}
+        onClose={handleModalClose}
+        review={selectedReview}
+        onSubmit={handleUpdateReview}
+        onDelete={handleDeleteReview}
+      />
+      <ModalAddReview
+        isVisible={isAddReviewVisible}
+        onClose={handleAddReviewClose}
+        onSubmit={handleSubmitReview}
+      />
+    </div>
+  );
 };
 
-const ModalEditReview = ({ isVisible, onClose, review, onSubmit, onDelete }) => {
+const ModalEditReview = ({
+  isVisible,
+  onClose,
+  review,
+  onSubmit,
+  onDelete,
+}) => {
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
   const [error, setError] = useState("");
@@ -268,8 +273,8 @@ const ModalEditReview = ({ isVisible, onClose, review, onSubmit, onDelete }) => 
   }
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container">
+    <div className="purhis-modal-overlay">
+      <div className="purhis-modal-container">
         <h3>Chỉnh sửa đánh giá sản phẩm</h3>
         <div className="rating-input">
           <label>Đánh giá: </label>
@@ -298,22 +303,30 @@ const ModalEditReview = ({ isVisible, onClose, review, onSubmit, onDelete }) => 
           <label>Upload Image: </label>
           <input type="file" onChange={handleImageChange} />
         </div>
-        <button onClick={handleSubmit}>Gửi</button>
-        <button  style={{
-          marginLeft: "10px",
-          backgroundColor: "#b0a9a9", /* Màu đỏ */
-          color: "#fff", /* Chữ trắng */
-          border: "none",
-          padding: "8px 12px",
-          borderRadius: "4px",
-          cursor: "pointer",
-          transition: "background-color 0.3s ease"
-        }} onClick={onClose}>
-          Đóng
-        </button>
-        <button className="buttonDelete" onClick={() => onDelete(review.reviewID)}>
-          Xóa
-        </button>
+        <div class="purhis-modal-buttons">
+          <button onClick={handleSubmit}>Gửi</button>
+          <button
+            style={{
+              marginLeft: "10px",
+              backgroundColor: "#b0a9a9" /* Màu đỏ */,
+              color: "#fff" /* Chữ trắng */,
+              border: "none",
+              padding: "8px 12px",
+              borderRadius: "4px",
+              cursor: "pointer",
+              transition: "background-color 0.3s ease",
+            }}
+            onClick={onClose}
+          >
+            Đóng
+          </button>
+          <button
+            className="buttonDelete"
+            onClick={() => onDelete(review.reviewID)}
+          >
+            Xóa
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -350,8 +363,8 @@ const ModalAddReview = ({ isVisible, onClose, onSubmit }) => {
   }
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container">
+    <div className="purhis-modal-overlay">
+      <div className="purhis-modal-container">
         <h3>Đánh giá sản phẩm</h3>
         <div className="rating-input">
           <label>Đánh giá: </label>

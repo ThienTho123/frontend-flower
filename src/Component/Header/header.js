@@ -62,7 +62,6 @@ const Header = () => {
     }
   };
 
-
   useEffect(() => {
     const fetchCartData = async () => {
       if (accesstoken) {
@@ -332,7 +331,7 @@ const Header = () => {
           </Link>
           <Link to="/detect" className="header-link">
             Nhận diện hoa
-          </Link> 
+          </Link>
         </div>
         <div className="icons-container">
           {/* Tìm kiếm */}
@@ -402,6 +401,8 @@ const Header = () => {
                           notif.preorder?.account?.avatar ??
                           notif.flower?.image ??
                           notif.order?.accountID?.avatar ??
+                          notif.orderDelivery?.accountID?.avatar ??
+                          notif.video?.accountID?.avatar ??
                           "default-avatar.png" // Ảnh mặc định nếu tất cả đều null
                         }
                         alt="Thông báo"

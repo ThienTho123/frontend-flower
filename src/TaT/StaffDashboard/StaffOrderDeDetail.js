@@ -465,13 +465,13 @@ const StaffOrderDeDetail = () => {
 
       {renderActionButtons()}
       {showModal && (
-  <div className="modal-overlay">
-    <div className="modal-container">
-      <div className="modal-header">{modalTitle}</div>
-      <div className="modal-body">{modalMessage}</div>
-      <div className="modal-footer">
+  <div className="stafforde-modal-overlay">
+    <div className="stafforde-modal-container">
+      <div className="stafforde-modal-header">{modalTitle}</div>
+      <div className="stafforde-modal-body">{modalMessage}</div>
+      <div className="stafforde-modal-footer">
         <button 
-          className="modal-confirm" 
+          className="stafforde-modal-confirm" 
           onClick={() => {
             setShowModal(false);
             executeAction();
@@ -480,7 +480,7 @@ const StaffOrderDeDetail = () => {
           Xác nhận
         </button>
         <button 
-          className="modal-cancel" 
+          className="stafforde-modal-cancel" 
           onClick={() => setShowModal(false)}
         >
           Hủy

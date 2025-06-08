@@ -465,13 +465,13 @@ const AdminOrderDeDetail = () => {
 
       {renderActionButtons()}
       {showModal && (
-  <div className="modal-overlay">
-    <div className="modal-container">
-      <div className="modal-header">{modalTitle}</div>
-      <div className="modal-body">{modalMessage}</div>
-      <div className="modal-footer">
+  <div className="adminorde-modal-overlay">
+    <div className="adminorde-modal-container">
+      <div className="adminorde-modal-header">{modalTitle}</div>
+      <div className="adminorde-modal-body">{modalMessage}</div>
+      <div className="adminorde-modal-footer">
         <button 
-          className="modal-confirm" 
+          className="adminorde-modal-confirm" 
           onClick={() => {
             setShowModal(false);
             executeAction();
@@ -480,7 +480,7 @@ const AdminOrderDeDetail = () => {
           Xác nhận
         </button>
         <button 
-          className="modal-cancel" 
+          className="adminorde-modal-cancel" 
           onClick={() => setShowModal(false)}
         >
           Hủy

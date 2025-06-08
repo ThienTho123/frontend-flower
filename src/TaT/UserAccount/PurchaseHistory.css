@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
 
 /* Gói toàn bộ trong lớp cha */
 .purchase-history-container {
@@ -14,11 +14,11 @@
 
 /* Tiêu đề với font Dancing Script */
 .purchase-history-container h3 {
-  font-family: 'Dancing Script', cursive;
+  font-family: "Dancing Script", cursive;
   font-size: 3rem;
   text-align: center;
   margin-bottom: 20px;
-  color: #6C3483; 
+  color: #6c3483;
 }
 
 /* Table Styling */
@@ -67,11 +67,11 @@
 }
 
 .purchase-history-container button:hover {
-  background-color: #E08AB6; /* Tông đậm hơn khi hover */
+  background-color: #e08ab6; /* Tông đậm hơn khi hover */
 }
 
 /* Modals */
-.purchase-history-container .modal-overlay {
+.purchase-history-container .purhis-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -84,7 +84,7 @@
   z-index: 1000;
 }
 
-.purchase-history-container .modal-container {
+.purchase-history-container .purhis-modal-container {
   width: 90%;
   max-width: 500px;
   background: #fff;
@@ -93,6 +93,11 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 .purchase-history-container button.buttonDelete {
-    background-color: #ff4d4f; /* Màu đỏ */
-  }
-  
+  background-color: #ff4d4f; /* Màu đỏ */
+}
+.purchase-history-container .purhis-modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}

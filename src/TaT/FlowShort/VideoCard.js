@@ -84,6 +84,17 @@ const VideoDetail = () => {
   }, [videoDTO, isMuted]);
 
   useEffect(() => {
+    if (videoDTO) {
+      const mediaUrl = videoDTO.video.vid_url || "";
+      const isImage = /\.(jpg|jpeg|png|gif|bmp|svg|webp)$/i.test(mediaUrl);
+      if (isImage) {
+        console.log("Image ended");
+        handleVideoEnded(); // Gọi kết thúc ngay nếu là ảnh
+      }
+    }
+  }, [videoDTO]);
+
+  useEffect(() => {
     const handleScroll = async (e) => {
       // Chỉ cho phép cuộn nếu modal không mở
       if (isCommentModalVisible) return;

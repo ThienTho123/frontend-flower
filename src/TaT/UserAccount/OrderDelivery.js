@@ -275,7 +275,17 @@ const OrderDelivery = () => {
     const [hours, minutes] = deliveryTime.split(":").map(Number);
     dateObj.setHours(hours, minutes, 0, 0);
 
-    const formattedDate = dateObj.toISOString();
+    const formattedDate =
+      dateObj.getFullYear() +
+      "-" +
+      String(dateObj.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(dateObj.getDate()).padStart(2, "0") +
+      "T" +
+      String(dateObj.getHours()).padStart(2, "0") +
+      ":" +
+      String(dateObj.getMinutes()).padStart(2, "0") +
+      ":00";
     const accountId = account?.id || 0;
 
     // Prepare order data with correct enum value
@@ -352,7 +362,9 @@ const OrderDelivery = () => {
   if (loading) {
     return <div className="od-loading">Đang tải dữ liệu...</div>;
   }
-
+  const selectedDeliveryType = deliveryTypesList.find(
+    (t) => t.id === selectedDeliveryTypeId
+  );
   return (
     <div className="od-container">
       <h2 className="od-heading">Đặt Hoa Theo Lịch</h2>
@@ -484,17 +496,18 @@ const OrderDelivery = () => {
             <div className="od-schedule-option">
               <label>Loại lịch giao:</label>
               <select
-                value={deliveryInterval}
-                onChange={(e) => setDeliveryInterval(e.target.value)}
+                value={selectedDeliveryTypeId}
+                onChange={(e) => setSelectedDeliveryTypeId(e.target.value)}
               >
-                <option value="1">Theo ngày</option>
-                <option value="2">Theo tuần</option>
-                <option value="4">Nửa tháng</option>
-                <option value="3">Theo tháng</option>
+                {deliveryTypesList.map((type) => (
+                  <option key={type.id} value={type.id}>
+                    {type.type}
+                  </option>
+                ))}
               </select>
             </div>
 
-            {deliveryInterval !== "1" && (
+            {selectedDeliveryType?.type !== "Date" && (
               <div className="od-schedule-option">
                 <label>Khoảng cách giao hàng:</label>
                 <select

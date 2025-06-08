@@ -191,7 +191,7 @@ const WheelComponent = () => {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         className="account-gift-modal-content"
-        overlayClassName="modal-overlay"
+        overlayClassName="rollbar-modal-overlay"
       >
         <h2 className="account-gift-modal-title">🎉 Chúc mừng!</h2>
         <p className="account-gift-modal-message">

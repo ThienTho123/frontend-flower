@@ -163,7 +163,7 @@
       overflow-x: auto;
     }
   }
-  .modal-overlay {
+  .stafforde-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -176,7 +176,7 @@
     z-index: 1000;
   }
   
-  .modal-container {
+  .stafforde-modal-container {
     background-color: white;
     border-radius: 8px;
     width: 400px;
@@ -184,7 +184,7 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
   
-  .modal-header {
+  .stafforde-modal-header {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 15px;
@@ -193,20 +193,20 @@
     padding-bottom: 10px;
   }
   
-  .modal-body {
+  .stafforde-modal-body {
     margin-bottom: 20px;
     line-height: 1.5;
     background-color: #ffffff; /* Thêm màu chữ rõ ràng */
 
   }
   
-  .modal-footer {
+  .stafforde-modal-footer {
     display: flex;
     justify-content: center; 
     gap: 10px;
   }
   
-  .modal-confirm {
+  .stafforde-modal-confirm {
     background-color: #4caf50;
     color: white;
     padding: 8px 15px;
@@ -215,7 +215,7 @@
     cursor: pointer;
   }
   
-  .modal-cancel {
+  .stafforde-modal-cancel {
     background-color: #f44336;
     color: white;
     padding: 8px 15px;

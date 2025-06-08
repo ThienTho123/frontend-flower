@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef,Suspense  } from "react";
+import React, { useEffect, useState, useRef, Suspense } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 import Slider from "react-slick";
@@ -35,8 +35,6 @@ const ProductDetail = () => {
   const [toastMessage, setToastMessage] = useState(""); // Lưu thông báo
   const totalPrice = productSizes[selectedSizeIndex]?.price * quantity || 0;
   const [wishlistID, setWishlistID] = useState(null); // Trạng thái để lưu wishlistID
- 
-
 
   const commentsPerPage = 5;
   useEffect(() => {
@@ -144,11 +142,11 @@ const ProductDetail = () => {
     }
 
     return (
-      <div className="modal-overlay">
-        <div className="modal-container">
+      <div className="productdetail-modal-overlay">
+        <div className="productdetail-modal-container">
           <h3>Thông báo</h3>
           <p>{message}</p>
-          <button className="modal-close-btn" onClick={onClose}>
+          <button className="productdetail-modal-close-btn" onClick={onClose}>
             Đóng
           </button>
         </div>
@@ -317,7 +315,7 @@ const ProductDetail = () => {
     focusOnSelect: true,
     arrows: true,
     dots: false,
-    centerMode: false,
+
     infinite: false,
   };
   const renderStars = (rating) => {
