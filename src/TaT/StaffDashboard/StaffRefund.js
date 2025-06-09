@@ -72,7 +72,7 @@ const StaffRefund = () => {
   return (
     <div className="admin-ql-container">
       <div className="title-container">
-      <img
+        <img
           src={returnIcon}
           alt="Quay Lại"
           className="return-button"
@@ -122,17 +122,29 @@ const StaffRefund = () => {
                 <td>{order.refund.preorderID?.id}</td>
 
                 <td>
-                  {order.refund.date
-                    ? new Date(
-                        order.refund.date[0],
-                        order.refund.date[1] - 1,
-                        order.refund.date[2],
-                        order.refund.date[3],
-                        order.refund.date[4],
-                        order.refund.date[5]
-                      ).toLocaleString()
+                  {Array.isArray(order.refund.date) &&
+                  order.refund.date.length >= 6
+                    ? new Intl.DateTimeFormat("vi-VN", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                        hour12: false,
+                      }).format(
+                        new Date(
+                          Number(order.refund.date[0]),
+                          Number(order.refund.date[1]) - 1, // Trừ 1 vì tháng bắt đầu từ 0
+                          Number(order.refund.date[2]),
+                          Number(order.refund.date[3]),
+                          Number(order.refund.date[4]),
+                          Number(order.refund.date[5])
+                        )
+                      )
                     : "Không có dữ liệu"}
                 </td>
+
                 <td>{order.refundMoney}</td>
                 <td>{order.refund.status}</td>
                 <td>
@@ -146,7 +158,9 @@ const StaffRefund = () => {
                       backgroundColor:
                         order.refund.status === "DISABLE" ? "#ccc" : "#4CAF50",
                       cursor:
-                        order.refund.status === "DISABLE" ? "not-allowed" : "pointer",
+                        order.refund.status === "DISABLE"
+                          ? "not-allowed"
+                          : "pointer",
                     }}
                   >
                     {order.refund.status === "DISABLE" ? "Đã Xử Lý" : "Xử lý"}
@@ -165,7 +179,10 @@ const StaffRefund = () => {
             <p>Bạn có chắc chắn muốn hoàn tiền cho đơn hàng này không?</p>
             <div className="refund-modal-buttons">
               <button onClick={() => setIsModalOpen(false)}>Hủy</button>
-              <button onClick={handleRefund} style={{ backgroundColor: "#4CAF50" }}>
+              <button
+                onClick={handleRefund}
+                style={{ backgroundColor: "#4CAF50" }}
+              >
                 Xác nhận
               </button>
             </div>
