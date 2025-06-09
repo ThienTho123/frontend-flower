@@ -170,6 +170,7 @@ const AdminRefund = () => {
               <th>ID Hoàn tiền</th>
               <th>Đơn hàng</th>
               <th>Đơn đặt trước</th>
+              <th>Đơn giao theo lịch</th>
               <th>Thời gian hoàn tiền</th>
               <th>Mã ngân hàng</th>
               <th>Số tài khoản</th>
@@ -182,18 +183,30 @@ const AdminRefund = () => {
             {orders.map((order) => (
               <tr key={order.refund.id}>
                 <td>{order.refund.id}</td>
-                <td>{order.refund.orderID?.orderID}</td>
-                <td>{order.refund.preorderID?.id}</td>
+                <td>{order.refund.orderID?.orderID || "-"}</td>
+                <td>{order.refund.preorderID?.id || "-"}</td>
+                <td>{order.refund.orderdeliveryid?.id || order.refund.orderDeliveryId?.id || order.refund.orderdelivery?.id || "-"}</td>
                 <td>
-                  {order.refund.date
-                    ? new Date(
-                        order.refund.date[0],
-                        order.refund.date[1] - 1,
-                        order.refund.date[2],
-                        order.refund.date[3],
-                        order.refund.date[4],
-                        order.refund.date[5]
-                      ).toLocaleString()
+                  {Array.isArray(order.refund.date) &&
+                  order.refund.date.length >= 6
+                    ? new Intl.DateTimeFormat("vi-VN", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                        hour12: false,
+                      }).format(
+                        new Date(
+                          Number(order.refund.date[0]),
+                          Number(order.refund.date[1]) - 1, // Trừ 1 vì tháng bắt đầu từ 0
+                          Number(order.refund.date[2]),
+                          Number(order.refund.date[3]),
+                          Number(order.refund.date[4]),
+                          Number(order.refund.date[5])
+                        )
+                      )
                     : "Không có dữ liệu"}
                 </td>
                 <td>{order.refund.bank}</td>

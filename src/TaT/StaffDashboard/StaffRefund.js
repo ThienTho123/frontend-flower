@@ -26,6 +26,7 @@ const StaffRefund = () => {
         if (!response.ok) throw new Error("Không thể lấy danh sách hoàn tiền.");
 
         const data = await response.json();
+        console.log("Dữ liệu refund từ API:", data.refunds); // Debug log
         setOrders(data.refunds || []);
       } catch (err) {
         setError(err.message);
@@ -121,7 +122,7 @@ const StaffRefund = () => {
                 <td>{order.refund.id}</td>
                 <td>{order.refund.orderID?.orderID || "-"}</td>
                 <td>{order.refund.preorderID?.id || "-"}</td>
-                <td>{order.refund.orderdeliveryid?.id || "-"}</td>
+                <td>{order.refund.orderdeliveryid?.id || order.refund.orderDeliveryId?.id || order.refund.orderdelivery?.id || "-"}</td>
 
                 <td>
                   {Array.isArray(order.refund.date) &&
