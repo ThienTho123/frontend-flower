@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import "./OrderDelivery.css";
 import vnpay from "./Image/vnpay.jpg";
@@ -40,6 +40,33 @@ const OrderDelivery = () => {
     nextWeek.setDate(today.getDate() + 7);
     return nextWeek;
   };
+
+  // Get number of delivery days based on delivery type object
+  const getDeliveryDays = (deliveryTypeObj) => {
+    if (!deliveryTypeObj) return 1;
+    return deliveryTypeObj.days || 1;
+  };
+
+  // Get delivery cost based on delivery type object
+  const getDeliveryCost = (deliveryTypeObj) => {
+    if (!deliveryTypeObj) return 0;
+    return deliveryTypeObj.cost || 0;
+  };
+
+  // Get selected delivery type object - sử dụng useMemo để tối ưu
+  const selectedDeliveryType = useMemo(() => {
+    return deliveryTypesList.find(t => t.id === parseInt(selectedDeliveryTypeId));
+  }, [deliveryTypesList, selectedDeliveryTypeId]);
+
+  // Tính toán giá hiển thị cho từng hoa - sử dụng useMemo để tự động cập nhật khi dependencies thay đổi
+  const flowersWithCalculatedPrices = useMemo(() => {
+    return flowers.map(flower => ({
+      ...flower,
+      displayPrice: flower.selected && flower.quantity > 0 
+        ? flower.selectedPrice * flower.quantity * getDeliveryDays(selectedDeliveryType)
+        : flower.selectedPrice || 0
+    }));
+  }, [flowers, selectedDeliveryType]);
 
   useEffect(() => {
     const accesstoken = localStorage.getItem("access_token");
@@ -218,14 +245,21 @@ const OrderDelivery = () => {
     );
   };
 
-  const calculateTotalPrice = () => {
-    return flowers.reduce((total, flower) => {
+  // Tính tổng tiền - sử dụng useMemo để tự động cập nhật
+  const totalPrice = useMemo(() => {
+    const deliveryDays = getDeliveryDays(selectedDeliveryType);
+    const deliveryCost = getDeliveryCost(selectedDeliveryType);
+    
+    const productTotal = flowers.reduce((total, flower) => {
       if (flower.selected && flower.quantity > 0) {
-        return total + flower.selectedPrice * flower.quantity;
+        return total + (flower.selectedPrice * flower.quantity * deliveryDays);
       }
       return total;
     }, 0);
-  };
+
+    // Add delivery cost multiplied by delivery days to total
+    return productTotal + (deliveryCost * deliveryDays);
+  }, [flowers, selectedDeliveryType]);
 
   const handleOrder = () => {
     console.log("Access token:", accesstoken);
@@ -306,10 +340,8 @@ const OrderDelivery = () => {
 
     console.log("Order Data:", orderData);
 
-    const totalPayment = calculateTotalPrice();
-
     // Send to API
-    fetch(`http://localhost:8080/setOrderDelivery?price=${totalPayment}`, {
+    fetch(`http://localhost:8080/setOrderDelivery?price=${totalPrice}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -334,7 +366,7 @@ const OrderDelivery = () => {
       })
       .then((data) => {
         console.log("Order set successfully:", data);
-        return fetch(`http://localhost:8080/pay?totalPayment=${totalPayment}`, {
+        return fetch(`http://localhost:8080/pay?totalPayment=${totalPrice}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -362,9 +394,7 @@ const OrderDelivery = () => {
   if (loading) {
     return <div className="od-loading">Đang tải dữ liệu...</div>;
   }
-  const selectedDeliveryType = deliveryTypesList.find(
-    (t) => t.id === selectedDeliveryTypeId
-  );
+  
   return (
     <div className="od-container">
       <h2 className="od-heading">Đặt Hoa Theo Lịch</h2>
@@ -374,7 +404,7 @@ const OrderDelivery = () => {
           <h3>Chọn Sản Phẩm</h3>
           <div className="od-product-scroll">
             <div className="od-product-grid">
-              {flowers.map((flower) => (
+              {flowersWithCalculatedPrices.map((flower) => (
                 <div
                   key={flower.productID}
                   className={`od-product-card ${
@@ -407,14 +437,14 @@ const OrderDelivery = () => {
                     </h3>
 
                     <div className="od-product-price">
-                      {flower.selected && flower.quantity > 0
-                        ? (
-                            flower.selectedPrice * flower.quantity
-                          ).toLocaleString("vi-VN")
-                        : flower.selectedPrice
-                        ? flower.selectedPrice.toLocaleString("vi-VN")
-                        : "0"}{" "}
-                      VND
+                      {flower.displayPrice.toLocaleString("vi-VN")} VND
+                      {flower.selected && flower.quantity > 0 && selectedDeliveryType && (
+                        <div className="od-price-breakdown">
+                          <small>
+                            ({flower.selectedPrice.toLocaleString("vi-VN")} × {flower.quantity} × {getDeliveryDays(selectedDeliveryType)} ngày)
+                          </small>
+                        </div>
+                      )}
                     </div>
 
                     <div className="od-product-options">
@@ -501,7 +531,7 @@ const OrderDelivery = () => {
               >
                 {deliveryTypesList.map((type) => (
                   <option key={type.id} value={type.id}>
-                    {type.type}
+                    {type.type} ({type.days} ngày) - Phí: {type.cost.toLocaleString("vi-VN")} VND
                   </option>
                 ))}
               </select>
@@ -591,9 +621,19 @@ const OrderDelivery = () => {
 
           <div className="od-price-summary">
             <h3 className="od-total-payment">
-              Tổng thanh toán: {calculateTotalPrice().toLocaleString("vi-VN")}{" "}
+              Tổng thanh toán: {totalPrice.toLocaleString("vi-VN")}{" "}
               VND
             </h3>
+            {selectedDeliveryType && (
+              <div className="od-price-breakdown-summary">
+                <p className="od-price-note">
+                  * Sản phẩm cho {getDeliveryDays(selectedDeliveryType)} ngày ({selectedDeliveryType.type})
+                </p>
+                <p className="od-price-note">
+                  * Phí giao hàng: {(getDeliveryCost(selectedDeliveryType) * getDeliveryDays(selectedDeliveryType)).toLocaleString("vi-VN")} VND
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="od-payment-options">

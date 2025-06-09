@@ -108,6 +108,7 @@ const StaffRefund = () => {
               <th>ID Hoàn tiền</th>
               <th>Đơn hàng</th>
               <th>Đơn đặt trước</th>
+              <th>Đơn giao theo lịch</th>
               <th>Thời gian hoàn tiền</th>
               <th>Số tiền</th>
               <th>Trạng thái</th>
@@ -118,8 +119,9 @@ const StaffRefund = () => {
             {orders.map((order) => (
               <tr key={order.refund.id}>
                 <td>{order.refund.id}</td>
-                <td>{order.refund.orderID?.orderID}</td>
-                <td>{order.refund.preorderID?.id}</td>
+                <td>{order.refund.orderID?.orderID || "-"}</td>
+                <td>{order.refund.preorderID?.id || "-"}</td>
+                <td>{order.refund.orderdeliveryid?.id || "-"}</td>
 
                 <td>
                   {Array.isArray(order.refund.date) &&
