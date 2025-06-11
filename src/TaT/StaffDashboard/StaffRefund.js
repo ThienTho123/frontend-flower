@@ -111,6 +111,8 @@ const StaffRefund = () => {
               <th>Đơn đặt trước</th>
               <th>Đơn giao theo lịch</th>
               <th>Thời gian hoàn tiền</th>
+              <th>Mã ngân hàng</th>
+              <th>Số tài khoản</th>
               <th>Số tiền</th>
               <th>Trạng thái</th>
               <th>Hành động</th>
@@ -147,7 +149,8 @@ const StaffRefund = () => {
                       )
                     : "Không có dữ liệu"}
                 </td>
-
+                <td>{order.refund.bank}</td>
+                <td>{order.refund.number}</td>
                 <td>{order.refundMoney}</td>
                 <td>{order.refund.status}</td>
                 <td>
