@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import './RefundPages.css';
 
 const RefundOrder = () => {
   const { id } = useParams();
@@ -64,74 +65,92 @@ const RefundOrder = () => {
   const confirmRefund = () => {
     setShowConfirm(true);
   };
-  return (
-    <div>
-      <h2>Yêu cầu hoàn tiền</h2>
-
-      <label>
-        Mã giao dịch:
+return (
+  <div className="refund-page-container">
+    <h2 className="refund-title">Yêu cầu hoàn tiền</h2>
+    
+    <div className="refund-form-wrapper">
+      <div className="refund-form-group">
+        <label className="refund-label">Mã thanh toán:</label>
         <input
+          className="refund-input"
           type="text"
           value={transactionNo}
           onChange={(e) => setTransactionNo(e.target.value)}
+          placeholder="Nhập mã giao dịch"
         />
-      </label>
+      </div>
 
-      <label>
-        Ngân hàng:
-        <select value={bank} onChange={(e) => setBank(e.target.value)}>
+      <div className="refund-form-group">
+        <label className="refund-label">Ngân hàng:</label>
+        <select className="refund-select" value={bank} onChange={(e) => setBank(e.target.value)}>
           <option value="">Chọn ngân hàng</option>
           {bankList.length > 0 ? (
             bankList.map((b) => (
               <option key={b.code} value={b.code}>
-                {b.shortName ? `${b.shortName} - ${b.name}` : b.name}
+                {b.shortName ? `${b.name} - ${b.shortName}` : b.name}
               </option>
             ))
           ) : (
             <option disabled>Đang tải...</option>
           )}
         </select>
-      </label>
+      </div>
 
-      <label>
-        Số tài khoản:
+      <div className="refund-form-group">
+        <label className="refund-label">Số tài khoản:</label>
         <input
+          className="refund-input"
           type="text"
           value={number}
           onChange={(e) => setNumber(e.target.value)}
+          placeholder="Nhập số tài khoản"
         />
-      </label>
+      </div>
 
-      <button onClick={confirmRefund}>Gửi yêu cầu</button>
+      <button className="refund-submit-btn" onClick={confirmRefund}>
+        Gửi yêu cầu
+      </button>
+    </div>
 
-      {showConfirm && (
-        <div className="modal">
-          <div className="modal-content">
-            <p>Hãy kiểm tra kỹ các thông tin trước khi gửi?</p>
-            <button className="confirm-btn" onClick={handleRefund}>
+    {/* Modal xác nhận */}
+    {showConfirm && (
+      <div className="refund-modal-overlay">
+        <div className="refund-modal-content">
+          <p className="refund-modal-text">Hãy kiểm tra kỹ các thông tin trước khi gửi?</p>
+          <div className="refund-modal-buttons">
+            <button className="refund-confirm-btn" onClick={handleRefund}>
               Xác nhận
             </button>
-            <button className="cancel-btn" onClick={() => setShowConfirm(false)}>
+            <button className="refund-cancel-btn" onClick={() => setShowConfirm(false)}>
               Hủy
             </button>
           </div>
         </div>
-      )}
+      </div>
+    )}
 
-      {showSuccessModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <p>✅ Yêu cầu hoàn tiền đã được gửi thành công!</p>
-            <p>Hệ thống sẽ chuyển hướng trong giây lát...</p>
-            <button className="confirm-btn" onClick={() => setShowSuccessModal(false)}>
+    {/* Modal thành công */}
+    {showSuccessModal && (
+      <div className="refund-modal-overlay refund-success-modal">
+        <div className="refund-modal-content">
+          <p className="refund-modal-text">✅ Yêu cầu hoàn tiền đã được gửi thành công!</p>
+          <p className="refund-modal-text">Hệ thống sẽ chuyển hướng trong giây lát...</p>
+          <div className="refund-modal-buttons">
+            <button className="refund-confirm-btn" onClick={() => setShowSuccessModal(false)}>
               Đóng
             </button>
           </div>
         </div>
-      )}
-      {message && !showSuccessModal && <p style={{ color: "red" }}>{message}</p>}
-    </div>
-  );
+      </div>
+    )}
+
+    {/* Thông báo lỗi */}
+    {message && !showSuccessModal && (
+      <div className="refund-error-message">{message}</div>
+    )}
+  </div>
+);
 };
 
 export default RefundOrder;
