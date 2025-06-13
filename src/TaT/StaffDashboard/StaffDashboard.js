@@ -19,6 +19,7 @@ import event from "./ImageDashboard/event.png"
 import orderDeIcon from "./ImageDashboard/orderde.png";
 import giftIcon from "./ImageDashboard/gift.png";
 import rollbarIcon from "./ImageDashboard/rollbar.png";
+import customIcon from "./ImageDashboard/custom.png";
 
 const StaffDashboard = () => {
   const navigate = useNavigate();
@@ -127,6 +128,9 @@ const StaffDashboard = () => {
             </button>
             <button onClick={() => handleNavigate("/StaffRollBar")}>
               <img src={rollbarIcon} alt="Quản lý quay thưởng" /> Quản lý quay thưởng
+            </button>
+            <button onClick={() => handleNavigate("/StaffCustomOrders")}>
+              <img src={customIcon} alt="Quản lý Custom" /> Quản lý custom
             </button>
           </div>
         </div>

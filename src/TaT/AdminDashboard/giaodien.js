@@ -33,6 +33,8 @@ import generate from "../../Component/assets/generative.png"
 import orderDeIcon from "./ImageDashboard/orderde.png";
 import giftIcon from "./ImageDashboard/gift.png";
 import rollbarIcon from "./ImageDashboard/rollbar.png";
+import customIcon from "./ImageDashboard/custom.png";
+
 
 import {
   Chart as ChartJS,
@@ -435,6 +437,9 @@ const Dashboard = () => {
             </button>
             <button onClick={() => handleNavigate("/AdminRollBar")}>
               <img src={rollbarIcon} alt="Quản lý quay thưởng" /> Quản lý quay thưởng
+            </button>
+            <button onClick={() => handleNavigate("/AdminCustomOrders")}>
+              <img src={customIcon} alt="Quản lý Custom" /> Quản lý custom
             </button>
             </div>
           </div>

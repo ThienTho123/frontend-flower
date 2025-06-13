@@ -126,6 +126,12 @@ import StaffRollBar from "./TaT/StaffDashboard/StaffRollBar.js";
 import StaffNewRollBar from "./TaT/StaffDashboard/NewRollBar.js";
 import StaffEditRollBar from "./TaT/StaffDashboard/EditRollBar.js";
 import VideoUploadComponent from "./TaT/FlowShort/VideoUpload.js";
+import AdminCustomOrders from "./TaT/AdminDashboard/AdminCustomOrders.js";
+import AdminCustomOrderDetail from "./TaT/AdminDashboard/AdminCustomOrderDetail.js";
+
+import StaffCustomOrders from "./TaT/StaffDashboard/StaffCustomOrders.js";
+import StaffCustomOrderDetail from "./TaT/StaffDashboard/StaffCustomOrderDetail.js";
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -168,6 +174,8 @@ const AppRoutes = () => {
     "/AdminCanceldelivery",
     "/AdminOrderDe",
     "/AdminOrderDeDetail",
+    "/AdminCustomOrders",
+    "/AdminCustomOrderDetail",
     "/StaffFlower",
     "/staff",
     "/StaffFlowerImage",
@@ -269,6 +277,8 @@ const AppRoutes = () => {
         <Route path="/AdminDetect/edit/:id" element={<AdminEditDetect />} />
         <Route path="/AdminOrderDe" element={<AdminOrderDe />} />
         <Route path="/AdminOrderDe/:id" element={<AdminOrderDeDetail />} />
+        <Route path="/AdminCustomOrders" element={<AdminCustomOrders />} />
+        <Route path="/AdminCustomOrders/edit/:id" element={<AdminCustomOrderDetail />} />
 
         <Route path="/AdminAccountGift" element={<AdminAccountGift />} />
         <Route path="/AdminAccountGift/new" element={<AdminNewAccountGift />} />
@@ -301,6 +311,9 @@ const AppRoutes = () => {
         <Route path="/myblog/:id" element={<EditBlogForm />} />
         <Route path="/StaffOrderDe" element={<StaffOrderDe />} />
         <Route path="/StaffOrderDe/:id" element={<StaffOrderDeDetail />} />
+
+        <Route path="/StaffCustomOrders" element={<StaffCustomOrders />} />
+        <Route path="/StaffCustomOrders/edit/:id" element={<StaffCustomOrderDetail />} />
 
         <Route path="/StaffAccountGift" element={<StaffAccountGift />} />
         <Route path="/StaffAccountGift/new" element={<StaffNewAccountGift />} />
