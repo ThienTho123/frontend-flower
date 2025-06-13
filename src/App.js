@@ -117,11 +117,11 @@ import EditVideoForm from "./TaT/FlowShort/EditVideo.js";
 import AdminRollBar from "./TaT/AdminDashboard/AdminRollBar.js";
 import AdminNewRollBar from "./TaT/AdminDashboard/NewRollBar.js";
 import AdminEditRollBar from "./TaT/AdminDashboard/EditRollBar.js";
-
+import AccountCustomize from "./TaT/UserAccount/AccountCustomize.js";
 import StaffAccountGift from "./TaT/StaffDashboard/StaffAccountGift.js";
 import StaffNewAccountGift from "./TaT/StaffDashboard/NewAccountGift.js";
 import StaffEditAccountGift from "./TaT/StaffDashboard/EditAccountGift.js";
-
+import CustomizeForm from "./TaT/UserAccount/Customize.js";
 import StaffRollBar from "./TaT/StaffDashboard/StaffRollBar.js";
 import StaffNewRollBar from "./TaT/StaffDashboard/NewRollBar.js";
 import StaffEditRollBar from "./TaT/StaffDashboard/EditRollBar.js";
@@ -139,6 +139,7 @@ import OrderDeliveryDetail from "./TaT/UserAccount/OrderDeliveryDetail.js";
 import WheelComponent from "./TaT/UserAccount/RollBarDetail..js";
 import VideoAccountDetail from "./TaT/FlowShort/VideoAccountDetail.js";
 import MyVideo from "./TaT/UserAccount/MyVideo.js";
+import AccountCustomDetail from "./TaT/UserAccount/AccountCustomDetail.js";
 const AppRoutes = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location
@@ -233,7 +234,6 @@ const AppRoutes = () => {
         <Route path="/flowshortupload" element={<VideoUploadComponent />} />
         <Route path="/soflowshort/:accountId" element={<UserVideoList />} />
 
-
         {/* Admin routes */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/AdminOder" element={<AdminOder />} />
@@ -317,6 +317,8 @@ const AppRoutes = () => {
         <Route path="/product" element={<ProductList />} />
         <Route path="/detail/:id" element={<ProductDetail />} />
         <Route path="/prebuy" element={<PreBuy />} />
+        <Route path="/custom" element={<CustomizeForm />} />
+
         <Route path="/orderdelivery" element={<OrderDelivery />} />
         <Route path="/news" element={<NewsList />} />
         <Route path="/news/:id" element={<NewsDetail />} />
@@ -343,6 +345,8 @@ const AppRoutes = () => {
           <Route path="blogpin" element={<BlogPin />} />
           <Route path="sendcomment/:id" element={<SendCommentDetail />} />
           <Route path="attendance" element={<Attendance />} />
+          <Route path="custom" element={<AccountCustomize />} />
+          <Route path="custom/:id" element={<AccountCustomDetail />} />
         </Route>
 
         <Route path="/staffaccount" element={<AccountStaffLayout />}>

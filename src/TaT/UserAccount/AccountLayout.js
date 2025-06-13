@@ -100,6 +100,9 @@ const AccountLayout = () => {
         <button onClick={() => navigate("/account/orde")}>
           Đơn đặt hàng cố định
         </button>
+         <button onClick={() => navigate("/account/custom")}>
+          Đơn đặt hoa theo yêu cầu
+        </button>
         <button onClick={() => navigate("/account/blogpin")}>
           Bài viết được ghim
         </button>
