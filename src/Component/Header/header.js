@@ -332,6 +332,9 @@ const Header = () => {
           <Link to="/detect" className="header-link">
             Nhận diện hoa
           </Link>
+           <Link to="/custom" className="header-link">
+            Đặt hoa theo yêu cầu
+          </Link>
         </div>
         <div className="icons-container">
           {/* Tìm kiếm */}

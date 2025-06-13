@@ -34,7 +34,7 @@ import orderDeIcon from "./ImageDashboard/orderde.png";
 import giftIcon from "./ImageDashboard/gift.png";
 import rollbarIcon from "./ImageDashboard/rollbar.png";
 import customIcon from "./ImageDashboard/custom.png";
-
+import ribbonIcon from "../StaffDashboard/ImageDashboard/gift-bow.png"
 
 import {
   Chart as ChartJS,
@@ -441,6 +441,9 @@ const Dashboard = () => {
             <button onClick={() => handleNavigate("/AdminCustomOrders")}>
               <img src={customIcon} alt="Quản lý Custom" /> Quản lý custom
             </button>
+             <button onClick={() => handleNavigate("/AdminOtherFlower")}>
+              <img src={ribbonIcon} alt="Quản lý Custom" /> Quản lý hoa và vật phẩm theo yêu cầu
+            </button>
             </div>
           </div>
 
@@ -501,14 +504,14 @@ const Dashboard = () => {
         <Pie data={roleChartData} />
       </div>
     </div>
-    <div className="uniform-chart review-summary-chart">
+    {/* <div className="uniform-chart review-summary-chart">
       <h2>Thống kê đánh giá</h2>
       {reviewList.length > 0 ? (
         <Pie data={getChartData()} />
       ) : (
         <p>Đang tải hoặc không có đánh giá</p>
       )}
-    </div>
+    </div> */}
     <div className="uniform-chart account-type-chart">
       <h3>Số lượng tài khoản theo loại</h3>
       <div className="pie-chart">

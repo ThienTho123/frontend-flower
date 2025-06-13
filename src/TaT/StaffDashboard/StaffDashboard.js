@@ -20,7 +20,7 @@ import orderDeIcon from "./ImageDashboard/orderde.png";
 import giftIcon from "./ImageDashboard/gift.png";
 import rollbarIcon from "./ImageDashboard/rollbar.png";
 import customIcon from "./ImageDashboard/custom.png";
-
+import ribbonIcon from "./ImageDashboard/gift-bow.png"
 const StaffDashboard = () => {
   const navigate = useNavigate();
   const [accountInfo, setAccountInfo] = useState(null);
@@ -131,6 +131,9 @@ const StaffDashboard = () => {
             </button>
             <button onClick={() => handleNavigate("/StaffCustomOrders")}>
               <img src={customIcon} alt="Quản lý Custom" /> Quản lý custom
+            </button>
+            <button onClick={() => handleNavigate("/StaffOtherFlower")}>
+              <img src={ribbonIcon} alt="Quản lý hoa và vật phẩm theo yêu cầu" /> Quản lý hoa và vật phẩm theo yêu cầu
             </button>
           </div>
         </div>

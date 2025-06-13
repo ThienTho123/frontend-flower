@@ -128,7 +128,7 @@ import StaffEditRollBar from "./TaT/StaffDashboard/EditRollBar.js";
 import VideoUploadComponent from "./TaT/FlowShort/VideoUpload.js";
 import AdminCustomOrders from "./TaT/AdminDashboard/AdminCustomOrders.js";
 import AdminCustomOrderDetail from "./TaT/AdminDashboard/AdminCustomOrderDetail.js";
-
+import AdminOtherFlower from "./TaT/AdminDashboard/AdminOtherFlower.js";
 import StaffCustomOrders from "./TaT/StaffDashboard/StaffCustomOrders.js";
 import StaffCustomOrderDetail from "./TaT/StaffDashboard/StaffCustomOrderDetail.js";
 
@@ -146,6 +146,7 @@ import WheelComponent from "./TaT/UserAccount/RollBarDetail..js";
 import VideoAccountDetail from "./TaT/FlowShort/VideoAccountDetail.js";
 import MyVideo from "./TaT/UserAccount/MyVideo.js";
 import AccountCustomDetail from "./TaT/UserAccount/AccountCustomDetail.js";
+import StaffOtherFlower from "./TaT/StaffDashboard/StaffOtherFlower.js";
 const AppRoutes = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location
@@ -279,6 +280,7 @@ const AppRoutes = () => {
         <Route path="/AdminOrderDe/:id" element={<AdminOrderDeDetail />} />
         <Route path="/AdminCustomOrders" element={<AdminCustomOrders />} />
         <Route path="/AdminCustomOrders/edit/:id" element={<AdminCustomOrderDetail />} />
+        <Route path="/AdminOtherFlower" element={<AdminOtherFlower />} />
 
         <Route path="/AdminAccountGift" element={<AdminAccountGift />} />
         <Route path="/AdminAccountGift/new" element={<AdminNewAccountGift />} />
@@ -311,6 +313,7 @@ const AppRoutes = () => {
         <Route path="/myblog/:id" element={<EditBlogForm />} />
         <Route path="/StaffOrderDe" element={<StaffOrderDe />} />
         <Route path="/StaffOrderDe/:id" element={<StaffOrderDeDetail />} />
+        <Route path="/StaffOtherFlower" element={<StaffOtherFlower />} />
 
         <Route path="/StaffCustomOrders" element={<StaffCustomOrders />} />
         <Route path="/StaffCustomOrders/edit/:id" element={<StaffCustomOrderDetail />} />
