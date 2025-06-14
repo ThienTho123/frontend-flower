@@ -9,22 +9,25 @@ const WaitingComment = () => {
   const access_token = localStorage.getItem("access_token");
   const translateCondition = (stative) => {
     const translations = {
-      "Waiting": "Đang chờ xử lý",
-      "Processing": "Đang xử lý",
-      "Complete": "Đã hoàn thành",
+      Waiting: "Đang chờ xử lý",
+      Processing: "Đang xử lý",
+      Complete: "Đã hoàn thành",
     };
     return translations[stative] || stative;
   };
   const getCommentInfo = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/staff", {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
+      const response = await axios.get(
+        "https://deploybackend-1ta9.onrender.com/staff",
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
 
       const rawComment = response.data?.comment || [];
-      console.log("RawComment "+rawComment.data);
+      console.log("RawComment " + rawComment.data);
       const updatedComment = rawComment.map((item, index) => ({
         stt: index + 1,
         id: item.commentID,
@@ -46,13 +49,12 @@ const WaitingComment = () => {
     getCommentInfo();
   }, []);
 
-
   // Tạo một bình luận mới
- 
+
   return (
     <div className="send-comment-container">
       <h2 className="comment-title">Các ý kiến đang chờ</h2>
-  
+
       {/* Hiển thị danh sách bình luận */}
       <div className="comments-list">
         {comments.length > 0 ? (
@@ -75,7 +77,10 @@ const WaitingComment = () => {
                   <td>{comment.stt}</td>
                   <td>
                     {/* Link tới trang chi tiết với id comment */}
-                    <Link to={`/staffaccount/comment/${comment.id}`} className="comment-link">
+                    <Link
+                      to={`/staffaccount/comment/${comment.id}`}
+                      className="comment-link"
+                    >
                       {comment.id}
                     </Link>
                   </td>
@@ -83,12 +88,19 @@ const WaitingComment = () => {
                   <td>{comment.accountID.name}</td>
                   <td>
                     {/* Link tới trang chi tiết với title */}
-                    <Link to={`/staffaccount/comment/${comment.id}`} className="comment-link">
-                      {comment.title.length > 20 ? `${comment.title.substring(0, 20)}...` : comment.title}
+                    <Link
+                      to={`/staffaccount/comment/${comment.id}`}
+                      className="comment-link"
+                    >
+                      {comment.title.length > 20
+                        ? `${comment.title.substring(0, 20)}...`
+                        : comment.title}
                     </Link>
                   </td>
                   <td>
-                    {comment.text.length > 50 ? `${comment.text.substring(0, 30)}...` : comment.text}
+                    {comment.text.length > 50
+                      ? `${comment.text.substring(0, 30)}...`
+                      : comment.text}
                   </td>
                   <td>{translateCondition(comment.stative)}</td>
                   <td>{comment.date}</td>
@@ -102,7 +114,6 @@ const WaitingComment = () => {
       </div>
     </div>
   );
-  
 };
 
 export default WaitingComment;

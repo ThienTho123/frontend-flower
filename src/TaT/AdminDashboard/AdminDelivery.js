@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png'; // Đảm bảo đường dẫn này chính xác
+import returnIcon from "./ImageDashboard/return-button.png"; // Đảm bảo đường dẫn này chính xác
 
 const AdminDelivery = () => {
   const [orders, setOrders] = useState([]);
@@ -33,11 +33,14 @@ const AdminDelivery = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/adminmanager/ordernoship", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/adminmanager/ordernoship",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Không thể lấy danh sách đơn hàng.");
@@ -63,20 +66,25 @@ const AdminDelivery = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/adminmanager/ordernoship/ship", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ orderid: orderID, accountid: shipperID }),
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/adminmanager/ordernoship/ship",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ orderid: orderID, accountid: shipperID }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Không thể giao hàng cho đơn hàng này.");
       }
 
-      setOrders((prevOrders) => prevOrders.filter((order) => order.orderID !== orderID));
+      setOrders((prevOrders) =>
+        prevOrders.filter((order) => order.orderID !== orderID)
+      );
       setSuccessMessage("Đã sắp xếp giao hàng thành công!");
       setTimeout(() => setSuccessMessage(null), 3000); // Ẩn thông báo sau 3 giây
     } catch (err) {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import useBootstrap from "../useBootstrap";
-import "./CreateEventForm.css"; 
+import "./CreateEventForm.css";
 
 const NewAccountGift = () => {
   const [accountGift, setAccountGift] = useState({
@@ -9,9 +9,9 @@ const NewAccountGift = () => {
     gift: null,
     order: null,
     discount: null,
-    status: "ENABLE"
+    status: "ENABLE",
   });
-  
+
   const [accountList, setAccountList] = useState([]);
   const [discountList, setDiscountList] = useState([]);
   const [orderList, setOrderList] = useState([]);
@@ -33,24 +33,24 @@ const NewAccountGift = () => {
       setLoading(true);
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.get(
-        "http://localhost:8080/adminaccountgift",
+        "https://deploybackend-1ta9.onrender.com/adminaccountgift",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         }
       );
-      
+
       const { accounts, discounts, orders, gifts } = response.data;
-      
+
       setAccountList(accounts || []);
       setDiscountList(discounts || []);
       setOrderList(orders || []);
-      
+
       if (gifts) {
         setGiftList(gifts);
       }
-      
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -67,32 +67,38 @@ const NewAccountGift = () => {
 
   const handleSelectChange = (e) => {
     const { name, value } = e.target;
-    
+
     if (value === "") {
       setAccountGift({ ...accountGift, [name]: null });
       return;
     }
-    
+
     let selectedItem;
     let updatedAccountGift = { ...accountGift };
-    
+
     switch (name) {
       case "account":
-        selectedItem = accountList.find(account => account.accountID === parseInt(value));
+        selectedItem = accountList.find(
+          (account) => account.accountID === parseInt(value)
+        );
         updatedAccountGift.account = selectedItem;
         break;
       case "gift":
-        selectedItem = giftList.find(gift => gift.id === parseInt(value));
+        selectedItem = giftList.find((gift) => gift.id === parseInt(value));
         updatedAccountGift.gift = selectedItem;
         break;
       case "discount":
-        selectedItem = discountList.find(discount => discount.discountID === parseInt(value));
+        selectedItem = discountList.find(
+          (discount) => discount.discountID === parseInt(value)
+        );
         updatedAccountGift.discount = selectedItem;
         // Khi chọn discount, đặt order về null
         updatedAccountGift.order = null;
         break;
       case "order":
-        selectedItem = orderList.find(order => order.orderID === parseInt(value));
+        selectedItem = orderList.find(
+          (order) => order.orderID === parseInt(value)
+        );
         // Chỉ lấy orderID thay vì toàn bộ đối tượng order
         updatedAccountGift.order = { orderID: selectedItem.orderID };
         // Khi chọn order, đặt discount về null
@@ -101,13 +107,13 @@ const NewAccountGift = () => {
       default:
         selectedItem = null;
     }
-    
+
     setAccountGift(updatedAccountGift);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     // Kiểm tra tài khoản và gift đã được chọn
     if (!accountGift.account || !accountGift.gift) {
       setErrorMessage("Vui lòng chọn tài khoản và quà tặng!");
@@ -121,31 +127,37 @@ const NewAccountGift = () => {
   const confirmSubmit = async () => {
     try {
       const accessToken = localStorage.getItem("access_token");
-      
+
       // Chuẩn bị dữ liệu để gửi
       const dataToSend = {
         account: {
-          accountID: accountGift.account.accountID
+          accountID: accountGift.account.accountID,
         },
         gift: {
-          id: accountGift.gift.id
+          id: accountGift.gift.id,
         },
         order: accountGift.order,
-        discount: accountGift.discount ? { discountID: accountGift.discount.discountID } : null,
-        status: accountGift.status
+        discount: accountGift.discount
+          ? { discountID: accountGift.discount.discountID }
+          : null,
+        status: accountGift.status,
       };
-      
+
       console.log("Sending data:", JSON.stringify(dataToSend, null, 2));
-      
-      const response = await axios.post("http://localhost:8080/adminaccountgift", dataToSend, {
-        headers: { 
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json'
-        },
-      });
+
+      const response = await axios.post(
+        "https://deploybackend-1ta9.onrender.com/adminaccountgift",
+        dataToSend,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       console.log("API response:", response.data);
-      
+
       setIsModalOpen(false);
       setIsSuccessModalOpen(true);
       resetForm();
@@ -153,7 +165,9 @@ const NewAccountGift = () => {
       console.error("Error creating gift:", error);
       console.error("Error details:", error.response?.data);
       setIsModalOpen(false);
-      setErrorMessage(error.response?.data || "Có lỗi xảy ra khi tạo quà tặng!");
+      setErrorMessage(
+        error.response?.data || "Có lỗi xảy ra khi tạo quà tặng!"
+      );
       setIsErrorModalOpen(true);
     }
   };
@@ -164,7 +178,7 @@ const NewAccountGift = () => {
       gift: null,
       order: null,
       discount: null,
-      status: "ENABLE"
+      status: "ENABLE",
     });
   };
 
@@ -189,7 +203,7 @@ const NewAccountGift = () => {
           value={accountGift.account ? accountGift.account.accountID : ""}
         >
           <option value="">-- Chọn tài khoản --</option>
-          {accountList.map(account => (
+          {accountList.map((account) => (
             <option key={account.accountID} value={account.accountID}>
               {account.username} - {account.email}
             </option>
@@ -206,7 +220,7 @@ const NewAccountGift = () => {
           value={accountGift.gift ? accountGift.gift.id : ""}
         >
           <option value="">-- Chọn quà tặng --</option>
-          {giftList.map(gift => (
+          {giftList.map((gift) => (
             <option key={gift.id} value={gift.id}>
               {gift.name || `Quà #${gift.id}`}
             </option>
@@ -224,15 +238,19 @@ const NewAccountGift = () => {
           disabled={isDiscountSelected}
         >
           <option value="">-- Chọn đơn hàng (không bắt buộc) --</option>
-          {orderList.map(order => (
+          {orderList.map((order) => (
             <option key={order.orderID} value={order.orderID}>
-              {order.orderID} - {order.total ? `${order.total} VND` : ''}
+              {order.orderID} - {order.total ? `${order.total} VND` : ""}
             </option>
           ))}
         </select>
         {isDiscountSelected && (
-          <p className="form-note" style={{ fontSize: '0.8rem', color: '#666', marginTop: '0.3rem' }}>
-            Bạn đã chọn khuyến mãi. Vui lòng bỏ chọn khuyến mãi để chọn đơn hàng.
+          <p
+            className="form-note"
+            style={{ fontSize: "0.8rem", color: "#666", marginTop: "0.3rem" }}
+          >
+            Bạn đã chọn khuyến mãi. Vui lòng bỏ chọn khuyến mãi để chọn đơn
+            hàng.
           </p>
         )}
       </div>
@@ -247,14 +265,18 @@ const NewAccountGift = () => {
           disabled={isOrderSelected}
         >
           <option value="">-- Chọn khuyến mãi (không bắt buộc) --</option>
-          {discountList.map(discount => (
+          {discountList.map((discount) => (
             <option key={discount.discountID} value={discount.discountID}>
-              {discount.discountcode || 'Mã KM'} - {discount.discountPercent || 0}%
-            </option>  
+              {discount.discountcode || "Mã KM"} -{" "}
+              {discount.discountPercent || 0}%
+            </option>
           ))}
         </select>
         {isOrderSelected && (
-          <p className="form-note" style={{ fontSize: '0.8rem', color: '#666', marginTop: '0.3rem' }}>
+          <p
+            className="form-note"
+            style={{ fontSize: "0.8rem", color: "#666", marginTop: "0.3rem" }}
+          >
             Bạn đã chọn đơn hàng. Vui lòng bỏ chọn đơn hàng để chọn khuyến mãi.
           </p>
         )}
@@ -279,31 +301,31 @@ const NewAccountGift = () => {
 
       {/* Modal xác nhận */}
       {isModalOpen && (
-        <div 
+        <div
           className="event-modal"
           style={{
-            position: 'fixed',
+            position: "fixed",
             top: 0,
             left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 1000
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
           }}
         >
-          <div 
+          <div
             className="event-modal-content"
             style={{
-              backgroundColor: 'white',
-              padding: '2rem',
-              borderRadius: '8px',
-              maxWidth: '400px',
-              width: '90%',
-              textAlign: 'center',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
+              backgroundColor: "white",
+              padding: "2rem",
+              borderRadius: "8px",
+              maxWidth: "400px",
+              width: "90%",
+              textAlign: "center",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
             }}
           >
             <h3>Xác nhận tạo Quà Tặng</h3>
@@ -313,13 +335,13 @@ const NewAccountGift = () => {
                 onClick={confirmSubmit}
                 className="event-modal-confirm"
                 style={{
-                  marginRight: '0.5rem',
-                  backgroundColor: '#4CAF50',
-                  color: 'white',
-                  border: 'none',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '4px',
-                  cursor: 'pointer'
+                  marginRight: "0.5rem",
+                  backgroundColor: "#4CAF50",
+                  color: "white",
+                  border: "none",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "4px",
+                  cursor: "pointer",
                 }}
               >
                 Xác nhận
@@ -328,12 +350,12 @@ const NewAccountGift = () => {
                 onClick={() => setIsModalOpen(false)}
                 className="event-modal-cancel"
                 style={{
-                  backgroundColor: '#f44336',
-                  color: 'white',
-                  border: 'none',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '4px',
-                  cursor: 'pointer'
+                  backgroundColor: "#f44336",
+                  color: "white",
+                  border: "none",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "4px",
+                  cursor: "pointer",
                 }}
               >
                 Hủy
@@ -345,31 +367,31 @@ const NewAccountGift = () => {
 
       {/* Modal thành công */}
       {isSuccessModalOpen && (
-        <div 
+        <div
           className="event-success-modal"
           style={{
-            position: 'fixed',
+            position: "fixed",
             top: 0,
             left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 1000
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
           }}
         >
-          <div 
+          <div
             className="event-success-modal-content"
             style={{
-              backgroundColor: 'white',
-              padding: '2rem',
-              borderRadius: '8px',
-              maxWidth: '400px',
-              width: '90%',
-              textAlign: 'center',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
+              backgroundColor: "white",
+              padding: "2rem",
+              borderRadius: "8px",
+              maxWidth: "400px",
+              width: "90%",
+              textAlign: "center",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
             }}
           >
             <h3>🎉 Thành công!</h3>
@@ -378,12 +400,12 @@ const NewAccountGift = () => {
               onClick={() => setIsSuccessModalOpen(false)}
               className="event-success-modal-button"
               style={{
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                border: 'none',
-                padding: '0.5rem 1rem',
-                borderRadius: '4px',
-                cursor: 'pointer'
+                backgroundColor: "#4CAF50",
+                color: "white",
+                border: "none",
+                padding: "0.5rem 1rem",
+                borderRadius: "4px",
+                cursor: "pointer",
               }}
             >
               Đóng
@@ -391,34 +413,34 @@ const NewAccountGift = () => {
           </div>
         </div>
       )}
-      
+
       {/* Modal lỗi */}
       {isErrorModalOpen && (
-        <div 
+        <div
           className="event-error-modal"
           style={{
-            position: 'fixed',
+            position: "fixed",
             top: 0,
             left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 1000
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
           }}
         >
-          <div 
+          <div
             className="event-error-modal-content"
             style={{
-              backgroundColor: 'white',
-              padding: '2rem',
-              borderRadius: '8px',
-              maxWidth: '400px',
-              width: '90%',
-              textAlign: 'center',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
+              backgroundColor: "white",
+              padding: "2rem",
+              borderRadius: "8px",
+              maxWidth: "400px",
+              width: "90%",
+              textAlign: "center",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
             }}
           >
             <h3>❌ Thất bại!</h3>
@@ -427,12 +449,12 @@ const NewAccountGift = () => {
               onClick={() => setIsErrorModalOpen(false)}
               className="event-error-modal-button"
               style={{
-                backgroundColor: '#f44336',
-                color: 'white',
-                border: 'none',
-                padding: '0.5rem 1rem',
-                borderRadius: '4px',
-                cursor: 'pointer'
+                backgroundColor: "#f44336",
+                color: "white",
+                border: "none",
+                padding: "0.5rem 1rem",
+                borderRadius: "4px",
+                cursor: "pointer",
               }}
             >
               Đóng

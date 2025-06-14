@@ -22,19 +22,19 @@ import pureposeIcon from "./ImageDashboard/purpose.png"; // Hình ảnh cho qu�
 import repcommentIcon from "./ImageDashboard/repcomment.png"; // Hình ảnh cho quản lý Review
 import deliveryIcon from "./ImageDashboard/delivery.png"; // Hình ảnh cho quản lý Review
 import cancelIcon from "./ImageDashboard/cancel.png"; // Hình ảnh cho quản lý Review
-import refund from "../StaffDashboard/ImageDashboard/refund.svg"
-import preorder from "../StaffDashboard/ImageDashboard/preorder.png"
+import refund from "../StaffDashboard/ImageDashboard/refund.svg";
+import preorder from "../StaffDashboard/ImageDashboard/preorder.png";
 import logo from "./ImageDashboard/logo.png"; // Hình ảnh cho quản lý Review
 import exit from "./ImageDashboard/exit.png"; // Hình ảnh cho quản lý Review
 import { Bar } from "react-chartjs-2"; // Biểu đồ cột
-import blog from "../StaffDashboard/ImageDashboard/Blog.png"
-import event from "../StaffDashboard/ImageDashboard/event.png"
-import generate from "../../Component/assets/generative.png"
+import blog from "../StaffDashboard/ImageDashboard/Blog.png";
+import event from "../StaffDashboard/ImageDashboard/event.png";
+import generate from "../../Component/assets/generative.png";
 import orderDeIcon from "./ImageDashboard/orderde.png";
 import giftIcon from "./ImageDashboard/gift.png";
 import rollbarIcon from "./ImageDashboard/rollbar.png";
 import customIcon from "./ImageDashboard/custom.png";
-import ribbonIcon from "../StaffDashboard/ImageDashboard/gift-bow.png"
+import ribbonIcon from "../StaffDashboard/ImageDashboard/gift-bow.png";
 
 import {
   Chart as ChartJS,
@@ -74,7 +74,7 @@ const Dashboard = () => {
     // Lấy thông tin tài khoản
     if (accountID && accesstoken) {
       fetch(
-        `http://localhost:8080/api/v1/auth/account?accountID=${accountID}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/auth/account?accountID=${accountID}`,
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -101,7 +101,7 @@ const Dashboard = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/v1/admin/order",
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/order",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -124,10 +124,9 @@ const Dashboard = () => {
     fetchOrders();
   }, [accountID, accesstoken, navigate]);
 
-
   useEffect(() => {
     if (accesstoken) {
-      fetch("http://localhost:8080/api/v1/admin/dashboard", {
+      fetch("https://deploybackend-1ta9.onrender.com/api/v1/admin/dashboard", {
         headers: { Authorization: `Bearer ${accesstoken}` },
       })
         .then((response) => response.json())
@@ -138,12 +137,11 @@ const Dashboard = () => {
     }
   }, [accesstoken, navigate]);
 
-
   useEffect(() => {
     const fetchReviews = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/v1/admin/review",
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/review",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -176,7 +174,7 @@ const Dashboard = () => {
   const prepareRevenueChartData = () => {
     const revenueData = {};
     let totalRevenue = 0; // Biến để tính tổng doanh thu
-  
+
     orders.forEach((order) => {
       if (
         order.paid === "Yes" &&
@@ -184,7 +182,7 @@ const Dashboard = () => {
         order.date.length >= 3
       ) {
         const monthYear = `${order.date[1]}/${order.date[0]}`; // Định dạng Tháng/Năm
-  
+
         if (!revenueData[monthYear]) {
           revenueData[monthYear] = 0;
         }
@@ -192,12 +190,12 @@ const Dashboard = () => {
         totalRevenue += order.totalAmount; // Cộng dồn doanh thu
       }
     });
-  
+
     // Sắp xếp các tháng theo thứ tự từ tháng đầu đến tháng cuối
     const sortedLabels = Object.keys(revenueData).sort((a, b) => {
-      const [monthA, yearA] = a.split('/').map(Number); // Tách tháng và năm
-      const [monthB, yearB] = b.split('/').map(Number);
-  
+      const [monthA, yearA] = a.split("/").map(Number); // Tách tháng và năm
+      const [monthB, yearB] = b.split("/").map(Number);
+
       // So sánh theo năm trước, tháng sau
       if (yearA !== yearB) {
         return yearA - yearB; // Sắp xếp theo năm
@@ -205,7 +203,7 @@ const Dashboard = () => {
         return monthA - monthB; // Sắp xếp theo tháng
       }
     });
-  
+
     return {
       totalRevenue, // Trả về tổng doanh thu cùng dữ liệu biểu đồ
       chartData: {
@@ -213,7 +211,7 @@ const Dashboard = () => {
         datasets: [
           {
             label: "Doanh thu (VND)",
-            data: sortedLabels.map(label => revenueData[label]), // Dữ liệu theo thứ tự sắp xếp
+            data: sortedLabels.map((label) => revenueData[label]), // Dữ liệu theo thứ tự sắp xếp
             backgroundColor: "rgba(75, 192, 192, 0.6)",
             borderColor: "rgba(75, 192, 192, 1)",
             borderWidth: 1,
@@ -222,7 +220,6 @@ const Dashboard = () => {
       },
     };
   };
-  
 
   const getChartData = () => {
     const ratingCounts = [0, 0, 0, 0, 0]; // Đếm số lượng đánh giá cho mỗi sao (1-5 sao)
@@ -257,7 +254,7 @@ const Dashboard = () => {
   };
 
   const handleLogout = () => {
-    fetch("http://localhost:8080/api/v1/auth/logout", {
+    fetch("https://deploybackend-1ta9.onrender.com/api/v1/auth/logout", {
       method: "GET",
       credentials: "include",
     })
@@ -276,7 +273,7 @@ const Dashboard = () => {
       });
   };
 
- const roleChartData = {
+  const roleChartData = {
     labels: ["User", "Admin", "Staff", "Shipper"],
     datasets: [
       {
@@ -287,7 +284,12 @@ const Dashboard = () => {
           dashboardData?.numberShipper || 0,
         ],
         backgroundColor: ["blue", "green", "orange", "red"],
-        hoverBackgroundColor: ["darkblue", "darkgreen", "darkorange", "darkred"],
+        hoverBackgroundColor: [
+          "darkblue",
+          "darkgreen",
+          "darkorange",
+          "darkred",
+        ],
       },
     ],
   };
@@ -350,13 +352,12 @@ const Dashboard = () => {
         <div className="dashboard-container">
           <div className="admin-buttons-container">
             <div className="admin-buttons">
-            <button onClick={() => handleNavigate("/AdminCanceldelivery")}>
-                <img src={cancelIcon} alt="Quản lý đơn hủy" />{" "}
-                Quản lý đơn hủy
+              <button onClick={() => handleNavigate("/AdminCanceldelivery")}>
+                <img src={cancelIcon} alt="Quản lý đơn hủy" /> Quản lý đơn hủy
               </button>
               <button onClick={() => handleNavigate("/AdminDelivery")}>
-                <img src={deliveryIcon} alt="Quản lý giao hàng" />{" "}
-                Quản lý giao hàng
+                <img src={deliveryIcon} alt="Quản lý giao hàng" /> Quản lý giao
+                hàng
               </button>
               <button onClick={() => handleNavigate("/AdminAccount")}>
                 <img src={accountIcon} alt="Quản lý Account" /> Account
@@ -371,8 +372,7 @@ const Dashboard = () => {
                 <img src={billInfoIcon} alt="Quản lý thông tin đơn hàng" />{" "}
                 Thông tin đơn hàng
               </button>
-              
-             
+
               <button onClick={() => handleNavigate("/AdminCategory")}>
                 <img src={pureposeIcon} alt="Quản lý Category" /> Category
               </button>
@@ -415,7 +415,8 @@ const Dashboard = () => {
                 <img src={productTypeIcon} alt="Quản lý Type" /> Type
               </button>
               <button onClick={() => handleNavigate("/AdminPreorder")}>
-                <img src={preorder} alt="Quản lý đơn đặt trước" /> Quản lý đơn đặt trước
+                <img src={preorder} alt="Quản lý đơn đặt trước" /> Quản lý đơn
+                đặt trước
               </button>
               <button onClick={() => handleNavigate("/AdminRefund")}>
                 <img src={refund} alt="Quản lý hoàn tiền" /> Quản lý hoàn tiền
@@ -427,84 +428,87 @@ const Dashboard = () => {
                 <img src={event} alt="Quản lý sự kiện" /> Quản lý sự kiện
               </button>
               <button onClick={() => handleNavigate("/AdminDetect")}>
-                <img src={generate} alt="Quản lý nhận diện hoa" /> Quản lý nhận diện hoa
+                <img src={generate} alt="Quản lý nhận diện hoa" /> Quản lý nhận
+                diện hoa
               </button>
               <button onClick={() => handleNavigate("/AdminOrderDe")}>
                 <img src={orderDeIcon} alt="Đơn đặt trước mới" /> Đơn theo lịch
               </button>
               <button onClick={() => handleNavigate("/AdminAccountGift")}>
-              <img src={giftIcon} alt="Quản lý quà tặng" /> Quản lý quà tặng
-            </button>
-            <button onClick={() => handleNavigate("/AdminRollBar")}>
-              <img src={rollbarIcon} alt="Quản lý quay thưởng" /> Quản lý quay thưởng
-            </button>
-            <button onClick={() => handleNavigate("/AdminCustomOrders")}>
-              <img src={customIcon} alt="Quản lý Custom" /> Quản lý custom
-            </button>
-             <button onClick={() => handleNavigate("/AdminOtherFlower")}>
-              <img src={ribbonIcon} alt="Quản lý Custom" /> Quản lý hoa và vật phẩm theo yêu cầu
-            </button>
+                <img src={giftIcon} alt="Quản lý quà tặng" /> Quản lý quà tặng
+              </button>
+              <button onClick={() => handleNavigate("/AdminRollBar")}>
+                <img src={rollbarIcon} alt="Quản lý quay thưởng" /> Quản lý quay
+                thưởng
+              </button>
+              <button onClick={() => handleNavigate("/AdminCustomOrders")}>
+                <img src={customIcon} alt="Quản lý Custom" /> Quản lý custom
+              </button>
+              <button onClick={() => handleNavigate("/AdminOtherFlower")}>
+                <img src={ribbonIcon} alt="Quản lý Custom" /> Quản lý hoa và vật
+                phẩm theo yêu cầu
+              </button>
             </div>
           </div>
 
           <div className="charts-section">
-  {/* Hàng 1 */}
-  <div className="top-chart-row">
-    <div className="large-chart monthly-revenue-chart">
-      <h2>Thống kê doanh thu theo tháng</h2>
-      <h3 className="total-revenue">
-        Tổng doanh thu: {totalRevenue.toLocaleString()} VND
-      </h3>
-      <Bar data={chartData} />
-    </div>
-    <div className="large-chart financial-summary-chart">
-      <h3>Thống kê tài chính</h3>
-      <Bar data={totalChartData} />
-    </div>
-    <div className="highlighted-account-info">
-      <h3>Thông Tin Tài Khoản</h3>
-      {accesstoken && accountInfo ? (
-        <div>
-          <div className="info-row">
-            <span className="label">ID Account:</span>
-            <span>{accountInfo.id}</span>
-          </div>
-          <div className="info-row">
-            <span className="label">Tên:</span>
-            <span>{accountInfo.name}</span>
-          </div>
-          <div className="info-row">
-            <span className="label">Role:</span>
-            <span>{accountInfo.role}</span>
-          </div>
-          <div className="info-row">
-            <span className="label">Address:</span>
-            <span>{accountInfo.address}</span>
-          </div>
-          <div className="info-row">
-            <span className="label">Phone:</span>
-            <span>{accountInfo.phonenumber}</span>
-          </div>
-          <div className="info-row">
-            <span className="label">Email:</span>
-            <span>{accountInfo.email}</span>
-          </div>
-        </div>
-      ) : (
-        <p>Đang tải thông tin tài khoản...</p>
-      )}
-    </div>
-  </div>
+            {/* Hàng 1 */}
+            <div className="top-chart-row">
+              <div className="large-chart monthly-revenue-chart">
+                <h2>Thống kê doanh thu theo tháng</h2>
+                <h3 className="total-revenue">
+                  Tổng doanh thu: {totalRevenue.toLocaleString()} VND
+                </h3>
+                <Bar data={chartData} />
+              </div>
+              <div className="large-chart financial-summary-chart">
+                <h3>Thống kê tài chính</h3>
+                <Bar data={totalChartData} />
+              </div>
+              <div className="highlighted-account-info">
+                <h3>Thông Tin Tài Khoản</h3>
+                {accesstoken && accountInfo ? (
+                  <div>
+                    <div className="info-row">
+                      <span className="label">ID Account:</span>
+                      <span>{accountInfo.id}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="label">Tên:</span>
+                      <span>{accountInfo.name}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="label">Role:</span>
+                      <span>{accountInfo.role}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="label">Address:</span>
+                      <span>{accountInfo.address}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="label">Phone:</span>
+                      <span>{accountInfo.phonenumber}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="label">Email:</span>
+                      <span>{accountInfo.email}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <p>Đang tải thông tin tài khoản...</p>
+                )}
+              </div>
+            </div>
 
-  {/* Hàng 2 */}
-  <div className="bottom-chart-row">
-    <div className="uniform-chart role-distribution-chart">
-      <h3>Số lượng tài khoản theo vai trò</h3>
-      <div className="pie-chart">
-        <Pie data={roleChartData} />
-      </div>
-    </div>
-    {/* <div className="uniform-chart review-summary-chart">
+            {/* Hàng 2 */}
+            <div className="bottom-chart-row">
+              <div className="uniform-chart role-distribution-chart">
+                <h3>Số lượng tài khoản theo vai trò</h3>
+                <div className="pie-chart">
+                  <Pie data={roleChartData} />
+                </div>
+              </div>
+              {/* <div className="uniform-chart review-summary-chart">
       <h2>Thống kê đánh giá</h2>
       {reviewList.length > 0 ? (
         <Pie data={getChartData()} />
@@ -512,17 +516,15 @@ const Dashboard = () => {
         <p>Đang tải hoặc không có đánh giá</p>
       )}
     </div> */}
-    <div className="uniform-chart account-type-chart">
-      <h3>Số lượng tài khoản theo loại</h3>
-      <div className="pie-chart">
-        <Pie data={typeChartData} />
-      </div>
-    </div>
-  </div>
-</div>
-
-
-      </div>
+              <div className="uniform-chart account-type-chart">
+                <h3>Số lượng tài khoản theo loại</h3>
+                <div className="pie-chart">
+                  <Pie data={typeChartData} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

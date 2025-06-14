@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png';
+import returnIcon from "./ImageDashboard/return-button.png";
 
 const AdminNews = () => {
   const [newsList, setNewsList] = useState([]);
@@ -21,12 +21,15 @@ const AdminNews = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/admin/news", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/news",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
           const errorMessage = await response.text();
@@ -54,14 +57,17 @@ const AdminNews = () => {
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:8080/api/v1/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-        },
-        credentials: "include",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          credentials: "include",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
@@ -83,7 +89,7 @@ const AdminNews = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/news/softdelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/news/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -110,7 +116,7 @@ const AdminNews = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/news/harddelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/news/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -135,7 +141,7 @@ const AdminNews = () => {
   const handleSave = async (id, newsData) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/news/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/news/${id}`,
         {
           method: "PUT",
           headers: {
@@ -150,9 +156,7 @@ const AdminNews = () => {
       if (response.ok) {
         const updatedNews = await response.json();
         setNewsList((prevNewsList) =>
-          prevNewsList.map((news) =>
-            news.newsID === id ? updatedNews : news
-          )
+          prevNewsList.map((news) => (news.newsID === id ? updatedNews : news))
         );
         setEditingNewsId(null);
       } else {
@@ -166,25 +170,31 @@ const AdminNews = () => {
   const handleCreate = async () => {
     try {
       // Đảm bảo date có định dạng đúng
-      const formattedDate = new Date().toISOString().split('.')[0];  // Loại bỏ phần millisecond
-  
+      const formattedDate = new Date().toISOString().split(".")[0]; // Loại bỏ phần millisecond
+
       const newNewsWithFormattedDate = {
         ...newNews,
         date: formattedDate,
       };
-  
-      console.log("Creating news with data: ", JSON.stringify(newNewsWithFormattedDate, null, 2));  // In ra JSON để kiểm tra
-  
-      const response = await fetch("http://localhost:8080/api/v1/admin/news", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(newNewsWithFormattedDate),
-      });
-  
+
+      console.log(
+        "Creating news with data: ",
+        JSON.stringify(newNewsWithFormattedDate, null, 2)
+      ); // In ra JSON để kiểm tra
+
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/news",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(newNewsWithFormattedDate),
+        }
+      );
+
       if (response.ok) {
         const createdNews = await response.json();
         setNewsList([...newsList, createdNews]);
@@ -205,7 +215,7 @@ const AdminNews = () => {
   const handleEditClick = (news) => {
     setEditingNewsId(news.newsID);
     setNewNews(news);
-  
+
     // Cuộn trang về đầu khi nhấn Edit
     window.scrollTo(0, 0);
   };
@@ -225,14 +235,16 @@ const AdminNews = () => {
         />
         <h2>Quản lý News</h2>
       </div>
-  
+
       <h3>{editingNewsId === null ? "Add New News" : "Edit News"}</h3>
       <div>
         <label>News Image: </label>
         <input type="file" onChange={handleFileChange} />
         <button onClick={handleUploadImage}>Upload Image</button>
-        {imageUrl && <img src={imageUrl} alt="News Thumbnail" style={{ width: 100 }} />}
-  
+        {imageUrl && (
+          <img src={imageUrl} alt="News Thumbnail" style={{ width: 100 }} />
+        )}
+
         <label>Title:</label>
         <input
           type="text"
@@ -241,7 +253,7 @@ const AdminNews = () => {
             setNewNews((prev) => ({ ...prev, title: e.target.value }))
           }
         />
-  
+
         <label>Content:</label>
         <textarea
           value={newNews.content}
@@ -249,7 +261,7 @@ const AdminNews = () => {
             setNewNews((prev) => ({ ...prev, content: e.target.value }))
           }
         />
-  
+
         <label>Status: </label>
         <select
           value={newNews.status}
@@ -260,7 +272,7 @@ const AdminNews = () => {
           <option value="ENABLE">Enable</option>
           <option value="DISABLE">Disable</option>
         </select>
-  
+
         <label>Date: </label>
         <input
           type="datetime-local"
@@ -269,16 +281,18 @@ const AdminNews = () => {
             setNewNews((prev) => ({ ...prev, date: e.target.value }))
           }
         />
-  
+
         {/* Hiển thị nút Create News khi không có bài viết đang chỉnh sửa */}
         {editingNewsId === null ? (
           <button onClick={handleCreate}>Create News</button>
         ) : (
           // Hiển thị nút Save khi đang chỉnh sửa bài viết
-          <button onClick={() => handleSave(editingNewsId, newNews)}>Save</button>
+          <button onClick={() => handleSave(editingNewsId, newNews)}>
+            Save
+          </button>
         )}
       </div>
-  
+
       <h3>List</h3>
       {newsList.length === 0 ? (
         <p>No news available.</p>
@@ -313,20 +327,19 @@ const AdminNews = () => {
                 <td>
                   {editingNewsId === news.newsID ? (
                     <>
-                      <button onClick={() => handleSave(news.newsID, newNews)}>Save</button>
-                      <button onClick={() => setEditingNewsId(null)}>Cancel</button>
+                      <button onClick={() => handleSave(news.newsID, newNews)}>
+                        Save
+                      </button>
+                      <button onClick={() => setEditingNewsId(null)}>
+                        Cancel
+                      </button>
                     </>
                   ) : (
                     <>
-                    <button
-                      onClick={() => handleEditClick(news)}
-                    >
-                      Sửa
-                    </button>
+                      <button onClick={() => handleEditClick(news)}>Sửa</button>
                       <button onClick={() => handleDeleteSoft(news.newsID)}>
                         Vô hiệu hóa
                       </button>
-
                     </>
                   )}
                 </td>
@@ -335,11 +348,10 @@ const AdminNews = () => {
           </tbody>
         </table>
       )}
-  
+
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
     </div>
   );
-  
 };
 
 export default AdminNews;

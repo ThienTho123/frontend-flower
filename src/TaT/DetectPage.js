@@ -65,7 +65,7 @@ const DetectPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/detect/upload",
+        "https://deploybackend-1ta9.onrender.com/detect/upload",
         formData
       );
       setResultImage(`data:image/jpeg;base64,${response.data.image}`);
@@ -289,16 +289,14 @@ const DetectPage = () => {
                       "Không có thông tin"}
                   </p>
                   <div className="more-info-toggle">
-
-                  <button
-                    onClick={() => setShowMoreInfo(false)}
-                    className="collapse-btn"
-                  >
-                    Thu gọn
-                  </button>
+                    <button
+                      onClick={() => setShowMoreInfo(false)}
+                      className="collapse-btn"
+                    >
+                      Thu gọn
+                    </button>
                   </div>
                 </>
-                
               )}
             </div>
 

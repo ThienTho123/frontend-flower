@@ -35,7 +35,7 @@ const AdminPreorderDetails = () => {
     const fetchPreorderDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/admin/preorder/${id}`,
+          `https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder/${id}`,
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -48,7 +48,7 @@ const AdminPreorderDetails = () => {
         }
 
         const data = await response.json();
-        console.log("data: ",data)
+        console.log("data: ", data);
         setPreorder(data.preorders || {}); // Đảm bảo không bị null
         setPreorderDetails(data.preorderdetails || []); // Nếu không có thì gán mảng rỗng
       } catch (err) {
@@ -73,7 +73,7 @@ const AdminPreorderDetails = () => {
   const handleCancelableById = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/preorder/cancelable/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder/cancelable/${id}`,
         {
           method: "PUT",
           headers: {
@@ -89,7 +89,7 @@ const AdminPreorderDetails = () => {
 
       // Cập nhật lại danh sách đơn hàng sau khi thay đổi
       const updatedResponse = await fetch(
-        "http://localhost:8080/api/v1/admin/preorder",
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -111,7 +111,7 @@ const AdminPreorderDetails = () => {
   const handleCompletePreorder = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/preorder/complete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder/complete/${id}`,
         {
           method: "POST", // Hoặc "PUT" nếu backend sử dụng `@PutMapping`
           headers: {
@@ -127,7 +127,7 @@ const AdminPreorderDetails = () => {
 
       // Cập nhật lại danh sách đơn hàng sau khi hoàn thành
       const updatedResponse = await fetch(
-        "http://localhost:8080/api/v1/admin/preorder",
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -164,27 +164,38 @@ const AdminPreorderDetails = () => {
         <h2>Chi Tiết Đơn Đặt Trước</h2>
       </div>
       <button
-  className="order-button"
-  onClick={async () => {
-    await handleCancelableById(preorder?.id); // Gọi hàm xử lý
-    setPreorder({ ...preorder, precondition: preorder?.precondition === "Waiting" ? "Ordering" : "Waiting" });
-  }}
-  disabled={["Refund", "Refunding", "Cancel", "Success"].includes(preorder?.precondition || "")}
->
-  {preorder?.precondition === "Waiting" ? "Đặt hàng" : "Hoàn tác"}
-</button>
+        className="order-button"
+        onClick={async () => {
+          await handleCancelableById(preorder?.id); // Gọi hàm xử lý
+          setPreorder({
+            ...preorder,
+            precondition:
+              preorder?.precondition === "Waiting" ? "Ordering" : "Waiting",
+          });
+        }}
+        disabled={["Refund", "Refunding", "Cancel", "Success"].includes(
+          preorder?.precondition || ""
+        )}
+      >
+        {preorder?.precondition === "Waiting" ? "Đặt hàng" : "Hoàn tác"}
+      </button>
 
-<button
-  className="order-button"
-  disabled={["Refund", "Refunding", "Cancel", "Success", "Waiting"].includes(preorder?.precondition || "")}
-  onClick={async () => {
-    await handleCompletePreorder(preorder?.id); // Gọi hàm xử lý
-    setPreorder({ ...preorder, precondition: "Success" });
-  }}
->
-  Hoàn thành
-</button>
-
+      <button
+        className="order-button"
+        disabled={[
+          "Refund",
+          "Refunding",
+          "Cancel",
+          "Success",
+          "Waiting",
+        ].includes(preorder?.precondition || "")}
+        onClick={async () => {
+          await handleCompletePreorder(preorder?.id); // Gọi hàm xử lý
+          setPreorder({ ...preorder, precondition: "Success" });
+        }}
+      >
+        Hoàn thành
+      </button>
 
       {preorder && (
         <div className="order-history">

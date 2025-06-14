@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png';
+import returnIcon from "./ImageDashboard/return-button.png";
 
 const AdminFlowerImage = () => {
   const [flowerImageList, setFlowerImageList] = useState([]);
@@ -21,12 +21,15 @@ const AdminFlowerImage = () => {
   useEffect(() => {
     const fetchFlowerImages = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/admin/flowerimage", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/flowerimage",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
           const errorMessage = await response.text();
@@ -34,7 +37,9 @@ const AdminFlowerImage = () => {
         }
 
         const data = await response.json();
-        setFlowerImageList(Array.isArray(data.flowerImages) ? data.flowerImages : []); // Đảm bảo là array
+        setFlowerImageList(
+          Array.isArray(data.flowerImages) ? data.flowerImages : []
+        ); // Đảm bảo là array
         setFlowerList(Array.isArray(data.flowers) ? data.flowers : []); // Đảm bảo flowers là array
       } catch (err) {
         console.error("Error fetching flower images:", err.message);
@@ -55,14 +60,17 @@ const AdminFlowerImage = () => {
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:8080/api/v1/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-        },
-        credentials: "include",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          credentials: "include",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
@@ -84,7 +92,7 @@ const AdminFlowerImage = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flowerimage/softdelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/flowerimage/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -111,7 +119,7 @@ const AdminFlowerImage = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flowerimage/harddelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/flowerimage/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -122,7 +130,9 @@ const AdminFlowerImage = () => {
       );
 
       if (response.ok) {
-        setFlowerImageList((prev) => prev.filter((image) => image.flowerImageID !== id));
+        setFlowerImageList((prev) =>
+          prev.filter((image) => image.flowerImageID !== id)
+        );
       } else {
         throw new Error("Unable to delete flower image.");
       }
@@ -134,7 +144,7 @@ const AdminFlowerImage = () => {
   const handleSave = async (id, imageData) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flowerimage/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/flowerimage/${id}`,
         {
           method: "PUT",
           headers: {
@@ -166,15 +176,18 @@ const AdminFlowerImage = () => {
 
   const handleCreate = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/admin/flowerimage", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(newFlowerImage),
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/flowerimage",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(newFlowerImage),
+        }
+      );
 
       if (response.ok) {
         const createdImage = await response.json();
@@ -221,7 +234,11 @@ const AdminFlowerImage = () => {
         <h2>Quản lý hình ảnh hoa</h2>
       </div>
 
-      <h3>{editingFlowerImageId ? "Chỉnh sửa hình ảnh hoa" : "Thêm mới hình ảnh hoa"}</h3>
+      <h3>
+        {editingFlowerImageId
+          ? "Chỉnh sửa hình ảnh hoa"
+          : "Thêm mới hình ảnh hoa"}
+      </h3>
       <div>
         <label>Image URL:</label>
         <input type="file" onChange={handleFileChange} />
@@ -297,7 +314,6 @@ const AdminFlowerImage = () => {
                 <button onClick={() => handleDeleteSoft(image.flowerImageID)}>
                   Vô hiệu hóa
                 </button>
-
               </td>
             </tr>
           ))}

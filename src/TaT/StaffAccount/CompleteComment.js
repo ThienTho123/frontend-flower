@@ -13,25 +13,25 @@ const CompleteComment = () => {
   const access_token = localStorage.getItem("access_token");
   const translateCondition = (stative) => {
     const translations = {
-      "Waiting": "Đang chờ xử lý",
-      "Processing": "Đang xử lý",
-      "Complete": "Đã hoàn thành",
+      Waiting: "Đang chờ xử lý",
+      Processing: "Đang xử lý",
+      Complete: "Đã hoàn thành",
     };
     return translations[stative] || stative;
   };
   const getCommentInfo = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/staffaccount/commentcomplete",
+        "https://deploybackend-1ta9.onrender.com/staffaccount/commentcomplete",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
         }
       );
-  
+
       const rawComment = response.data?.comment || [];
-  
+
       const updatedComment = rawComment.map((item, index) => ({
         stt: index + 1,
         id: item.commentID,
@@ -42,14 +42,14 @@ const CompleteComment = () => {
         text: item.text,
         numberRep: item.numberRep,
       }));
-  
+
       // Đảo ngược mảng bình luận để hiển thị ngược
       setComments(updatedComment.reverse());
     } catch (error) {
       console.error("Error fetching comments:", error);
     }
   };
-  
+
   useEffect(() => {
     getCommentInfo();
   }, []);
@@ -76,7 +76,7 @@ const CompleteComment = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/comment",
+        "https://deploybackend-1ta9.onrender.com/comment",
         commentData,
         {
           headers: {
@@ -109,7 +109,7 @@ const CompleteComment = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/upload",
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
         formData,
         {
           headers: {

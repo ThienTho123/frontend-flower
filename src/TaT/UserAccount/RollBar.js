@@ -12,7 +12,7 @@ const RollBar = () => {
     setLoading(true);
 
     axios
-      .get("http://localhost:8080/rollbar/info", {
+      .get("https://deploybackend-1ta9.onrender.com/rollbar/info", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -40,9 +40,9 @@ const RollBar = () => {
       { primary: "#FCCB90", secondary: "#D57EEB" },
       { primary: "#65B0E6", secondary: "#B2FFDA" },
       { primary: "#FF9F8B", secondary: "#FFC3A0" },
-      { primary: "#5EE7DF", secondary: "#B490CA" }
+      { primary: "#5EE7DF", secondary: "#B490CA" },
     ];
-    
+
     return colors[index % colors.length];
   };
 
@@ -67,7 +67,7 @@ const RollBar = () => {
                   className="rollbar-card"
                   style={{
                     background: `linear-gradient(135deg, ${colors.primary}33, ${colors.secondary}33)`,
-                    borderLeft: `4px solid ${colors.primary}`
+                    borderLeft: `4px solid ${colors.primary}`,
                   }}
                 >
                   <h3>{rollBar.name}</h3>
@@ -77,7 +77,8 @@ const RollBar = () => {
 
                   <h4>🎁 Giải thưởng tiêu biểu:</h4>
                   <ul className="gift-list">
-                    {rollBar.giftInfoDTOList && rollBar.giftInfoDTOList.length > 0 ? (
+                    {rollBar.giftInfoDTOList &&
+                    rollBar.giftInfoDTOList.length > 0 ? (
                       rollBar.giftInfoDTOList.slice(0, 3).map((gift) => (
                         <li key={gift.id}>
                           <strong>{gift.name}</strong> ({gift.typegift}) - Giảm{" "}

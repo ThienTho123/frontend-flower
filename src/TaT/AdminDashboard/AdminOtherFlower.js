@@ -25,12 +25,15 @@ const AdminOtherFlower = () => {
 
   const fetchData = async () => {
     try {
-      const res = await fetch("http://localhost:8080/api/v1/admin/floother", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        credentials: "include",
-      });
+      const res = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/floother",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          credentials: "include",
+        }
+      );
       const data = await res.json();
       const fullList = data.floOthCustomDTOS || [];
       const filteredList = fullList.filter(
@@ -52,7 +55,7 @@ const AdminOtherFlower = () => {
 
   const handleCreateOrUpdate = async () => {
     const method = editingIndex !== null ? "PUT" : "POST";
-    const url = "http://localhost:8080/api/v1/admin/floother";
+    const url = "https://deploybackend-1ta9.onrender.com/api/v1/admin/floother";
 
     try {
       const res = await fetch(url, {
@@ -93,15 +96,18 @@ const AdminOtherFlower = () => {
 
   const handleDelete = async (item) => {
     try {
-      const res = await fetch("http://localhost:8080/api/v1/admin/floother", {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(item),
-      });
+      const res = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/floother",
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(item),
+        }
+      );
 
       if (res.ok) {
         fetchData();

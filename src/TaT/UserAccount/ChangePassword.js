@@ -6,7 +6,7 @@ const ChangePassword = () => {
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: "",
     newPassword: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
   const [error, setError] = useState({});
   const access_token = localStorage.getItem("access_token");
@@ -21,7 +21,8 @@ const ChangePassword = () => {
       formErrors.newPassword = "Mật khẩu mới phải có ít nhất 8 ký tự.";
     }
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      formErrors.confirmPassword = "Mật khẩu mới và xác nhận mật khẩu không trùng khớp.";
+      formErrors.confirmPassword =
+        "Mật khẩu mới và xác nhận mật khẩu không trùng khớp.";
     }
     return formErrors;
   };
@@ -38,16 +39,16 @@ const ChangePassword = () => {
       setError(formErrors);
       return;
     }
-    
+
     console.log("Password Form Data:", passwordForm); // Kiểm tra dữ liệu trước khi gửi
     setError({});
     handleChangePassword();
   };
-  
+
   const handleChangePassword = async () => {
     try {
       const response = await axios.put(
-        "http://localhost:8080/account/changepassword",
+        "https://deploybackend-1ta9.onrender.com/account/changepassword",
         {
           curpass: passwordForm.currentPassword,
           newpass: passwordForm.newPassword,
@@ -55,11 +56,11 @@ const ChangePassword = () => {
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
-            'Content-Type': 'application/json', // Đảm bảo gửi đúng định dạng
+            "Content-Type": "application/json", // Đảm bảo gửi đúng định dạng
           },
         }
       );
-      
+
       alert(response.data);
       // Xóa access_token khỏi localStorage
       localStorage.removeItem("access_token");
@@ -76,7 +77,7 @@ const ChangePassword = () => {
       }
     }
   };
-  
+
   return (
     <div className="change-password-container">
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -90,11 +91,12 @@ const ChangePassword = () => {
             onChange={handleChange}
             required
           />
-  {error.currentPassword && (
-    <p style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}>
-      {error.currentPassword}
-    </p>
-  )}        </div>
+          {error.currentPassword && (
+            <p style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}>
+              {error.currentPassword}
+            </p>
+          )}{" "}
+        </div>
         <div className="space-y-2">
           <label htmlFor="newPassword">Mật khẩu mới</label>
           <input
@@ -105,11 +107,12 @@ const ChangePassword = () => {
             onChange={handleChange}
             required
           />
-  {error.newPassword && (
-    <p style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}>
-      {error.newPassword}
-    </p>
-  )}        </div>
+          {error.newPassword && (
+            <p style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}>
+              {error.newPassword}
+            </p>
+          )}{" "}
+        </div>
         <div className="space-y-2">
           <label htmlFor="confirmPassword">Xác nhận mật khẩu mới</label>
           <input
@@ -120,20 +123,22 @@ const ChangePassword = () => {
             onChange={handleChange}
             required
           />
-  {error.confirmPassword && (
-    <p style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}>
-      {error.confirmPassword}
-    </p>
-  )}        </div>
+          {error.confirmPassword && (
+            <p style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}>
+              {error.confirmPassword}
+            </p>
+          )}{" "}
+        </div>
         <button type="submit">Đổi mật khẩu</button>
         {error.message && (
-  <p
-    className="error-notice"
-    style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}
-  >
-    {error.message}
-  </p>
-)}      </form>
+          <p
+            className="error-notice"
+            style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}
+          >
+            {error.message}
+          </p>
+        )}{" "}
+      </form>
     </div>
   );
 };

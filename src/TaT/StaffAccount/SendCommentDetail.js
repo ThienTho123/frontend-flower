@@ -14,9 +14,9 @@ const StaffCommentDetail = () => {
   const [loading, setLoading] = useState(false); // Loading state
   const translateCondition = (stative) => {
     const translations = {
-      "Waiting": "Đang chờ xử lý",
-      "Processing": "Đang xử lý",
-      "Complete": "Đã hoàn thành",
+      Waiting: "Đang chờ xử lý",
+      Processing: "Đang xử lý",
+      Complete: "Đã hoàn thành",
     };
     return translations[stative] || stative;
   };
@@ -39,7 +39,7 @@ const StaffCommentDetail = () => {
         return;
       }
     }
-   
+
     const repCommentDTO = {
       repcommenttext: repCommentText,
       image: imageUrl,
@@ -47,7 +47,7 @@ const StaffCommentDetail = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/staff/${id}`, // URL API backend
+        `https://deploybackend-1ta9.onrender.com/staff/${id}`, // URL API backend
         repCommentDTO,
         {
           headers: {
@@ -90,7 +90,7 @@ const StaffCommentDetail = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/staffaccount/commentprocess/${id}`,
+        `https://deploybackend-1ta9.onrender.com/staffaccount/commentprocess/${id}`,
         repCommentDTO,
         {
           headers: {
@@ -119,7 +119,7 @@ const StaffCommentDetail = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `http://localhost:8080/staffaccount/commentprocess/${comment.commentID}/complete`,
+        `https://deploybackend-1ta9.onrender.com/staffaccount/commentprocess/${comment.commentID}/complete`,
         {},
         {
           headers: {
@@ -150,7 +150,7 @@ const StaffCommentDetail = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/upload",
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
         formData,
         {
           headers: {
@@ -172,7 +172,7 @@ const StaffCommentDetail = () => {
   const getCommentDetail = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/staffaccount/comment/${id}`,
+        `https://deploybackend-1ta9.onrender.com/staffaccount/comment/${id}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -240,7 +240,8 @@ const StaffCommentDetail = () => {
           <strong>Loại:</strong> {comment?.commentType}
         </p>
         <p>
-          <strong>Trạng thái:</strong> {translateCondition(comment?.commentStative)}
+          <strong>Trạng thái:</strong>{" "}
+          {translateCondition(comment?.commentStative)}
           {comment?.commentStative === "Processing" && (
             <button
               className="complete-button"

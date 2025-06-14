@@ -14,20 +14,23 @@ const SendComment = () => {
   const access_token = localStorage.getItem("access_token");
   const translateCondition = (stative) => {
     const translations = {
-      "Waiting": "Đang chờ xử lý",
-      "Processing": "Đang xử lý",
-      "Complete": "Đã hoàn thành",
+      Waiting: "Đang chờ xử lý",
+      Processing: "Đang xử lý",
+      Complete: "Đã hoàn thành",
     };
     return translations[stative] || stative;
   };
   // Lấy thông tin danh sách bình luận và loại bình luận
   const getCommentInfo = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/comment", {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
+      const response = await axios.get(
+        "https://deploybackend-1ta9.onrender.com/comment",
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
 
       const rawComment = response.data?.comments || [];
       const rawTypeComment = response.data?.commentTypes || [];
@@ -76,7 +79,7 @@ const SendComment = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/comment",
+        "https://deploybackend-1ta9.onrender.com/comment",
         commentData,
         {
           headers: {
@@ -108,7 +111,7 @@ const SendComment = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/upload",
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
         formData,
         {
           headers: {

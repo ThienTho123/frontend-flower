@@ -18,7 +18,7 @@ const AdminEditEvent = () => {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  
+
   useBootstrap();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const AdminEditEvent = () => {
     try {
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.get(
-        "http://localhost:8080/api/v1/admin/event/getflowersize",
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/event/getflowersize",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -49,7 +49,7 @@ const AdminEditEvent = () => {
     try {
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.get(
-        `http://localhost:8080/api/v1/admin/event/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/event/${id}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -64,21 +64,23 @@ const AdminEditEvent = () => {
         setEventName(eventData.name);
         setDescription(eventData.description);
         setColor(eventData.color);
-        
+
         setStartDate(formatDateArrayToString(eventData.start));
         setEndDate(formatDateArrayToString(eventData.end));
       }
 
-      const processedFlowers = eventFlowers.map(flower => ({
+      const processedFlowers = eventFlowers.map((flower) => ({
         flowerName: flower.flowerName,
         flowerID: flower.flowerID,
-        sizeIDChoose: flower.size && flower.size.length > 0 
-          ? flower.size.find(s => s.sizeName === flower.sizeChoose)?.flowerSizeID 
-          : null,
+        sizeIDChoose:
+          flower.size && flower.size.length > 0
+            ? flower.size.find((s) => s.sizeName === flower.sizeChoose)
+                ?.flowerSizeID
+            : null,
         sizeName: flower.sizeChoose || "Tất cả kích thước",
         saleOff: flower.saleOff || "0.00",
         imageUrl: flower.imageurl,
-        idEventFlower: flower.idEventFlower
+        idEventFlower: flower.idEventFlower,
       }));
 
       setSelectedFlowers(processedFlowers);
@@ -93,11 +95,11 @@ const AdminEditEvent = () => {
 
   const formatDateArrayToString = (dateArray) => {
     const [year, month, day, hour, minute, second] = dateArray;
-    const formattedMonth = String(month).padStart(2, '0');
-    const formattedDay = String(day).padStart(2, '0');
-    const formattedHour = String(hour).padStart(2, '0');
-    const formattedMinute = String(minute).padStart(2, '0');
-    
+    const formattedMonth = String(month).padStart(2, "0");
+    const formattedDay = String(day).padStart(2, "0");
+    const formattedHour = String(hour).padStart(2, "0");
+    const formattedMinute = String(minute).padStart(2, "0");
+
     return `${year}-${formattedMonth}-${formattedDay}T${formattedHour}:${formattedMinute}`;
   };
 
@@ -109,14 +111,15 @@ const AdminEditEvent = () => {
       date.getDate(),
       date.getHours(),
       date.getMinutes(),
-      date.getSeconds()
+      date.getSeconds(),
     ];
   };
 
   const handleAddFlower = (flowerData, isAllSize = false) => {
     const exists = selectedFlowers.some(
-      (f) => f.flowerName === flowerData.flowerName && 
-             (isAllSize || f.sizeIDChoose === flowerData.sizeIDChoose)
+      (f) =>
+        f.flowerName === flowerData.flowerName &&
+        (isAllSize || f.sizeIDChoose === flowerData.sizeIDChoose)
     );
 
     if (!exists) {
@@ -126,7 +129,7 @@ const AdminEditEvent = () => {
         sizeName: isAllSize ? "Tất cả kích thước" : flowerData.sizeName,
         saleOff: "0.00",
         flowerID: flowerData.flowerID,
-        imageUrl: flowerData.imageUrl || flowerData.imageurl
+        imageUrl: flowerData.imageUrl || flowerData.imageurl,
       };
 
       setSelectedFlowers([...selectedFlowers, newFlowerEntry]);
@@ -147,26 +150,26 @@ const AdminEditEvent = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     if (!eventName.trim() || !description.trim() || !startDate || !endDate) {
-        setErrorMessage("Vui lòng điền đầy đủ thông tin!");
-        setIsErrorModalOpen(true);
-        return;
+      setErrorMessage("Vui lòng điền đầy đủ thông tin!");
+      setIsErrorModalOpen(true);
+      return;
     }
 
     const start = new Date(startDate);
     const end = new Date(endDate);
-  
+
     if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-        setErrorMessage("Ngày không hợp lệ. Vui lòng chọn lại!");
-        setIsErrorModalOpen(true);
-        return;
+      setErrorMessage("Ngày không hợp lệ. Vui lòng chọn lại!");
+      setIsErrorModalOpen(true);
+      return;
     }
 
     if (start >= end) {
-        setErrorMessage("Ngày kết thúc phải sau ngày bắt đầu!");
-        setIsErrorModalOpen(true);
-        return;
+      setErrorMessage("Ngày kết thúc phải sau ngày bắt đầu!");
+      setIsErrorModalOpen(true);
+      return;
     }
 
     setIsModalOpen(true);
@@ -174,32 +177,38 @@ const AdminEditEvent = () => {
 
   const confirmSubmit = async () => {
     try {
-        const accessToken = localStorage.getItem("access_token");
-        const eventData = {
-            eventName: eventName,
-            description: description,
-            color: color,
-            start: formatDateToLocalDateTime(startDate),
-            end: formatDateToLocalDateTime(endDate),
-            eventFlowerDTOS: selectedFlowers.map(flower => ({
-                idEventFlower: flower.idEventFlower,
-                flowerName: flower.flowerName,
-                sizeIDChoose: flower.sizeIDChoose, 
-                saleOff: parseFloat(flower.saleOff),
-                flowerID: flower.flowerID
-            }))
-        };
+      const accessToken = localStorage.getItem("access_token");
+      const eventData = {
+        eventName: eventName,
+        description: description,
+        color: color,
+        start: formatDateToLocalDateTime(startDate),
+        end: formatDateToLocalDateTime(endDate),
+        eventFlowerDTOS: selectedFlowers.map((flower) => ({
+          idEventFlower: flower.idEventFlower,
+          flowerName: flower.flowerName,
+          sizeIDChoose: flower.sizeIDChoose,
+          saleOff: parseFloat(flower.saleOff),
+          flowerID: flower.flowerID,
+        })),
+      };
 
-        await axios.put(`http://localhost:8080/api/v1/admin/event/${id}`, eventData, {
-            headers: { Authorization: `Bearer ${accessToken}` },
-        });
+      await axios.put(
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/event/${id}`,
+        eventData,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
 
-        setIsModalOpen(false);
-        setIsSuccessModalOpen(true);
+      setIsModalOpen(false);
+      setIsSuccessModalOpen(true);
     } catch (error) {
-        setIsModalOpen(false);
-        setErrorMessage(error.response?.data || "Có lỗi xảy ra khi cập nhật sự kiện!");
-        setIsErrorModalOpen(true);
+      setIsModalOpen(false);
+      setErrorMessage(
+        error.response?.data || "Có lỗi xảy ra khi cập nhật sự kiện!"
+      );
+      setIsErrorModalOpen(true);
     }
   };
 
@@ -272,17 +281,17 @@ const AdminEditEvent = () => {
         {flowerList.map((flower, flowerIndex) => (
           <div key={flowerIndex} className="flower-item">
             <div className="flower-item-header">
-              <img 
-                src={flower.imageurl} 
-                alt={flower.flowerName} 
+              <img
+                src={flower.imageurl}
+                alt={flower.flowerName}
                 className="flower-image"
                 style={{
-                  width: '100%', 
-                  height: '150px', 
-                  objectFit: 'cover', 
-                  borderRadius: '6px',
-                  marginBottom: '10px'
-                }} 
+                  width: "100%",
+                  height: "150px",
+                  objectFit: "cover",
+                  borderRadius: "6px",
+                  marginBottom: "10px",
+                }}
               />
               <h4>{flower.flowerName}</h4>
             </div>
@@ -290,11 +299,16 @@ const AdminEditEvent = () => {
               <button
                 type="button"
                 className="size-button all-size-button"
-                onClick={() => handleAddFlower({
-                  flowerName: flower.flowerName,
-                  flowerID: flower.flowerID,
-                  imageUrl: flower.imageurl
-                }, true)}
+                onClick={() =>
+                  handleAddFlower(
+                    {
+                      flowerName: flower.flowerName,
+                      flowerID: flower.flowerID,
+                      imageUrl: flower.imageurl,
+                    },
+                    true
+                  )
+                }
               >
                 Tất Cả Kích Thước
               </button>
@@ -303,13 +317,15 @@ const AdminEditEvent = () => {
                   key={sizeIndex}
                   type="button"
                   className="size-button"
-                  onClick={() => handleAddFlower({
-                    flowerName: flower.flowerName,
-                    sizeIDChoose: size.flowerSizeID,
-                    sizeName: size.sizeName,
-                    flowerID: flower.flowerID,
-                    imageUrl: flower.imageurl
-                  })}
+                  onClick={() =>
+                    handleAddFlower({
+                      flowerName: flower.flowerName,
+                      sizeIDChoose: size.flowerSizeID,
+                      sizeName: size.sizeName,
+                      flowerID: flower.flowerID,
+                      imageUrl: flower.imageurl,
+                    })
+                  }
                 >
                   {size.sizeName}
                 </button>
@@ -338,15 +354,15 @@ const AdminEditEvent = () => {
               {selectedFlowers.map((flower, index) => (
                 <tr key={index}>
                   <td>
-                    <img 
-                      src={flower.imageUrl} 
-                      alt={flower.flowerName} 
+                    <img
+                      src={flower.imageUrl}
+                      alt={flower.flowerName}
                       style={{
-                        width: '50px', 
-                        height: '50px', 
-                        objectFit: 'cover', 
-                        borderRadius: '4px'
-                      }} 
+                        width: "50px",
+                        height: "50px",
+                        objectFit: "cover",
+                        borderRadius: "4px",
+                      }}
                     />
                   </td>
                   <td>{flower.flowerName}</td>
@@ -358,7 +374,9 @@ const AdminEditEvent = () => {
                       max="100"
                       step="0.01"
                       value={flower.saleOff}
-                      onChange={(e) => handleSaleOffChange(index, e.target.value)}
+                      onChange={(e) =>
+                        handleSaleOffChange(index, e.target.value)
+                      }
                       className="sale-off-input"
                     />
                   </td>
@@ -384,31 +402,31 @@ const AdminEditEvent = () => {
 
       {/* Modal xác nhận */}
       {isModalOpen && (
-        <div 
+        <div
           className="event-modal"
           style={{
-            position: 'fixed',
+            position: "fixed",
             top: 0,
             left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 1000
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
           }}
         >
-          <div 
+          <div
             className="event-modal-content"
             style={{
-              backgroundColor: 'white',
-              padding: '2rem',
-              borderRadius: '8px',
-              maxWidth: '400px',
-              width: '90%',
-              textAlign: 'center',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
+              backgroundColor: "white",
+              padding: "2rem",
+              borderRadius: "8px",
+              maxWidth: "400px",
+              width: "90%",
+              textAlign: "center",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
             }}
           >
             <h3>Xác nhận cập nhật Sự Kiện</h3>
@@ -418,13 +436,13 @@ const AdminEditEvent = () => {
                 onClick={confirmSubmit}
                 className="event-modal-confirm"
                 style={{
-                  marginRight: '0.5rem',
-                  backgroundColor: '#4CAF50',
-                  color: 'white',
-                  border: 'none',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '4px',
-                  cursor: 'pointer'
+                  marginRight: "0.5rem",
+                  backgroundColor: "#4CAF50",
+                  color: "white",
+                  border: "none",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "4px",
+                  cursor: "pointer",
                 }}
               >
                 Xác nhận
@@ -433,12 +451,12 @@ const AdminEditEvent = () => {
                 onClick={() => setIsModalOpen(false)}
                 className="event-modal-cancel"
                 style={{
-                  backgroundColor: '#f44336',
-                  color: 'white',
-                  border: 'none',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '4px',
-                  cursor: 'pointer'
+                  backgroundColor: "#f44336",
+                  color: "white",
+                  border: "none",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "4px",
+                  cursor: "pointer",
                 }}
               >
                 Hủy
@@ -450,31 +468,31 @@ const AdminEditEvent = () => {
 
       {/* Modal thành công */}
       {isSuccessModalOpen && (
-        <div 
+        <div
           className="event-success-modal"
           style={{
-            position: 'fixed',
+            position: "fixed",
             top: 0,
             left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 1000
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
           }}
         >
-          <div 
+          <div
             className="event-success-modal-content"
             style={{
-              backgroundColor: 'white',
-              padding: '2rem',
-              borderRadius: '8px',
-              maxWidth: '400px',
-              width: '90%',
-              textAlign: 'center',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
+              backgroundColor: "white",
+              padding: "2rem",
+              borderRadius: "8px",
+              maxWidth: "400px",
+              width: "90%",
+              textAlign: "center",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
             }}
           >
             <h3>🎉 Thành công!</h3>
@@ -483,12 +501,12 @@ const AdminEditEvent = () => {
               onClick={() => setIsSuccessModalOpen(false)}
               className="event-success-modal-button"
               style={{
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                border: 'none',
-                padding: '0.5rem 1rem',
-                borderRadius: '4px',
-                cursor: 'pointer'
+                backgroundColor: "#4CAF50",
+                color: "white",
+                border: "none",
+                padding: "0.5rem 1rem",
+                borderRadius: "4px",
+                cursor: "pointer",
               }}
             >
               Đóng

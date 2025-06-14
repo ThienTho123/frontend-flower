@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Pie } from "react-chartjs-2";
-import returnIcon from './ImageDashboard/return-button.png';
+import returnIcon from "./ImageDashboard/return-button.png";
 
 const AdminReview = () => {
   const [reviewList, setReviewList] = useState([]);
@@ -22,12 +22,12 @@ const AdminReview = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [accounts, setAccounts] = useState([]);
   const [flowers, setFlowers] = useState([]);
-  
+
   useEffect(() => {
     const fetchReviews = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/v1/admin/review",
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/review",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -43,7 +43,7 @@ const AdminReview = () => {
         const data = await response.json();
         setReviewList(data.reviews || []);
         setAccounts(data.accounts || []);
-        setFlowers(data.flowers || []); 
+        setFlowers(data.flowers || []);
       } catch (err) {
         setError(err.message);
       }
@@ -56,18 +56,21 @@ const AdminReview = () => {
       console.error("No file selected");
       return;
     }
-  
+
     const formData = new FormData();
     formData.append("file", file);
-  
+
     try {
-      const response = await fetch("http://localhost:8080/api/v1/upload", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${accesstoken}` },
-        credentials: "include",
-        body: formData,
-      });
-  
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${accesstoken}` },
+          credentials: "include",
+          body: formData,
+        }
+      );
+
       const data = await response.json();
       if (response.ok) {
         const uploadedImageUrl = data.DT; // URL ảnh trả về từ API
@@ -75,13 +78,13 @@ const AdminReview = () => {
           console.error("Image URL is empty");
           return;
         }
-  
+
         // Cập nhật URL ảnh đã upload
         setImageUrl(uploadedImageUrl);
-  
+
         // Liên kết ảnh vào review mới
         setNewReview((prev) => ({ ...prev, image: uploadedImageUrl }));
-  
+
         console.log("Upload successful:", uploadedImageUrl);
       } else {
         console.error("Upload failed:", data.EM || "Unknown error");
@@ -90,8 +93,7 @@ const AdminReview = () => {
       console.error("Upload error:", err.message);
     }
   };
-  
-  
+
   const getChartData = () => {
     const ratingCounts = [0, 0, 0, 0, 0];
     reviewList.forEach((review) => {
@@ -101,12 +103,18 @@ const AdminReview = () => {
     });
 
     return {
-      labels: ['1 sao', '2 sao', '3 sao', '4 sao', '5 sao'],
+      labels: ["1 sao", "2 sao", "3 sao", "4 sao", "5 sao"],
       datasets: [
         {
           data: ratingCounts,
-          backgroundColor: ['red', 'orange', 'yellow', 'lightgreen', 'green'],
-          hoverBackgroundColor: ['darkred', 'darkorange', 'gold', 'darkgreen', 'darkgreen'],
+          backgroundColor: ["red", "orange", "yellow", "lightgreen", "green"],
+          hoverBackgroundColor: [
+            "darkred",
+            "darkorange",
+            "gold",
+            "darkgreen",
+            "darkgreen",
+          ],
         },
       ],
     };
@@ -115,7 +123,7 @@ const AdminReview = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/review/softdelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/review/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -124,7 +132,7 @@ const AdminReview = () => {
           credentials: "include",
         }
       );
-  
+
       if (response.ok) {
         setReviewList((prevReviews) =>
           prevReviews.map((review) =>
@@ -138,11 +146,11 @@ const AdminReview = () => {
       setError(err.message);
     }
   };
-  
+
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/review/harddelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/review/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -151,7 +159,7 @@ const AdminReview = () => {
           credentials: "include",
         }
       );
-  
+
       if (response.ok) {
         setReviewList((prevReviews) =>
           prevReviews.filter((review) => review.reviewID !== id)
@@ -163,7 +171,6 @@ const AdminReview = () => {
       setError(err.message);
     }
   };
-  
 
   const handleSave = async (id, reviewData) => {
     try {
@@ -177,12 +184,12 @@ const AdminReview = () => {
       if (!reviewData.flower.flowerID) {
         throw new Error("ID Hoa không được để trống.");
       }
-  
+
       // Định dạng ngày nếu có giá trị ngày
       if (reviewData.date && !isNaN(new Date(reviewData.date).getTime())) {
         reviewData.date = new Date(reviewData.date).toISOString().slice(0, 19);
       }
-  
+
       // Đảm bảo cấu trúc JSON khớp với yêu cầu API
       const formattedReviewData = {
         reviewID: id,
@@ -194,12 +201,15 @@ const AdminReview = () => {
         image: reviewData.image,
         date: reviewData.date,
       };
-  
+
       // In JSON data trước khi gửi
-      console.log("JSON data to be sent via PUT:", JSON.stringify(formattedReviewData, null, 2));
-  
+      console.log(
+        "JSON data to be sent via PUT:",
+        JSON.stringify(formattedReviewData, null, 2)
+      );
+
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/review/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/review/${id}`,
         {
           method: "PUT",
           headers: {
@@ -210,7 +220,7 @@ const AdminReview = () => {
           body: JSON.stringify(formattedReviewData),
         }
       );
-  
+
       if (response.ok) {
         const updatedReview = await response.json();
         setReviewList((prev) =>
@@ -228,14 +238,14 @@ const AdminReview = () => {
       console.error("Cập nhật thất bại:", err.message);
     }
   };
-  
-  
 
   const handleCreate = async () => {
     try {
       // Kiểm tra nếu `newReview.date` không hợp lệ
       if (!newReview.date || isNaN(new Date(newReview.date).getTime())) {
-        throw new Error("Date không hợp lệ. Hãy nhập đúng định dạng YYYY-MM-DD.");
+        throw new Error(
+          "Date không hợp lệ. Hãy nhập đúng định dạng YYYY-MM-DD."
+        );
       }
       if (!newReview.accountID.accountID) {
         throw new Error("ID Tài Khoản không được để trống.");
@@ -243,28 +253,34 @@ const AdminReview = () => {
       if (!newReview.flower.flowerID) {
         throw new Error("ID Hoa không được để trống.");
       }
-  
+
       // Định dạng ngày theo yêu cầu API (YYYY-MM-DDTHH:mm:ss)
       const formattedDate = new Date(newReview.date).toISOString().slice(0, 19);
-  
+
       const reviewData = {
         ...newReview,
         date: formattedDate, // Gắn giá trị đã định dạng
       };
-  
+
       // In ra JSON trước khi gửi
-      console.log("Review data to be sent:", JSON.stringify(reviewData, null, 2));
-  
-      const response = await fetch("http://localhost:8080/api/v1/admin/review", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(reviewData),
-      });
-  
+      console.log(
+        "Review data to be sent:",
+        JSON.stringify(reviewData, null, 2)
+      );
+
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/review",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(reviewData),
+        }
+      );
+
       if (response.ok) {
         const createdReview = await response.json();
         setReviewList([...reviewList, createdReview]);
@@ -285,9 +301,6 @@ const AdminReview = () => {
       console.error("Error:", err);
     }
   };
-  
-  
-  
 
   const handleBackToDashboard = () => {
     navigate("/dashboard");
@@ -324,7 +337,7 @@ const AdminReview = () => {
         />
         <h2>Quản Lý Đánh Giá</h2>
       </div>
-  
+
       <h3>Thêm Đánh Giá Mới</h3>
       <div>
         <label>Bình luận: </label>
@@ -376,20 +389,21 @@ const AdminReview = () => {
           ))}
         </select>
 
-          <label>Hình Ảnh: </label>
-          <input
-            type="file"
-            onChange={(e) => setFile(e.target.files[0])}
-          />
-          <button onClick={handleUploadImage}>Tải ảnh lên</button>
+        <label>Hình Ảnh: </label>
+        <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+        <button onClick={handleUploadImage}>Tải ảnh lên</button>
 
-          {/* Hiển thị ảnh đã upload */}
-          {imageUrl && (
-            <div>
-              <p>Ảnh đã tải lên:</p>
-              <img src={imageUrl} alt="Uploaded" style={{ width: 150, height: 100 }} />
-            </div>
-          )}
+        {/* Hiển thị ảnh đã upload */}
+        {imageUrl && (
+          <div>
+            <p>Ảnh đã tải lên:</p>
+            <img
+              src={imageUrl}
+              alt="Uploaded"
+              style={{ width: 150, height: 100 }}
+            />
+          </div>
+        )}
 
         <label>Trạng Thái: </label>
         <select
@@ -412,7 +426,7 @@ const AdminReview = () => {
 
         <button onClick={handleCreate}>Thêm</button>
       </div>
-  
+
       {error && <p style={{ color: "red" }}>{error}</p>}
       {reviewList.length === 0 ? (
         <p>Không có đánh giá nào.</p>
@@ -420,215 +434,225 @@ const AdminReview = () => {
         <div>
           <h3>Danh Sách Đánh Giá</h3>
           <table border="1" cellPadding="10" cellSpacing="0">
-          <thead>
-  <tr>
-    <th>ID Đánh Giá</th>
-    <th>ID Tài Khoản</th>
-    <th>ID Hoa</th>
-    <th>Hình Ảnh</th> {/* Cột Hình Ảnh */}
-    <th>Bình Luận</th>
-    <th>Đánh Giá</th>
-    <th>Ngày Tạo</th>
-    <th>Trạng Thái</th>
-    <th>Thao Tác</th>
-  </tr>
-</thead>
-<tbody>
-  {reviewList.map((review) => (
-    <tr key={review.reviewID}>
-      <td>{review.reviewID}</td>
-      <td>
-      {editingReviewId === review.reviewID ? (
-        <select
-          value={review.accountID.accountID || ""}
-          onChange={(e) =>
-            setReviewList((prev) =>
-              prev.map((r) =>
-                r.reviewID === review.reviewID
-                  ? { ...r, accountID: { accountID: e.target.value } }
-                  : r
-              )
-            )
-          }
-        >
-          <option value="">Chọn tài khoản</option>
-          {accounts.map((account) => (
-            <option key={account.accountID} value={account.accountID}>
-              {account.name} ({account.accountID})
-            </option>
-          ))}
-        </select>
-      ) : (
-        accounts.find((acc) => acc.accountID === review.accountID.accountID)?.name || "Không xác định"
-      )}
-    </td>
+            <thead>
+              <tr>
+                <th>ID Đánh Giá</th>
+                <th>ID Tài Khoản</th>
+                <th>ID Hoa</th>
+                <th>Hình Ảnh</th> {/* Cột Hình Ảnh */}
+                <th>Bình Luận</th>
+                <th>Đánh Giá</th>
+                <th>Ngày Tạo</th>
+                <th>Trạng Thái</th>
+                <th>Thao Tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              {reviewList.map((review) => (
+                <tr key={review.reviewID}>
+                  <td>{review.reviewID}</td>
+                  <td>
+                    {editingReviewId === review.reviewID ? (
+                      <select
+                        value={review.accountID.accountID || ""}
+                        onChange={(e) =>
+                          setReviewList((prev) =>
+                            prev.map((r) =>
+                              r.reviewID === review.reviewID
+                                ? {
+                                    ...r,
+                                    accountID: { accountID: e.target.value },
+                                  }
+                                : r
+                            )
+                          )
+                        }
+                      >
+                        <option value="">Chọn tài khoản</option>
+                        {accounts.map((account) => (
+                          <option
+                            key={account.accountID}
+                            value={account.accountID}
+                          >
+                            {account.name} ({account.accountID})
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      accounts.find(
+                        (acc) => acc.accountID === review.accountID.accountID
+                      )?.name || "Không xác định"
+                    )}
+                  </td>
 
-    <td>
-      {editingReviewId === review.reviewID ? (
-        <select
-          value={review.flower.flowerID || ""}
-          onChange={(e) =>
-            setReviewList((prev) =>
-              prev.map((r) =>
-                r.reviewID === review.reviewID
-                  ? { ...r, flower: { flowerID: e.target.value } }
-                  : r
-              )
-            )
-          }
-        >
-          <option value="">Chọn hoa</option>
-          {flowers.map((flower) => (
-            <option key={flower.flowerID} value={flower.flowerID}>
-              {flower.name} ({flower.flowerID})
-            </option>
-          ))}
-        </select>
-      ) : (
-        flowers.find((f) => f.flowerID === review.flower.flowerID)?.name || "Không xác định"
-      )}
-    </td>
+                  <td>
+                    {editingReviewId === review.reviewID ? (
+                      <select
+                        value={review.flower.flowerID || ""}
+                        onChange={(e) =>
+                          setReviewList((prev) =>
+                            prev.map((r) =>
+                              r.reviewID === review.reviewID
+                                ? { ...r, flower: { flowerID: e.target.value } }
+                                : r
+                            )
+                          )
+                        }
+                      >
+                        <option value="">Chọn hoa</option>
+                        {flowers.map((flower) => (
+                          <option key={flower.flowerID} value={flower.flowerID}>
+                            {flower.name} ({flower.flowerID})
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      flowers.find((f) => f.flowerID === review.flower.flowerID)
+                        ?.name || "Không xác định"
+                    )}
+                  </td>
 
-      <td>
-  {editingReviewId === review.reviewID ? (
-    <div>
-      <input
-        type="file"
-        onChange={(e) => setFile(e.target.files[0])}
-      />
-      <button onClick={handleUploadImage}>Tải ảnh lên</button>
-      {imageUrl && (
-        <div>
-          <p>Ảnh đã tải lên:</p>
-          <img
-            src={imageUrl}
-            alt="Uploaded"
-            style={{ width: 100, height: 100 }}
-          />
-        </div>
-      )}
-    </div>
-  ) : (
-    review.image ? (
-      <img src={review.image} alt="Review" style={{ width: 100, height: 100 }} />
-    ) : (
-      <span>Chưa có ảnh</span>
-    )
-  )}
-</td>
-      <td>
-        {editingReviewId === review.reviewID ? (
-          <input
-            value={review.comment}
-            onChange={(e) =>
-              setReviewList((prev) =>
-                prev.map((r) =>
-                  r.reviewID === review.reviewID
-                    ? { ...r, comment: e.target.value }
-                    : r
-                )
-              )
-            }
-          />
-        ) : (
-          review.comment
-        )}
-      </td>
-      <td>
-        {editingReviewId === review.reviewID
-          ? renderStars(review.rating, (rating) =>
-              setReviewList((prev) =>
-                prev.map((r) =>
-                  r.reviewID === review.reviewID
-                    ? { ...r, rating }
-                    : r
-                )
-              )
-            )
-          : renderStars(review.rating, null, false)}
-      </td>
-      <td>
-  {editingReviewId === review.reviewID ? (
-    <input
-      type="date"
-      value={
-        review.date
-          ? new Date(review.date).toISOString().slice(0, 10)
-          : ""
-      }
-      onChange={(e) =>
-        setReviewList((prev) =>
-          prev.map((r) =>
-            r.reviewID === review.reviewID
-              ? { ...r, date: e.target.value }
-              : r
-          )
-        )
-      }
-    />
-  ) : (
-    review.date ? new Date(review.date).toLocaleDateString("en-GB") : ""
-  )}
-</td>
-      <td>
-        {editingReviewId === review.reviewID ? (
-          <select
-            value={review.status}
-            onChange={(e) =>
-              setReviewList((prev) =>
-                prev.map((r) =>
-                  r.reviewID === review.reviewID
-                    ? { ...r, status: e.target.value }
-                    : r
-                )
-              )
-            }
-          >
-            <option value="ENABLE">Enable</option>
-            <option value="DISABLE">Disable</option>
-          </select>
-        ) : (
-          review.status
-        )}
-      </td>
-      <td>
-        {editingReviewId === review.reviewID ? (
-          <>
-            <button
-              onClick={() =>
-                handleSave(review.reviewID, review)
-              }
-            >
-              Lưu
-            </button>
-            <button onClick={() => setEditingReviewId(null)}>
-              Hủy
-            </button>
-          </>
-        ) : (
-          <>
-            <button
-              onClick={() => setEditingReviewId(review.reviewID)}
-            >
-              Sửa
-            </button>
-            <button onClick={() => handleDeleteSoft(review.reviewID)}>
-              Vô hiệu hóa
-            </button>
-
-          </>
-        )}
-      </td>
-    </tr>
-  ))}
-</tbody>
-
+                  <td>
+                    {editingReviewId === review.reviewID ? (
+                      <div>
+                        <input
+                          type="file"
+                          onChange={(e) => setFile(e.target.files[0])}
+                        />
+                        <button onClick={handleUploadImage}>Tải ảnh lên</button>
+                        {imageUrl && (
+                          <div>
+                            <p>Ảnh đã tải lên:</p>
+                            <img
+                              src={imageUrl}
+                              alt="Uploaded"
+                              style={{ width: 100, height: 100 }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    ) : review.image ? (
+                      <img
+                        src={review.image}
+                        alt="Review"
+                        style={{ width: 100, height: 100 }}
+                      />
+                    ) : (
+                      <span>Chưa có ảnh</span>
+                    )}
+                  </td>
+                  <td>
+                    {editingReviewId === review.reviewID ? (
+                      <input
+                        value={review.comment}
+                        onChange={(e) =>
+                          setReviewList((prev) =>
+                            prev.map((r) =>
+                              r.reviewID === review.reviewID
+                                ? { ...r, comment: e.target.value }
+                                : r
+                            )
+                          )
+                        }
+                      />
+                    ) : (
+                      review.comment
+                    )}
+                  </td>
+                  <td>
+                    {editingReviewId === review.reviewID
+                      ? renderStars(review.rating, (rating) =>
+                          setReviewList((prev) =>
+                            prev.map((r) =>
+                              r.reviewID === review.reviewID
+                                ? { ...r, rating }
+                                : r
+                            )
+                          )
+                        )
+                      : renderStars(review.rating, null, false)}
+                  </td>
+                  <td>
+                    {editingReviewId === review.reviewID ? (
+                      <input
+                        type="date"
+                        value={
+                          review.date
+                            ? new Date(review.date).toISOString().slice(0, 10)
+                            : ""
+                        }
+                        onChange={(e) =>
+                          setReviewList((prev) =>
+                            prev.map((r) =>
+                              r.reviewID === review.reviewID
+                                ? { ...r, date: e.target.value }
+                                : r
+                            )
+                          )
+                        }
+                      />
+                    ) : review.date ? (
+                      new Date(review.date).toLocaleDateString("en-GB")
+                    ) : (
+                      ""
+                    )}
+                  </td>
+                  <td>
+                    {editingReviewId === review.reviewID ? (
+                      <select
+                        value={review.status}
+                        onChange={(e) =>
+                          setReviewList((prev) =>
+                            prev.map((r) =>
+                              r.reviewID === review.reviewID
+                                ? { ...r, status: e.target.value }
+                                : r
+                            )
+                          )
+                        }
+                      >
+                        <option value="ENABLE">Enable</option>
+                        <option value="DISABLE">Disable</option>
+                      </select>
+                    ) : (
+                      review.status
+                    )}
+                  </td>
+                  <td>
+                    {editingReviewId === review.reviewID ? (
+                      <>
+                        <button
+                          onClick={() => handleSave(review.reviewID, review)}
+                        >
+                          Lưu
+                        </button>
+                        <button onClick={() => setEditingReviewId(null)}>
+                          Hủy
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => setEditingReviewId(review.reviewID)}
+                        >
+                          Sửa
+                        </button>
+                        <button
+                          onClick={() => handleDeleteSoft(review.reviewID)}
+                        >
+                          Vô hiệu hóa
+                        </button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
       )}
     </div>
   );
-  
 };
 
 export default AdminReview;

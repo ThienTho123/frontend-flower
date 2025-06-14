@@ -34,7 +34,7 @@ const WheelComponent = () => {
   const reloadData = () => {
     const token = localStorage.getItem("access_token");
     axios
-      .get(`http://localhost:8080/rollbar/${id}`, {
+      .get(`https://deploybackend-1ta9.onrender.com/rollbar/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -104,7 +104,7 @@ const WheelComponent = () => {
     const token = localStorage.getItem("access_token");
     axios
       .post(
-        `http://localhost:8080/attendance/sendInfo/${accountgiftid}`,
+        `https://deploybackend-1ta9.onrender.com/attendance/sendInfo/${accountgiftid}`,
         formData,
         {
           headers: {
@@ -129,7 +129,7 @@ const WheelComponent = () => {
     const token = localStorage.getItem("access_token");
     axios
       .post(
-        `http://localhost:8080/attendance/roll/${id}?giftid=${giftId}`,
+        `https://deploybackend-1ta9.onrender.com/attendance/roll/${id}?giftid=${giftId}`,
         {},
         {
           headers: {
@@ -247,15 +247,18 @@ const WheelComponent = () => {
             <button type="submit">Gửi thông tin</button>
           </form>
         )}
-        <button onClick={closeModal} className="account-gift-modal-close-button">
+        <button
+          onClick={closeModal}
+          className="account-gift-modal-close-button"
+        >
           Đóng
         </button>
       </Modal>
       {showSubmit && (
-                <div className="gift-account-modal-success">
-                  🎉 Thông tin đã được gửi thành công!
-                </div>
-              )}
+        <div className="gift-account-modal-success">
+          🎉 Thông tin đã được gửi thành công!
+        </div>
+      )}
     </div>
   );
 };

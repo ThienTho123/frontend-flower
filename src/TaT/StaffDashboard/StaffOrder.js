@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png'; // Adjust the path as needed
+import returnIcon from "./ImageDashboard/return-button.png"; // Adjust the path as needed
 
 const StaffOrder = () => {
   const [orders, setOrders] = useState([]);
@@ -8,23 +8,23 @@ const StaffOrder = () => {
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
   const navigate = useNavigate();
-  const [validationError, setValidationError] = useState(null); 
+  const [validationError, setValidationError] = useState(null);
   const translateCondition = (condition) => {
     const translations = {
-      "Cancel_is_Processing": "Hủy đang xử lý",
-      "Cancelled": "Đã hủy",
-      "In_Transit": "Đang vận chuyển",
-      "Shipper_Delivering": "Shipper đang giao hàng",
-      "First_Attempt_Failed": "Lần giao hàng đầu tiên thất bại",
-      "Second_Attempt_Failed": "Lần giao hàng thứ hai thất bại",
-      "Third_Attempt_Failed": "Lần giao hàng thứ ba thất bại",
-      "Delivered_Successfully": "Giao hàng thành công",
-      "Return_to_shop": "Trả về cửa hàng",
-      "Pending": "Đang chờ xử lý",
-      "Processing": "Đang xử lý",
-      "Prepare": "Chuẩn bị",
-      "Refund": "Hoàn tiền",
-      "Refund_is_Processing": "Đang chờ hoàn tiền"
+      Cancel_is_Processing: "Hủy đang xử lý",
+      Cancelled: "Đã hủy",
+      In_Transit: "Đang vận chuyển",
+      Shipper_Delivering: "Shipper đang giao hàng",
+      First_Attempt_Failed: "Lần giao hàng đầu tiên thất bại",
+      Second_Attempt_Failed: "Lần giao hàng thứ hai thất bại",
+      Third_Attempt_Failed: "Lần giao hàng thứ ba thất bại",
+      Delivered_Successfully: "Giao hàng thành công",
+      Return_to_shop: "Trả về cửa hàng",
+      Pending: "Đang chờ xử lý",
+      Processing: "Đang xử lý",
+      Prepare: "Chuẩn bị",
+      Refund: "Hoàn tiền",
+      Refund_is_Processing: "Đang chờ hoàn tiền",
     };
     return translations[condition] || condition;
   };
@@ -42,17 +42,20 @@ const StaffOrder = () => {
     "Return_to_shop",
     "Cancel_is_Processing",
     "Refund",
-    "Refund_is_Processing"
+    "Refund_is_Processing",
   ];
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/staff/order", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/api/v1/staff/order",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Không thể lấy danh sách đơn hàng.");
@@ -63,7 +66,7 @@ const StaffOrder = () => {
           ...order,
           date: Array.isArray(order.date) ? order.date : null,
         }));
-  
+
         setOrders(data);
       } catch (err) {
         setError(err.message);
@@ -76,7 +79,7 @@ const StaffOrder = () => {
   const handleSoftDelete = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/order/softdelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/staff/order/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -103,7 +106,7 @@ const StaffOrder = () => {
   const handleHardDelete = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/order/harddelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/staff/order/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -113,7 +116,9 @@ const StaffOrder = () => {
       );
 
       if (response.ok) {
-        setOrders((prevOrders) => prevOrders.filter((order) => order.orderID !== id));
+        setOrders((prevOrders) =>
+          prevOrders.filter((order) => order.orderID !== id)
+        );
       } else {
         throw new Error("Không thể xóa vĩnh viễn đơn hàng.");
       }
@@ -124,19 +129,19 @@ const StaffOrder = () => {
 
   const handleSave = async (id, status, paid, condition) => {
     const orderToUpdate = orders.find((order) => order.orderID === id);
-  
+
     // Kiểm tra các trường bắt buộc
     if (
       !orderToUpdate.totalAmount ||
       !orderToUpdate.deliveryAddress ||
       !orderToUpdate.phoneNumber ||
       !orderToUpdate.name ||
-      (orderToUpdate.shipping && !orderToUpdate.shipping.shippingID) 
+      (orderToUpdate.shipping && !orderToUpdate.shipping.shippingID)
     ) {
       setError("Vui lòng điền đầy đủ thông tin.");
       return;
     }
-  
+
     // Cấu trúc dữ liệu shipping
     const updatedShipping = orderToUpdate.shipping
       ? {
@@ -144,27 +149,32 @@ const StaffOrder = () => {
           shippingID: orderToUpdate.shipping.shippingID,
         }
       : null;
-  
+
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/staff/order/${id}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...orderToUpdate,
-          status,
-          paid,
-          condition,
-          shipping: updatedShipping,
-        }),
-      });
-  
+      const response = await fetch(
+        `https://deploybackend-1ta9.onrender.com/api/v1/staff/order/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...orderToUpdate,
+            status,
+            paid,
+            condition,
+            shipping: updatedShipping,
+          }),
+        }
+      );
+
       if (response.ok) {
         const updatedOrder = await response.json();
         setOrders((prevOrders) =>
-          prevOrders.map((order) => (order.orderID === id ? updatedOrder : order))
+          prevOrders.map((order) =>
+            order.orderID === id ? updatedOrder : order
+          )
         );
         setEditingOrderId(null);
         setError(null); // Reset lỗi khi thành công
@@ -175,7 +185,6 @@ const StaffOrder = () => {
       setError(err.message);
     }
   };
-  
 
   const handleUpdateClick = (orderId) => {
     setEditingOrderId(orderId);
@@ -248,8 +257,6 @@ const StaffOrder = () => {
       );
     }
   };
-  
-  
 
   const handleBackToDashboard = () => {
     navigate("/staff");
@@ -258,9 +265,9 @@ const StaffOrder = () => {
     if (!Array.isArray(dateArray) || dateArray.length < 3) {
       return "Không xác định"; // Giá trị mặc định nếu `dateArray` không hợp lệ
     }
-  
+
     const [year, month, day, hour = 0, minute = 0, second = 0] = dateArray;
-  
+
     // Kiểm tra tính hợp lệ của dữ liệu trước khi tạo `Date`
     if (
       typeof year !== "number" ||
@@ -269,7 +276,7 @@ const StaffOrder = () => {
     ) {
       return "Không xác định";
     }
-  
+
     try {
       // Lưu ý: Tháng trong JavaScript bắt đầu từ 0, cần trừ 1
       const date = new Date(year, month - 1, day, hour, minute, second);
@@ -278,7 +285,6 @@ const StaffOrder = () => {
       return "Không xác định";
     }
   };
-  
 
   return (
     <div className="admin-ql-container">
@@ -314,176 +320,206 @@ const StaffOrder = () => {
               </tr>
             </thead>
             <tbody>
-            {orders.map((order) => (
-              <tr key={order.orderID}>
-                <td>{order.orderID}</td>
+              {orders.map((order) => (
+                <tr key={order.orderID}>
+                  <td>{order.orderID}</td>
 
-                {/* Cột Ngày */}
-                <td>
-                {editingOrderId === order.orderID ? (
-                  <input
-                    type="date"
-                    value={
-                      Array.isArray(order.date)
-                        ? `${order.date[0]}-${String(order.date[1]).padStart(2, "0")}-${String(order.date[2]).padStart(2, "0")}`
-                        : ""
-                    }
-                    onChange={(e) => handleInputChange(e, order.orderID, "date")}
-                  />
-                ) : (
-                  formatDate(order.date) // Hiển thị dạng dễ đọc
-                )}
-              </td>
+                  {/* Cột Ngày */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <input
+                        type="date"
+                        value={
+                          Array.isArray(order.date)
+                            ? `${order.date[0]}-${String(
+                                order.date[1]
+                              ).padStart(2, "0")}-${String(
+                                order.date[2]
+                              ).padStart(2, "0")}`
+                            : ""
+                        }
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "date")
+                        }
+                      />
+                    ) : (
+                      formatDate(order.date) // Hiển thị dạng dễ đọc
+                    )}
+                  </td>
 
-                {/* Cột Thanh Toán */}
-                <td>
-                {editingOrderId === order.orderID ? (
-                  <select
-                    value={order.paid === "Yes" ? "Yes" : "No"} // Kiểm tra và chọn Yes/No
-                    onChange={(e) => handleInputChange(e, order.orderID, "paid")}
-                  >
-                    <option value="Yes">Có</option>
-                    <option value="No">Không</option>
-                  </select>
-                ) : (
-                  order.paid // Hiển thị Yes/No
-                )}
-              </td>
+                  {/* Cột Thanh Toán */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <select
+                        value={order.paid === "Yes" ? "Yes" : "No"} // Kiểm tra và chọn Yes/No
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "paid")
+                        }
+                      >
+                        <option value="Yes">Có</option>
+                        <option value="No">Không</option>
+                      </select>
+                    ) : (
+                      order.paid // Hiển thị Yes/No
+                    )}
+                  </td>
 
-                {/* Cột Tổng Tiền */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <input
-                      type="number"
-                      value={order.totalAmount}
-                      onChange={(e) => handleInputChange(e, order.orderID, "totalAmount")}
-                    />
-                  ) : (
-                    order.totalAmount
-                  )}
-                </td>
+                  {/* Cột Tổng Tiền */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <input
+                        type="number"
+                        value={order.totalAmount}
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "totalAmount")
+                        }
+                      />
+                    ) : (
+                      order.totalAmount
+                    )}
+                  </td>
 
-                {/* Cột Địa Chỉ */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <input
-                      type="text"
-                      value={order.deliveryAddress}
-                      onChange={(e) => handleInputChange(e, order.orderID, "deliveryAddress")}
-                    />
-                  ) : (
-                    order.deliveryAddress
-                  )}
-                </td>
+                  {/* Cột Địa Chỉ */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <input
+                        type="text"
+                        value={order.deliveryAddress}
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "deliveryAddress")
+                        }
+                      />
+                    ) : (
+                      order.deliveryAddress
+                    )}
+                  </td>
 
-                {/* Cột Số Điện Thoại */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <input
-                      type="text"
-                      value={order.phoneNumber}
-                      onChange={(e) => handleInputChange(e, order.orderID, "phoneNumber")}
-                    />
-                  ) : (
-                    order.phoneNumber
-                  )}
-                </td>
+                  {/* Cột Số Điện Thoại */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <input
+                        type="text"
+                        value={order.phoneNumber}
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "phoneNumber")
+                        }
+                      />
+                    ) : (
+                      order.phoneNumber
+                    )}
+                  </td>
 
-                {/* Cột Người Nhận */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <input
-                      type="text"
-                      value={order.name}
-                      onChange={(e) => handleInputChange(e, order.orderID, "name")}
-                    />
-                  ) : (
-                    order.name
-                  )}
-                </td>
+                  {/* Cột Người Nhận */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <input
+                        type="text"
+                        value={order.name}
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "name")
+                        }
+                      />
+                    ) : (
+                      order.name
+                    )}
+                  </td>
 
-                {/* Cột Shipping ID */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <input
-                      type="text"
-                      value={order.shipping ? order.shipping.shippingID : ""}
-                      onChange={(e) => handleInputChange(e, order.orderID, "shippingID")}
-                    />
-                  ) : (
-                    order.shipping ? order.shipping.shippingID : "Chưa có"
-                  )}
-                </td>
+                  {/* Cột Shipping ID */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <input
+                        type="text"
+                        value={order.shipping ? order.shipping.shippingID : ""}
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "shippingID")
+                        }
+                      />
+                    ) : order.shipping ? (
+                      order.shipping.shippingID
+                    ) : (
+                      "Chưa có"
+                    )}
+                  </td>
 
+                  {/* Cột Ghi Chú */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <textarea
+                        value={order.note || ""}
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "note")
+                        }
+                      />
+                    ) : (
+                      order.note || "Không có"
+                    )}
+                  </td>
 
+                  {/* Cột Điều Kiện */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <select
+                        value={order.condition}
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "condition")
+                        }
+                      >
+                        {orderConditions.map((condition) => (
+                          <option key={condition} value={condition}>
+                            {translateCondition(condition)}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      translateCondition(order.condition)
+                    )}
+                  </td>
 
+                  {/* Cột Trạng Thái */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <select
+                        value={order.status}
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "status")
+                        }
+                      >
+                        <option value="ENABLE">ENABLE</option>
+                        <option value="DISABLE">DISABLE</option>
+                      </select>
+                    ) : (
+                      order.status
+                    )}
+                  </td>
 
-                {/* Cột Ghi Chú */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <textarea
-                      value={order.note || ""}
-                      onChange={(e) => handleInputChange(e, order.orderID, "note")}
-                    />
-                  ) : (
-                    order.note || "Không có"
-                  )}
-                </td>
-
-                {/* Cột Điều Kiện */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <select
-                      value={order.condition}
-                      onChange={(e) => handleInputChange(e, order.orderID, "condition")}
-                    >
-                      {orderConditions.map((condition) => (
-                        <option key={condition} value={condition}>
-                          {translateCondition(condition)}
-                        </option>
-                      ))}
-                    </select>
-                  ) : (
-                    translateCondition(order.condition)
-                  )}
-                </td>
-
-                {/* Cột Trạng Thái */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <select
-                      value={order.status}
-                      onChange={(e) => handleInputChange(e, order.orderID, "status")}
-                    >
-                      <option value="ENABLE">ENABLE</option>
-                      <option value="DISABLE">DISABLE</option>
-                    </select>
-                  ) : (
-                    order.status
-                  )}
-                </td>
-
-                {/* Cột Hành Động */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <button
-                      onClick={() =>
-                        handleSave(order.orderID, order.status, order.paid, order.condition)
-                      }
-                    >
-                      Lưu
-                    </button>
-                  ) : (
-                    <>
-                      <button onClick={() => handleUpdateClick(order.orderID)}>
-                        Chỉnh Sửa
+                  {/* Cột Hành Động */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <button
+                        onClick={() =>
+                          handleSave(
+                            order.orderID,
+                            order.status,
+                            order.paid,
+                            order.condition
+                          )
+                        }
+                      >
+                        Lưu
                       </button>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => handleUpdateClick(order.orderID)}
+                        >
+                          Chỉnh Sửa
+                        </button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </>
       )}

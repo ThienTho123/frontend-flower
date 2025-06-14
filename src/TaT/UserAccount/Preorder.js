@@ -26,7 +26,7 @@ const Preorder = () => {
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/account/preorder",
+        "https://deploybackend-1ta9.onrender.com/account/preorder",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -72,7 +72,7 @@ const Preorder = () => {
 
     try {
       const response = await axios.delete(
-        "http://localhost:8080/account/preorder/cancel",
+        "https://deploybackend-1ta9.onrender.com/account/preorder/cancel",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -132,11 +132,14 @@ const Preorder = () => {
                 <td>{order.date}</td>
                 <td>{translateCondition(order.condition)}</td>
                 <td>
-                  {order.condition === "Refund" || order.condition ==="Refunding" ? (
+                  {order.condition === "Refund" ||
+                  order.condition === "Refunding" ? (
                     <button
                       className="cancel-btn"
-                      onClick={() => navigate (`/account/preorder/refund/${order.id}`)}
-                      disabled={order.condition ==="Refunding"}
+                      onClick={() =>
+                        navigate(`/account/preorder/refund/${order.id}`)
+                      }
+                      disabled={order.condition === "Refunding"}
                     >
                       Hoàn tiền
                     </button>
@@ -144,7 +147,11 @@ const Preorder = () => {
                     <button
                       className="cancel-btn"
                       onClick={() => confirmCancelOrder(order.id)}
-                      disabled={order.condition === "Ordering" || order.condition === "Success" || order.condition === "Cancel" }
+                      disabled={
+                        order.condition === "Ordering" ||
+                        order.condition === "Success" ||
+                        order.condition === "Cancel"
+                      }
                     >
                       Hủy
                     </button>

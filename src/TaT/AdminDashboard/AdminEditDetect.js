@@ -29,7 +29,7 @@ const AdminEditDetect = () => {
   useEffect(() => {
     // Lấy danh sách hoa
     axios
-      .get("http://localhost:8080/flower")
+      .get("https://deploybackend-1ta9.onrender.com/flower")
       .then((response) => setFlowers(response.data.flowers))
       .catch((error) => console.error("Error fetching flowers:", error));
   }, []);
@@ -38,9 +38,12 @@ const AdminEditDetect = () => {
     // Lấy dữ liệu blog từ backend
     const accessToken = localStorage.getItem("access_token");
     axios
-      .get(`http://localhost:8080/api/v1/admin/detect/${id}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
+      .get(
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/detect/${id}`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      )
       .then((response) => {
         setDetect(response.data);
         setSelectedFlowers(
@@ -65,7 +68,7 @@ const AdminEditDetect = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/upload",
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -160,9 +163,13 @@ const AdminEditDetect = () => {
     console.log("Dữ liệu trước khi submit:", detectInfo);
 
     axios
-      .put(`http://localhost:8080/api/v1/admin/detect/${id}`, detectInfo, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
+      .put(
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/detect/${id}`,
+        detectInfo,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      )
       .then((response) => {
         console.log("Cập nhật thành công:", response.data);
       })
@@ -359,9 +366,7 @@ const AdminEditDetect = () => {
             }
           />
           <span className="blog-form-status-text">
-            {detect.detect?.status === "ENABLE"
-              ? "Kích hoạt"
-              : "Vô hiệu hóa"}
+            {detect.detect?.status === "ENABLE" ? "Kích hoạt" : "Vô hiệu hóa"}
           </span>
         </label>
       </div>

@@ -24,21 +24,21 @@ const AdminCreateDetect = () => {
   useBootstrap();
   useEffect(() => {
     axios
-      .get("http://localhost:8080/flower")
+      .get("https://deploybackend-1ta9.onrender.com/flower")
       .then((response) => setFlowers(response.data.flowers))
       .catch((error) => console.error("Error fetching flowers:", error));
   }, []);
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
-  
+
     setLoading(true);
     const formData = new FormData();
     formData.append("file", file);
-  
+
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/upload",
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -46,10 +46,9 @@ const AdminCreateDetect = () => {
     } catch (error) {
       console.error("Error uploading image:", error);
     }
-  
+
     setLoading(false);
   };
-  
 
   const handleRemoveImage = (index) => {
     setImages(image.filter((_, i) => i !== index));
@@ -95,7 +94,7 @@ const AdminCreateDetect = () => {
     };
     try {
       await axios.post(
-        "http://localhost:8080/api/v1/admin/detect",
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/detect",
         detectInfo,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
@@ -159,7 +158,7 @@ const AdminCreateDetect = () => {
         onChange={(e) => setTimebloom(e.target.value)}
       ></textarea>
 
-<textarea
+      <textarea
         className="blog-form-textarea"
         placeholder="Nhập đặc điểm của hoa"
         rows="8"
@@ -167,7 +166,7 @@ const AdminCreateDetect = () => {
         onChange={(e) => setCharacteristic(e.target.value)}
       ></textarea>
 
-<textarea
+      <textarea
         className="blog-form-textarea"
         placeholder="Nhập ý nghĩa của hoa"
         rows="6"
@@ -175,7 +174,7 @@ const AdminCreateDetect = () => {
         onChange={(e) => setFlowerlanguage(e.target.value)}
       ></textarea>
 
-<textarea
+      <textarea
         className="blog-form-textarea"
         placeholder="Nhập thông tin thêm cho hoa"
         rows="4"
@@ -183,14 +182,13 @@ const AdminCreateDetect = () => {
         onChange={(e) => setBonus(e.target.value)}
       ></textarea>
 
-<textarea
+      <textarea
         className="blog-form-textarea"
         placeholder="Nhập công dụng của hoa"
         rows="4"
         value={uses}
         onChange={(e) => setUses(e.target.value)}
       ></textarea>
-
 
       <input
         type="file"

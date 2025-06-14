@@ -28,19 +28,19 @@ const StaffRollBar = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:8080/staffrollbar",
+        "https://deploybackend-1ta9.onrender.com/staffrollbar",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
           },
         }
       );
-      
+
       console.log("API Response:", response.data);
-      
+
       // Lấy danh sách rollBar từ response
       const rawRollBarList = response.data?.rollBarList || [];
-      
+
       if (!Array.isArray(rawRollBarList)) {
         console.error("Roll bar data is not an array:", rawRollBarList);
         setRollBars([]);
@@ -58,17 +58,17 @@ const StaffRollBar = () => {
         status: item.rollBar.status,
         gifts: item.gifts || [],
         flowers: item.flowers || [],
-        flowerInfos: item.flowerInfos || []
+        flowerInfos: item.flowerInfos || [],
       }));
 
       setRollBars(updatedRollBars);
-      
+
       // Lưu trữ dữ liệu cho dropdown từ response
       setCategories(response.data?.categories || []);
       setTypes(response.data?.types || []);
       setPurposes(response.data?.purposes || []);
       setTypeGifts(response.data?.typeGifts || []);
-      
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching roll bars:", error);
@@ -81,7 +81,7 @@ const StaffRollBar = () => {
     if (!selectedRollBar) return;
     try {
       const response = await axios.delete(
-        `http://localhost:8080/staffrollbar/${selectedRollBar.id}`,
+        `https://deploybackend-1ta9.onrender.com/staffrollbar/${selectedRollBar.id}`,
         {
           headers: { Authorization: `Bearer ${accesstoken}` },
         }
@@ -120,9 +120,9 @@ const StaffRollBar = () => {
           />
         </Link>
       </div>
-      
+
       {error && <p style={{ color: "red" }}>{error}</p>}
-      
+
       {loading ? (
         <p>Đang tải dữ liệu...</p>
       ) : rollBars.length === 0 ? (
@@ -161,13 +161,13 @@ const StaffRollBar = () => {
                   </td>
                   <td>{rollBar.days}</td>
                   <td>
-                    <div 
-                      style={{ 
-                        backgroundColor: rollBar.color, 
-                        width: '20px', 
-                        height: '20px', 
-                        borderRadius: '50%',
-                        margin: '0 auto' 
+                    <div
+                      style={{
+                        backgroundColor: rollBar.color,
+                        width: "20px",
+                        height: "20px",
+                        borderRadius: "50%",
+                        margin: "0 auto",
                       }}
                     />
                   </td>
@@ -183,7 +183,9 @@ const StaffRollBar = () => {
                         setConfirmModal(true);
                       }}
                     >
-                      {rollBar.status === "ENABLE" ? "Vô hiệu hóa" : "Kích hoạt"}
+                      {rollBar.status === "ENABLE"
+                        ? "Vô hiệu hóa"
+                        : "Kích hoạt"}
                     </button>
                   </td>
                 </tr>
@@ -198,7 +200,11 @@ const StaffRollBar = () => {
         <div className="modal">
           <div className="modal-content">
             <p>
-              Bạn có chắc chắn muốn {selectedRollBar?.status === "ENABLE" ? "vô hiệu hóa" : "kích hoạt"} Roll Bar này không?
+              Bạn có chắc chắn muốn{" "}
+              {selectedRollBar?.status === "ENABLE"
+                ? "vô hiệu hóa"
+                : "kích hoạt"}{" "}
+              Roll Bar này không?
             </p>
             <button
               onClick={() => {

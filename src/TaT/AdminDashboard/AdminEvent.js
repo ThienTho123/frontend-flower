@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import returnIcon from "./ImageDashboard/return-button.png";
-import plus from "../StaffDashboard/ImageDashboard/plus.png"
+import plus from "../StaffDashboard/ImageDashboard/plus.png";
 const AdminEvent = () => {
   const [event, setEvents] = useState([]);
   const [error, setError] = useState(null);
@@ -32,7 +32,7 @@ const AdminEvent = () => {
   const fetchEvents = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/admin/event",
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/event",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -68,7 +68,7 @@ const AdminEvent = () => {
     if (!selectedEvent) return;
     try {
       const response = await axios.delete(
-        `http://localhost:8080/api/v1/admin/event/${selectedEvent.id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/event/${selectedEvent.id}`,
         {
           headers: { Authorization: `Bearer ${accesstoken}` },
         }

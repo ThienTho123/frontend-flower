@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png'; // Điều chỉnh đường dẫn nếu cần
+import returnIcon from "./ImageDashboard/return-button.png"; // Điều chỉnh đường dẫn nếu cần
 
 const AdminCancelDelivery = () => {
   const [orders, setOrders] = useState([]);
@@ -13,7 +13,7 @@ const AdminCancelDelivery = () => {
 
   const translations = {
     "Cancel is Processing": "Hủy đang xử lý",
-    "Cancel_is_Processing": "Hủy đang xử lý", 
+    Cancel_is_Processing: "Hủy đang xử lý",
     Cancelled: "Đã hủy",
     "In Transit": "Đang vận chuyển",
     "Shipper Delivering": "Shipper đang giao hàng",
@@ -28,16 +28,18 @@ const AdminCancelDelivery = () => {
     Processing: "Đang xử lý",
     Prepare: "Chuẩn bị",
   };
-  
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:8080/adminmanager/cancelprocessing", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/adminmanager/cancelprocessing",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Không thể lấy danh sách đơn hàng.");
@@ -55,8 +57,8 @@ const AdminCancelDelivery = () => {
 
   const handleAction = async (orderID, isAccepted) => {
     const apiEndpoint = isAccepted
-      ? "http://localhost:8080/adminmanager/cancelprocessing/yes"
-      : "http://localhost:8080/adminmanager/cancelprocessing/no";
+      ? "https://deploybackend-1ta9.onrender.com/adminmanager/cancelprocessing/yes"
+      : "https://deploybackend-1ta9.onrender.com/adminmanager/cancelprocessing/no";
 
     try {
       const response = await fetch(apiEndpoint, {
@@ -69,11 +71,19 @@ const AdminCancelDelivery = () => {
       });
 
       if (!response.ok) {
-        throw new Error(isAccepted ? "Không thể chấp nhận hủy đơn hàng." : "Không thể từ chối hủy đơn hàng.");
+        throw new Error(
+          isAccepted
+            ? "Không thể chấp nhận hủy đơn hàng."
+            : "Không thể từ chối hủy đơn hàng."
+        );
       }
 
-      setOrders((prevOrders) => prevOrders.filter((order) => order.orderID !== orderID));
-      setToastMessage(isAccepted ? "Đã chấp nhận hủy đơn hàng!" : "Đã từ chối hủy đơn hàng!");
+      setOrders((prevOrders) =>
+        prevOrders.filter((order) => order.orderID !== orderID)
+      );
+      setToastMessage(
+        isAccepted ? "Đã chấp nhận hủy đơn hàng!" : "Đã từ chối hủy đơn hàng!"
+      );
       setIsSuccess(isAccepted);
       setIsToastVisible(true);
       setTimeout(() => setIsToastVisible(false), 3000); // Ẩn thông báo sau 3 giây
@@ -136,7 +146,9 @@ const AdminCancelDelivery = () => {
               <tr key={order.orderID}>
                 <td>{order.orderID}</td>
                 <td>{formatDate(order.date)}</td>
-                <td>{translations[order.condition] || "Trạng thái không xác định"}</td>
+                <td>
+                  {translations[order.condition] || "Trạng thái không xác định"}
+                </td>
                 <td>
                   <button
                     className="category-action-button"

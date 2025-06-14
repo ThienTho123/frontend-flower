@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png'; // Adjust the path as needed
+import returnIcon from "./ImageDashboard/return-button.png"; // Adjust the path as needed
 
 const AdminOrderDetail = ({ orderID }) => {
   const [orderDetails, setOrderDetails] = useState([]);
@@ -12,11 +12,14 @@ const AdminOrderDetail = ({ orderID }) => {
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/admin/orderdetail`, {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-        });
+        const response = await fetch(
+          `https://deploybackend-1ta9.onrender.com/api/v1/admin/orderdetail`,
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Không thể lấy thông tin chi tiết đơn hàng.");
@@ -34,19 +37,19 @@ const AdminOrderDetail = ({ orderID }) => {
 
   const handleInputChange = (e, orderDetailId, field) => {
     let value = e.target.value;
-    
+
     // Kiểm tra nếu field là "flowerSizeID"
     if (field === "flowerSizeID") {
       // Đảm bảo rằng giá trị flowerSizeID không phải là giá trị trống hoặc không hợp lệ
       value = value === "" || value === "0" ? null : value;
-  
+
       setOrderDetails((prevDetails) =>
         prevDetails.map((orderDetail) =>
           orderDetail.orderdetailID === orderDetailId
-            ? { 
-                ...orderDetail, 
+            ? {
+                ...orderDetail,
                 flowerSizeID: value, // Cập nhật flowerSizeID mới
-                flowerSize: { ...orderDetail.flowerSize, flowerSizeID: value } // Nếu bạn cũng muốn cập nhật flowerSize trong object
+                flowerSize: { ...orderDetail.flowerSize, flowerSizeID: value }, // Nếu bạn cũng muốn cập nhật flowerSize trong object
               }
             : orderDetail
         )
@@ -71,7 +74,7 @@ const AdminOrderDetail = ({ orderID }) => {
       setError("Số lượng không được nhập số âm.");
       return;
     }
-  
+
     if (orderDetailToUpdate.price < 0) {
       setError("Giá không được nhập số âm.");
       return;
@@ -85,12 +88,12 @@ const AdminOrderDetail = ({ orderID }) => {
       ...orderDetailToUpdate,
       flowerSizeID: orderDetailToUpdate.flowerSizeID, // Đảm bảo sử dụng flowerSizeID mới được cập nhật
     };
-  
+
     console.log("Dữ liệu sẽ gửi đi:", JSON.stringify(updatedOrderDetail));
-  
+
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/orderdetail/${orderDetailId}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orderdetail/${orderDetailId}`,
         {
           method: "PUT",
           headers: {
@@ -100,7 +103,7 @@ const AdminOrderDetail = ({ orderID }) => {
           body: JSON.stringify(updatedOrderDetail), // Gửi thông tin đã cập nhật
         }
       );
-  
+
       if (response.ok) {
         const updatedOrderDetail = await response.json();
         setOrderDetails((prevDetails) =>
@@ -120,7 +123,7 @@ const AdminOrderDetail = ({ orderID }) => {
   const handleSoftDelete = async (orderDetailId) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/orderdetail/softdelete/${orderDetailId}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orderdetail/softdelete/${orderDetailId}`,
         {
           method: "DELETE",
           headers: {
@@ -148,7 +151,7 @@ const AdminOrderDetail = ({ orderID }) => {
   const handleHardDelete = async (orderDetailId) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/orderdetail/harddelete/${orderDetailId}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orderdetail/harddelete/${orderDetailId}`,
         {
           method: "DELETE",
           headers: {
@@ -174,7 +177,7 @@ const AdminOrderDetail = ({ orderID }) => {
   };
 
   return (
-<div className="admin-ql-container">
+    <div className="admin-ql-container">
       <div className="title-container">
         <img
           src={returnIcon}
@@ -204,20 +207,24 @@ const AdminOrderDetail = ({ orderID }) => {
               <tr key={orderDetail.orderdetailID}>
                 <td>{orderDetail.orderdetailID}</td>
 
-                  {/* Flower Size */}
-                  <td>
-                    {editingOrderDetailId === orderDetail.orderdetailID ? (
-                      <input
-                        type="text"
-                        value={orderDetail.flowerSizeID || ""} // Đảm bảo giá trị là "" nếu không có
-                        onChange={(e) =>
-                          handleInputChange(e, orderDetail.orderdetailID, "flowerSizeID")
-                        }
-                      />
-                    ) : (
-                      orderDetail.flowerSize?.flowerSizeID || "Chưa có" // Hiển thị flowerSizeID nếu có
-                    )}
-                  </td>
+                {/* Flower Size */}
+                <td>
+                  {editingOrderDetailId === orderDetail.orderdetailID ? (
+                    <input
+                      type="text"
+                      value={orderDetail.flowerSizeID || ""} // Đảm bảo giá trị là "" nếu không có
+                      onChange={(e) =>
+                        handleInputChange(
+                          e,
+                          orderDetail.orderdetailID,
+                          "flowerSizeID"
+                        )
+                      }
+                    />
+                  ) : (
+                    orderDetail.flowerSize?.flowerSizeID || "Chưa có" // Hiển thị flowerSizeID nếu có
+                  )}
+                </td>
 
                 {/* Quantity */}
                 <td>
@@ -226,7 +233,11 @@ const AdminOrderDetail = ({ orderID }) => {
                       type="number"
                       value={orderDetail.quantity}
                       onChange={(e) =>
-                        handleInputChange(e, orderDetail.orderdetailID, "quantity")
+                        handleInputChange(
+                          e,
+                          orderDetail.orderdetailID,
+                          "quantity"
+                        )
                       }
                     />
                   ) : (
@@ -255,7 +266,11 @@ const AdminOrderDetail = ({ orderID }) => {
                     <select
                       value={orderDetail.status}
                       onChange={(e) =>
-                        handleInputChange(e, orderDetail.orderdetailID, "status")
+                        handleInputChange(
+                          e,
+                          orderDetail.orderdetailID,
+                          "status"
+                        )
                       }
                     >
                       <option value="ENABLE">Enable</option>
@@ -269,18 +284,27 @@ const AdminOrderDetail = ({ orderID }) => {
                 {/* Actions */}
                 <td>
                   {editingOrderDetailId === orderDetail.orderdetailID ? (
-                    <button onClick={() => handleSave(orderDetail.orderdetailID)}>
+                    <button
+                      onClick={() => handleSave(orderDetail.orderdetailID)}
+                    >
                       Lưu
                     </button>
                   ) : (
                     <>
-                      <button onClick={() => setEditingOrderDetailId(orderDetail.orderdetailID)}>
+                      <button
+                        onClick={() =>
+                          setEditingOrderDetailId(orderDetail.orderdetailID)
+                        }
+                      >
                         Chỉnh Sửa
                       </button>
-                      <button onClick={() => handleSoftDelete(orderDetail.orderdetailID)}>
+                      <button
+                        onClick={() =>
+                          handleSoftDelete(orderDetail.orderdetailID)
+                        }
+                      >
                         Vô hiệu hóa
                       </button>
-
                     </>
                   )}
                 </td>

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png';
+import returnIcon from "./ImageDashboard/return-button.png";
 
 const AdminFlowerSize = () => {
   const [flowerSizeList, setFlowerSizeList] = useState([]);
-  const [flowerList, setFlowerList] = useState([]); 
+  const [flowerList, setFlowerList] = useState([]);
   const [newFlowerSize, setNewFlowerSize] = useState({
-    
     sizeName: "",
     length: "",
     high: "",
@@ -16,7 +15,7 @@ const AdminFlowerSize = () => {
     price: "",
     cost: "",
     status: "ENABLE",
-    flower: { flowerID: null }
+    flower: { flowerID: null },
   });
   const [editingFlowerSizeId, setEditingFlowerSizeId] = useState(null);
   const [editingData, setEditingData] = useState({});
@@ -28,12 +27,15 @@ const AdminFlowerSize = () => {
   useEffect(() => {
     const fetchFlowerSizesAndFlowers = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/admin/flowersize", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/flowersize",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
           const errorMessage = await response.text();
@@ -62,30 +64,36 @@ const AdminFlowerSize = () => {
   const handleCreate = async () => {
     try {
       const errors = {};
-    if (!newFlowerSize.sizeName) errors.sizeName = "Tên kích thước không được để trống";
-    if (newFlowerSize.length <= 0) errors.length = "Độ dài phải là số dương";
-    if (newFlowerSize.high <= 0) errors.high = "Độ cao phải là số dương";
-    if (newFlowerSize.width <= 0) errors.width = "Độ rộng phải là số dương";
-    if (newFlowerSize.weight <= 0) errors.weight = "Trọng lượng phải là số dương";
-    if (newFlowerSize.stock < 0) errors.stock = "Số lượng tồn kho không được âm";
-    if (newFlowerSize.price <= 0) errors.price = "Giá bán phải là số dương";
-    if (newFlowerSize.cost <= 0) errors.cost = "Giá gốc phải là số dương";
-    if (!newFlowerSize.flower.flowerID) errors.flower = "Vui lòng chọn hoa";
+      if (!newFlowerSize.sizeName)
+        errors.sizeName = "Tên kích thước không được để trống";
+      if (newFlowerSize.length <= 0) errors.length = "Độ dài phải là số dương";
+      if (newFlowerSize.high <= 0) errors.high = "Độ cao phải là số dương";
+      if (newFlowerSize.width <= 0) errors.width = "Độ rộng phải là số dương";
+      if (newFlowerSize.weight <= 0)
+        errors.weight = "Trọng lượng phải là số dương";
+      if (newFlowerSize.stock < 0)
+        errors.stock = "Số lượng tồn kho không được âm";
+      if (newFlowerSize.price <= 0) errors.price = "Giá bán phải là số dương";
+      if (newFlowerSize.cost <= 0) errors.cost = "Giá gốc phải là số dương";
+      if (!newFlowerSize.flower.flowerID) errors.flower = "Vui lòng chọn hoa";
 
-    if (Object.keys(errors).length > 0) {
-      setValidationErrors(errors);
-      return;
-    }
-      const response = await fetch("http://localhost:8080/api/v1/admin/flowersize", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(newFlowerSize),
-      });
-  
+      if (Object.keys(errors).length > 0) {
+        setValidationErrors(errors);
+        return;
+      }
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/flowersize",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(newFlowerSize),
+        }
+      );
+
       if (response.ok) {
         setNewFlowerSize({
           sizeName: "",
@@ -106,12 +114,11 @@ const AdminFlowerSize = () => {
       setError(err.message);
     }
   };
-  
-
 
   const handleSave = async (id) => {
     const errors = {};
-    if (!editingData.sizeName) errors.sizeName = "Tên kích thước không được để trống";
+    if (!editingData.sizeName)
+      errors.sizeName = "Tên kích thước không được để trống";
     if (editingData.length <= 0) errors.length = "Độ dài phải là số dương";
     if (editingData.high <= 0) errors.high = "Độ cao phải là số dương";
     if (editingData.width <= 0) errors.width = "Độ rộng phải là số dương";
@@ -127,7 +134,7 @@ const AdminFlowerSize = () => {
     }
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flowersize/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/flowersize/${id}`,
         {
           method: "PUT",
           headers: {
@@ -142,7 +149,9 @@ const AdminFlowerSize = () => {
       if (response.ok) {
         const updatedFlowerSize = await response.json();
         setFlowerSizeList((prev) =>
-          prev.map((size) => (size.flowerSizeID === id ? updatedFlowerSize : size))
+          prev.map((size) =>
+            size.flowerSizeID === id ? updatedFlowerSize : size
+          )
         );
         setEditingFlowerSizeId(null);
         setEditingData({});
@@ -158,7 +167,7 @@ const AdminFlowerSize = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flowersize/softdelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/flowersize/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -185,7 +194,7 @@ const AdminFlowerSize = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flowersize/harddelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/flowersize/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -196,7 +205,9 @@ const AdminFlowerSize = () => {
       );
 
       if (response.ok) {
-        setFlowerSizeList((prev) => prev.filter((size) => size.flowerSizeID !== id));
+        setFlowerSizeList((prev) =>
+          prev.filter((size) => size.flowerSizeID !== id)
+        );
       } else {
         throw new Error("Unable to delete flower size.");
       }
@@ -247,7 +258,9 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, sizeName: e.target.value }))
           }
         />
-                {validationErrors.sizeName && <div className="error">{validationErrors.sizeName}</div>}
+        {validationErrors.sizeName && (
+          <div className="error">{validationErrors.sizeName}</div>
+        )}
 
         <label>Độ dài:</label>
         <input
@@ -257,7 +270,9 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, length: e.target.value }))
           }
         />
-                {validationErrors.length && <div className="error">{validationErrors.length}</div>}
+        {validationErrors.length && (
+          <div className="error">{validationErrors.length}</div>
+        )}
 
         <label>Độ cao:</label>
         <input
@@ -267,7 +282,9 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, high: e.target.value }))
           }
         />
-                {validationErrors.high && <div className="error">{validationErrors.high}</div>}
+        {validationErrors.high && (
+          <div className="error">{validationErrors.high}</div>
+        )}
 
         <label>Độ rộng:</label>
         <input
@@ -277,7 +294,9 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, width: e.target.value }))
           }
         />
-                        {validationErrors.width && <div className="error">{validationErrors.width}</div>}
+        {validationErrors.width && (
+          <div className="error">{validationErrors.width}</div>
+        )}
 
         <label>Trọng lượng:</label>
         <input
@@ -287,7 +306,9 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, weight: e.target.value }))
           }
         />
-                {validationErrors.weight && <div className="error">{validationErrors.weight}</div>}
+        {validationErrors.weight && (
+          <div className="error">{validationErrors.weight}</div>
+        )}
 
         <label>Số lượng tồn kho:</label>
         <input
@@ -297,7 +318,9 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, stock: e.target.value }))
           }
         />
-        {validationErrors.stock && <div className="error">{validationErrors.stock}</div>}
+        {validationErrors.stock && (
+          <div className="error">{validationErrors.stock}</div>
+        )}
 
         <label>Giá bán:</label>
         <input
@@ -307,7 +330,9 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, price: e.target.value }))
           }
         />
-                {validationErrors.price && <div className="error">{validationErrors.price}</div>}
+        {validationErrors.price && (
+          <div className="error">{validationErrors.price}</div>
+        )}
 
         <label>Giá gốc:</label>
         <input
@@ -317,7 +342,9 @@ const AdminFlowerSize = () => {
             setNewFlowerSize((prev) => ({ ...prev, cost: e.target.value }))
           }
         />
-                {validationErrors.cost && <div className="error">{validationErrors.cost}</div>}
+        {validationErrors.cost && (
+          <div className="error">{validationErrors.cost}</div>
+        )}
 
         <label>Hoa (ID):</label>
         <select
@@ -332,12 +359,13 @@ const AdminFlowerSize = () => {
           <option value="">Chọn hoa</option>
           {flowerList.map((flower) => (
             <option key={flower.flowerID} value={flower.flowerID}>
-              {flower.name} 
+              {flower.name}
             </option>
           ))}
         </select>
-        {validationErrors.flower && <div className="error">{validationErrors.flower}</div>}
-
+        {validationErrors.flower && (
+          <div className="error">{validationErrors.flower}</div>
+        )}
 
         <label>Trạng thái:</label>
         <select
@@ -476,12 +504,12 @@ const AdminFlowerSize = () => {
                       <option value="">Chọn hoa</option>
                       {flowerList.map((flower) => (
                         <option key={flower.flowerID} value={flower.flowerID}>
-                          {flower.name} 
+                          {flower.name}
                         </option>
                       ))}
                     </select>
                   ) : (
-                    flowerSize.flower?.name || "" 
+                    flowerSize.flower?.name || ""
                   )}
                 </td>
 
@@ -501,20 +529,27 @@ const AdminFlowerSize = () => {
                 <td>
                   {editingFlowerSizeId === flowerSize.flowerSizeID ? (
                     <>
-                      <button onClick={() => handleSave(flowerSize.flowerSizeID)}>
+                      <button
+                        onClick={() => handleSave(flowerSize.flowerSizeID)}
+                      >
                         Lưu
                       </button>
                       <button onClick={handleCancel}>Hủy</button>
                     </>
                   ) : (
                     <>
-                      <button onClick={() => handleEdit(flowerSize.flowerSizeID)}>
+                      <button
+                        onClick={() => handleEdit(flowerSize.flowerSizeID)}
+                      >
                         Chỉnh sửa
                       </button>
-                      <button onClick={() => handleDeleteSoft(flowerSize.flowerSizeID)}>
+                      <button
+                        onClick={() =>
+                          handleDeleteSoft(flowerSize.flowerSizeID)
+                        }
+                      >
                         Vô hiệu hóa
                       </button>
-
                     </>
                   )}
                 </td>

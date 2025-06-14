@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png'; // Đảm bảo đường dẫn này chính xác
+import returnIcon from "./ImageDashboard/return-button.png"; // Đảm bảo đường dẫn này chính xác
 
 const StaffCancelDelivery = () => {
   const [orders, setOrders] = useState([]);
@@ -14,7 +14,7 @@ const StaffCancelDelivery = () => {
   // Bản dịch trạng thái sang tiếng Việt
   const translations = {
     "Cancel is Processing": "Hủy đang xử lý",
-    "Cancel_is_Processing": "Hủy đang xử lý",
+    Cancel_is_Processing: "Hủy đang xử lý",
     Cancelled: "Đã hủy",
     "In Transit": "Đang vận chuyển",
     "Shipper Delivering": "Shipper đang giao hàng",
@@ -33,11 +33,14 @@ const StaffCancelDelivery = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:8080/staffmanager/cancelprocessing", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/staffmanager/cancelprocessing",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Không thể lấy danh sách đơn hàng.");
@@ -55,8 +58,8 @@ const StaffCancelDelivery = () => {
 
   const handleAction = async (orderID, isAccepted) => {
     const apiEndpoint = isAccepted
-      ? "http://localhost:8080/staffmanager/cancelprocessing/yes"
-      : "http://localhost:8080/staffmanager/cancelprocessing/no";
+      ? "https://deploybackend-1ta9.onrender.com/staffmanager/cancelprocessing/yes"
+      : "https://deploybackend-1ta9.onrender.com/staffmanager/cancelprocessing/no";
 
     try {
       const response = await fetch(apiEndpoint, {
@@ -69,11 +72,19 @@ const StaffCancelDelivery = () => {
       });
 
       if (!response.ok) {
-        throw new Error(isAccepted ? "Không thể chấp nhận hủy đơn hàng." : "Không thể từ chối hủy đơn hàng.");
+        throw new Error(
+          isAccepted
+            ? "Không thể chấp nhận hủy đơn hàng."
+            : "Không thể từ chối hủy đơn hàng."
+        );
       }
 
-      setOrders((prevOrders) => prevOrders.filter((order) => order.orderID !== orderID));
-      setToastMessage(isAccepted ? "Đã chấp nhận hủy đơn hàng!" : "Đã từ chối hủy đơn hàng!");
+      setOrders((prevOrders) =>
+        prevOrders.filter((order) => order.orderID !== orderID)
+      );
+      setToastMessage(
+        isAccepted ? "Đã chấp nhận hủy đơn hàng!" : "Đã từ chối hủy đơn hàng!"
+      );
       setIsSuccess(isAccepted);
       setIsToastVisible(true);
       setTimeout(() => setIsToastVisible(false), 3000); // Ẩn thông báo sau 3 giây
@@ -136,7 +147,9 @@ const StaffCancelDelivery = () => {
               <tr key={order.orderID}>
                 <td>{order.orderID}</td>
                 <td>{formatDate(order.date)}</td>
-                <td>{translations[order.condition] || "Trạng thái không xác định"}</td>
+                <td>
+                  {translations[order.condition] || "Trạng thái không xác định"}
+                </td>
                 <td>
                   <button
                     className="category-action-button"

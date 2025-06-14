@@ -32,7 +32,7 @@ const AdminDetect = () => {
   const fetchEvents = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/admin/detect",
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/detect",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -50,7 +50,7 @@ const AdminDetect = () => {
     if (!selectedEvent) return;
     try {
       const response = await axios.delete(
-        `http://localhost:8080/api/v1/admin/detect/${selectedEvent.id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/detect/${selectedEvent.id}`,
         {
           headers: { Authorization: `Bearer ${accesstoken}` },
         }
@@ -139,7 +139,8 @@ const AdminDetect = () => {
                     {item.flowerlanguage && item.flowerlanguage.length > 100
                       ? item.flowerlanguage.slice(0, 100) + "..."
                       : item.flowerlanguage || "Không có thông tin"}
-                  </td>                  <td>{item.status}</td>
+                  </td>{" "}
+                  <td>{item.status}</td>
                   <td>
                     <Link to={`/AdminDetect/edit/${item.id}`}>
                       <button>Chỉnh Sửa</button>

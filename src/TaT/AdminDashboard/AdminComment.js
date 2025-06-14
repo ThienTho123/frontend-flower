@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png';
+import returnIcon from "./ImageDashboard/return-button.png";
 
 const AdminComment = () => {
   const [commentList, setCommentList] = useState([]);
@@ -22,16 +22,19 @@ const AdminComment = () => {
   const [file, setFile] = useState(null);
   const [accounts, setAccounts] = useState([]);
   const [commentTypes, setCommentTypes] = useState([]);
-  
+
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/admin/comment", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/comment",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
           const errorMessage = await response.text();
@@ -61,14 +64,17 @@ const AdminComment = () => {
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:8080/api/v1/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-        },
-        credentials: "include",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          credentials: "include",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
@@ -90,7 +96,7 @@ const AdminComment = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/comment/softdelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/comment/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -103,7 +109,9 @@ const AdminComment = () => {
       if (response.ok) {
         setCommentList((prev) =>
           prev.map((comment) =>
-            comment.commentID === id ? { ...comment, status: "DISABLE" } : comment
+            comment.commentID === id
+              ? { ...comment, status: "DISABLE" }
+              : comment
           )
         );
       } else {
@@ -117,7 +125,7 @@ const AdminComment = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/comment/harddelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/comment/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -128,7 +136,9 @@ const AdminComment = () => {
       );
 
       if (response.ok) {
-        setCommentList((prev) => prev.filter((comment) => comment.commentID !== id));
+        setCommentList((prev) =>
+          prev.filter((comment) => comment.commentID !== id)
+        );
       } else {
         throw new Error("Unable to delete comment.");
       }
@@ -138,7 +148,10 @@ const AdminComment = () => {
   };
 
   const handleSave = async (id, commentData) => {
-    if (!commentData.accountID.accountID || !commentData.commentType.commenttypeID) {
+    if (
+      !commentData.accountID.accountID ||
+      !commentData.commentType.commenttypeID
+    ) {
       alert("Account ID và Comment Type ID không được để trống.");
       return;
     }
@@ -147,9 +160,9 @@ const AdminComment = () => {
         ...commentData,
         date: new Date(commentData.date).toISOString().split(".")[0], // Định dạng ISO 8601 nhưng không có mili giây
       };
-  
+
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/comment/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/comment/${id}`,
         {
           method: "PUT",
           headers: {
@@ -160,11 +173,13 @@ const AdminComment = () => {
           body: JSON.stringify(formattedData),
         }
       );
-  
+
       if (response.ok) {
         const updatedComment = await response.json();
         setCommentList((prev) =>
-          prev.map((comment) => (comment.commentID === id ? updatedComment : comment))
+          prev.map((comment) =>
+            comment.commentID === id ? updatedComment : comment
+          )
         );
         setEditingCommentId(null);
       } else {
@@ -174,9 +189,12 @@ const AdminComment = () => {
       setError(err.message);
     }
   };
-  
+
   const handleCreate = async () => {
-    if (!newComment.accountID.accountID || !newComment.commentType.commenttypeID) {
+    if (
+      !newComment.accountID.accountID ||
+      !newComment.commentType.commenttypeID
+    ) {
       alert("Account ID và Comment Type ID không được để trống.");
       return;
     }
@@ -185,17 +203,20 @@ const AdminComment = () => {
         ...newComment,
         date: new Date(newComment.date).toISOString().split(".")[0], // Định dạng ISO 8601 nhưng không có mili giây
       };
-  
-      const response = await fetch("http://localhost:8080/api/v1/admin/comment", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(formattedData),
-      });
-  
+
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/comment",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(formattedData),
+        }
+      );
+
       if (response.ok) {
         const createdComment = await response.json();
         setCommentList([...commentList, createdComment]);
@@ -216,8 +237,7 @@ const AdminComment = () => {
       setError(err.message);
     }
   };
-  
-  
+
   const handleBackToDashboard = () => {
     navigate("/dashboard");
   };
@@ -289,7 +309,6 @@ const AdminComment = () => {
           ))}
         </select>
 
-
         <label>Date:</label>
         <input
           type="date"
@@ -314,7 +333,9 @@ const AdminComment = () => {
         <label>Image:</label>
         <input type="file" onChange={handleFileChange} />
         <button onClick={handleUploadImage}>Upload Image</button>
-        {imageUrl && <img src={imageUrl} alt="Comment" style={{ width: 100 }} />}
+        {imageUrl && (
+          <img src={imageUrl} alt="Comment" style={{ width: 100 }} />
+        )}
 
         <label>Status:</label>
         <select
@@ -355,8 +376,13 @@ const AdminComment = () => {
                 <td>{comment.commentID}</td>
                 <td>{comment.title}</td>
                 <td>{comment.text}</td>
-                <td>{comment.accountID?.name} ({comment.accountID?.accountID})</td>
-                <td>{comment.commentType?.commenttypename} ({comment.commentType?.commenttypeID})</td>
+                <td>
+                  {comment.accountID?.name} ({comment.accountID?.accountID})
+                </td>
+                <td>
+                  {comment.commentType?.commenttypename} (
+                  {comment.commentType?.commenttypeID})
+                </td>
                 <td>{comment.date}</td>
                 <td>{comment.stative}</td>
                 <td>
@@ -372,8 +398,16 @@ const AdminComment = () => {
                 <td>
                   {editingCommentId === comment.commentID ? (
                     <>
-                      <button onClick={() => handleSave(comment.commentID, newComment)}>Lưu</button>
-                      <button onClick={() => setEditingCommentId(null)}>Hủy</button>
+                      <button
+                        onClick={() =>
+                          handleSave(comment.commentID, newComment)
+                        }
+                      >
+                        Lưu
+                      </button>
+                      <button onClick={() => setEditingCommentId(null)}>
+                        Hủy
+                      </button>
                     </>
                   ) : (
                     <>
@@ -384,7 +418,9 @@ const AdminComment = () => {
                             title: comment.title,
                             text: comment.text,
                             accountID: comment.accountID || { accountID: null },
-                            commentType: comment.commentType || { commenttypeID: null },
+                            commentType: comment.commentType || {
+                              commenttypeID: null,
+                            },
                             image: comment.image,
                             status: comment.status,
                             stative: comment.stative,
@@ -394,8 +430,11 @@ const AdminComment = () => {
                       >
                         Chỉnh sửa
                       </button>
-                      <button onClick={() => handleDeleteSoft(comment.commentID)}>Vô hiệu hóa</button>
-                      
+                      <button
+                        onClick={() => handleDeleteSoft(comment.commentID)}
+                      >
+                        Vô hiệu hóa
+                      </button>
                     </>
                   )}
                 </td>

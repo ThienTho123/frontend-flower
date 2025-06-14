@@ -15,7 +15,7 @@ const HistoryOrder = () => {
   const translateCondition = (condition) => {
     const translations = {
       "Cancel is Processing": "Đang chờ xác nhận",
-      "Cancelled": "Đã hủy",
+      Cancelled: "Đã hủy",
       "In Transit": "Đang vận chuyển",
       "Shipper Delivering": "Shipper đang giao hàng",
       "First Attempt Failed": "Lần giao hàng đầu tiên thất bại",
@@ -23,11 +23,11 @@ const HistoryOrder = () => {
       "Third Attempt Failed": "Lần giao hàng thứ ba thất bại",
       "Delivered Successfully": "Giao hàng thành công",
       "Return to shop": "Trả về cửa hàng",
-      "Pending": "Đang chờ xử lý",
-      "Processing": "Đang xử lý",
-      "Prepare": "Chuẩn bị",
-      "Refund": "Gửi yêu cầu hoàn tiền",
-      "Refund is Processing": "Đang chờ hoàn tiền"
+      Pending: "Đang chờ xử lý",
+      Processing: "Đang xử lý",
+      Prepare: "Chuẩn bị",
+      Refund: "Gửi yêu cầu hoàn tiền",
+      "Refund is Processing": "Đang chờ hoàn tiền",
     };
     return translations[condition] || condition;
   };
@@ -35,7 +35,7 @@ const HistoryOrder = () => {
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/account/orderHistory",
+        "https://deploybackend-1ta9.onrender.com/account/orderHistory",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -75,7 +75,7 @@ const HistoryOrder = () => {
     setShowConfirm(false);
     try {
       const response = await axios.delete(
-        "http://localhost:8080/account/cancel",
+        "https://deploybackend-1ta9.onrender.com/account/cancel",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -126,7 +126,10 @@ const HistoryOrder = () => {
               <tr key={order.id}>
                 <td>{order.stt}</td>
                 <td>
-                  <a href={`/account/history/${order.id}`} className="history-link">
+                  <a
+                    href={`/account/history/${order.id}`}
+                    className="history-link"
+                  >
                     {order.id}
                   </a>
                 </td>
@@ -134,20 +137,22 @@ const HistoryOrder = () => {
                 <td>{order.date}</td>
                 <td>{translateCondition(order.condition)}</td>
                 <td>
-                   {order.condition === "Refund" || order.condition ==="Refund is Processing" ? (
+                  {order.condition === "Refund" ||
+                  order.condition === "Refund is Processing" ? (
                     <button
                       className="cancel-btn"
-                      onClick={() => navigate (`/account/order/refund/${order.id}`)}
-                      disabled={order.condition ==="Refund is Processing"}
+                      onClick={() =>
+                        navigate(`/account/order/refund/${order.id}`)
+                      }
+                      disabled={order.condition === "Refund is Processing"}
                     >
                       Hoàn tiền
                     </button>
                   ) : (
                     <button
-                    className="cancel-btn"
-                    onClick={() => confirmCancelOrder(order.id)}
-                    disabled={
-                      [
+                      className="cancel-btn"
+                      onClick={() => confirmCancelOrder(order.id)}
+                      disabled={[
                         "Cancel is Processing",
                         "Cancelled",
                         "In Transit",
@@ -157,12 +162,11 @@ const HistoryOrder = () => {
                         "Third Attempt Failed",
                         "Delivered Successfully",
                         "Return to shop",
-                      ].includes(order.condition)
-                    }
-                  >
-                    Hủy
-                  </button>)}
-                    
+                      ].includes(order.condition)}
+                    >
+                      Hủy
+                    </button>
+                  )}
                 </td>
               </tr>
             ))
@@ -181,7 +185,10 @@ const HistoryOrder = () => {
             <button className="confirm-btn" onClick={handleCancelOrder}>
               Xác nhận
             </button>
-            <button className="cancel-btn" onClick={() => setShowConfirm(false)}>
+            <button
+              className="cancel-btn"
+              onClick={() => setShowConfirm(false)}
+            >
               Hủy
             </button>
           </div>

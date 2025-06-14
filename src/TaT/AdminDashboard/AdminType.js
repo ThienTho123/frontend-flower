@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png';
+import returnIcon from "./ImageDashboard/return-button.png";
 
 const AdminType = () => {
   const [types, setTypes] = useState([]);
@@ -13,12 +13,15 @@ const AdminType = () => {
   useEffect(() => {
     const fetchTypes = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/admin/type", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/type",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Không thể lấy danh sách loại người dùng.");
@@ -37,7 +40,7 @@ const AdminType = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/type/softdelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/type/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -64,7 +67,7 @@ const AdminType = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/type/harddelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/type/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -75,9 +78,7 @@ const AdminType = () => {
       );
 
       if (response.ok) {
-        setTypes((prevTypes) =>
-          prevTypes.filter((type) => type.typeID !== id)
-        );
+        setTypes((prevTypes) => prevTypes.filter((type) => type.typeID !== id));
       } else {
         throw new Error("Không thể xóa loại người dùng.");
       }
@@ -92,15 +93,18 @@ const AdminType = () => {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/admin/type/${id}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ typeName, minConsume, status }),
-      });
+      const response = await fetch(
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/type/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ typeName, minConsume, status }),
+        }
+      );
 
       if (response.ok) {
         const updatedType = await response.json();
@@ -122,15 +126,18 @@ const AdminType = () => {
         setError("Tiêu thụ tối thiểu phải lớn hơn 0.");
         return;
       }
-      const response = await fetch("http://localhost:8080/api/v1/admin/type", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ ...newType, status: "ENABLE" }),
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/type",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ ...newType, status: "ENABLE" }),
+        }
+      );
 
       if (response.ok) {
         const createdType = await response.json();
@@ -151,11 +158,11 @@ const AdminType = () => {
   return (
     <div className="admin-ql-container">
       <div className="title-container">
-        <img 
-          src={returnIcon} 
-          alt="Quay Lại" 
-          className="return-button" 
-          onClick={handleBackToDashboard} 
+        <img
+          src={returnIcon}
+          alt="Quay Lại"
+          className="return-button"
+          onClick={handleBackToDashboard}
         />
         <h2>Quản Lý Loại Người Dùng</h2>
       </div>
@@ -164,9 +171,7 @@ const AdminType = () => {
         <label>Tên Loại Người Dùng: </label>
         <input
           value={newType.typeName}
-          onChange={(e) =>
-            setNewType({ ...newType, typeName: e.target.value })
-          }
+          onChange={(e) => setNewType({ ...newType, typeName: e.target.value })}
         />
         <label>Tiêu Thụ Tối Thiểu: </label>
         <input
@@ -270,7 +275,9 @@ const AdminType = () => {
                       >
                         Lưu
                       </button>
-                      <button onClick={() => setEditingTypeId(null)}>Hủy</button>
+                      <button onClick={() => setEditingTypeId(null)}>
+                        Hủy
+                      </button>
                     </>
                   ) : (
                     <>
@@ -280,7 +287,6 @@ const AdminType = () => {
                       <button onClick={() => handleDeleteSoft(type.typeID)}>
                         Vô hiệu hóa
                       </button>
- 
                     </>
                   )}
                 </td>

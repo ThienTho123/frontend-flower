@@ -33,7 +33,7 @@ const HistoryOrderDetail = () => {
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/account/orderHistory/${id}`,
+        `https://deploybackend-1ta9.onrender.com/account/orderHistory/${id}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -104,11 +104,12 @@ const HistoryOrderDetail = () => {
   const confirmOrder = async () => {
     try {
       await axios.post(
-        "http://localhost:8080/account/confirm-success",
+        "https://deploybackend-1ta9.onrender.com/account/confirm-success",
         { idOrder: selectedOrderId },
         {
           headers: { Authorization: `Bearer ${access_token}` },
-        }      );
+        }
+      );
 
       setShowConfirmModal(false);
       setShowSuccessModal(true);
@@ -118,7 +119,6 @@ const HistoryOrderDetail = () => {
       console.error("Lỗi xác nhận đơn hàng:", error);
     }
   };
-
 
   useEffect(() => {
     getHistoryOrder();
@@ -230,60 +230,75 @@ const HistoryOrderDetail = () => {
       </div>
 
       <div>
-      {orderHistory.map((order) => (
-        <div key={order.id}>
-          {order.condition === "Delivered Successfully" && (
-            <div className="button-container">
-              {order.confirm === "No" ? (
-                <button
-                  className="order-button confirm-button"
-                  onClick={() => handleConfirmClick(order.id)}
+        {orderHistory.map((order) => (
+          <div key={order.id}>
+            {order.condition === "Delivered Successfully" && (
+              <div className="button-container">
+                {order.confirm === "No" ? (
+                  <button
+                    className="order-button confirm-button"
+                    onClick={() => handleConfirmClick(order.id)}
+                  >
+                    Xác nhận
+                  </button>
+                ) : (
+                  <Link
+                    to="/account/orders"
+                    className="order-button review-button"
+                  >
+                    Đánh giá
+                  </Link>
+                )}
+
+                <Link
+                  to="/account/sendcomment"
+                  className="order-button contact-button"
                 >
-                  Xác nhận
-                </button>
-              ) : (
-                <Link to="/account/orders" className="order-button review-button">
-                  Đánh giá
+                  Liên hệ
                 </Link>
-              )}
+              </div>
+            )}
+          </div>
+        ))}
 
-              <Link to="/account/sendcomment" className="order-button contact-button">
-                Liên hệ
-              </Link>
+        {/* Modal xác nhận */}
+        {showConfirmModal && (
+          <div className="confirm-modal-overlay">
+            <div className="confirm-modal-container">
+              <h3>Bạn có chắc chắn muốn xác nhận đơn hàng giao thành công?</h3>
+              <div className="confirm-modal-buttons">
+                <button
+                  className="confirm-modal-button confirm"
+                  onClick={confirmOrder}
+                >
+                  OK
+                </button>
+                <button
+                  className="confirm-modal-button cancel"
+                  onClick={() => setShowConfirmModal(false)}
+                >
+                  Hủy
+                </button>
+              </div>
             </div>
-          )}
-        </div>
-      ))}
+          </div>
+        )}
 
-      {/* Modal xác nhận */}
-      {showConfirmModal && (
-        <div className="confirm-modal-overlay">
-          <div className="confirm-modal-container">
-            <h3>Bạn có chắc chắn muốn xác nhận đơn hàng giao thành công?</h3>
-            <div className="confirm-modal-buttons">
-              <button className="confirm-modal-button confirm" onClick={confirmOrder}>
-                OK
-              </button>
-              <button className="confirm-modal-button cancel" onClick={() => setShowConfirmModal(false)}>
-                Hủy
+        {/* Modal thông báo xác nhận thành công */}
+        {showSuccessModal && (
+          <div className="confirm-modal-overlay">
+            <div className="confirm-modal-container">
+              <h3>Xác nhận thành công!</h3>
+              <button
+                className="confirm-modal-button confirm"
+                onClick={() => setShowSuccessModal(false)}
+              >
+                Đóng
               </button>
             </div>
           </div>
-        </div>
-      )}
-
-      {/* Modal thông báo xác nhận thành công */}
-      {showSuccessModal && (
-        <div className="confirm-modal-overlay">
-          <div className="confirm-modal-container">
-            <h3>Xác nhận thành công!</h3>
-            <button className="confirm-modal-button confirm" onClick={() => setShowSuccessModal(false)}>
-              Đóng
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
     </div>
   );
 };

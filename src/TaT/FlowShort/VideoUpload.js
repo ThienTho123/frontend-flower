@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./VideoUpload.css";
 const allowedExtensions = [
@@ -106,7 +106,7 @@ export default function PostVideoForm() {
       formDataVideo.append("file", vidFile);
 
       const uploadVideoRes = await axios.post(
-        "http://localhost:8080/api/v1/upload",
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
         formDataVideo,
         {
           headers: {
@@ -124,7 +124,7 @@ export default function PostVideoForm() {
         const formDataThumb = new FormData();
         formDataThumb.append("file", thumbFile);
         const uploadThumbRes = await axios.post(
-          "http://localhost:8080/api/v1/upload",
+          "https://deploybackend-1ta9.onrender.com/api/v1/upload",
           formDataThumb,
           {
             headers: {
@@ -145,7 +145,7 @@ export default function PostVideoForm() {
           const formDataThumb = new FormData();
           formDataThumb.append("file", thumbFileFromVideo);
           const uploadThumbRes = await axios.post(
-            "http://localhost:8080/api/v1/upload",
+            "https://deploybackend-1ta9.onrender.com/api/v1/upload",
             formDataThumb,
             {
               headers: {
@@ -168,7 +168,7 @@ export default function PostVideoForm() {
       };
 
       const postRes = await axios.post(
-        "http://localhost:8080/user/flowshort",
+        "https://deploybackend-1ta9.onrender.com/user/flowshort",
         postData,
         {
           headers: {

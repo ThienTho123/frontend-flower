@@ -35,7 +35,7 @@ const StaffPreorderDetails = () => {
     const fetchPreorderDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/staff/preorder/${id}`,
+          `https://deploybackend-1ta9.onrender.com/api/v1/staff/preorder/${id}`,
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -72,7 +72,7 @@ const StaffPreorderDetails = () => {
   const handleCancelableById = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/preorder/cancelable/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/staff/preorder/cancelable/${id}`,
         {
           method: "PUT",
           headers: {
@@ -88,7 +88,7 @@ const StaffPreorderDetails = () => {
 
       // Cập nhật lại danh sách đơn hàng sau khi thay đổi
       const updatedResponse = await fetch(
-        "http://localhost:8080/api/v1/staff/preorder",
+        "https://deploybackend-1ta9.onrender.com/api/v1/staff/preorder",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -110,7 +110,7 @@ const StaffPreorderDetails = () => {
   const handleCompletePreorder = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/preorder/complete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/staff/preorder/complete/${id}`,
         {
           method: "POST", // Hoặc "PUT" nếu backend sử dụng `@PutMapping`
           headers: {
@@ -126,7 +126,7 @@ const StaffPreorderDetails = () => {
 
       // Cập nhật lại danh sách đơn hàng sau khi hoàn thành
       const updatedResponse = await fetch(
-        "http://localhost:8080/api/v1/staff/preorder",
+        "https://deploybackend-1ta9.onrender.com/api/v1/staff/preorder",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -163,27 +163,38 @@ const StaffPreorderDetails = () => {
         <h2>Chi Tiết Đơn Đặt Trước</h2>
       </div>
       <button
-  className="order-button"
-  onClick={async () => {
-    await handleCancelableById(preorder?.id); // Gọi hàm xử lý
-    setPreorder({ ...preorder, precondition: preorder?.precondition === "Waiting" ? "Ordering" : "Waiting" });
-  }}
-  disabled={["Refund", "Refunding", "Cancel", "Success"].includes(preorder?.precondition || "")}
->
-  {preorder?.precondition === "Waiting" ? "Đặt hàng" : "Hoàn tác"}
-</button>
+        className="order-button"
+        onClick={async () => {
+          await handleCancelableById(preorder?.id); // Gọi hàm xử lý
+          setPreorder({
+            ...preorder,
+            precondition:
+              preorder?.precondition === "Waiting" ? "Ordering" : "Waiting",
+          });
+        }}
+        disabled={["Refund", "Refunding", "Cancel", "Success"].includes(
+          preorder?.precondition || ""
+        )}
+      >
+        {preorder?.precondition === "Waiting" ? "Đặt hàng" : "Hoàn tác"}
+      </button>
 
-<button
-  className="order-button"
-  disabled={["Refund", "Refunding", "Cancel", "Success", "Waiting"].includes(preorder?.precondition || "")}
-  onClick={async () => {
-    await handleCompletePreorder(preorder?.id); // Gọi hàm xử lý
-    setPreorder({ ...preorder, precondition: "Success" });
-  }}
->
-  Hoàn thành
-</button>
-
+      <button
+        className="order-button"
+        disabled={[
+          "Refund",
+          "Refunding",
+          "Cancel",
+          "Success",
+          "Waiting",
+        ].includes(preorder?.precondition || "")}
+        onClick={async () => {
+          await handleCompletePreorder(preorder?.id); // Gọi hàm xử lý
+          setPreorder({ ...preorder, precondition: "Success" });
+        }}
+      >
+        Hoàn thành
+      </button>
 
       {preorder && (
         <div className="order-history">

@@ -31,7 +31,7 @@ const OrderShipped = () => {
   const getCommentInfo = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/shipperaccount/ordership",
+        "https://deploybackend-1ta9.onrender.com/shipperaccount/ordership",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,

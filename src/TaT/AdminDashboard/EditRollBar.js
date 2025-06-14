@@ -33,7 +33,7 @@ const EditRollBar = () => {
     try {
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.get(
-        `http://localhost:8080/adminrollbar/${id}`,
+        `https://deploybackend-1ta9.onrender.com/adminrollbar/${id}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -43,7 +43,7 @@ const EditRollBar = () => {
 
       const rollBarData = response.data.rollBar;
       const giftsData = response.data.gifts || [];
-      
+
       if (rollBarData) {
         setRollBarName(rollBarData.name);
         setColor(rollBarData.color);
@@ -52,7 +52,7 @@ const EditRollBar = () => {
       }
 
       // Xử lý dữ liệu phần thưởng
-      const processedGifts = giftsData.map(gift => ({
+      const processedGifts = giftsData.map((gift) => ({
         id: gift.id,
         name: gift.name,
         typegift: gift.typeGift,
@@ -64,11 +64,11 @@ const EditRollBar = () => {
         typeid: gift.type?.typeID || null,
         purposeid: gift.purpose?.purposeID || null,
         discountpercent: gift.discountpercent || 0,
-        timeend: gift.timeEnd ? formatDateArrayToString(gift.timeEnd) : null
+        timeend: gift.timeEnd ? formatDateArrayToString(gift.timeEnd) : null,
       }));
 
       setGifts(processedGifts);
-      
+
       // Lưu dữ liệu hoa, danh mục, loại, mục đích
       // Sửa lại để lấy đúng dữ liệu từ response
       setFlowerList(response.data.flowers || []);
@@ -76,7 +76,7 @@ const EditRollBar = () => {
       setCategories(response.data.categories || []);
       setTypes(response.data.types || []);
       setPurposes(response.data.purposes || []);
-      
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching rollbar details:", error);
@@ -89,14 +89,14 @@ const EditRollBar = () => {
   // Chuyển đổi mảng ngày tháng sang chuỗi datetime-local
   const formatDateArrayToString = (dateArray) => {
     if (!dateArray || dateArray.length < 6) return "";
-    
+
     const [year, month, day, hour, minute] = dateArray;
     // Định dạng tháng và ngày để đảm bảo có 2 chữ số
-    const formattedMonth = String(month).padStart(2, '0');
-    const formattedDay = String(day).padStart(2, '0');
-    const formattedHour = String(hour).padStart(2, '0');
-    const formattedMinute = String(minute).padStart(2, '0');
-    
+    const formattedMonth = String(month).padStart(2, "0");
+    const formattedDay = String(day).padStart(2, "0");
+    const formattedHour = String(hour).padStart(2, "0");
+    const formattedMinute = String(minute).padStart(2, "0");
+
     // Định dạng chuỗi datetime-local: YYYY-MM-DDThh:mm
     return `${year}-${formattedMonth}-${formattedDay}T${formattedHour}:${formattedMinute}`;
   };
@@ -106,20 +106,20 @@ const EditRollBar = () => {
     if (!dateString) {
       return null;
     }
-    
+
     const date = new Date(dateString);
-    
+
     if (isNaN(date.getTime())) {
       return null;
     }
-    
+
     return [
       date.getFullYear(),
       date.getMonth() + 1,
       date.getDate(),
       date.getHours(),
       date.getMinutes(),
-      date.getSeconds() || 0
+      date.getSeconds() || 0,
     ];
   };
 
@@ -136,7 +136,7 @@ const EditRollBar = () => {
       typeid: null,
       purposeid: null,
       discountpercent: 0,
-      timeend: null
+      timeend: null,
     };
     setGifts([...gifts, newGift]);
   };
@@ -169,15 +169,22 @@ const EditRollBar = () => {
     }
 
     // Kiểm tra tổng tỉ lệ của các giải thưởng
-    const totalPercent = gifts.reduce((sum, gift) => sum + parseFloat(gift.percent || 0), 0);
+    const totalPercent = gifts.reduce(
+      (sum, gift) => sum + parseFloat(gift.percent || 0),
+      0
+    );
     if (totalPercent !== 100) {
-      setErrorMessage(`Tổng tỉ lệ giải thưởng phải bằng 100%. Hiện tại: ${totalPercent}%`);
+      setErrorMessage(
+        `Tổng tỉ lệ giải thưởng phải bằng 100%. Hiện tại: ${totalPercent}%`
+      );
       setIsErrorModalOpen(true);
       return;
     }
 
     // Kiểm tra các giải thưởng có đủ thông tin không
-    const invalidGifts = gifts.filter(gift => !gift.name.trim() || gift.percent <= 0);
+    const invalidGifts = gifts.filter(
+      (gift) => !gift.name.trim() || gift.percent <= 0
+    );
     if (invalidGifts.length > 0) {
       setErrorMessage("Vui lòng điền đầy đủ thông tin cho tất cả giải thưởng!");
       setIsErrorModalOpen(true);
@@ -195,7 +202,7 @@ const EditRollBar = () => {
         color: color,
         days: parseInt(days),
         status: status,
-        giftInfoDTOStaffList: gifts.map(gift => ({
+        giftInfoDTOStaffList: gifts.map((gift) => ({
           giftid: gift.id,
           name: gift.name,
           typegift: gift.typegift,
@@ -206,20 +213,32 @@ const EditRollBar = () => {
           categoryid: gift.categoryid,
           typeid: gift.typeid,
           purposeid: gift.purposeid,
-          discountpercent: gift.typegift === "discount" ? parseFloat(gift.discountpercent) : null,
-          timeend: gift.typegift === "discount" ? formatDateToLocalDateTime(gift.timeend) : null
-        }))
+          discountpercent:
+            gift.typegift === "discount"
+              ? parseFloat(gift.discountpercent)
+              : null,
+          timeend:
+            gift.typegift === "discount"
+              ? formatDateToLocalDateTime(gift.timeend)
+              : null,
+        })),
       };
 
-      await axios.put(`http://localhost:8080/adminrollbar/${id}`, rollBarData, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+      await axios.put(
+        `https://deploybackend-1ta9.onrender.com/adminrollbar/${id}`,
+        rollBarData,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
 
       setIsModalOpen(false);
       setIsSuccessModalOpen(true);
     } catch (error) {
       setIsModalOpen(false);
-      setErrorMessage(error.response?.data || "Có lỗi xảy ra khi cập nhật Roll Bar!");
+      setErrorMessage(
+        error.response?.data || "Có lỗi xảy ra khi cập nhật Roll Bar!"
+      );
       setIsErrorModalOpen(true);
     }
   };
@@ -286,11 +305,7 @@ const EditRollBar = () => {
       </div>
 
       <h3 className="rollbar-form-subtitle">Quản lý Giải thưởng</h3>
-      <button 
-        type="button" 
-        onClick={handleAddGift} 
-        className="add-gift-button"
-      >
+      <button type="button" onClick={handleAddGift} className="add-gift-button">
         Thêm Giải thưởng
       </button>
 
@@ -301,23 +316,27 @@ const EditRollBar = () => {
           {gifts.map((gift, index) => (
             <div key={gift.id || index} className="gift-item">
               <h4>Giải thưởng #{index + 1}</h4>
-              
+
               <div className="gift-form-group">
                 <label>Tên giải thưởng:</label>
                 <input
                   type="text"
                   value={gift.name}
-                  onChange={(e) => handleGiftChange(index, "name", e.target.value)}
+                  onChange={(e) =>
+                    handleGiftChange(index, "name", e.target.value)
+                  }
                   placeholder="Nhập tên giải thưởng"
                   className="gift-input"
                 />
               </div>
-              
+
               <div className="gift-form-group">
                 <label>Loại giải thưởng:</label>
                 <select
                   value={gift.typegift}
-                  onChange={(e) => handleGiftChange(index, "typegift", e.target.value)}
+                  onChange={(e) =>
+                    handleGiftChange(index, "typegift", e.target.value)
+                  }
                   className="gift-select"
                 >
                   <option value="flower">Hoa</option>
@@ -325,17 +344,19 @@ const EditRollBar = () => {
                   <option value="other">Khác</option>
                 </select>
               </div>
-              
+
               <div className="gift-form-group">
                 <label>Mô tả:</label>
                 <textarea
                   value={gift.description}
-                  onChange={(e) => handleGiftChange(index, "description", e.target.value)}
+                  onChange={(e) =>
+                    handleGiftChange(index, "description", e.target.value)
+                  }
                   placeholder="Nhập mô tả giải thưởng"
                   className="gift-textarea"
                 />
               </div>
-              
+
               <div className="gift-form-group">
                 <label>Tỉ lệ (%):</label>
                 <input
@@ -344,7 +365,9 @@ const EditRollBar = () => {
                   max="100"
                   step="0.01"
                   value={gift.percent}
-                  onChange={(e) => handleGiftChange(index, "percent", e.target.value)}
+                  onChange={(e) =>
+                    handleGiftChange(index, "percent", e.target.value)
+                  }
                   className="gift-input"
                 />
               </div>
@@ -354,17 +377,26 @@ const EditRollBar = () => {
                   <label>Chọn Hoa:</label>
                   <select
                     value={gift.flowersizeid || ""}
-                    onChange={(e) => handleGiftChange(index, "flowersizeid", e.target.value ? parseInt(e.target.value) : null)}
+                    onChange={(e) =>
+                      handleGiftChange(
+                        index,
+                        "flowersizeid",
+                        e.target.value ? parseInt(e.target.value) : null
+                      )
+                    }
                     className="gift-select"
                   >
                     <option value="">Chọn kích thước hoa</option>
-                    {flowerInfos.map((flowerInfo) => (
+                    {flowerInfos.map((flowerInfo) =>
                       flowerInfo.flowerSizeDTOS?.map((size) => (
-                        <option key={size.flowerSizeID} value={size.flowerSizeID}>
+                        <option
+                          key={size.flowerSizeID}
+                          value={size.flowerSizeID}
+                        >
                           {flowerInfo.name} - {size.sizeName}
                         </option>
                       ))
-                    ))}
+                    )}
                   </select>
                 </div>
               )}
@@ -379,112 +411,136 @@ const EditRollBar = () => {
                       max="100"
                       step="0.01"
                       value={gift.discountpercent}
-                      onChange={(e) => handleGiftChange(index, "discountpercent", e.target.value)}
+                      onChange={(e) =>
+                        handleGiftChange(
+                          index,
+                          "discountpercent",
+                          e.target.value
+                        )
+                      }
                       className="gift-input"
                     />
                   </div>
-                  
+
                   <div className="gift-form-group">
                     <label>Thời gian kết thúc:</label>
                     <input
                       type="datetime-local"
                       value={gift.timeend}
-                      onChange={(e) => handleGiftChange(index, "timeend", e.target.value)}
+                      onChange={(e) =>
+                        handleGiftChange(index, "timeend", e.target.value)
+                      }
                       className="gift-input"
                     />
                   </div>
-                  
-                    <div className="gift-form-row">
+
+                  <div className="gift-form-row">
                     <div className="gift-form-group">
-                        <label>Chọn loại:</label>
-                        <select
+                      <label>Chọn loại:</label>
+                      <select
                         value={gift.typeid || ""}
                         onChange={(e) => {
-                            const value = e.target.value ? parseInt(e.target.value) : null;
-                            handleGiftChange(index, "typeid", value);
-                            // Nếu chọn loại, reset danh mục và mục đích
-                            if (value) {
+                          const value = e.target.value
+                            ? parseInt(e.target.value)
+                            : null;
+                          handleGiftChange(index, "typeid", value);
+                          // Nếu chọn loại, reset danh mục và mục đích
+                          if (value) {
                             handleGiftChange(index, "categoryid", null);
                             handleGiftChange(index, "purposeid", null);
-                            }
+                          }
                         }}
                         className="gift-select"
-                        disabled={gift.categoryid || gift.purposeid ? true : false}
-                        >
+                        disabled={
+                          gift.categoryid || gift.purposeid ? true : false
+                        }
+                      >
                         <option value="">Không chọn</option>
                         {types.map((type) => (
-                            <option key={type.typeID} value={type.typeID}>
+                          <option key={type.typeID} value={type.typeID}>
                             {type.typeName}
-                            </option>
+                          </option>
                         ))}
-                        </select>
+                      </select>
                     </div>
-                    
+
                     <div className="gift-form-group">
-                        <label>Chọn danh mục:</label>
-                        <select
+                      <label>Chọn danh mục:</label>
+                      <select
                         value={gift.categoryid || ""}
                         onChange={(e) => {
-                            const value = e.target.value ? parseInt(e.target.value) : null;
-                            handleGiftChange(index, "categoryid", value);
-                            // Nếu chọn danh mục, reset loại và mục đích
-                            if (value) {
+                          const value = e.target.value
+                            ? parseInt(e.target.value)
+                            : null;
+                          handleGiftChange(index, "categoryid", value);
+                          // Nếu chọn danh mục, reset loại và mục đích
+                          if (value) {
                             handleGiftChange(index, "typeid", null);
                             handleGiftChange(index, "purposeid", null);
-                            }
+                          }
                         }}
                         className="gift-select"
                         disabled={gift.typeid || gift.purposeid ? true : false}
-                        >
+                      >
                         <option value="">Không chọn</option>
                         {categories.map((category) => (
-                            <option key={category.categoryID} value={category.categoryID}>
+                          <option
+                            key={category.categoryID}
+                            value={category.categoryID}
+                          >
                             {category.categoryName}
-                            </option>
+                          </option>
                         ))}
-                        </select>
+                      </select>
                     </div>
-                    
+
                     <div className="gift-form-group">
-                        <label>Chọn mục đích:</label>
-                        <select
+                      <label>Chọn mục đích:</label>
+                      <select
                         value={gift.purposeid || ""}
                         onChange={(e) => {
-                            const value = e.target.value ? parseInt(e.target.value) : null;
-                            handleGiftChange(index, "purposeid", value);
-                            // Nếu chọn mục đích, reset loại và danh mục
-                            if (value) {
+                          const value = e.target.value
+                            ? parseInt(e.target.value)
+                            : null;
+                          handleGiftChange(index, "purposeid", value);
+                          // Nếu chọn mục đích, reset loại và danh mục
+                          if (value) {
                             handleGiftChange(index, "typeid", null);
                             handleGiftChange(index, "categoryid", null);
-                            }
+                          }
                         }}
                         className="gift-select"
                         disabled={gift.typeid || gift.categoryid ? true : false}
-                        >
+                      >
                         <option value="">Không chọn</option>
                         {purposes.map((purpose) => (
-                            <option key={purpose.purposeID} value={purpose.purposeID}>
+                          <option
+                            key={purpose.purposeID}
+                            value={purpose.purposeID}
+                          >
                             {purpose.purposeName}
-                            </option>
+                          </option>
                         ))}
-                        </select>
+                      </select>
                     </div>
                   </div>
                 </>
               )}
-              
+
               <div className="gift-form-group">
                 <label>Trạng thái:</label>
                 <select
                   value={gift.status}
-                  onChange={(e) => handleGiftChange(index, "status", e.target.value)}
+                  onChange={(e) =>
+                    handleGiftChange(index, "status", e.target.value)
+                  }
                   className="gift-select"
                 >
                   <option value="ENABLE">Kích hoạt</option>
                   <option value="DISABLE">Vô hiệu hóa</option>
                 </select>
               </div>
-              
+
               <button
                 type="button"
                 onClick={() => handleRemoveGift(index)}
@@ -494,10 +550,18 @@ const EditRollBar = () => {
               </button>
             </div>
           ))}
-          
+
           <div className="total-percent">
-            Tổng tỉ lệ: {gifts.reduce((sum, gift) => sum + parseFloat(gift.percent || 0), 0)}%
-            {gifts.reduce((sum, gift) => sum + parseFloat(gift.percent || 0), 0) !== 100 && (
+            Tổng tỉ lệ:{" "}
+            {gifts.reduce(
+              (sum, gift) => sum + parseFloat(gift.percent || 0),
+              0
+            )}
+            %
+            {gifts.reduce(
+              (sum, gift) => sum + parseFloat(gift.percent || 0),
+              0
+            ) !== 100 && (
               <span className="percent-warning"> (Phải bằng 100%)</span>
             )}
           </div>
@@ -515,10 +579,7 @@ const EditRollBar = () => {
             <h3>Xác nhận cập nhật Roll Bar</h3>
             <p>Bạn có chắc muốn cập nhật Roll Bar này không?</p>
             <div className="rollbar-modal-buttons">
-              <button
-                onClick={confirmSubmit}
-                className="rollbar-modal-confirm"
-              >
+              <button onClick={confirmSubmit} className="rollbar-modal-confirm">
                 Xác nhận
               </button>
               <button

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png';
+import returnIcon from "./ImageDashboard/return-button.png";
 
 const AdminFlower = () => {
   const [flowerList, setFlowerList] = useState([]);
@@ -19,28 +19,31 @@ const AdminFlower = () => {
   const navigate = useNavigate();
   const [imageUrl, setImageUrl] = useState("");
   const [file, setFile] = useState(null);
-  const [scrollPosition, setScrollPosition] = useState(0); 
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   const [categories, setCategories] = useState([]);
   const [purposes, setPurposes] = useState([]);
-  
+
   useEffect(() => {
     const fetchFlowers = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/admin/flower", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        });
-  
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/flower",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+            credentials: "include",
+          }
+        );
+
         if (!response.ok) {
           const errorMessage = await response.text();
           throw new Error(`Error: ${response.status} - ${errorMessage}`);
         }
-  
+
         const data = await response.json();
-  
+
         // Đảm bảo rằng flowerList là mảng và categories, purposes đã có dữ liệu
         setFlowerList(Array.isArray(data.flowers) ? data.flowers : []);
         setCategories(data.categories || []);
@@ -50,7 +53,7 @@ const AdminFlower = () => {
         setError(err.message);
       }
     };
-  
+
     fetchFlowers();
   }, [accesstoken]);
   const handleFileChange = (e) => {
@@ -63,14 +66,17 @@ const AdminFlower = () => {
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:8080/api/v1/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-        },
-        credentials: "include",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          credentials: "include",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
@@ -92,7 +98,7 @@ const AdminFlower = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flower/softdelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/flower/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -119,7 +125,7 @@ const AdminFlower = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flower/harddelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/flower/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -130,7 +136,9 @@ const AdminFlower = () => {
       );
 
       if (response.ok) {
-        setFlowerList((prev) => prev.filter((flower) => flower.flowerID !== id));
+        setFlowerList((prev) =>
+          prev.filter((flower) => flower.flowerID !== id)
+        );
       } else {
         throw new Error("Unable to delete flower.");
       }
@@ -147,7 +155,7 @@ const AdminFlower = () => {
       console.log("Data to be saved (Edit):", JSON.stringify(formattedData));
 
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/flower/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/flower/${id}`,
         {
           method: "PUT",
           headers: {
@@ -162,13 +170,13 @@ const AdminFlower = () => {
       if (response.ok) {
         const updatedFlower = await response.json();
         setFlowerList((prev) =>
-          prev.map((flower) => (flower.flowerID === id ? updatedFlower : flower))
+          prev.map((flower) =>
+            flower.flowerID === id ? updatedFlower : flower
+          )
         );
         setEditingFlowerId(null);
-        window.scrollTo(0, scrollPosition);  // Ensure scrollPosition is a valid number
+        window.scrollTo(0, scrollPosition); // Ensure scrollPosition is a valid number
         window.location.reload();
-
-
       } else {
         throw new Error("Unable to update flower.");
       }
@@ -182,17 +190,23 @@ const AdminFlower = () => {
       const formattedData = {
         ...newFlower,
       };
-      console.log("Data to be created (New Flower):", JSON.stringify(formattedData));
+      console.log(
+        "Data to be created (New Flower):",
+        JSON.stringify(formattedData)
+      );
 
-      const response = await fetch("http://localhost:8080/api/v1/admin/flower", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(formattedData),
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/flower",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(formattedData),
+        }
+      );
 
       if (response.ok) {
         const createdFlower = await response.json();
@@ -207,7 +221,6 @@ const AdminFlower = () => {
           status: "ENABLE",
         });
         window.location.reload();
-
       } else {
         throw new Error("Unable to create flower.");
       }
@@ -220,13 +233,11 @@ const AdminFlower = () => {
     navigate("/dashboard");
   };
 
-  
   const handleEdit = (flower) => {
     setScrollPosition(window.scrollY);
     setEditingFlowerId(flower.flowerID);
     setNewFlower({ ...flower });
     window.scrollTo(0, 0);
-
   };
 
   return (
@@ -264,7 +275,10 @@ const AdminFlower = () => {
         <textarea
           value={newFlower.languageOfFlowers}
           onChange={(e) =>
-            setNewFlower((prev) => ({ ...prev, languageOfFlowers: e.target.value }))
+            setNewFlower((prev) => ({
+              ...prev,
+              languageOfFlowers: e.target.value,
+            }))
           }
         ></textarea>
 
@@ -320,7 +334,13 @@ const AdminFlower = () => {
           <option value="DISABLE">Disable</option>
         </select>
 
-        <button onClick={editingFlowerId ? () => handleSave(editingFlowerId, newFlower) : handleCreate}>
+        <button
+          onClick={
+            editingFlowerId
+              ? () => handleSave(editingFlowerId, newFlower)
+              : handleCreate
+          }
+        >
           {editingFlowerId ? "Save Changes" : "Create Flower"}
         </button>
       </div>
@@ -348,29 +368,30 @@ const AdminFlower = () => {
               <tr key={flower.flowerID}>
                 <td>{flower.flowerID}</td>
                 <td>{flower.name}</td>
-                <td style={{
-                  maxWidth: '700px',        
-                  wordWrap: 'break-word',  
-                  overflowWrap: 'break-word', 
-                  whiteSpace: 'normal'     
-                }}>
+                <td
+                  style={{
+                    maxWidth: "700px",
+                    wordWrap: "break-word",
+                    overflowWrap: "break-word",
+                    whiteSpace: "normal",
+                  }}
+                >
                   {flower.description}
-                </td>             
-                <td style={{
-                  maxWidth: '400px',        
-                  wordWrap: 'break-word',   
-                  overflowWrap: 'break-word', 
-                  whiteSpace: 'normal'    
-                }}>
+                </td>
+                <td
+                  style={{
+                    maxWidth: "400px",
+                    wordWrap: "break-word",
+                    overflowWrap: "break-word",
+                    whiteSpace: "normal",
+                  }}
+                >
                   {flower.languageOfFlowers}
-                </td>                <td>{flower.category.categoryName}</td>
+                </td>{" "}
+                <td>{flower.category.categoryName}</td>
                 <td>{flower.purpose.purposeName}</td>
                 <td>
-                  <img
-                    src={flower.image}
-                    alt="Flower"
-                    style={{ width: 100 }}
-                  />
+                  <img src={flower.image} alt="Flower" style={{ width: 100 }} />
                 </td>
                 <td>{flower.status}</td>
                 <td>
@@ -378,7 +399,6 @@ const AdminFlower = () => {
                   <button onClick={() => handleDeleteSoft(flower.flowerID)}>
                     Vô hiệu hóa
                   </button>
-                  
                 </td>
               </tr>
             ))}

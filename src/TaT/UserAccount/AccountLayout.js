@@ -13,10 +13,13 @@ const AccountLayout = () => {
   // Hàm lấy thông tin người dùng từ API
   const getUserInfo = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/account", {
-        params: { accountID },
-        headers: { Authorization: `Bearer ${access_token}` },
-      });
+      const response = await axios.get(
+        "https://deploybackend-1ta9.onrender.com/account",
+        {
+          params: { accountID },
+          headers: { Authorization: `Bearer ${access_token}` },
+        }
+      );
       setProfileForm(response.data); // Lưu thông tin người dùng vào state
     } catch (error) {
       console.error("Lỗi khi lấy thông tin tài khoản:", error);
@@ -33,7 +36,7 @@ const AccountLayout = () => {
 
   const handleLogout = () => {
     axios
-      .get("http://localhost:8080/api/v1/auth/logout", {
+      .get("https://deploybackend-1ta9.onrender.com/api/v1/auth/logout", {
         withCredentials: true,
       })
       .then((response) => {
@@ -100,7 +103,7 @@ const AccountLayout = () => {
         <button onClick={() => navigate("/account/orde")}>
           Đơn đặt hàng cố định
         </button>
-         <button onClick={() => navigate("/account/custom")}>
+        <button onClick={() => navigate("/account/custom")}>
           Đơn đặt hoa theo yêu cầu
         </button>
         <button onClick={() => navigate("/account/blogpin")}>

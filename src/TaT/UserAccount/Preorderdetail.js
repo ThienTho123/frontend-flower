@@ -25,7 +25,7 @@ const PreorderDetail = () => {
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/account/preorder/${id}`,
+        `https://deploybackend-1ta9.onrender.com/account/preorder/${id}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -42,7 +42,15 @@ const PreorderDetail = () => {
       }
 
       // Chuyển đổi dữ liệu đơn hàng
-      const { id: orderId, totalAmount, date, precondition, name, phoneNumber, deliveryAddress } = rawPreorder;
+      const {
+        id: orderId,
+        totalAmount,
+        date,
+        precondition,
+        name,
+        phoneNumber,
+        deliveryAddress,
+      } = rawPreorder;
       const [year, month, day, hour, minute, second] = date;
       const formattedDate = dayjs(
         new Date(year, month - 1, day, hour, minute, second)
@@ -54,17 +62,16 @@ const PreorderDetail = () => {
         date: formattedDate,
         condition: precondition,
         name,
-        phone: phoneNumber, 
-        address: deliveryAddress, 
+        phone: phoneNumber,
+        address: deliveryAddress,
       });
-      
 
       // Chuyển đổi dữ liệu chi tiết đơn hàng
       const updatedOrderDetail = rawPreorderDetail.map((item, index) => ({
         stt: index + 1,
         productName: item.flowerSize.flower.name,
         quantity: item.quantity,
-        price: item.price/item.quantity,
+        price: item.price / item.quantity,
         paid: item.paid,
         total: item.price,
         length: item.flowerSize.length,
@@ -105,8 +112,8 @@ const PreorderDetail = () => {
               <strong>Trạng Thái:</strong>{" "}
               {translateCondition(orderHistory.condition)}
             </p>
-            </div>
-            <div className="order-history-right">
+          </div>
+          <div className="order-history-right">
             <p>
               <strong>Ngày Đặt:</strong> {orderHistory.date}
             </p>
@@ -137,7 +144,6 @@ const PreorderDetail = () => {
               <th>Đơn giá</th>
               <th>Tổng</th>
               <th>Đã thanh toán</th>
-
             </tr>
           </thead>
           <tbody>
@@ -153,7 +159,7 @@ const PreorderDetail = () => {
                 <td>{item.quantity}</td>
                 <td>{item.price}</td>
                 <td>{item.total}</td>
-               
+
                 <td>{item.paid}</td>
               </tr>
             ))}

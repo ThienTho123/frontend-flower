@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import "./NewsList.css";
 
 export default function NewsList() {
@@ -12,9 +12,11 @@ export default function NewsList() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/news");  
-        setAllNews(response.data.News);  
-        setNewsList(response.data.News.slice(0, visibleCount));  
+        const response = await axios.get(
+          "https://deploybackend-1ta9.onrender.com/news"
+        );
+        setAllNews(response.data.News);
+        setNewsList(response.data.News.slice(0, visibleCount));
       } catch (error) {
         console.error("Error fetching news:", error);
       }
@@ -23,7 +25,7 @@ export default function NewsList() {
   }, []);
 
   useEffect(() => {
-    setNewsList(allNews.slice(0, visibleCount)); 
+    setNewsList(allNews.slice(0, visibleCount));
   }, [visibleCount, allNews]);
 
   const getShortDescription = (content) => {
@@ -38,16 +40,18 @@ export default function NewsList() {
       <div className="news-grid">
         {newsList.length > 0 ? (
           newsList.map((news) => (
-            <Link to={`/news/${news.newsID}`} key={news.newsID} className="news-link">
+            <Link
+              to={`/news/${news.newsID}`}
+              key={news.newsID}
+              className="news-link"
+            >
               <div className="news-card">
-                <img
-                  src={news.image}  
-                  alt={news.title}  
-                  className="new-image"
-                />
-                <h2>{news.title}</h2>  
-                <p>{getShortDescription(news.content)}</p>  
-                <p><em>Ngày đăng: {new Date(news.date).toLocaleDateString()}</em></p> 
+                <img src={news.image} alt={news.title} className="new-image" />
+                <h2>{news.title}</h2>
+                <p>{getShortDescription(news.content)}</p>
+                <p>
+                  <em>Ngày đăng: {new Date(news.date).toLocaleDateString()}</em>
+                </p>
               </div>
             </Link>
           ))

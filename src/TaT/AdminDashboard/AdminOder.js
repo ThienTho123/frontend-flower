@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png'; // Adjust the path as needed
+import returnIcon from "./ImageDashboard/return-button.png"; // Adjust the path as needed
 
 const AdminOrder = () => {
   const [orders, setOrders] = useState([]);
@@ -8,7 +8,7 @@ const AdminOrder = () => {
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
   const navigate = useNavigate();
-  const [validationError, setValidationError] = useState(null); 
+  const [validationError, setValidationError] = useState(null);
 
   const orderConditions = [
     "Pending",
@@ -28,11 +28,14 @@ const AdminOrder = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/admin/order", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/order",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Không thể lấy danh sách đơn hàng.");
@@ -43,7 +46,7 @@ const AdminOrder = () => {
           ...order,
           date: Array.isArray(order.date) ? order.date : null,
         }));
-  
+
         setOrders(data);
       } catch (err) {
         setError(err.message);
@@ -56,7 +59,7 @@ const AdminOrder = () => {
   const handleSoftDelete = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/order/softdelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/order/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -83,7 +86,7 @@ const AdminOrder = () => {
   const handleHardDelete = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/order/harddelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/order/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -93,7 +96,9 @@ const AdminOrder = () => {
       );
 
       if (response.ok) {
-        setOrders((prevOrders) => prevOrders.filter((order) => order.orderID !== id));
+        setOrders((prevOrders) =>
+          prevOrders.filter((order) => order.orderID !== id)
+        );
       } else {
         throw new Error("Không thể xóa vĩnh viễn đơn hàng.");
       }
@@ -115,7 +120,7 @@ const AdminOrder = () => {
           shippingID: orderToUpdate.shipping.shippingID, // Cập nhật shippingID nếu có
         }
       : null;
-  
+
     // Log để kiểm tra dữ liệu
     console.log("Order to update:", {
       ...orderToUpdate,
@@ -124,10 +129,10 @@ const AdminOrder = () => {
       condition,
       shipping: updatedShipping, // Gửi shipping đã được xử lý
     });
-  
+
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/order/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/order/${id}`,
         {
           method: "PUT",
           headers: {
@@ -143,10 +148,12 @@ const AdminOrder = () => {
           }),
         }
       );
-  
+
       if (response.ok) {
         const updatedOrder = await response.json();
-        setOrders(orders.map((order) => (order.orderID === id ? updatedOrder : order)));
+        setOrders(
+          orders.map((order) => (order.orderID === id ? updatedOrder : order))
+        );
         setEditingOrderId(null);
       } else {
         throw new Error("Không thể cập nhật đơn hàng.");
@@ -227,8 +234,6 @@ const AdminOrder = () => {
       );
     }
   };
-  
-  
 
   const handleBackToDashboard = () => {
     navigate("/dashboard");
@@ -237,9 +242,9 @@ const AdminOrder = () => {
     if (!Array.isArray(dateArray) || dateArray.length < 3) {
       return "Không xác định"; // Giá trị mặc định nếu `dateArray` không hợp lệ
     }
-  
+
     const [year, month, day, hour = 0, minute = 0, second = 0] = dateArray;
-  
+
     // Kiểm tra tính hợp lệ của dữ liệu trước khi tạo `Date`
     if (
       typeof year !== "number" ||
@@ -248,7 +253,7 @@ const AdminOrder = () => {
     ) {
       return "Không xác định";
     }
-  
+
     try {
       // Lưu ý: Tháng trong JavaScript bắt đầu từ 0, cần trừ 1
       const date = new Date(year, month - 1, day, hour, minute, second);
@@ -257,7 +262,6 @@ const AdminOrder = () => {
       return "Không xác định";
     }
   };
-  
 
   return (
     <div className="admin-ql-container">
@@ -293,180 +297,209 @@ const AdminOrder = () => {
               </tr>
             </thead>
             <tbody>
-            {orders.map((order) => (
-              <tr key={order.orderID}>
-                <td>{order.orderID}</td>
+              {orders.map((order) => (
+                <tr key={order.orderID}>
+                  <td>{order.orderID}</td>
 
-                {/* Cột Ngày */}
-                <td>
-                {editingOrderId === order.orderID ? (
-                  <input
-                    type="date"
-                    value={
-                      Array.isArray(order.date)
-                        ? `${order.date[0]}-${String(order.date[1]).padStart(2, "0")}-${String(order.date[2]).padStart(2, "0")}`
-                        : ""
-                    }
-                    onChange={(e) => handleInputChange(e, order.orderID, "date")}
-                  />
-                ) : (
-                  formatDate(order.date) // Hiển thị dạng dễ đọc
-                )}
-              </td>
+                  {/* Cột Ngày */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <input
+                        type="date"
+                        value={
+                          Array.isArray(order.date)
+                            ? `${order.date[0]}-${String(
+                                order.date[1]
+                              ).padStart(2, "0")}-${String(
+                                order.date[2]
+                              ).padStart(2, "0")}`
+                            : ""
+                        }
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "date")
+                        }
+                      />
+                    ) : (
+                      formatDate(order.date) // Hiển thị dạng dễ đọc
+                    )}
+                  </td>
 
-                {/* Cột Thanh Toán */}
-                <td>
-                {editingOrderId === order.orderID ? (
-                  <select
-                    value={order.paid === "Yes" ? "Yes" : "No"} // Kiểm tra và chọn Yes/No
-                    onChange={(e) => handleInputChange(e, order.orderID, "paid")}
-                  >
-                    <option value="Yes">Có</option>
-                    <option value="No">Không</option>
-                  </select>
-                ) : (
-                  order.paid // Hiển thị Yes/No
-                )}
-              </td>
+                  {/* Cột Thanh Toán */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <select
+                        value={order.paid === "Yes" ? "Yes" : "No"} // Kiểm tra và chọn Yes/No
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "paid")
+                        }
+                      >
+                        <option value="Yes">Có</option>
+                        <option value="No">Không</option>
+                      </select>
+                    ) : (
+                      order.paid // Hiển thị Yes/No
+                    )}
+                  </td>
 
-                {/* Cột Tổng Tiền */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <input
-                      type="number"
-                      value={order.totalAmount}
-                      onChange={(e) => handleInputChange(e, order.orderID, "totalAmount")}
-                    />
-                  ) : (
-                    order.totalAmount
-                  )}
-                </td>
+                  {/* Cột Tổng Tiền */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <input
+                        type="number"
+                        value={order.totalAmount}
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "totalAmount")
+                        }
+                      />
+                    ) : (
+                      order.totalAmount
+                    )}
+                  </td>
 
-                {/* Cột Địa Chỉ */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <input
-                      type="text"
-                      value={order.deliveryAddress}
-                      onChange={(e) => handleInputChange(e, order.orderID, "deliveryAddress")}
-                    />
-                  ) : (
-                    order.deliveryAddress
-                  )}
-                </td>
+                  {/* Cột Địa Chỉ */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <input
+                        type="text"
+                        value={order.deliveryAddress}
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "deliveryAddress")
+                        }
+                      />
+                    ) : (
+                      order.deliveryAddress
+                    )}
+                  </td>
 
-                {/* Cột Số Điện Thoại */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <input
-                      type="text"
-                      value={order.phoneNumber}
-                      onChange={(e) => handleInputChange(e, order.orderID, "phoneNumber")}
-                    />
-                  ) : (
-                    order.phoneNumber
-                  )}
-                </td>
+                  {/* Cột Số Điện Thoại */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <input
+                        type="text"
+                        value={order.phoneNumber}
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "phoneNumber")
+                        }
+                      />
+                    ) : (
+                      order.phoneNumber
+                    )}
+                  </td>
 
-                {/* Cột Người Nhận */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <input
-                      type="text"
-                      value={order.name}
-                      onChange={(e) => handleInputChange(e, order.orderID, "name")}
-                    />
-                  ) : (
-                    order.name
-                  )}
-                </td>
+                  {/* Cột Người Nhận */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <input
+                        type="text"
+                        value={order.name}
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "name")
+                        }
+                      />
+                    ) : (
+                      order.name
+                    )}
+                  </td>
 
-                {/* Cột Shipping ID */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <input
-                      type="text"
-                      value={order.shipping ? order.shipping.shippingID : ""}
-                      onChange={(e) => handleInputChange(e, order.orderID, "shippingID")}
-                    />
-                  ) : (
-                    order.shipping ? order.shipping.shippingID : "Chưa có"
-                  )}
-                </td>
+                  {/* Cột Shipping ID */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <input
+                        type="text"
+                        value={order.shipping ? order.shipping.shippingID : ""}
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "shippingID")
+                        }
+                      />
+                    ) : order.shipping ? (
+                      order.shipping.shippingID
+                    ) : (
+                      "Chưa có"
+                    )}
+                  </td>
 
+                  {/* Cột Ghi Chú */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <textarea
+                        value={order.note || ""}
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "note")
+                        }
+                      />
+                    ) : (
+                      order.note || "Không có"
+                    )}
+                  </td>
 
+                  {/* Cột Điều Kiện */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <select
+                        value={order.condition}
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "condition")
+                        }
+                      >
+                        {orderConditions.map((condition) => (
+                          <option key={condition} value={condition}>
+                            {condition}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      order.condition
+                    )}
+                  </td>
 
+                  {/* Cột Trạng Thái */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <select
+                        value={order.status}
+                        onChange={(e) =>
+                          handleInputChange(e, order.orderID, "status")
+                        }
+                      >
+                        <option value="ENABLE">ENABLE</option>
+                        <option value="DISABLE">DISABLE</option>
+                      </select>
+                    ) : (
+                      order.status
+                    )}
+                  </td>
 
-                {/* Cột Ghi Chú */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <textarea
-                      value={order.note || ""}
-                      onChange={(e) => handleInputChange(e, order.orderID, "note")}
-                    />
-                  ) : (
-                    order.note || "Không có"
-                  )}
-                </td>
-
-                {/* Cột Điều Kiện */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <select
-                      value={order.condition}
-                      onChange={(e) => handleInputChange(e, order.orderID, "condition")}
-                    >
-                      {orderConditions.map((condition) => (
-                        <option key={condition} value={condition}>
-                          {condition}
-                        </option>
-                      ))}
-                    </select>
-                  ) : (
-                    order.condition
-                  )}
-                </td>
-
-                {/* Cột Trạng Thái */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <select
-                      value={order.status}
-                      onChange={(e) => handleInputChange(e, order.orderID, "status")}
-                    >
-                      <option value="ENABLE">ENABLE</option>
-                      <option value="DISABLE">DISABLE</option>
-                    </select>
-                  ) : (
-                    order.status
-                  )}
-                </td>
-
-                {/* Cột Hành Động */}
-                <td>
-                  {editingOrderId === order.orderID ? (
-                    <button
-                      onClick={() =>
-                        handleSave(order.orderID, order.status, order.paid, order.condition)
-                      }
-                    >
-                      Lưu
-                    </button>
-                  ) : (
-                    <>
-                      <button onClick={() => handleUpdateClick(order.orderID)}>
-                        Chỉnh Sửa
+                  {/* Cột Hành Động */}
+                  <td>
+                    {editingOrderId === order.orderID ? (
+                      <button
+                        onClick={() =>
+                          handleSave(
+                            order.orderID,
+                            order.status,
+                            order.paid,
+                            order.condition
+                          )
+                        }
+                      >
+                        Lưu
                       </button>
-                      <button onClick={() => handleSoftDelete(order.orderID)}>
-                        Vô hiệu hóa
-                      </button>
-
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => handleUpdateClick(order.orderID)}
+                        >
+                          Chỉnh Sửa
+                        </button>
+                        <button onClick={() => handleSoftDelete(order.orderID)}>
+                          Vô hiệu hóa
+                        </button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </>
       )}

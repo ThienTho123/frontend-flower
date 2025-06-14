@@ -36,7 +36,9 @@ export default function ProductList() {
 
   const fetchProducts = async (initialFilterParams) => {
     try {
-      const response = await axios.get("http://localhost:8080/flower");
+      const response = await axios.get(
+        "https://deploybackend-1ta9.onrender.com/flower"
+      );
 
       if (response.data) {
         const { flowers, category, purpose } = response.data;
@@ -44,12 +46,14 @@ export default function ProductList() {
         setCategories(category || []);
         setPurposes(purpose || []);
         setAllProducts(flowers || []);
-        const filteredProducts = flowers.filter(product => {
+        const filteredProducts = flowers.filter((product) => {
           const matchCategory = initialFilterParams.category
-            ? product.category.categoryID === parseInt(initialFilterParams.category)
+            ? product.category.categoryID ===
+              parseInt(initialFilterParams.category)
             : true;
           const matchPurpose = initialFilterParams.purpose
-            ? product.purpose.purposeID === parseInt(initialFilterParams.purpose)
+            ? product.purpose.purposeID ===
+              parseInt(initialFilterParams.purpose)
             : true;
           return matchCategory && matchPurpose;
         });
@@ -94,7 +98,9 @@ export default function ProductList() {
               labelId="flw-category-label"
               id="flw-category"
               value={filterParams.category}
-              onChange={(e) => handleFilterParamChange("category", e.target.value)}
+              onChange={(e) =>
+                handleFilterParamChange("category", e.target.value)
+              }
             >
               <MenuItem value="">Tất cả</MenuItem>
               {categories.length > 0 ? (
@@ -115,7 +121,9 @@ export default function ProductList() {
               labelId="flw-purpose-label"
               id="flw-purpose"
               value={filterParams.purpose}
-              onChange={(e) => handleFilterParamChange("purpose", e.target.value)}
+              onChange={(e) =>
+                handleFilterParamChange("purpose", e.target.value)
+              }
             >
               <MenuItem value="">Tất cả</MenuItem>
               {purposes.length > 0 ? (
@@ -135,7 +143,10 @@ export default function ProductList() {
           {products.length > 0 ? (
             products.map((product) => (
               <div key={product.flowerID} className="flw-product-card">
-                <Link to={`/detail/${product.flowerID}`} className="flw-product-link">
+                <Link
+                  to={`/detail/${product.flowerID}`}
+                  className="flw-product-link"
+                >
                   <div className="flw-img-wrapper">
                     <img src={product.image} alt={product.name} />
                   </div>
@@ -180,8 +191,12 @@ export default function ProductList() {
                       </span>
                     )}
                   </p>
-                  <p className="flw-product-category">Danh mục: {product.category.categoryName}</p>
-                  <p className="flw-product-purpose">Mục đích: {product.purpose.purposeName}</p>
+                  <p className="flw-product-category">
+                    Danh mục: {product.category.categoryName}
+                  </p>
+                  <p className="flw-product-purpose">
+                    Mục đích: {product.purpose.purposeName}
+                  </p>
                 </Link>
               </div>
             ))

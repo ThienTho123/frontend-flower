@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png';
+import returnIcon from "./ImageDashboard/return-button.png";
 
 const StaffFlowerImage = () => {
   const [flowerImageList, setFlowerImageList] = useState([]);
@@ -21,44 +21,50 @@ const StaffFlowerImage = () => {
   useEffect(() => {
     const fetchFlowerData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/staff/flower", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/api/v1/staff/flower",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+            credentials: "include",
+          }
+        );
         if (!response.ok) throw new Error("Error fetching flower data.");
         const data = await response.json();
-  
+
         // Gán danh sách hoa từ API trả về
         setFlowerList(data.flower || []);
       } catch (err) {
         setError(err.message);
       }
     };
-  
+
     const fetchFlowerImages = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/staff/flowerimage", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/api/v1/staff/flowerimage",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+            credentials: "include",
+          }
+        );
         if (!response.ok) throw new Error("Error fetching flower images.");
         const data = await response.json();
-        
+
         // Fix here: data.flowerImage contains the flower images, so set it correctly
         setFlowerImageList(data.flowerImage || []);
       } catch (err) {
         setError(err.message);
       }
     };
-  
+
     fetchFlowerData();
     fetchFlowerImages();
   }, [accesstoken]);
-  
+
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -69,14 +75,17 @@ const StaffFlowerImage = () => {
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:8080/api/v1/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-        },
-        credentials: "include",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          credentials: "include",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
@@ -97,7 +106,7 @@ const StaffFlowerImage = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/flowerimage/softdelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/staff/flowerimage/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -123,7 +132,7 @@ const StaffFlowerImage = () => {
   const handleSave = async (id, imageData) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/flowerimage/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/staff/flowerimage/${id}`,
         {
           method: "PUT",
           headers: {
@@ -143,7 +152,6 @@ const StaffFlowerImage = () => {
         );
         setEditingFlowerImageId(null);
         window.location.reload();
-
       } else {
         throw new Error("Unable to update flower image.");
       }
@@ -154,15 +162,18 @@ const StaffFlowerImage = () => {
 
   const handleCreate = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/staff/flowerimage", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(newFlowerImage),
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/staff/flowerimage",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(newFlowerImage),
+        }
+      );
       if (response.ok) {
         const createdImage = await response.json();
         setFlowerImageList([...flowerImageList, createdImage]);
@@ -172,7 +183,6 @@ const StaffFlowerImage = () => {
           status: "ENABLE",
         });
         window.location.reload();
-
       } else {
         throw new Error("Unable to create flower image.");
       }
@@ -185,7 +195,6 @@ const StaffFlowerImage = () => {
     setEditingFlowerImageId(image.flowerImageID);
     setNewFlowerImage({ ...image });
     window.scrollTo(0, 0);
-
   };
 
   const handleBackToDashboard = () => {
@@ -204,7 +213,11 @@ const StaffFlowerImage = () => {
         <h2>Quản lý hình ảnh hoa</h2>
       </div>
 
-      <h3>{editingFlowerImageId ? "Chỉnh sửa hình ảnh hoa" : "Thêm mới hình ảnh hoa"}</h3>
+      <h3>
+        {editingFlowerImageId
+          ? "Chỉnh sửa hình ảnh hoa"
+          : "Thêm mới hình ảnh hoa"}
+      </h3>
       <div>
         <label>Image URL:</label>
         <input type="file" onChange={handleFileChange} />
@@ -270,7 +283,11 @@ const StaffFlowerImage = () => {
               <tr key={image.flowerImageID}>
                 <td>{image.flowerImageID}</td>
                 <td>
-                  <img src={image.imageURL} alt="Flower" style={{ width: 100 }} />
+                  <img
+                    src={image.imageURL}
+                    alt="Flower"
+                    style={{ width: 100 }}
+                  />
                 </td>
                 <td>{image.flower.name}</td>
                 <td>{image.status}</td>

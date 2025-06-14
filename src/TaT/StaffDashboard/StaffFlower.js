@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png';
+import returnIcon from "./ImageDashboard/return-button.png";
 
 const StaffFlower = () => {
   const [flowerList, setFlowerList] = useState([]);
@@ -25,12 +25,15 @@ const StaffFlower = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/staff/flower", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/api/v1/staff/flower",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
           const errorMessage = await response.text();
@@ -60,14 +63,17 @@ const StaffFlower = () => {
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:8080/api/v1/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-        },
-        credentials: "include",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          credentials: "include",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
@@ -87,26 +93,37 @@ const StaffFlower = () => {
   };
 
   const handleSave = async (id, flowerData) => {
-    if (!flowerData.name || !flowerData.description || !flowerData.languageOfFlowers || !flowerData.category.categoryID || !flowerData.purpose.purposeID|| 
-      !flowerData.image) {
+    if (
+      !flowerData.name ||
+      !flowerData.description ||
+      !flowerData.languageOfFlowers ||
+      !flowerData.category.categoryID ||
+      !flowerData.purpose.purposeID ||
+      !flowerData.image
+    ) {
       setError("Vui lòng điền đầy đủ thông tin bắt buộc.");
       return;
     }
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/staff/flower/${id}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(flowerData),
-      });
-  
+      const response = await fetch(
+        `https://deploybackend-1ta9.onrender.com/api/v1/staff/flower/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(flowerData),
+        }
+      );
+
       if (response.ok) {
         const updatedFlower = await response.json();
         setFlowerList((prev) =>
-          prev.map((flower) => (flower.flowerID === id ? updatedFlower : flower))
+          prev.map((flower) =>
+            flower.flowerID === id ? updatedFlower : flower
+          )
         );
         setEditingFlowerId(null);
         setError(null); // Reset lỗi khi thành công
@@ -118,26 +135,34 @@ const StaffFlower = () => {
       setError(err.message);
     }
   };
-  
 
   const handleCreate = async () => {
-    if (!newFlower.name || !newFlower.description || !newFlower.languageOfFlowers || !newFlower.category.categoryID || !newFlower.purpose.purposeID|| 
-      !newFlower.image) {
+    if (
+      !newFlower.name ||
+      !newFlower.description ||
+      !newFlower.languageOfFlowers ||
+      !newFlower.category.categoryID ||
+      !newFlower.purpose.purposeID ||
+      !newFlower.image
+    ) {
       setError("Vui lòng điền đầy đủ thông tin bắt buộc.");
       return;
     }
     try {
       const formattedData = { ...newFlower };
-      const response = await fetch("http://localhost:8080/api/v1/staff/flower", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(formattedData),
-      });
-  
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/staff/flower",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(formattedData),
+        }
+      );
+
       if (response.ok) {
         const createdFlower = await response.json();
         setFlowerList([...flowerList, createdFlower]);
@@ -159,7 +184,6 @@ const StaffFlower = () => {
       setError(err.message);
     }
   };
-  
 
   const handleEdit = (flower) => {
     setEditingFlowerId(flower.flowerID);
@@ -170,7 +194,7 @@ const StaffFlower = () => {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/staff/flower/softdelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/staff/flower/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -233,7 +257,10 @@ const StaffFlower = () => {
         <textarea
           value={newFlower.languageOfFlowers}
           onChange={(e) =>
-            setNewFlower((prev) => ({ ...prev, languageOfFlowers: e.target.value }))
+            setNewFlower((prev) => ({
+              ...prev,
+              languageOfFlowers: e.target.value,
+            }))
           }
         ></textarea>
 
@@ -287,10 +314,18 @@ const StaffFlower = () => {
         <label>Hình Ảnh:</label>
         <input type="file" onChange={handleFileChange} />
         <button onClick={handleUploadImage}>Tải lên</button>
-        {imageUrl && <img src={imageUrl} alt="Uploaded" style={{ width: 100 }} />}
+        {imageUrl && (
+          <img src={imageUrl} alt="Uploaded" style={{ width: 100 }} />
+        )}
         <br></br>
 
-        <button onClick={editingFlowerId ? () => handleSave(editingFlowerId, newFlower) : handleCreate}>
+        <button
+          onClick={
+            editingFlowerId
+              ? () => handleSave(editingFlowerId, newFlower)
+              : handleCreate
+          }
+        >
           {editingFlowerId ? "Lưu thay đổi" : "Thêm hoa"}
         </button>
       </div>
@@ -318,7 +353,11 @@ const StaffFlower = () => {
               <td>{flower.name}</td>
               <td>
                 {flower.image ? (
-                  <img src={flower.image} alt={flower.name} style={{ width: 100 }} />
+                  <img
+                    src={flower.image}
+                    alt={flower.name}
+                    style={{ width: 100 }}
+                  />
                 ) : (
                   "Không có hình ảnh"
                 )}
@@ -330,7 +369,9 @@ const StaffFlower = () => {
               <td>{flower.status}</td>
               <td>
                 <button onClick={() => handleEdit(flower)}>Sửa</button>
-                <button onClick={() => handleDelete(flower.flowerID)}>Vô hiệu</button>
+                <button onClick={() => handleDelete(flower.flowerID)}>
+                  Vô hiệu
+                </button>
               </td>
             </tr>
           ))}
@@ -341,4 +382,3 @@ const StaffFlower = () => {
 };
 
 export default StaffFlower;
-

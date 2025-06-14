@@ -25,11 +25,14 @@ const AccountCustomize = () => {
 
   const getHistoryOrder = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/acccus", {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
+      const response = await axios.get(
+        "https://deploybackend-1ta9.onrender.com/acccus",
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
 
       const rawCustom = response.data?.customize || [];
       console.log(rawCustom);

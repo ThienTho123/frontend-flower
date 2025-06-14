@@ -80,7 +80,7 @@ const Profile = () => {
   const getUserInfor = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/auth/account",
+        "https://deploybackend-1ta9.onrender.com/api/v1/auth/account",
         {
           params: {
             accountID: accountID,
@@ -92,14 +92,14 @@ const Profile = () => {
       );
       setProfileForm(response.data);
       console.log(response.data);
-      
+
       // Lấy thông tin loại tài khoản từ `type.typeName`
       const userData = response.data;
       setProfileForm({
         ...userData,
-        typeName: userData.typeName,  // Lấy thông tin loại tài khoản
+        typeName: userData.typeName, // Lấy thông tin loại tài khoản
       });
-      console.log("profileform: "+profileForm);
+      console.log("profileform: " + profileForm);
     } catch (error) {
       console.log("Error fetching user info:", error);
     }
@@ -118,11 +118,15 @@ const Profile = () => {
     formData.append("file", file);
 
     try {
-      const response = await axios.post("http://localhost:8080/api/v1/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       if (response.data.EM === "success") {
         return response.data.DT; // Return the image link
@@ -135,17 +139,17 @@ const Profile = () => {
   };
 
   const updateAccount = async (avatarLink) => {
-    console.log("avatarLink"+avatarLink);
+    console.log("avatarLink" + avatarLink);
     try {
-      console.log("SDT: "+profileForm.phonenumber)
+      console.log("SDT: " + profileForm.phonenumber);
       const response = await axios.put(
-        "http://localhost:8080/account/updateinfo",
+        "https://deploybackend-1ta9.onrender.com/account/updateinfo",
         {
           name: profileForm.name,
           email: profileForm.email,
           phoneNumber: profileForm.phonenumber,
           address: profileForm.address,
-          avatar: avatarLink, 
+          avatar: avatarLink,
         },
         {
           headers: {
@@ -153,7 +157,6 @@ const Profile = () => {
           },
         }
       );
-
     } catch (error) {
       console.error("Error updating account:", error);
     }
@@ -161,87 +164,97 @@ const Profile = () => {
 
   return (
     <div className="profile-page">
-    <h2 className="profile-page__title">Thông tin cá nhân</h2>
-    <div className="profile-page__form-container">
-      <form onSubmit={handleSubmit} className="profile-page__form">
-        <section className="profile-page__section">
-          {/* Họ tên */}
-          <div className="profile-page__group">
-            <div className="profile-page__icon">
-              <img src={nameImg} alt="name" />
+      <h2 className="profile-page__title">Thông tin cá nhân</h2>
+      <div className="profile-page__form-container">
+        <form onSubmit={handleSubmit} className="profile-page__form">
+          <section className="profile-page__section">
+            {/* Họ tên */}
+            <div className="profile-page__group">
+              <div className="profile-page__icon">
+                <img src={nameImg} alt="name" />
+              </div>
+              <div className="profile-page__input">
+                <label htmlFor="name">Họ tên</label>
+                <input
+                  id="name"
+                  type="text"
+                  defaultValue={profileForm.name}
+                  name="name"
+                  onChange={handleChange}
+                  disabled={!isEditable}
+                />
+                {error.name && (
+                  <span className="profile-page__error">{error.name}</span>
+                )}
+              </div>
             </div>
-            <div className="profile-page__input">
-              <label htmlFor="name">Họ tên</label>
-              <input
-                id="name"
-                type="text"
-                defaultValue={profileForm.name}
-                name="name"
-                onChange={handleChange}
-                disabled={!isEditable}
-              />
-              {error.name && <span className="profile-page__error">{error.name}</span>}
-            </div>
-          </div>
 
-          {/* Email */}
-          <div className="profile-page__group">
-            <div className="profile-page__icon">
-              <img src={emailImg} alt="email" />
+            {/* Email */}
+            <div className="profile-page__group">
+              <div className="profile-page__icon">
+                <img src={emailImg} alt="email" />
+              </div>
+              <div className="profile-page__input">
+                <label htmlFor="email">Email</label>
+                <input
+                  id="email"
+                  type="email"
+                  defaultValue={profileForm.email}
+                  name="email"
+                  onChange={handleChange}
+                  disabled={!isEditable}
+                />
+                {error.email && (
+                  <span className="profile-page__error">{error.email}</span>
+                )}
+              </div>
             </div>
-            <div className="profile-page__input">
-              <label htmlFor="email">Email</label>
-              <input
-                id="email"
-                type="email"
-                defaultValue={profileForm.email}
-                name="email"
-                onChange={handleChange}
-                disabled={!isEditable}
-              />
-              {error.email && <span className="profile-page__error">{error.email}</span>}
-            </div>
-          </div>
 
-          {/* Số điện thoại */}
-          <div className="profile-page__group">
-            <div className="profile-page__icon">
-              <img src={phonenumberImg} alt="phone number" />
+            {/* Số điện thoại */}
+            <div className="profile-page__group">
+              <div className="profile-page__icon">
+                <img src={phonenumberImg} alt="phone number" />
+              </div>
+              <div className="profile-page__input">
+                <label htmlFor="phonenumber">Số điện thoại</label>
+                <input
+                  id="phonenumber"
+                  type="tel"
+                  defaultValue={profileForm.phonenumber}
+                  name="phonenumber"
+                  onChange={handleChange}
+                  disabled={!isEditable}
+                />
+                {error.phonenumber && (
+                  <span className="profile-page__error">
+                    {error.phonenumber}
+                  </span>
+                )}
+              </div>
             </div>
-            <div className="profile-page__input">
-              <label htmlFor="phonenumber">Số điện thoại</label>
-              <input
-                id="phonenumber"
-                type="tel"
-                defaultValue={profileForm.phonenumber}
-                name="phonenumber"
-                onChange={handleChange}
-                disabled={!isEditable}
-              />
-              {error.phonenumber && <span className="profile-page__error">{error.phonenumber}</span>}
-            </div>
-          </div>
-        </section>
+          </section>
 
-        <section className="profile-page__section">
-          {/* Địa chỉ */}
-          <div className="profile-page__group">
-            <div className="profile-page__icon">
-              <img src={addressImg} alt="address" />
+          <section className="profile-page__section">
+            {/* Địa chỉ */}
+            <div className="profile-page__group">
+              <div className="profile-page__icon">
+                <img src={addressImg} alt="address" />
+              </div>
+              <div className="profile-page__input">
+                <label htmlFor="address">Địa chỉ</label>
+                <input
+                  id="address"
+                  type="text"
+                  defaultValue={profileForm.address}
+                  name="address"
+                  onChange={handleChange}
+                  disabled={!isEditable}
+                />
+                {error.address && (
+                  <span className="profile-page__error">{error.address}</span>
+                )}
+              </div>
             </div>
-            <div className="profile-page__input">
-              <label htmlFor="address">Địa chỉ</label>
-              <input
-                id="address"
-                type="text"
-                defaultValue={profileForm.address}
-                name="address"
-                onChange={handleChange}
-                disabled={!isEditable}
-              />
-              {error.address && <span className="profile-page__error">{error.address}</span>}
-            </div>
-          </div>
 
             {/* Role */}
             <div className="profile-form-group">
@@ -258,8 +271,6 @@ const Profile = () => {
                   disabled
                 />
               </div>
-
-              
             </div>
 
             <div className="profile-form-group">
@@ -286,51 +297,52 @@ const Profile = () => {
                 <input
                   id="role"
                   type="text"
-                  value={profileForm.typeName || ''}  // Hiển thị loại tài khoản từ state
+                  value={profileForm.typeName || ""} // Hiển thị loại tài khoản từ state
                   name="role"
                   disabled
                 />
               </div>
             </div>
-
-              
           </section>
 
-        {/* Avatar upload */}
-        {isEditable && (
-          <section className="profile-page__section">
-            <div className="profile-page__group">
-              <div className="profile-page__icon">
-                <img src={roleImg} alt="avatar" />
-              </div>
-              <div className="profile-page__input">
-                <label htmlFor="avatar">Avatar</label>
-                <input
-                  id="avatar"
-                  type="file"
-                  onChange={handleImageChange}
-                />
-              </div>
-            </div>
-          </section>
-        )}
-
-        <div className="profile-page__button-container">
-          {!isEditable && (
-            <button type="button" onClick={handleEdit} className="profile-page__button">
-              Sửa thông tin
-            </button>
-          )}
+          {/* Avatar upload */}
           {isEditable && (
-            <button type="submit" className="profile-page__button profile-page__button--save">
-              Lưu
-            </button>
+            <section className="profile-page__section">
+              <div className="profile-page__group">
+                <div className="profile-page__icon">
+                  <img src={roleImg} alt="avatar" />
+                </div>
+                <div className="profile-page__input">
+                  <label htmlFor="avatar">Avatar</label>
+                  <input id="avatar" type="file" onChange={handleImageChange} />
+                </div>
+              </div>
+            </section>
           )}
-        </div>
-      </form>
+
+          <div className="profile-page__button-container">
+            {!isEditable && (
+              <button
+                type="button"
+                onClick={handleEdit}
+                className="profile-page__button"
+              >
+                Sửa thông tin
+              </button>
+            )}
+            {isEditable && (
+              <button
+                type="submit"
+                className="profile-page__button profile-page__button--save"
+              >
+                Lưu
+              </button>
+            )}
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default Profile;

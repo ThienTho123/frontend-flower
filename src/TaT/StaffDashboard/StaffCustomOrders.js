@@ -11,7 +11,7 @@ const StaffCustomOrders = () => {
   const [modalType, setModalType] = useState(""); // 'confirm' or 'result'
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [actionType, setActionType] = useState(""); // 'decline', 'cancel', 'success'
-  
+
   const navigate = useNavigate();
   const accessToken = localStorage.getItem("access_token");
 
@@ -23,9 +23,12 @@ const StaffCustomOrders = () => {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:8080/api/v1/staff/custom", {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+      const response = await axios.get(
+        "https://deploybackend-1ta9.onrender.com/api/v1/staff/custom",
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
       setOrders(response.data.customize || []);
     } catch (error) {
       console.error("Lỗi khi tải dữ liệu:", error);
@@ -41,9 +44,9 @@ const StaffCustomOrders = () => {
       return "Không xác định";
     }
     const [year, month, day, hour = 0, minute = 0] = dateTime;
-    return `${day}/${month}/${year} - ${hour.toString().padStart(2, "0")}:${minute
+    return `${day}/${month}/${year} - ${hour
       .toString()
-      .padStart(2, "0")}`;
+      .padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
   };
 
   // Hiển thị modal kết quả
@@ -65,51 +68,59 @@ const StaffCustomOrders = () => {
   // Xử lý xác nhận action
   const handleConfirmAction = async () => {
     try {
-      let endpoint = `http://localhost:8080/api/v1/staff/custom/${selectedOrderId}/${actionType}`;
-      
-      await axios.put(endpoint, {}, {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      });
+      let endpoint = `https://deploybackend-1ta9.onrender.com/api/v1/staff/custom/${selectedOrderId}/${actionType}`;
+
+      await axios.put(
+        endpoint,
+        {},
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
 
       // Cập nhật trạng thái đơn hàng trong state
       let newCondition;
       switch (actionType) {
-        case 'decline':
-        case 'cancel':
-          newCondition = 'CANCEL';
+        case "decline":
+        case "cancel":
+          newCondition = "CANCEL";
           break;
-        case 'success':
-          newCondition = 'SUCCESS';
+        case "success":
+          newCondition = "SUCCESS";
           break;
         default:
-          newCondition = orders.find(o => o.customID === selectedOrderId)?.condition;
+          newCondition = orders.find(
+            (o) => o.customID === selectedOrderId
+          )?.condition;
       }
 
-      setOrders(orders.map(order => 
-        order.customID === selectedOrderId 
-          ? { ...order, condition: newCondition }
-          : order
-      ));
+      setOrders(
+        orders.map((order) =>
+          order.customID === selectedOrderId
+            ? { ...order, condition: newCondition }
+            : order
+        )
+      );
 
       setIsModalOpen(false);
-      
+
       let successMessage;
       switch (actionType) {
-        case 'decline':
+        case "decline":
           successMessage = "Đơn hàng đã được từ chối thành công!";
           break;
-        case 'cancel':
+        case "cancel":
           successMessage = "Đơn hàng đã được hủy thành công!";
           break;
-        case 'success':
-          successMessage = "Đơn hàng đã được đánh dấu thành công và tạo đơn hàng chính thức!";
+        case "success":
+          successMessage =
+            "Đơn hàng đã được đánh dấu thành công và tạo đơn hàng chính thức!";
           break;
         default:
           successMessage = "Thao tác thực hiện thành công!";
       }
-      
+
       showResultModal(successMessage);
-      
     } catch (error) {
       console.error(`Lỗi khi ${actionType}:`, error);
       setIsModalOpen(false);
@@ -119,27 +130,39 @@ const StaffCustomOrders = () => {
 
   // Xử lý decline
   const handleDecline = (orderId) => {
-    showConfirmModal("Bạn có chắc chắn muốn từ chối đơn hàng này?", orderId, "decline");
+    showConfirmModal(
+      "Bạn có chắc chắn muốn từ chối đơn hàng này?",
+      orderId,
+      "decline"
+    );
   };
 
   // Xử lý cancel
   const handleCancel = (orderId) => {
-    showConfirmModal("Bạn có chắc chắn muốn hủy đơn hàng này?", orderId, "cancel");
+    showConfirmModal(
+      "Bạn có chắc chắn muốn hủy đơn hàng này?",
+      orderId,
+      "cancel"
+    );
   };
 
   // Xử lý success
   const handleSuccess = (orderId) => {
-    showConfirmModal("Bạn có chắc chắn muốn đánh dấu đơn hàng này là thành công? Điều này sẽ tạo đơn hàng chính thức.", orderId, "success");
+    showConfirmModal(
+      "Bạn có chắc chắn muốn đánh dấu đơn hàng này là thành công? Điều này sẽ tạo đơn hàng chính thức.",
+      orderId,
+      "success"
+    );
   };
 
   // Chuyển đến trang chi tiết
   const handleViewDetail = (orderId) => {
-  navigate(`/StaffCustomOrders/edit/${orderId}`); // Sửa từ /detail/ thành /edit/
+    navigate(`/StaffCustomOrders/edit/${orderId}`); // Sửa từ /detail/ thành /edit/
   };
 
   // Chuyển đến trang edit
   const handleEdit = (orderId) => {
-  navigate(`/StaffCustomOrders/edit/${orderId}`); // Giữ nguyên
+    navigate(`/StaffCustomOrders/edit/${orderId}`); // Giữ nguyên
   };
 
   // Đóng modal
@@ -154,7 +177,7 @@ const StaffCustomOrders = () => {
   // Render action buttons dựa trên trạng thái
   const renderActionButtons = (order) => {
     const { customID, condition } = order;
-    
+
     return (
       <div className="flex flex-wrap gap-1">
         {/* Nút Chi tiết - luôn hiển thị để xem thông tin */}
@@ -179,7 +202,7 @@ const StaffCustomOrders = () => {
     );
   }
 
- return (
+  return (
     <div className="admin-ql-container">
       <div className="title-container flex items-center space-x-4 mb-6">
         <img
@@ -200,21 +223,47 @@ const StaffCustomOrders = () => {
           <table className="w-full border-collapse border border-gray-300 bg-white rounded-lg shadow">
             <thead>
               <tr className="bg-gray-200">
-                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">ID</th>
-                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Khách Hàng</th>
-                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Số Điện Thoại</th>
-                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Ngày Đặt</th>
-                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Trạng Thái</th>
-                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Tổng Tiền</th>
-                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Địa Chỉ</th>
-                <th className="border border-gray-300 px-4 py-3 text-center font-semibold">Hành Động</th>
+                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">
+                  ID
+                </th>
+                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">
+                  Khách Hàng
+                </th>
+                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">
+                  Số Điện Thoại
+                </th>
+                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">
+                  Ngày Đặt
+                </th>
+                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">
+                  Trạng Thái
+                </th>
+                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">
+                  Tổng Tiền
+                </th>
+                <th className="border border-gray-300 px-4 py-3 text-left font-semibold">
+                  Địa Chỉ
+                </th>
+                <th className="border border-gray-300 px-4 py-3 text-center font-semibold">
+                  Hành Động
+                </th>
               </tr>
             </thead>
             <tbody>
               {orders.map((order, index) => (
-                <tr key={order.customID} className={`hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`}>
-                  <td className="border border-gray-300 px-4 py-3 font-medium">#{order.customID}</td>
-                  <td className="border border-gray-300 px-4 py-3" title={order.name}>
+                <tr
+                  key={order.customID}
+                  className={`hover:bg-gray-50 ${
+                    index % 2 === 0 ? "bg-white" : "bg-gray-25"
+                  }`}
+                >
+                  <td className="border border-gray-300 px-4 py-3 font-medium">
+                    #{order.customID}
+                  </td>
+                  <td
+                    className="border border-gray-300 px-4 py-3"
+                    title={order.name}
+                  >
                     <div className="max-w-32 truncate">
                       {order.name || "N/A"}
                     </div>
@@ -226,14 +275,21 @@ const StaffCustomOrders = () => {
                     {formatDateTime(order.date)}
                   </td>
                   <td className="border border-gray-300 px-4 py-3">
-                    <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                      order.condition === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
-                      order.condition === 'ACCEPT' ? 'bg-blue-100 text-blue-800' :
-                      order.condition === 'PAID' ? 'bg-green-100 text-green-800' :
-                      order.condition === 'SUCCESS' ? 'bg-green-200 text-green-900' :
-                      order.condition === 'CANCEL' ? 'bg-red-100 text-red-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
+                    <span
+                      className={`px-2 py-1 rounded text-xs font-semibold ${
+                        order.condition === "PENDING"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : order.condition === "ACCEPT"
+                          ? "bg-blue-100 text-blue-800"
+                          : order.condition === "PAID"
+                          ? "bg-green-100 text-green-800"
+                          : order.condition === "SUCCESS"
+                          ? "bg-green-200 text-green-900"
+                          : order.condition === "CANCEL"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
+                    >
                       {order.condition}
                     </span>
                   </td>
@@ -243,10 +299,15 @@ const StaffCustomOrders = () => {
                         {order.totalAmount.toLocaleString()} VND
                       </span>
                     ) : (
-                      <span className="text-gray-400 italic">Chưa xác định</span>
+                      <span className="text-gray-400 italic">
+                        Chưa xác định
+                      </span>
                     )}
                   </td>
-                  <td className="border border-gray-300 px-4 py-3 max-w-40 truncate" title={order.deliveryAddress}>
+                  <td
+                    className="border border-gray-300 px-4 py-3 max-w-40 truncate"
+                    title={order.deliveryAddress}
+                  >
                     {order.deliveryAddress || "Không có"}
                   </td>
                   <td className="border border-gray-300 px-4 py-3 text-center">
@@ -258,8 +319,6 @@ const StaffCustomOrders = () => {
           </table>
         </div>
       )}
-
-
 
       {/* Modal */}
       {isModalOpen && (
@@ -279,7 +338,7 @@ const StaffCustomOrders = () => {
                 <p className="text-gray-700 leading-relaxed">{modalMessage}</p>
               </div>
             </div>
-            
+
             <div className="mt-6 flex justify-end space-x-3">
               {modalType === "confirm" ? (
                 <>

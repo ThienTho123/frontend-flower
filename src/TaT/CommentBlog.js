@@ -29,13 +29,16 @@ const CommentItem = ({ comment, onAction }) => {
       if (!accesstoken) return;
 
       try {
-        const response = await fetch(`http://localhost:8080/blog`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accesstoken}`,
-          },
-        });
+        const response = await fetch(
+          `https://deploybackend-1ta9.onrender.com/blog`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accesstoken}`,
+            },
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
@@ -105,14 +108,17 @@ const CommentItem = ({ comment, onAction }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/blog/like", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accesstoken}`,
-        },
-        body: JSON.stringify(requestBody),
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/blog/like",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Lỗi phản hồi từ server");

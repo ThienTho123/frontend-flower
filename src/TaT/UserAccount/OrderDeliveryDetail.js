@@ -28,11 +28,14 @@ const OrderDeliveryDetail = () => {
   };
   const getHistoryOrder = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/userorde/${id}`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
+      const response = await axios.get(
+        `https://deploybackend-1ta9.onrender.com/userorde/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
 
       const rawOrderHistory = response.data?.orderDeliveryDTO || {};
       console.log("rawOrderHistory: ", rawOrderHistory);
@@ -118,7 +121,7 @@ const OrderDeliveryDetail = () => {
             <p>
               <strong>Số Điện Thoại:</strong> {orderHistory[0].phone}
             </p>
-            
+
             <p>
               <strong>Tổng đơn giá:</strong> {orderHistory[0].costperday}
             </p>
@@ -131,15 +134,15 @@ const OrderDeliveryDetail = () => {
             </p>
           </div>
           <div className="order-history-right">
-          <p>
+            <p>
               <strong>Địa Chỉ:</strong> {orderHistory[0].address}
             </p>
             <p>
-              <strong>Kiểu giao hàng:</strong>{" "}
-              {orderHistory[0].orderType}
+              <strong>Kiểu giao hàng:</strong> {orderHistory[0].orderType}
             </p>
             <p>
-              <strong>Khoảng cách giao hàng:</strong> {orderHistory[0].deliverper}
+              <strong>Khoảng cách giao hàng:</strong>{" "}
+              {orderHistory[0].deliverper}
             </p>
             <p>
               <strong>Ghi Chú:</strong> {orderHistory[0].note}
@@ -151,7 +154,8 @@ const OrderDeliveryDetail = () => {
               <strong>Ngày Kết Thúc Giao:</strong> {orderHistory[0].shipEnd}
             </p>
             <p>
-              <strong>Số đơn đã giao thành công:</strong> {orderHistory[0].numberDelivered}
+              <strong>Số đơn đã giao thành công:</strong>{" "}
+              {orderHistory[0].numberDelivered}
             </p>
           </div>
         </div>

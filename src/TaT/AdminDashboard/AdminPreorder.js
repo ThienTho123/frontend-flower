@@ -4,7 +4,7 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import returnIcon from "./ImageDashboard/return-button.png"; // Adjust the path as needed
 import { Link } from "react-router-dom";
-import "../StaffDashboard/StaffPreorder.css"
+import "../StaffDashboard/StaffPreorder.css";
 const AdminPreorder = () => {
   const [preOrder, setPreOrders] = useState([]);
   const [editingPreOrderId, setEditingPreOrderId] = useState(null);
@@ -37,7 +37,7 @@ const AdminPreorder = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/v1/admin/preorder",
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -90,7 +90,7 @@ const AdminPreorder = () => {
     console.log("id: ", id);
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/preorder/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder/${id}`,
         {
           method: "PUT",
           headers: {
@@ -136,7 +136,7 @@ const AdminPreorder = () => {
   const handleCancelable = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/v1/admin/preorder/cancelable",
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder/cancelable",
         {
           method: "POST", // Hoặc `GET` nếu backend sử dụng `@GetMapping`
           headers: {
@@ -152,7 +152,7 @@ const AdminPreorder = () => {
 
       // Sau khi cập nhật, gọi lại danh sách đơn hàng để làm mới dữ liệu
       const updatedResponse = await fetch(
-        "http://localhost:8080/api/v1/admin/preorder",
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -174,7 +174,7 @@ const AdminPreorder = () => {
   const handleCancelableById = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/preorder/cancelable/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder/cancelable/${id}`,
         {
           method: "PUT",
           headers: {
@@ -190,7 +190,7 @@ const AdminPreorder = () => {
 
       // Cập nhật lại danh sách đơn hàng sau khi thay đổi
       const updatedResponse = await fetch(
-        "http://localhost:8080/api/v1/admin/preorder",
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -212,7 +212,7 @@ const AdminPreorder = () => {
   const handleCompletePreorder = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/preorder/complete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder/complete/${id}`,
         {
           method: "POST", // Hoặc "PUT" nếu backend sử dụng `@PutMapping`
           headers: {
@@ -228,7 +228,7 @@ const AdminPreorder = () => {
 
       // Cập nhật lại danh sách đơn hàng sau khi hoàn thành
       const updatedResponse = await fetch(
-        "http://localhost:8080/api/v1/admin/preorder",
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -250,7 +250,7 @@ const AdminPreorder = () => {
   const handleExportExcel = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/v1/admin/preorder/total",
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder/total",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,

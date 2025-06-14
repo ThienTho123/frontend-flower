@@ -49,7 +49,7 @@ const VideoAccountDetail = () => {
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
         const response = await axios.get(
-          `http://localhost:8080/flowshort/${id}`,
+          `https://deploybackend-1ta9.onrender.com/flowshort/${id}`,
           { headers }
         );
         setAccount(response.data.account || {});
@@ -87,7 +87,7 @@ const VideoAccountDetail = () => {
   useEffect(() => {
     const handleScroll = async (e) => {
       // Chỉ cho phép cuộn nếu modal không mở
-    if (!isDataLoaded || !videoDTO || !videoDTO.video) return; // Đợi fetch xong
+      if (!isDataLoaded || !videoDTO || !videoDTO.video) return; // Đợi fetch xong
 
       try {
         const isNext = e.deltaY > 0;
@@ -96,7 +96,7 @@ const VideoAccountDetail = () => {
         console.log("accountID: ", accountid);
         const directionPath = isNext ? "next" : "prev";
         const response = await axios.get(
-          `http://localhost:8080/flowshort/account/${accountid}/video/${id}/${directionPath}`
+          `https://deploybackend-1ta9.onrender.com/flowshort/account/${accountid}/video/${id}/${directionPath}`
         );
         const nextVideoDTO = response.data;
         if (nextVideoDTO && nextVideoDTO.video.id) {
@@ -148,7 +148,9 @@ const VideoAccountDetail = () => {
 
   const handleVideoEnded = async () => {
     try {
-      await axios.get(`http://localhost:8080/flowshort/${id}/plusview`);
+      await axios.get(
+        `https://deploybackend-1ta9.onrender.com/flowshort/${id}/plusview`
+      );
       console.log("View count increased");
       const videoElement = videoRef.current;
       if (videoElement) {
@@ -243,7 +245,7 @@ const VideoAccountDetail = () => {
 
     try {
       await axios.post(
-        `http://localhost:8080/user/flowshort/video/${id}/like`,
+        `https://deploybackend-1ta9.onrender.com/user/flowshort/video/${id}/like`,
         {},
         {
           headers: {
@@ -277,7 +279,7 @@ const VideoAccountDetail = () => {
 
     try {
       await axios.post(
-        `http://localhost:8080/user/flowshort/comment/${commentId}/like`,
+        `https://deploybackend-1ta9.onrender.com/user/flowshort/comment/${commentId}/like`,
         {},
         {
           headers: {
@@ -340,8 +342,8 @@ const VideoAccountDetail = () => {
 
     try {
       const url = commentID
-        ? `http://localhost:8080/user/flowshort/comment/${commentID}/comment`
-        : `http://localhost:8080/user/flowshort/video/${videoDTO.video.id}/comment`;
+        ? `https://deploybackend-1ta9.onrender.com/user/flowshort/comment/${commentID}/comment`
+        : `https://deploybackend-1ta9.onrender.com/user/flowshort/video/${videoDTO.video.id}/comment`;
 
       await axios.post(url, commentText, {
         headers: {
@@ -408,7 +410,7 @@ const VideoAccountDetail = () => {
           return;
         }
         const response = await axios.delete(
-          `http://localhost:8080/user/flowshort/comment/${commentToDelete}/delete`,
+          `https://deploybackend-1ta9.onrender.com/user/flowshort/comment/${commentToDelete}/delete`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -436,7 +438,7 @@ const VideoAccountDetail = () => {
     const accessToken = localStorage.getItem("access_token");
     try {
       await axios.put(
-        `http://localhost:8080/user/flowshort/video/${videoId}/mute`,
+        `https://deploybackend-1ta9.onrender.com/user/flowshort/video/${videoId}/mute`,
         {},
         {
           headers: {
@@ -467,7 +469,7 @@ const VideoAccountDetail = () => {
     const accessToken = localStorage.getItem("access_token");
     try {
       await axios.delete(
-        `http://localhost:8080/user/flowshort/${videoToDelete}`,
+        `https://deploybackend-1ta9.onrender.com/user/flowshort/${videoToDelete}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -491,398 +493,411 @@ const VideoAccountDetail = () => {
       toast.remove();
     }, 3000);
   }
-   const handleBackToDashboard = () => {
+  const handleBackToDashboard = () => {
     navigate(`/soflowshort/${video.accountID.accountID}`);
   };
   return (
     <div className="video-page-container">
-          {/* Return Button */}
-          <img
-            src={returnIcon}
-            alt="Quay Lại"
-            className="video-return-button"
-            onClick={handleBackToDashboard}
-          />
-    <motion.div
-      key={id}
-      className={`video-detail-container ${
-        isCommentModalVisible ? "video-disabled" : ""
-      }`}
-      onClick={!isCommentModalVisible ? togglePlayPause : null}
-      initial={animationVariants[direction]}
-      animate={{ opacity: 1, y: 0 }}
-      exit={exitVariants[direction]}
-      transition={{ duration: 0.5, ease: "easeInOut" }}
-    >
-      {isVideo ? (
-        <video
-          ref={videoRef}
-          src={video.vid_url}
-          className="video-player"
-          autoPlay
-          playsInline
-          muted={isMuted}
-          onDoubleClick={handleLike}
-        />
-      ) : isImage ? (
-        <img
-          src={mediaUrl}
-          alt="Media"
-          className="image-player"
-          onDoubleClick={handleLike}
-        />
-      ) : (
-        <p>Unsupported media format</p>
-      )}
-      <div className="video-overlay-right" onClick={(e) => e.stopPropagation()}>
-        {(account.accountID === videoDTO.video.accountID.accountID ||
-          account.role === "admin" ||
-          account.role === "staff") && (
-          <div className="comment-options">
-            <button
-              className="action-btn"
-              title="Options"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowOptions((prev) => !prev);
-              }}
-            >
-              <MoreVertical size={24} />
-            </button>
-
-            {showOptions && (
-              <div className="comment-options-menu">
-                <button onClick={() => handleEditComment(videoDTO.video.id)}>
-                  Sửa
-                </button>
-                <button
-                  onClick={() => handleDisableComments(videoDTO.video.id)}
-                >
-                  {videoDTO.video.commentable === "NO"
-                    ? "Mở bình luận"
-                    : "Tắt bình luận"}
-                </button>
-                <button onClick={() => openDeleteModalVideo(videoDTO.video.id)}>
-                  Xóa
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {isVideo && (
-          <button
-            className="action-btn"
-            onClick={toggleMute}
-            title={isMuted ? "Unmute" : "Mute"}
-          >
-            {isMuted ? <VolumeX size={32} /> : <Volume2 size={32} />}
-          </button>
-        )}
-
-        <button
-          className={`action-btn ${videoDTO?.liked ? "liked" : ""}`}
-          title="Like"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleLike();
-          }}
-        >
-          <Heart size={32} color={videoDTO?.liked ? "hotpink" : "white"} />
-          <span>{video.likes}</span>
-        </button>
-
-        <button
-          className="action-btn"
-          title="Comments"
-          onClick={handleOpenComments}
-        >
-          <MessageCircle size={32} /> <span>{video.comments}</span>
-        </button>
-        <button
-          className="action-btn"
-          title="Share"
-          onClick={() => {
-            navigator.clipboard.writeText(window.location.href);
-            showCopyToast();
-          }}
-        >
-          <Share2 size={32} />
-        </button>
-      </div>
-      <Modal
-        title="Bình luận"
-        open={isCommentModalVisible}
-        onCancel={handleCloseComments}
-        footer={null}
-        width={400}
-        className="comment-modal"
+      {/* Return Button */}
+      <img
+        src={returnIcon}
+        alt="Quay Lại"
+        className="video-return-button"
+        onClick={handleBackToDashboard}
+      />
+      <motion.div
+        key={id}
+        className={`video-detail-container ${
+          isCommentModalVisible ? "video-disabled" : ""
+        }`}
+        onClick={!isCommentModalVisible ? togglePlayPause : null}
+        initial={animationVariants[direction]}
+        animate={{ opacity: 1, y: 0 }}
+        exit={exitVariants[direction]}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
       >
-        <div className="comment-container">
-          {/* Phần danh sách comment */}
-          <div className="comment-list">
-            {videoDTO?.videoCommentDTOS?.map((comment) => {
-              const hasReplies =
-                comment.childComment && comment.childComment.length > 0;
-              const showAll = expandedComments[comment.videoComment.id];
-              const repliesToShow = showAll
-                ? comment.childComment
-                : comment.childComment?.slice(0, 1);
-              const canDelete =
-                account.accountID ===
-                  comment.videoComment.accountID.accountID ||
-                account.role === "admin" ||
-                account.role === "staff";
-
-              return (
-                <div key={comment.videoComment.id} className="comment-item">
-                  <div className="comment-author">
-                    <img
-                      src={
-                        comment.videoComment.accountID?.avatar ||
-                        "https://via.placeholder.com/40"
-                      }
-                      alt={
-                        comment.videoComment.accountID?.name || "User avatar"
-                      }
-                      className="user-avatar"
-                    />
-                    <div className="author-info">
-                      <span className="author-name">
-                        {comment.videoComment.accountID?.name || "Unknown"}
-                      </span>
-                      <div className="comment-date">
-                        {formatTimeAgo(comment.videoComment.dateTime)}
-                      </div>
-                    </div>
-                  </div>
-                  <p className="comment-text">{comment.videoComment.comment}</p>
-                  <div className="comment-actions">
-                    <button
-                      className={`action-btn ${
-                        comment.likeComment ? "liked" : ""
-                      }`}
-                      title="Like"
-                      onClick={() => handleCommentLike(comment.videoComment.id)}
-                    >
-                      <Heart
-                        size={20}
-                        color={comment.likeComment ? "hotpink" : "gray"}
-                      />
-                    </button>
-                    <span className="like-count">
-                      {comment.videoComment.like ?? 0}
-                    </span>
-                    <button
-                      className="reply-btn"
-                      onClick={() => handleReplyClick(comment)}
-                    >
-                      Phản hồi
-                    </button>
-                    {canDelete && (
-                      <button
-                        className="delete-btn"
-                        onClick={() =>
-                          openDeleteConfirmModal(comment.videoComment.id)
-                        }
-                      >
-                        Xóa
-                      </button>
-                    )}
-                    {hasReplies && (
-                      <span
-                        className="reply-count"
-                        onClick={() => toggleReplies(comment.videoComment.id)}
-                        style={{ cursor: "pointer", color: "#555" }}
-                      >
-                        {showAll
-                          ? "Ẩn phản hồi"
-                          : `${comment.childComment.length} phản hồi`}
-                      </span>
-                    )}
-                  </div>
-
-                  {repliesToShow && repliesToShow.length > 0 && (
-                    <div className="comment-replies">
-                      {repliesToShow.map((reply) => {
-                        const canDeleteReply =
-                          account.accountID ===
-                            reply.videoComment.accountID.accountID ||
-                          account.role === "admin" ||
-                          account.role === "staff";
-
-                        return (
-                          <div
-                            key={reply.videoComment.id}
-                            className="reply-item"
-                          >
-                            <div className="reply-author">
-                              <img
-                                src={
-                                  reply.videoComment.accountID?.avatar ||
-                                  "https://via.placeholder.com/40"
-                                }
-                                alt={
-                                  reply.videoComment.accountID?.name ||
-                                  "User avatar"
-                                }
-                                className="user-avatar"
-                              />
-                              <div className="reply-author-info">
-                                <span className="reply-author-name">
-                                  {reply.videoComment.accountID?.name ||
-                                    "Unknown"}
-                                </span>
-                                <div className="reply-date">
-                                  {formatTimeAgo(comment.videoComment.dateTime)}
-                                </div>
-                              </div>
-                            </div>
-                            <p className="reply-text">
-                              {reply.videoComment.comment}
-                            </p>
-                            <div className="reply-actions">
-                              {/* Nút like cho comment con */}
-                              <button
-                                className={`action-btn ${
-                                  reply.likeComment ? "liked" : ""
-                                }`}
-                                title="Like"
-                                onClick={() =>
-                                  handleCommentLike(reply.videoComment.id)
-                                }
-                              >
-                                <Heart
-                                  size={20}
-                                  color={reply.likeComment ? "hotpink" : "gray"}
-                                />
-                              </button>
-                              <span className="reply-like-count">
-                                {reply.videoComment.like ?? 0}
-                              </span>
-
-                              {/* Nút phản hồi cho comment con */}
-                              <button
-                                className="reply-btn"
-                                onClick={() => handleReplyClick(reply)}
-                              >
-                                Phản hồi
-                              </button>
-
-                              {/* Nút xóa cho comment con */}
-                              {canDeleteReply && (
-                                <button
-                                  className="delete-btn"
-                                  onClick={() =>
-                                    openDeleteConfirmModal(
-                                      reply.videoComment.id
-                                    )
-                                  }
-                                >
-                                  Xóa
-                                </button>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Vùng nhập comment cố định */}
-          {videoDTO?.video?.commentable === "YES" && (
-            <div className="comment-input-container">
-              {replyTo && (
-                <span
-                  className="reply-to"
-                  onClick={() => {
-                    setCommentID(null);
-                    setReplyTo("");
-                    setCommentText(""); // Xóa nội dung khi hủy
-                  }}
-                >
-                  Đang trả lời <strong>{replyTo}</strong> (Nhấn để hủy)
-                </span>
-              )}
-              <textarea
-                value={commentText}
-                className="video-textarea"
-                onChange={(e) => {
-                  const text = e.target.value;
-                  setCommentText(text);
-
-                  // Tự động hủy reply nếu xóa tên
-                  if (replyTo && !text.startsWith(`@${replyTo} `)) {
-                    setCommentID(null);
-                    setReplyTo("");
-                  }
+        {isVideo ? (
+          <video
+            ref={videoRef}
+            src={video.vid_url}
+            className="video-player"
+            autoPlay
+            playsInline
+            muted={isMuted}
+            onDoubleClick={handleLike}
+          />
+        ) : isImage ? (
+          <img
+            src={mediaUrl}
+            alt="Media"
+            className="image-player"
+            onDoubleClick={handleLike}
+          />
+        ) : (
+          <p>Unsupported media format</p>
+        )}
+        <div
+          className="video-overlay-right"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {(account.accountID === videoDTO.video.accountID.accountID ||
+            account.role === "admin" ||
+            account.role === "staff") && (
+            <div className="comment-options">
+              <button
+                className="action-btn"
+                title="Options"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowOptions((prev) => !prev);
                 }}
-                placeholder="Nhập bình luận..."
-              />
-              <button className="send-btn" onClick={handleSendComment}>
-                Gửi
+              >
+                <MoreVertical size={24} />
               </button>
+
+              {showOptions && (
+                <div className="comment-options-menu">
+                  <button onClick={() => handleEditComment(videoDTO.video.id)}>
+                    Sửa
+                  </button>
+                  <button
+                    onClick={() => handleDisableComments(videoDTO.video.id)}
+                  >
+                    {videoDTO.video.commentable === "NO"
+                      ? "Mở bình luận"
+                      : "Tắt bình luận"}
+                  </button>
+                  <button
+                    onClick={() => openDeleteModalVideo(videoDTO.video.id)}
+                  >
+                    Xóa
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
-          {/* Modal xác nhận xóa bình luận */}
-          <Modal
-            title="Xác nhận xóa"
-            open={isDeleteModalVisible}
-            onCancel={handleCloseDeleteModal}
-            onOk={handleConfirmDelete}
-            className="modal-confirm-delete"
-            okText="Xóa"
-            cancelText="Hủy"
+          {isVideo && (
+            <button
+              className="action-btn"
+              onClick={toggleMute}
+              title={isMuted ? "Unmute" : "Mute"}
+            >
+              {isMuted ? <VolumeX size={32} /> : <Volume2 size={32} />}
+            </button>
+          )}
+
+          <button
+            className={`action-btn ${videoDTO?.liked ? "liked" : ""}`}
+            title="Like"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleLike();
+            }}
           >
-            Bạn có chắc chắn muốn xóa bình luận này không?
-          </Modal>
+            <Heart size={32} color={videoDTO?.liked ? "hotpink" : "white"} />
+            <span>{video.likes}</span>
+          </button>
+
+          <button
+            className="action-btn"
+            title="Comments"
+            onClick={handleOpenComments}
+          >
+            <MessageCircle size={32} /> <span>{video.comments}</span>
+          </button>
+          <button
+            className="action-btn"
+            title="Share"
+            onClick={() => {
+              navigator.clipboard.writeText(window.location.href);
+              showCopyToast();
+            }}
+          >
+            <Share2 size={32} />
+          </button>
         </div>
-      </Modal>
-      <Modal
-        title="Xác nhận xóa"
-        open={isDeleteModalVideoVisible}
-        onCancel={handleCloseDeleteModalVideo}
-        onOk={handleConfirmDeleteVideo}
-        className="modal-confirm-delete"
-        okText="Xóa"
-        cancelText="Hủy"
-      >
-        Bạn có chắc chắn muốn xóa bài này không?
-      </Modal>
-      {isCommentModalVisible && <div className="comment-overlay"></div>}
+        <Modal
+          title="Bình luận"
+          open={isCommentModalVisible}
+          onCancel={handleCloseComments}
+          footer={null}
+          width={400}
+          className="comment-modal"
+        >
+          <div className="comment-container">
+            {/* Phần danh sách comment */}
+            <div className="comment-list">
+              {videoDTO?.videoCommentDTOS?.map((comment) => {
+                const hasReplies =
+                  comment.childComment && comment.childComment.length > 0;
+                const showAll = expandedComments[comment.videoComment.id];
+                const repliesToShow = showAll
+                  ? comment.childComment
+                  : comment.childComment?.slice(0, 1);
+                const canDelete =
+                  account.accountID ===
+                    comment.videoComment.accountID.accountID ||
+                  account.role === "admin" ||
+                  account.role === "staff";
 
-      <div className="video-progress-container" onClick={handleSeek}>
-        <div
-          className="video-progress-bar"
-          style={{ width: `${progress}%` }}
-        ></div>
-      </div>
+                return (
+                  <div key={comment.videoComment.id} className="comment-item">
+                    <div className="comment-author">
+                      <img
+                        src={
+                          comment.videoComment.accountID?.avatar ||
+                          "https://via.placeholder.com/40"
+                        }
+                        alt={
+                          comment.videoComment.accountID?.name || "User avatar"
+                        }
+                        className="user-avatar"
+                      />
+                      <div className="author-info">
+                        <span className="author-name">
+                          {comment.videoComment.accountID?.name || "Unknown"}
+                        </span>
+                        <div className="comment-date">
+                          {formatTimeAgo(comment.videoComment.dateTime)}
+                        </div>
+                      </div>
+                    </div>
+                    <p className="comment-text">
+                      {comment.videoComment.comment}
+                    </p>
+                    <div className="comment-actions">
+                      <button
+                        className={`action-btn ${
+                          comment.likeComment ? "liked" : ""
+                        }`}
+                        title="Like"
+                        onClick={() =>
+                          handleCommentLike(comment.videoComment.id)
+                        }
+                      >
+                        <Heart
+                          size={20}
+                          color={comment.likeComment ? "hotpink" : "gray"}
+                        />
+                      </button>
+                      <span className="like-count">
+                        {comment.videoComment.like ?? 0}
+                      </span>
+                      <button
+                        className="reply-btn"
+                        onClick={() => handleReplyClick(comment)}
+                      >
+                        Phản hồi
+                      </button>
+                      {canDelete && (
+                        <button
+                          className="delete-btn"
+                          onClick={() =>
+                            openDeleteConfirmModal(comment.videoComment.id)
+                          }
+                        >
+                          Xóa
+                        </button>
+                      )}
+                      {hasReplies && (
+                        <span
+                          className="reply-count"
+                          onClick={() => toggleReplies(comment.videoComment.id)}
+                          style={{ cursor: "pointer", color: "#555" }}
+                        >
+                          {showAll
+                            ? "Ẩn phản hồi"
+                            : `${comment.childComment.length} phản hồi`}
+                        </span>
+                      )}
+                    </div>
 
-      <div className="video-caption" onClick={(e) => e.stopPropagation()}>
-        <div className="user-info">
-          <img
-            src={video.accountID.avatar || "https://via.placeholder.com/40"}
-            alt={video.accountID.name || "User avatar"}
-            className="user-avatar"
-          />
-          <div className="user-info-name">
-           <Link
+                    {repliesToShow && repliesToShow.length > 0 && (
+                      <div className="comment-replies">
+                        {repliesToShow.map((reply) => {
+                          const canDeleteReply =
+                            account.accountID ===
+                              reply.videoComment.accountID.accountID ||
+                            account.role === "admin" ||
+                            account.role === "staff";
+
+                          return (
+                            <div
+                              key={reply.videoComment.id}
+                              className="reply-item"
+                            >
+                              <div className="reply-author">
+                                <img
+                                  src={
+                                    reply.videoComment.accountID?.avatar ||
+                                    "https://via.placeholder.com/40"
+                                  }
+                                  alt={
+                                    reply.videoComment.accountID?.name ||
+                                    "User avatar"
+                                  }
+                                  className="user-avatar"
+                                />
+                                <div className="reply-author-info">
+                                  <span className="reply-author-name">
+                                    {reply.videoComment.accountID?.name ||
+                                      "Unknown"}
+                                  </span>
+                                  <div className="reply-date">
+                                    {formatTimeAgo(
+                                      comment.videoComment.dateTime
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                              <p className="reply-text">
+                                {reply.videoComment.comment}
+                              </p>
+                              <div className="reply-actions">
+                                {/* Nút like cho comment con */}
+                                <button
+                                  className={`action-btn ${
+                                    reply.likeComment ? "liked" : ""
+                                  }`}
+                                  title="Like"
+                                  onClick={() =>
+                                    handleCommentLike(reply.videoComment.id)
+                                  }
+                                >
+                                  <Heart
+                                    size={20}
+                                    color={
+                                      reply.likeComment ? "hotpink" : "gray"
+                                    }
+                                  />
+                                </button>
+                                <span className="reply-like-count">
+                                  {reply.videoComment.like ?? 0}
+                                </span>
+
+                                {/* Nút phản hồi cho comment con */}
+                                <button
+                                  className="reply-btn"
+                                  onClick={() => handleReplyClick(reply)}
+                                >
+                                  Phản hồi
+                                </button>
+
+                                {/* Nút xóa cho comment con */}
+                                {canDeleteReply && (
+                                  <button
+                                    className="delete-btn"
+                                    onClick={() =>
+                                      openDeleteConfirmModal(
+                                        reply.videoComment.id
+                                      )
+                                    }
+                                  >
+                                    Xóa
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Vùng nhập comment cố định */}
+            {videoDTO?.video?.commentable === "YES" && (
+              <div className="comment-input-container">
+                {replyTo && (
+                  <span
+                    className="reply-to"
+                    onClick={() => {
+                      setCommentID(null);
+                      setReplyTo("");
+                      setCommentText(""); // Xóa nội dung khi hủy
+                    }}
+                  >
+                    Đang trả lời <strong>{replyTo}</strong> (Nhấn để hủy)
+                  </span>
+                )}
+                <textarea
+                  value={commentText}
+                  className="video-textarea"
+                  onChange={(e) => {
+                    const text = e.target.value;
+                    setCommentText(text);
+
+                    // Tự động hủy reply nếu xóa tên
+                    if (replyTo && !text.startsWith(`@${replyTo} `)) {
+                      setCommentID(null);
+                      setReplyTo("");
+                    }
+                  }}
+                  placeholder="Nhập bình luận..."
+                />
+                <button className="send-btn" onClick={handleSendComment}>
+                  Gửi
+                </button>
+              </div>
+            )}
+
+            {/* Modal xác nhận xóa bình luận */}
+            <Modal
+              title="Xác nhận xóa"
+              open={isDeleteModalVisible}
+              onCancel={handleCloseDeleteModal}
+              onOk={handleConfirmDelete}
+              className="modal-confirm-delete"
+              okText="Xóa"
+              cancelText="Hủy"
+            >
+              Bạn có chắc chắn muốn xóa bình luận này không?
+            </Modal>
+          </div>
+        </Modal>
+        <Modal
+          title="Xác nhận xóa"
+          open={isDeleteModalVideoVisible}
+          onCancel={handleCloseDeleteModalVideo}
+          onOk={handleConfirmDeleteVideo}
+          className="modal-confirm-delete"
+          okText="Xóa"
+          cancelText="Hủy"
+        >
+          Bạn có chắc chắn muốn xóa bài này không?
+        </Modal>
+        {isCommentModalVisible && <div className="comment-overlay"></div>}
+
+        <div className="video-progress-container" onClick={handleSeek}>
+          <div
+            className="video-progress-bar"
+            style={{ width: `${progress}%` }}
+          ></div>
+        </div>
+
+        <div className="video-caption" onClick={(e) => e.stopPropagation()}>
+          <div className="user-info">
+            <img
+              src={video.accountID.avatar || "https://via.placeholder.com/40"}
+              alt={video.accountID.name || "User avatar"}
+              className="user-avatar"
+            />
+            <div className="user-info-name">
+              <Link
                 to={`/soflowshort/${video.accountID.accountID}`}
                 className="user-name"
               >
                 {video.accountID.name || "unknown"}
               </Link>
-            <div className="reply-date">{formatTimeAgo(video.date)}</div>
+              <div className="reply-date">{formatTimeAgo(video.date)}</div>
+            </div>
           </div>
+          <p className="caption-text">{video.description}</p>
         </div>
-        <p className="caption-text">{video.description}</p>
-      </div>
-    </motion.div>
+      </motion.div>
     </div>
   );
 };

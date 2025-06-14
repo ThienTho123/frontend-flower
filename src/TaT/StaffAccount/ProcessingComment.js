@@ -13,16 +13,16 @@ const ProcessingComment = () => {
   const access_token = localStorage.getItem("access_token");
   const translateCondition = (stative) => {
     const translations = {
-      "Waiting": "Đang chờ xử lý",
-      "Processing": "Đang xử lý",
-      "Complete": "Đã hoàn thành",
+      Waiting: "Đang chờ xử lý",
+      Processing: "Đang xử lý",
+      Complete: "Đã hoàn thành",
     };
     return translations[stative] || stative;
   };
   const getCommentInfo = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/staffaccount/commentprocess",
+        "https://deploybackend-1ta9.onrender.com/staffaccount/commentprocess",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,

@@ -23,7 +23,7 @@ const AdminEditBlogForm = () => {
   useEffect(() => {
     // Lấy danh sách hoa
     axios
-      .get("http://localhost:8080/flower")
+      .get("https://deploybackend-1ta9.onrender.com/flower")
       .then((response) => setFlowers(response.data.flowers))
       .catch((error) => console.error("Error fetching flowers:", error));
   }, []);
@@ -32,7 +32,7 @@ const AdminEditBlogForm = () => {
     // Lấy dữ liệu blog từ backend
     const accessToken = localStorage.getItem("access_token");
     axios
-      .get(`http://localhost:8080/api/v1/admin/blog/${id}`, {
+      .get(`https://deploybackend-1ta9.onrender.com/api/v1/admin/blog/${id}`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
@@ -60,7 +60,7 @@ const AdminEditBlogForm = () => {
 
       try {
         const response = await axios.post(
-          "http://localhost:8080/api/v1/upload",
+          "https://deploybackend-1ta9.onrender.com/api/v1/upload",
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
@@ -139,9 +139,13 @@ const AdminEditBlogForm = () => {
     console.log("Dữ liệu trước khi submit:", updatedBlog); // Kiểm tra dữ liệu blog
 
     axios
-      .put(`http://localhost:8080/api/v1/admin/blog/${id}`, updatedBlog, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
+      .put(
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/blog/${id}`,
+        updatedBlog,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      )
       .then((response) => {
         console.log("Cập nhật thành công:", response.data);
       })
@@ -263,7 +267,6 @@ const AdminEditBlogForm = () => {
       <button onClick={handleSubmit} className="blog-form-submit-button">
         Cập nhật Blog
       </button>
-
 
       {isModalOpen && (
         <div className="create-blog-modal">

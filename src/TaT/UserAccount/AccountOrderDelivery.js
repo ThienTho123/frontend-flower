@@ -26,11 +26,14 @@ const AccountOrderDelivery = () => {
 
   const getHistoryOrder = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/userorde", {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
+      const response = await axios.get(
+        "https://deploybackend-1ta9.onrender.com/userorde",
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
 
       const rawOrder = response.data?.orderDeliveryDTOS || [];
       console.log(rawOrder);
@@ -54,7 +57,7 @@ const AccountOrderDelivery = () => {
           ? item.orDeCondition.replaceAll("_", " ")
           : "Đang chờ xử lý",
       }));
-      
+
       setOrderHistory(updatedOrder);
     } catch (error) {
       console.error("Error fetching purchase history:", error);
@@ -70,7 +73,7 @@ const AccountOrderDelivery = () => {
     setShowConfirm(false);
     try {
       const response = await axios.post(
-        `http://localhost:8080/userorde/${selectedOrderId}/cancel`,
+        `https://deploybackend-1ta9.onrender.com/userorde/${selectedOrderId}/cancel`,
         {
           // Thêm các trường trong RefundRequest nếu cần, ví dụ:
           reason: "Người dùng yêu cầu huỷ đơn",
@@ -138,7 +141,8 @@ const AccountOrderDelivery = () => {
                 <td>{translateCondition(order.orDeCondition)}</td>
                 <td>{order.total}</td>
                 <td>
-                  {order.orDeCondition === "REFUND"  || order.orDeCondition === "REFUND IS WAITING" ?(
+                  {order.orDeCondition === "REFUND" ||
+                  order.orDeCondition === "REFUND IS WAITING" ? (
                     <button
                       className="cancel-btn"
                       onClick={() =>

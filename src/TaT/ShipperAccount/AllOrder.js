@@ -13,35 +13,35 @@ const AllOrder = () => {
   const access_token = localStorage.getItem("access_token");
   const translateCondition = (condition) => {
     const translations = {
-      "Cancel_is_Processing": "Hủy đang xử lý",
-      "Cancelled": "Đã hủy",
-      "In_Transit": "Đang vận chuyển",
-      "Shipper_Delivering": "Shipper đang giao hàng",
-      "First_Attempt_Failed": "Lần giao hàng đầu tiên thất bại",
-      "Second_Attempt_Failed": "Lần giao hàng thứ hai thất bại",
-      "Third_Attempt_Failed": "Lần giao hàng thứ ba thất bại",
-      "Delivered_Successfully": "Giao hàng thành công",
-      "Return_to_shop": "Trả về cửa hàng",
-      "Pending": "Đang chờ xử lý",
-      "Processing": "Đang xử lý",
-      "Prepare": "Chuẩn bị",
+      Cancel_is_Processing: "Hủy đang xử lý",
+      Cancelled: "Đã hủy",
+      In_Transit: "Đang vận chuyển",
+      Shipper_Delivering: "Shipper đang giao hàng",
+      First_Attempt_Failed: "Lần giao hàng đầu tiên thất bại",
+      Second_Attempt_Failed: "Lần giao hàng thứ hai thất bại",
+      Third_Attempt_Failed: "Lần giao hàng thứ ba thất bại",
+      Delivered_Successfully: "Giao hàng thành công",
+      Return_to_shop: "Trả về cửa hàng",
+      Pending: "Đang chờ xử lý",
+      Processing: "Đang xử lý",
+      Prepare: "Chuẩn bị",
     };
     return translations[condition] || condition;
   };
   const getCommentInfo = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/shipper",
+        "https://deploybackend-1ta9.onrender.com/shipper",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
         }
       );
-  
+
       // Kiểm tra nếu orderList không tồn tại
       const rawComment = response.data?.orderList || [];
-      console.log ("rawComment", rawComment);
+      console.log("rawComment", rawComment);
       const updatedComment = rawComment.map((item, index) => ({
         stt: index + 1,
         id: item.orderID,
@@ -53,16 +53,15 @@ const AllOrder = () => {
         phoneNumber: item.phoneNumber,
         deliveryAddress: item.deliveryAddress,
         totalAmount: item.totalAmount,
-        orderDetails:item.orderDetails,
-        status:item.status
+        orderDetails: item.orderDetails,
+        status: item.status,
       }));
-  
+
       setComments(updatedComment);
     } catch (error) {
       console.error("Error fetching comments:", error);
     }
   };
-  
 
   useEffect(() => {
     getCommentInfo();
@@ -85,7 +84,6 @@ const AllOrder = () => {
                 <th>Địa chỉ</th>
                 <th>Trạng thái</th>
                 <th>Chi tiết</th>
-
               </tr>
             </thead>
             <tbody>

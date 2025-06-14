@@ -17,11 +17,14 @@ const PurchaseHistory = () => {
 
   const getPurchaseHistory = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/account/bought", {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
+      const response = await axios.get(
+        "https://deploybackend-1ta9.onrender.com/account/bought",
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
 
       console.log("Dữ liệu nhận được từ API:", response.data);
 
@@ -59,7 +62,7 @@ const PurchaseHistory = () => {
       }
 
       await axios.post(
-        "http://localhost:8080/review",
+        "https://deploybackend-1ta9.onrender.com/review",
         {
           flower: { flowerID: selectedProductId },
           comment,
@@ -87,7 +90,7 @@ const PurchaseHistory = () => {
       }
 
       await axios.post(
-        "http://localhost:8080/review",
+        "https://deploybackend-1ta9.onrender.com/review",
         {
           flower: { flowerID: selectedProductId },
           comment,
@@ -113,7 +116,7 @@ const PurchaseHistory = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/upload",
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
         formData,
         {
           headers: {
@@ -160,11 +163,14 @@ const PurchaseHistory = () => {
 
   const handleDeleteReview = async (reviewId) => {
     try {
-      await axios.delete(`http://localhost:8080/review/${reviewId}`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
+      await axios.delete(
+        `https://deploybackend-1ta9.onrender.com/review/${reviewId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
       getPurchaseHistory();
       handleModalClose();
     } catch (error) {

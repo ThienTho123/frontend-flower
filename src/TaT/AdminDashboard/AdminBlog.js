@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import returnIcon from "../StaffDashboard/ImageDashboard/return-button.png";
-import plus from "../StaffDashboard/ImageDashboard/plus.png"
+import plus from "../StaffDashboard/ImageDashboard/plus.png";
 const AdminBlog = () => {
   const [blogs, setBlogs] = useState([]);
   const [editingOrderId, setEditingOrderId] = useState(null);
@@ -44,7 +44,7 @@ const AdminBlog = () => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/v1/admin/blog",
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/blog",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -80,7 +80,7 @@ const AdminBlog = () => {
   const handleSoftDelete = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/order/softdelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/order/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -105,7 +105,7 @@ const AdminBlog = () => {
   const handleToggleStatus = async (id, currentStatus) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8080/api/v1/admin/blog/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/blog/${id}`,
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -117,7 +117,10 @@ const AdminBlog = () => {
         setBlogs((prevBlogs) =>
           prevBlogs.map((blog) =>
             blog.blogid === id
-              ? { ...blog, status: currentStatus === "ENABLE" ? "DISABLE" : "ENABLE" }
+              ? {
+                  ...blog,
+                  status: currentStatus === "ENABLE" ? "DISABLE" : "ENABLE",
+                }
               : blog
           )
         );
@@ -190,18 +193,27 @@ const AdminBlog = () => {
                   <td>{order.date}</td>
                   <td>{order.status}</td>
                   <td>
-                  <Link to={`/shop-blog/${order.blogid}`}>
-                    <button>Chỉnh Sửa</button>
-                  </Link>                  {order.status === "ENABLE" ? (
-                    <button onClick={() => handleToggleStatus(order.blogid, order.status)}>
-                      Xóa
-                    </button>
-                  ) : (
-                    <button onClick={() => handleToggleStatus(order.blogid, order.status)}>
-                      Hoàn tác
-                    </button>
-                  )}
-                </td>
+                    <Link to={`/shop-blog/${order.blogid}`}>
+                      <button>Chỉnh Sửa</button>
+                    </Link>{" "}
+                    {order.status === "ENABLE" ? (
+                      <button
+                        onClick={() =>
+                          handleToggleStatus(order.blogid, order.status)
+                        }
+                      >
+                        Xóa
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() =>
+                          handleToggleStatus(order.blogid, order.status)
+                        }
+                      >
+                        Hoàn tác
+                      </button>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>

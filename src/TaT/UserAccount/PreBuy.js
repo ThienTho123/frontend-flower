@@ -5,7 +5,7 @@ import payment from "./Image/payment.png";
 import vnpay from "./Image/vnpay.jpg";
 import deleteicon from "./Image/deleteicon.png";
 import Modal from "react-modal";
-import axios from 'axios';
+import axios from "axios";
 
 const PreBuy = () => {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const PreBuy = () => {
   const [appliedDiscountData, setAppliedDiscountData] = useState(null);
   useEffect(() => {
     if (accesstoken) {
-      fetch("http://localhost:8080/prebuy", {
+      fetch("https://deploybackend-1ta9.onrender.com/prebuy", {
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
@@ -101,7 +101,7 @@ const PreBuy = () => {
 
   useEffect(() => {
     if (accesstoken) {
-      fetch("http://localhost:8080/prebuy", {
+      fetch("https://deploybackend-1ta9.onrender.com/prebuy", {
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
@@ -230,7 +230,7 @@ const PreBuy = () => {
       size: size.trim(),
     };
 
-    fetch(`http://localhost:8080/prebuy/${cartID}`, {
+    fetch(`https://deploybackend-1ta9.onrender.com/prebuy/${cartID}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${accesstoken}`,
@@ -270,7 +270,7 @@ const PreBuy = () => {
   const handleDelete = () => {
     if (!selectedCartID) return;
 
-    fetch(`http://localhost:8080/prebuy/${selectedCartID}`, {
+    fetch(`https://deploybackend-1ta9.onrender.com/prebuy/${selectedCartID}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${accesstoken}`,
@@ -300,7 +300,10 @@ const PreBuy = () => {
     }));
   };
   const calculateItemPrice = (item) => {
-    const price = item.productPriceEvent !== null ? item.productPriceEvent : item.productPrice; 
+    const price =
+      item.productPriceEvent !== null
+        ? item.productPriceEvent
+        : item.productPrice;
     let basePrice = price * item.number;
     if (cartType === "cartpreorder" && paymentOptions[item.cartID] === "half") {
       return basePrice * 0.5; // Chỉ tính 50% giá trị
@@ -330,12 +333,15 @@ const PreBuy = () => {
     return appliedDiscount; // Sử dụng giá trị giảm giá đã áp dụng
   };
   const deleteDiscount = (discountID) => {
-    fetch(`http://localhost:8080/api/v1/admin/discount/${discountID}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${accesstoken}`,
-      },
-    })
+    fetch(
+      `https://deploybackend-1ta9.onrender.com/api/v1/admin/discount/${discountID}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error("Could not delete discount.");
@@ -419,13 +425,17 @@ const PreBuy = () => {
     return `<span>${item.productPrice.toLocaleString("vi-VN")} VND</span>`;
     if (item.productPriceEvent !== null) {
       return `
-        <span style='text-decoration: line-through; color: gray;'>${item.productPrice.toLocaleString("vi-VN")} VND</span>
-        <span style='color: red; font-weight: bold; margin-left: 8px;'>${item.productPriceEvent.toLocaleString("vi-VN")} VND</span>
+        <span style='text-decoration: line-through; color: gray;'>${item.productPrice.toLocaleString(
+          "vi-VN"
+        )} VND</span>
+        <span style='color: red; font-weight: bold; margin-left: 8px;'>${item.productPriceEvent.toLocaleString(
+          "vi-VN"
+        )} VND</span>
       `;
     }
     return `<span>${item.productPrice.toLocaleString("vi-VN")} VND</span>`;
   };
-  
+
   const handleBuy = () => {
     // Kiểm tra lỗi tổng thể
     if (Object.keys(errorMessages).length > 0) {
@@ -434,20 +444,20 @@ const PreBuy = () => {
       );
       return;
     }
-  
+
     // Kiểm tra nếu không có sản phẩm được chọn
     const selectedItems = cartItems.filter((item) => item.selected);
     if (selectedItems.length === 0) {
       setError("Vui lòng chọn ít nhất một sản phẩm để mua.");
       return;
     }
-  
+
     // Kiểm tra thông tin người mua (buyInfo)
     if (!buyInfo.name || buyInfo.name.trim().length < 2) {
       setError("Vui lòng nhập tên người nhận hợp lệ (tối thiểu 3 ký tự).");
       return;
     }
-  
+
     if (!buyInfo.phone || !/^\d{8,}$/.test(buyInfo.phone)) {
       setError("Vui lòng nhập số điện thoại hợp lệ (tối thiểu 8 chữ số).");
       return;
@@ -456,13 +466,13 @@ const PreBuy = () => {
       setError("Vui lòng nhập địa chỉ giao hàng hợp lệ (tối thiểu 3 ký tự).");
       return;
     }
-  
+
     // Kiểm tra thông tin giảm giá
     const selectedDiscountObj = discounts.find(
       (discount) => discount.discountID === selectedDiscount
     );
     const discountPercent = selectedDiscountObj?.discountPercent || 0;
-  
+
     // Chuẩn bị dữ liệu thanh toán
     const cartIDs = selectedItems.map((item) => item.cartID);
     const prices = selectedItems.map(
@@ -475,32 +485,32 @@ const PreBuy = () => {
         ? prices[index] * 0.5 // Trả trước 50%
         : prices[index]; // Trả trước toàn bộ
     });
-  
+
     const buyInfoBody = {
       name: buyInfo.name,
       address: buyInfo.address,
       phone: buyInfo.phone,
       note: buyInfo.note,
     };
-  
+
     // Chuẩn bị URL query parameters
     const params = new URLSearchParams();
     cartIDs.forEach((id, index) => {
       params.append("cartID", id);
       params.append("price", prices[index]);
-      params.append("paid", paids[index]); 
+      params.append("paid", paids[index]);
     });
-    
+
     // Luôn thêm tham số discount, sử dụng giá trị 0 nếu không có discount được chọn
     if (selectedDiscount !== null && selectedDiscount !== undefined) {
       params.append("discount", selectedDiscount);
     }
-        
-    const url = `http://localhost:8080/prebuy/buy?${params.toString()}`;
-  
+
+    const url = `https://deploybackend-1ta9.onrender.com/prebuy/buy?${params.toString()}`;
+
     console.log("POST URL:", url);
     console.log("Body JSON gửi đến API:", buyInfoBody);
-  
+
     // Thực hiện giao dịch
     fetch(url, {
       method: "POST",
@@ -541,20 +551,20 @@ const PreBuy = () => {
       );
       return;
     }
-  
+
     // Kiểm tra nếu không có sản phẩm được chọn
     const selectedItems = cartItems.filter((item) => item.selected);
     if (selectedItems.length === 0) {
       setError("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
       return;
     }
-  
+
     // Kiểm tra thông tin người mua (buyInfo)
     if (!buyInfo.name || buyInfo.name.trim().length < 2) {
       setError("Vui lòng nhập tên người nhận hợp lệ (tối thiểu 3 ký tự).");
       return;
     }
-  
+
     if (!buyInfo.phone || !/^\d{8,}$/.test(buyInfo.phone)) {
       setError("Vui lòng nhập số điện thoại hợp lệ (tối thiểu 8 chữ số).");
       return;
@@ -563,18 +573,21 @@ const PreBuy = () => {
       setError("Vui lòng nhập địa chỉ giao hàng hợp lệ (tối thiểu 3 ký tự).");
       return;
     }
-  
+
     // Kiểm tra thông tin giảm giá
     const selectedDiscountObj = discounts.find(
       (discount) => discount.discountID === selectedDiscount
     );
     const discountPercent = selectedDiscountObj?.discountPercent ?? null;
-  
+
     // Chuẩn bị dữ liệu thanh toán
     const cartIDs = selectedItems.map((item) => item.cartID);
     const quantities = selectedItems.map((item) => item.number);
     const prices = selectedItems.map((item) => {
-      const basePrice = item.productPriceEvent !== null ? item.productPriceEvent : item.productPrice;
+      const basePrice =
+        item.productPriceEvent !== null
+          ? item.productPriceEvent
+          : item.productPrice;
       const totalPrice = basePrice * item.number;
       const discountedPrice = totalPrice * (1 - discountPercent / 100);
       return Math.max(discountedPrice, 0);
@@ -589,7 +602,7 @@ const PreBuy = () => {
           : prices[index];
       }
     });
-    
+
     // Kiểm tra giá trị giỏ hàng
     if (quantities.some((quantity) => quantity <= 0)) {
       setError("Số lượng sản phẩm phải lớn hơn 0.");
@@ -599,7 +612,7 @@ const PreBuy = () => {
       setError("Tổng giá sản phẩm phải lớn hơn 0.");
       return;
     }
-  
+
     // Chuẩn bị thông tin người mua
     const buyInfoBody = {
       name: buyInfo.name,
@@ -607,22 +620,28 @@ const PreBuy = () => {
       phone: buyInfo.phone,
       note: buyInfo.note,
     };
-  
+
     // Tạo URL với discount=1 mặc định nếu không có discount
-    let baseUrl = "http://localhost:8080/setCart?";
-    const cartParams = cartIDs.map((id, index) => 
-      `cartID=${encodeURIComponent(id)}&quantities=${encodeURIComponent(quantities[index])}&price=${encodeURIComponent(prices[index])}&paid=${encodeURIComponent(paids[index])}`
-    ).join("&");
-    
+    let baseUrl = "https://deploybackend-1ta9.onrender.com/setCart?";
+    const cartParams = cartIDs
+      .map(
+        (id, index) =>
+          `cartID=${encodeURIComponent(id)}&quantities=${encodeURIComponent(
+            quantities[index]
+          )}&price=${encodeURIComponent(
+            prices[index]
+          )}&paid=${encodeURIComponent(paids[index])}`
+      )
+      .join("&");
+
     let finalUrl = `${baseUrl}${cartParams}`;
     if (selectedDiscount !== null && selectedDiscount !== undefined) {
       finalUrl += `&discount=${encodeURIComponent(selectedDiscount)}`;
     }
-    
-    
+
     console.log("URL thanh toán:", finalUrl);
     console.log("Thông tin người mua:", buyInfoBody);
-  
+
     // Thực hiện các bước gửi dữ liệu và thanh toán
     fetch(finalUrl, {
       method: "POST",
@@ -634,7 +653,7 @@ const PreBuy = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          return response.text().then(text => {
+          return response.text().then((text) => {
             console.error("API Error:", text);
             throw new Error(`Không thể cập nhật giỏ hàng: ${text}`);
           });
@@ -644,16 +663,19 @@ const PreBuy = () => {
       .then(() => {
         const totalPayment = prices.reduce((sum, price) => sum + price, 0);
         console.log("Tổng thanh toán (đã giảm giá):", totalPayment);
-        return fetch(`http://localhost:8080/pay?totalPayment=${totalPayment}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-        });
+        return fetch(
+          `https://deploybackend-1ta9.onrender.com/pay?totalPayment=${totalPayment}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+          }
+        );
       })
       .then((response) => {
         if (!response.ok) {
-          return response.text().then(text => {
+          return response.text().then((text) => {
             console.error("Payment API Error:", text);
             throw new Error(`Không thể khởi tạo thanh toán: ${text}`);
           });
@@ -683,27 +705,27 @@ const PreBuy = () => {
       setError("Vui lòng chọn mã giảm giá.");
       return;
     }
-  
+
     const selectedDiscountObj = discounts.find(
       (discount) => discount.discountID === selectedDiscount
     );
-  
+
     if (!selectedDiscountObj) {
       setError("Mã giảm giá không hợp lệ.");
       return;
     }
-  
+
     // Hiển thị thông tin giảm giá đã chọn
     setAppliedDiscountData(selectedDiscountObj);
-    
+
     // Tính toán giá trị giảm giá
     const totalPrice = calculateTotalPrice();
-    const discountAmount = totalPrice * (selectedDiscountObj.discountPercent / 100);
-    
+    const discountAmount =
+      totalPrice * (selectedDiscountObj.discountPercent / 100);
+
     setAppliedDiscount(discountAmount);
     setError(null);
   };
-  
 
   const handleDiscountChange = (event) => {
     setSelectedDiscount(Number(event.target.value));
@@ -727,8 +749,8 @@ const PreBuy = () => {
       setError("Vui lòng nhập mã giảm giá.");
       return;
     }
-  
-    fetch("http://localhost:8080/prebuy/checkDiscount", {
+
+    fetch("https://deploybackend-1ta9.onrender.com/prebuy/checkDiscount", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -748,7 +770,8 @@ const PreBuy = () => {
         if (data.detailDiscount) {
           setAppliedDiscountData(data.detailDiscount);
           const totalPrice = calculateTotalPrice();
-          const discountAmount = totalPrice * (data.detailDiscount.discountPercent / 100);
+          const discountAmount =
+            totalPrice * (data.detailDiscount.discountPercent / 100);
           setAppliedDiscount(discountAmount);
           setSelectedDiscount(data.detailDiscount.discountID);
           setError(null);
@@ -761,69 +784,78 @@ const PreBuy = () => {
       });
   };
   // Trong component PreBuy
-const handleOrderDeliveryClick = () => {
-  const accessToken = localStorage.getItem("access_token");
-  if (!accessToken) {
-    alert("Vui lòng đăng nhập để sử dụng chức năng này");
-    navigate("/login");
-  } else {
-    // Trước tiên gọi API /order để kiểm tra quyền và nhận URL điều hướng
-    fetch("http://localhost:8080/order", {
-      headers: {
-        "Account-ID": localStorage.getItem("user_id") || "",
-        "Authorization": `Bearer ${accessToken}`
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.redirectUrl) {
-        window.location.href = data.redirectUrl; // Sử dụng window.location thay vì navigate
-      }
-    })
-    .catch(error => {
-      console.error("Error checking order permission:", error);
-      alert("Có lỗi xảy ra khi kiểm tra quyền truy cập");
-    });
-  }
-};
+  const handleOrderDeliveryClick = () => {
+    const accessToken = localStorage.getItem("access_token");
+    if (!accessToken) {
+      alert("Vui lòng đăng nhập để sử dụng chức năng này");
+      navigate("/login");
+    } else {
+      // Trước tiên gọi API /order để kiểm tra quyền và nhận URL điều hướng
+      fetch("https://deploybackend-1ta9.onrender.com/order", {
+        headers: {
+          "Account-ID": localStorage.getItem("user_id") || "",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.redirectUrl) {
+            window.location.href = data.redirectUrl; // Sử dụng window.location thay vì navigate
+          }
+        })
+        .catch((error) => {
+          console.error("Error checking order permission:", error);
+          alert("Có lỗi xảy ra khi kiểm tra quyền truy cập");
+        });
+    }
+  };
   return (
     <div className="prebuy-container">
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-      <h2 className="prebuy-h2">
-        Giỏ hoa của bạn: <span>({cartItems.length} bó hoa)</span>
-      </h2>
-      <button 
-  onClick={async () => {
-    try {
-      const accountId = localStorage.getItem("accountID");
-      const accessToken = localStorage.getItem("access_token");
-      
-      const response = await axios.get("http://localhost:8080/order", {
-        headers: {
-          "Account-ID": accountId,
-          "Authorization": `Bearer ${accessToken}`
-        },
-        withCredentials: true,
-      });
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <h2 className="prebuy-h2">
+          Giỏ hoa của bạn: <span>({cartItems.length} bó hoa)</span>
+        </h2>
+        <button
+          onClick={async () => {
+            try {
+              const accountId = localStorage.getItem("accountID");
+              const accessToken = localStorage.getItem("access_token");
 
-      if (response.data.redirectUrl) {
-        window.location.href = response.data.redirectUrl;
-      }
-    } catch (error) {
-      console.log("Không thể xử lý yêu cầu:", error);
-      // Nếu gặp lỗi 403, có thể chuyển hướng người dùng đến trang đăng nhập
-      if (error.response && error.response.status === 403) {
-        alert("Vui lòng đăng nhập để sử dụng chức năng này");
-        window.location.href = "http://localhost:8000/login";
-      }
-    }
-  }} 
-  className="schedule-delivery-button"
->
-  <i className="fa fa-calendar" style={{ marginRight: "5px" }}></i>
-  Đặt hoa theo lịch
-</button>
-    </div>
+              const response = await axios.get(
+                "https://deploybackend-1ta9.onrender.com/order",
+                {
+                  headers: {
+                    "Account-ID": accountId,
+                    Authorization: `Bearer ${accessToken}`,
+                  },
+                  withCredentials: true,
+                }
+              );
+
+              if (response.data.redirectUrl) {
+                window.location.href = response.data.redirectUrl;
+              }
+            } catch (error) {
+              console.log("Không thể xử lý yêu cầu:", error);
+              // Nếu gặp lỗi 403, có thể chuyển hướng người dùng đến trang đăng nhập
+              if (error.response && error.response.status === 403) {
+                alert("Vui lòng đăng nhập để sử dụng chức năng này");
+                window.location.href = "http://localhost:8000/login";
+              }
+            }
+          }}
+          className="schedule-delivery-button"
+        >
+          <i className="fa fa-calendar" style={{ marginRight: "5px" }}></i>
+          Đặt hoa theo lịch
+        </button>
+      </div>
       <div className="cart-toggle-container">
         <div className="cart-toggle-buttons">
           <div
@@ -887,15 +919,24 @@ const handleOrderDeliveryClick = () => {
                         Giá:{" "}
                         {item.productPriceEvent !== null ? (
                           <>
-                            <span style={{ textDecoration: "line-through", color: "gray", marginRight: "8px" }}>
+                            <span
+                              style={{
+                                textDecoration: "line-through",
+                                color: "gray",
+                                marginRight: "8px",
+                              }}
+                            >
                               {item.productPrice.toLocaleString("vi-VN")} VND
                             </span>
                             <span style={{ color: "red", fontWeight: "bold" }}>
-                              {item.productPriceEvent.toLocaleString("vi-VN")} VND
+                              {item.productPriceEvent.toLocaleString("vi-VN")}{" "}
+                              VND
                             </span>
                           </>
                         ) : (
-                          <span>{item.productPrice.toLocaleString("vi-VN")} VND</span>
+                          <span>
+                            {item.productPrice.toLocaleString("vi-VN")} VND
+                          </span>
                         )}
                       </p>
 
@@ -1051,57 +1092,67 @@ const handleOrderDeliveryClick = () => {
             </div>
 
             <div className="prebuy-price-summary">
-            <h3 className="prebuy-total-price">
-              Tổng tiền: {calculateTotalPrice().toLocaleString("vi-VN")} VND
-            </h3>
-            {cartType === "cartorder" && (
-              <h3 className="prebuy-discount-amount">
-                Giảm giá: -{appliedDiscount.toLocaleString("vi-VN")} VND
+              <h3 className="prebuy-total-price">
+                Tổng tiền: {calculateTotalPrice().toLocaleString("vi-VN")} VND
               </h3>
-            )}
-            <h3 className="prebuy-total-payment">
-              Tổng thanh toán:{" "}
-              {(calculateTotalPrice() - (cartType === "cartorder" ? appliedDiscount : 0)).toLocaleString(
-                "vi-VN"
-              )}{" "}
-              VND
-            </h3>
-          </div>
-          {cartType === "cartorder" && (
-            <div className="prebuy-discount-section">
-              <h3>Mã giảm giá</h3>
-              <div className="prebuy-discount-input">
-                <input
-                  type="text"
-                  value={discountCode}
-                  onChange={(e) => setDiscountCode(e.target.value)}
-                  placeholder="Nhập mã giảm giá"
-                />
-                <button onClick={handleCheckDiscount} className="prebuy-button">
-                  Kiểm tra
-                </button>
-              </div>       
-              <select
-                value={selectedDiscount || ""}
-                onChange={handleDiscountChange}
-                className="prebuy-discount-select"
-              >
-                <option value="">Chọn mã giảm giá có sẵn</option>
-                {discounts.map((discount) => (
-                  <option key={discount.discountID} value={discount.discountID}>
-                    {discount.discountcode} - Giảm {discount.discountPercent}%
-                    {discount.categoryID ? ` (${discount.categoryID.categoryName})` : ""}
-                    {discount.type?.typeName ? ` (${discount.type.typeName})` : ""}
-                  </option>
-                ))}
-              </select>
-
-              <button onClick={handleApplyDiscount} className="prebuy-button">
-                Áp dụng
-              </button>
+              {cartType === "cartorder" && (
+                <h3 className="prebuy-discount-amount">
+                  Giảm giá: -{appliedDiscount.toLocaleString("vi-VN")} VND
+                </h3>
+              )}
+              <h3 className="prebuy-total-payment">
+                Tổng thanh toán:{" "}
+                {(
+                  calculateTotalPrice() -
+                  (cartType === "cartorder" ? appliedDiscount : 0)
+                ).toLocaleString("vi-VN")}{" "}
+                VND
+              </h3>
             </div>
-          )}
+            {cartType === "cartorder" && (
+              <div className="prebuy-discount-section">
+                <h3>Mã giảm giá</h3>
+                <div className="prebuy-discount-input">
+                  <input
+                    type="text"
+                    value={discountCode}
+                    onChange={(e) => setDiscountCode(e.target.value)}
+                    placeholder="Nhập mã giảm giá"
+                  />
+                  <button
+                    onClick={handleCheckDiscount}
+                    className="prebuy-button"
+                  >
+                    Kiểm tra
+                  </button>
+                </div>
+                <select
+                  value={selectedDiscount || ""}
+                  onChange={handleDiscountChange}
+                  className="prebuy-discount-select"
+                >
+                  <option value="">Chọn mã giảm giá có sẵn</option>
+                  {discounts.map((discount) => (
+                    <option
+                      key={discount.discountID}
+                      value={discount.discountID}
+                    >
+                      {discount.discountcode} - Giảm {discount.discountPercent}%
+                      {discount.categoryID
+                        ? ` (${discount.categoryID.categoryName})`
+                        : ""}
+                      {discount.type?.typeName
+                        ? ` (${discount.type.typeName})`
+                        : ""}
+                    </option>
+                  ))}
+                </select>
 
+                <button onClick={handleApplyDiscount} className="prebuy-button">
+                  Áp dụng
+                </button>
+              </div>
+            )}
 
             {error && (
               <div className="custom-error-container">

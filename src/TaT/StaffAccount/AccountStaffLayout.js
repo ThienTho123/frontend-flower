@@ -13,10 +13,13 @@ const AccountStaffLayout = () => {
   // Hàm lấy thông tin người dùng từ API
   const getUserInfo = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/staffaccount", {
-        params: { accountID },
-        headers: { Authorization: `Bearer ${access_token}` },
-      });
+      const response = await axios.get(
+        "https://deploybackend-1ta9.onrender.com/staffaccount",
+        {
+          params: { accountID },
+          headers: { Authorization: `Bearer ${access_token}` },
+        }
+      );
       setProfileForm(response.data); // Lưu thông tin người dùng vào state
     } catch (error) {
       console.error("Lỗi khi lấy thông tin tài khoản:", error);
@@ -33,7 +36,7 @@ const AccountStaffLayout = () => {
 
   const handleLogout = () => {
     axios
-      .get("http://localhost:8080/api/v1/auth/logout", {
+      .get("https://deploybackend-1ta9.onrender.com/api/v1/auth/logout", {
         withCredentials: true,
       })
       .then((response) => {
@@ -84,9 +87,15 @@ const AccountStaffLayout = () => {
           </div>
         </h2>
         <button onClick={() => navigate("/staffaccount")}>Tài khoản</button>
-        <button onClick={() => navigate("/staffaccount/completecomment")}>Ý kiến đã hoàn thành</button>
-        <button onClick={() => navigate("/staffaccount/processingcomment")}>Ý kiến đang giải quyết</button>
-        <button onClick={() => navigate("/staffaccount/waitingcomment")}>Danh sách ý kiến đang chờ</button>
+        <button onClick={() => navigate("/staffaccount/completecomment")}>
+          Ý kiến đã hoàn thành
+        </button>
+        <button onClick={() => navigate("/staffaccount/processingcomment")}>
+          Ý kiến đang giải quyết
+        </button>
+        <button onClick={() => navigate("/staffaccount/waitingcomment")}>
+          Danh sách ý kiến đang chờ
+        </button>
         <button onClick={() => navigate("/staffaccount/changepassword")}>
           Đổi mật khẩu
         </button>

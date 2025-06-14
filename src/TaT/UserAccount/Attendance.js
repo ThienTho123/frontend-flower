@@ -7,7 +7,7 @@ const Attendance = () => {
   const [attendanceDates, setAttendanceDates] = useState([]);
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [selectedDate, setSelectedDate] = useState(dayjs());
-  const [showSuccess, setShowSuccess] = useState(false); 
+  const [showSuccess, setShowSuccess] = useState(false);
   const [accountGifts, setAccountGifts] = useState([]);
   const today = dayjs();
   const [showSubmit, setShowSubmit] = useState(false);
@@ -23,7 +23,7 @@ const Attendance = () => {
     const token = localStorage.getItem("access_token");
 
     axios
-      .get("http://localhost:8080/attendance", {
+      .get("https://deploybackend-1ta9.onrender.com/attendance", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -48,7 +48,7 @@ const Attendance = () => {
     const token = localStorage.getItem("access_token");
 
     axios
-      .get("http://localhost:8080/attendance/gift", {
+      .get("https://deploybackend-1ta9.onrender.com/attendance/gift", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -105,7 +105,7 @@ const Attendance = () => {
 
     axios
       .post(
-        "http://localhost:8080/attendance/check",
+        "https://deploybackend-1ta9.onrender.com/attendance/check",
         {},
         {
           headers: {
@@ -150,9 +150,13 @@ const Attendance = () => {
     const token = localStorage.getItem("access_token");
 
     axios
-      .post(`http://localhost:8080/attendance/sendInfo/${giftId}`, formData, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .post(
+        `https://deploybackend-1ta9.onrender.com/attendance/sendInfo/${giftId}`,
+        formData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then(() => {
         setShowForm(null);
         setFormData({ name: "", phone: "", address: "", note: "" });

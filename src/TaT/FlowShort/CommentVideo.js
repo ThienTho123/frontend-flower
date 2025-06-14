@@ -28,13 +28,16 @@ const CommentVideo = ({ comment, onAction }) => {
       if (!accesstoken) return;
 
       try {
-        const response = await fetch(`http://localhost:8080/flowshort`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accesstoken}`,
-          },
-        });
+        const response = await fetch(
+          `https://deploybackend-1ta9.onrender.com/flowshort`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accesstoken}`,
+            },
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
@@ -96,7 +99,7 @@ const CommentVideo = ({ comment, onAction }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/user/flowshort/comment/${comment.videoComment.id}/like`,
+        `https://deploybackend-1ta9.onrender.com/user/flowshort/comment/${comment.videoComment.id}/like`,
         {
           method: "POST",
           headers: {

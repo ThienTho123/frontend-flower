@@ -43,8 +43,8 @@ const BlogFeed = ({ blogId }) => {
         ? { Authorization: `Bearer ${accesstoken}` }
         : {};
       const apiUrl = blogId
-        ? `http://localhost:8080/blog/${blogId}`
-        : "http://localhost:8080/blog";
+        ? `https://deploybackend-1ta9.onrender.com/blog/${blogId}`
+        : "https://deploybackend-1ta9.onrender.com/blog";
 
       fetch(apiUrl, { headers })
         .then((response) => response.json())
@@ -81,14 +81,17 @@ const BlogFeed = ({ blogId }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/blog/like", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accesstoken}`,
-        },
-        body: JSON.stringify(requestBody),
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/blog/like",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
 
       if (response.ok) {
         setBlogs((prevBlogs) =>
@@ -128,14 +131,17 @@ const BlogFeed = ({ blogId }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/blog/pin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accesstoken}`,
-        },
-        body: JSON.stringify(requestBody),
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/blog/pin",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
 
       if (response.ok) {
         setBlogs((prevBlogs) =>
@@ -252,7 +258,7 @@ const BlogFeed = ({ blogId }) => {
 
         try {
           const uploadResponse = await fetch(
-            "http://localhost:8080/api/v1/upload",
+            "https://deploybackend-1ta9.onrender.com/api/v1/upload",
             {
               method: "POST",
               headers: {
@@ -298,12 +304,16 @@ const BlogFeed = ({ blogId }) => {
     };
 
     try {
-      await axios.post("http://localhost:8080/blog/comment", requestData, {
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-      });
+      await axios.post(
+        "https://deploybackend-1ta9.onrender.com/blog/comment",
+        requestData,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       // Reset sau khi gửi thành công
       setCommentText("");

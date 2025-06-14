@@ -55,16 +55,21 @@ const OrderDelivery = () => {
 
   // Get selected delivery type object - sử dụng useMemo để tối ưu
   const selectedDeliveryType = useMemo(() => {
-    return deliveryTypesList.find(t => t.id === parseInt(selectedDeliveryTypeId));
+    return deliveryTypesList.find(
+      (t) => t.id === parseInt(selectedDeliveryTypeId)
+    );
   }, [deliveryTypesList, selectedDeliveryTypeId]);
 
   // Tính toán giá hiển thị cho từng hoa - sử dụng useMemo để tự động cập nhật khi dependencies thay đổi
   const flowersWithCalculatedPrices = useMemo(() => {
-    return flowers.map(flower => ({
+    return flowers.map((flower) => ({
       ...flower,
-      displayPrice: flower.selected && flower.quantity > 0 
-        ? flower.selectedPrice * flower.quantity * getDeliveryDays(selectedDeliveryType)
-        : flower.selectedPrice || 0
+      displayPrice:
+        flower.selected && flower.quantity > 0
+          ? flower.selectedPrice *
+            flower.quantity *
+            getDeliveryDays(selectedDeliveryType)
+          : flower.selectedPrice || 0,
     }));
   }, [flowers, selectedDeliveryType]);
 
@@ -81,7 +86,7 @@ const OrderDelivery = () => {
     console.log("Access token:", accesstoken);
 
     setLoading(true);
-    fetch("http://localhost:8080/orderdelivery", {
+    fetch("https://deploybackend-1ta9.onrender.com/orderdelivery", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accesstoken}`,
@@ -249,16 +254,16 @@ const OrderDelivery = () => {
   const totalPrice = useMemo(() => {
     const deliveryDays = getDeliveryDays(selectedDeliveryType);
     const deliveryCost = getDeliveryCost(selectedDeliveryType);
-    
+
     const productTotal = flowers.reduce((total, flower) => {
       if (flower.selected && flower.quantity > 0) {
-        return total + (flower.selectedPrice * flower.quantity * deliveryDays);
+        return total + flower.selectedPrice * flower.quantity * deliveryDays;
       }
       return total;
     }, 0);
 
     // Add delivery cost multiplied by delivery days to total
-    return productTotal + (deliveryCost * deliveryDays);
+    return productTotal + deliveryCost * deliveryDays;
   }, [flowers, selectedDeliveryType]);
 
   const handleOrder = () => {
@@ -341,14 +346,17 @@ const OrderDelivery = () => {
     console.log("Order Data:", orderData);
 
     // Send to API
-    fetch(`http://localhost:8080/setOrderDelivery?price=${totalPrice}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accesstoken}`,
-      },
-      body: JSON.stringify(orderData),
-    })
+    fetch(
+      `https://deploybackend-1ta9.onrender.com/setOrderDelivery?price=${totalPrice}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accesstoken}`,
+        },
+        body: JSON.stringify(orderData),
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           if (response.status === 403) {
@@ -366,13 +374,16 @@ const OrderDelivery = () => {
       })
       .then((data) => {
         console.log("Order set successfully:", data);
-        return fetch(`http://localhost:8080/pay?totalPayment=${totalPrice}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accesstoken}`,
-          },
-        });
+        return fetch(
+          `https://deploybackend-1ta9.onrender.com/pay?totalPayment=${totalPrice}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accesstoken}`,
+            },
+          }
+        );
       })
       .then((response) => {
         if (!response.ok) {
@@ -394,7 +405,7 @@ const OrderDelivery = () => {
   if (loading) {
     return <div className="od-loading">Đang tải dữ liệu...</div>;
   }
-  
+
   return (
     <div className="od-container">
       <h2 className="od-heading">Đặt Hoa Theo Lịch</h2>
@@ -438,13 +449,17 @@ const OrderDelivery = () => {
 
                     <div className="od-product-price">
                       {flower.displayPrice.toLocaleString("vi-VN")} VND
-                      {flower.selected && flower.quantity > 0 && selectedDeliveryType && (
-                        <div className="od-price-breakdown">
-                          <small>
-                            ({flower.selectedPrice.toLocaleString("vi-VN")} × {flower.quantity} × {getDeliveryDays(selectedDeliveryType)} ngày)
-                          </small>
-                        </div>
-                      )}
+                      {flower.selected &&
+                        flower.quantity > 0 &&
+                        selectedDeliveryType && (
+                          <div className="od-price-breakdown">
+                            <small>
+                              ({flower.selectedPrice.toLocaleString("vi-VN")} ×{" "}
+                              {flower.quantity} ×{" "}
+                              {getDeliveryDays(selectedDeliveryType)} ngày)
+                            </small>
+                          </div>
+                        )}
                     </div>
 
                     <div className="od-product-options">
@@ -531,7 +546,8 @@ const OrderDelivery = () => {
               >
                 {deliveryTypesList.map((type) => (
                   <option key={type.id} value={type.id}>
-                    {type.type} ({type.days} ngày) - Phí: {type.cost.toLocaleString("vi-VN")} VND
+                    {type.type} ({type.days} ngày) - Phí:{" "}
+                    {type.cost.toLocaleString("vi-VN")} VND
                   </option>
                 ))}
               </select>
@@ -621,16 +637,21 @@ const OrderDelivery = () => {
 
           <div className="od-price-summary">
             <h3 className="od-total-payment">
-              Tổng thanh toán: {totalPrice.toLocaleString("vi-VN")}{" "}
-              VND
+              Tổng thanh toán: {totalPrice.toLocaleString("vi-VN")} VND
             </h3>
             {selectedDeliveryType && (
               <div className="od-price-breakdown-summary">
                 <p className="od-price-note">
-                  * Sản phẩm cho {getDeliveryDays(selectedDeliveryType)} ngày ({selectedDeliveryType.type})
+                  * Sản phẩm cho {getDeliveryDays(selectedDeliveryType)} ngày (
+                  {selectedDeliveryType.type})
                 </p>
                 <p className="od-price-note">
-                  * Phí giao hàng: {(getDeliveryCost(selectedDeliveryType) * getDeliveryDays(selectedDeliveryType)).toLocaleString("vi-VN")} VND
+                  * Phí giao hàng:{" "}
+                  {(
+                    getDeliveryCost(selectedDeliveryType) *
+                    getDeliveryDays(selectedDeliveryType)
+                  ).toLocaleString("vi-VN")}{" "}
+                  VND
                 </p>
               </div>
             )}

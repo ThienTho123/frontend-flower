@@ -31,7 +31,7 @@ const VideoList = () => {
       try {
         // Fetch all videos
         const videosResponse = await axios.get(
-          "http://localhost:8080/flowshort"
+          "https://deploybackend-1ta9.onrender.com/flowshort"
         );
         setVideos(videosResponse.data.videos || []);
 
@@ -40,7 +40,7 @@ const VideoList = () => {
           try {
             // Lấy thông tin người dùng từ API
             const userInfoResponse = await axios.get(
-              "http://localhost:8080/account/getInfo",
+              "https://deploybackend-1ta9.onrender.com/account/getInfo",
               {
                 params: { accountID },
                 headers: { Authorization: `Bearer ${access_token}` },
@@ -51,7 +51,7 @@ const VideoList = () => {
 
             // Lấy video của người dùng
             const userVideosResponse = await axios.get(
-              "http://localhost:8080/user/flowshort/getall",
+              "https://deploybackend-1ta9.onrender.com/user/flowshort/getall",
               {
                 headers: { Authorization: `Bearer ${access_token}` },
               }
@@ -79,8 +79,6 @@ const VideoList = () => {
   const handleCreateVideo = () => {
     navigate("/flowshortupload");
   };
-
-
 
   const formatTimeAgo = (dateArray) => {
     if (!dateArray || !Array.isArray(dateArray) || dateArray.length < 6)
@@ -143,8 +141,6 @@ const VideoList = () => {
 
             {userInfo ? (
               <>
-                
-
                 <button onClick={handleCreateVideo} className="fs-create-btn">
                   <Plus size={18} />
                   <span>Tạo Video</span>

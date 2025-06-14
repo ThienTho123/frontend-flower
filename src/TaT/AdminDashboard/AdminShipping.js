@@ -20,17 +20,20 @@ const AdminShipping = () => {
   useEffect(() => {
     const fetchShippings = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/admin/shipping", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        });
-  
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/shipping",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+            credentials: "include",
+          }
+        );
+
         if (!response.ok) {
           throw new Error("Không thể lấy danh sách shipping.");
         }
-  
+
         const data = await response.json();
         if (Array.isArray(data.shippings) && Array.isArray(data.accounts)) {
           setShippings(data.shippings);
@@ -42,15 +45,14 @@ const AdminShipping = () => {
         setError(err.message);
       }
     };
-  
+
     fetchShippings();
   }, [accesstoken]);
-  
 
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/shipping/softdelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/shipping/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -63,7 +65,9 @@ const AdminShipping = () => {
       if (response.ok) {
         setShippings((prevShippings) =>
           prevShippings.map((shipping) =>
-            shipping.shippingID === id ? { ...shipping, status: "DISABLE" } : shipping
+            shipping.shippingID === id
+              ? { ...shipping, status: "DISABLE" }
+              : shipping
           )
         );
       } else {
@@ -77,7 +81,7 @@ const AdminShipping = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/shipping/harddelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/shipping/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -104,10 +108,14 @@ const AdminShipping = () => {
       setError("Account không được trống.");
       return;
     }
-  
-    const startDate = shippingData.startDate ? new Date(shippingData.startDate) : null;
-    const completeDate = shippingData.completeDate ? new Date(shippingData.completeDate) : null;
-  
+
+    const startDate = shippingData.startDate
+      ? new Date(shippingData.startDate)
+      : null;
+    const completeDate = shippingData.completeDate
+      ? new Date(shippingData.completeDate)
+      : null;
+
     if (!startDate || !completeDate) {
       setError("Both Start Date and Complete Date are required.");
       return;
@@ -122,17 +130,22 @@ const AdminShipping = () => {
         ? new Date(shippingData.completeDate).toISOString().slice(0, 19)
         : null,
       accountID: {
-        accountID: parseInt(shippingData.accountID.accountID || shippingData.accountID), // Chuyển đổi đúng định dạng
+        accountID: parseInt(
+          shippingData.accountID.accountID || shippingData.accountID
+        ), // Chuyển đổi đúng định dạng
       },
       note: shippingData.note ? shippingData.note : null,
       status: shippingData.status,
     };
-  
-    console.log("Saving Shipping:", JSON.stringify(updatedShippingData, null, 2));
-  
+
+    console.log(
+      "Saving Shipping:",
+      JSON.stringify(updatedShippingData, null, 2)
+    );
+
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/shipping/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/shipping/${id}`,
         {
           method: "PUT",
           headers: {
@@ -143,7 +156,7 @@ const AdminShipping = () => {
           body: JSON.stringify(updatedShippingData),
         }
       );
-  
+
       if (response.ok) {
         const updatedShipping = await response.json();
         setShippings((prevShippings) =>
@@ -159,20 +172,20 @@ const AdminShipping = () => {
       setError(err.message);
     }
   };
-  
-  
-  
 
   const handleCreate = async () => {
-
     if (!newShipping.accountID) {
       setError("Account không được trống.");
       return;
     }
-  
-    const startDate = newShipping.startDate ? new Date(newShipping.startDate) : null;
-    const completeDate = newShipping.completeDate ? new Date(newShipping.completeDate) : null;
-  
+
+    const startDate = newShipping.startDate
+      ? new Date(newShipping.startDate)
+      : null;
+    const completeDate = newShipping.completeDate
+      ? new Date(newShipping.completeDate)
+      : null;
+
     if (!startDate || !completeDate) {
       setError("Ngày bắt đầu và Ngày hết thúc không được trống.");
       return;
@@ -180,27 +193,34 @@ const AdminShipping = () => {
 
     const shippingData = {
       // Chuyển đổi startDate và completeDate sang định dạng ISO chuẩn
-      startDate: newShipping.startDate ? new Date(newShipping.startDate).toISOString().slice(0, 19) : null,  // Chuyển đổi và cắt phần millisecond
-      completeDate: newShipping.completeDate ? new Date(newShipping.completeDate).toISOString().slice(0, 19) : null,  // Chuyển đổi và cắt phần millisecond
+      startDate: newShipping.startDate
+        ? new Date(newShipping.startDate).toISOString().slice(0, 19)
+        : null, // Chuyển đổi và cắt phần millisecond
+      completeDate: newShipping.completeDate
+        ? new Date(newShipping.completeDate).toISOString().slice(0, 19)
+        : null, // Chuyển đổi và cắt phần millisecond
       accountID: { accountID: parseInt(newShipping.accountID) }, // Đảm bảo accountID là một đối tượng
       note: newShipping.note ? newShipping.note : null, // Nếu không có note, gán null
       status: newShipping.status,
     };
-  
+
     // In dữ liệu ra console để kiểm tra
     console.log("Creating Shipping:", JSON.stringify(shippingData, null, 2));
-  
+
     try {
-      const response = await fetch("http://localhost:8080/api/v1/admin/shipping", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(shippingData),
-      });
-  
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/shipping",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(shippingData),
+        }
+      );
+
       if (response.ok) {
         const createdShipping = await response.json();
         setShippings([...shippings, createdShipping]);
@@ -218,8 +238,6 @@ const AdminShipping = () => {
       setError(err.message);
     }
   };
-  
-  
 
   const handleBackToDashboard = () => {
     navigate("/dashboard");
@@ -242,7 +260,9 @@ const AdminShipping = () => {
         <input
           type="datetime-local"
           value={newShipping.startDate}
-          onChange={(e) => setNewShipping({ ...newShipping, startDate: e.target.value })}
+          onChange={(e) =>
+            setNewShipping({ ...newShipping, startDate: e.target.value })
+          }
         />
         <label>Complete Date: </label>
         <input
@@ -255,7 +275,9 @@ const AdminShipping = () => {
         <label>Account: </label>
         <select
           value={newShipping.accountID}
-          onChange={(e) => setNewShipping({ ...newShipping, accountID: e.target.value })}
+          onChange={(e) =>
+            setNewShipping({ ...newShipping, accountID: e.target.value })
+          }
         >
           <option value="">Chọn tài khoản</option>
           {accounts.map((account) => (
@@ -267,12 +289,16 @@ const AdminShipping = () => {
         <label>Note: </label>
         <input
           value={newShipping.note}
-          onChange={(e) => setNewShipping({ ...newShipping, note: e.target.value })}
+          onChange={(e) =>
+            setNewShipping({ ...newShipping, note: e.target.value })
+          }
         />
         <label>Status: </label>
         <select
           value={newShipping.status}
-          onChange={(e) => setNewShipping({ ...newShipping, status: e.target.value })}
+          onChange={(e) =>
+            setNewShipping({ ...newShipping, status: e.target.value })
+          }
         >
           <option value="ENABLE">Enable</option>
           <option value="DISABLE">Disable</option>
@@ -339,29 +365,37 @@ const AdminShipping = () => {
                   )}
                 </td>
                 <td>
-                {editingShippingId === shipping.shippingID ? (
-                  <select
-                    value={shipping.accountID.accountID}
-                    onChange={(e) =>
-                      setShippings((prevShippings) =>
-                        prevShippings.map((s) =>
-                          s.shippingID === shipping.shippingID
-                            ? { ...s, accountID: { accountID: parseInt(e.target.value) } }
-                            : s
+                  {editingShippingId === shipping.shippingID ? (
+                    <select
+                      value={shipping.accountID.accountID}
+                      onChange={(e) =>
+                        setShippings((prevShippings) =>
+                          prevShippings.map((s) =>
+                            s.shippingID === shipping.shippingID
+                              ? {
+                                  ...s,
+                                  accountID: {
+                                    accountID: parseInt(e.target.value),
+                                  },
+                                }
+                              : s
+                          )
                         )
-                      )
-                    }
-                  >
-                    {accounts.map((account) => (
-                      <option key={account.accountID} value={account.accountID}>
-                        {account.name} ({account.accountID})
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  `${shipping.accountID.name} (${shipping.accountID.accountID})`
-                )}
-              </td>
+                      }
+                    >
+                      {accounts.map((account) => (
+                        <option
+                          key={account.accountID}
+                          value={account.accountID}
+                        >
+                          {account.name} ({account.accountID})
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    `${shipping.accountID.name} (${shipping.accountID.accountID})`
+                  )}
+                </td>
 
                 <td>
                   {editingShippingId === shipping.shippingID ? (
@@ -412,19 +446,24 @@ const AdminShipping = () => {
                       >
                         Lưu
                       </button>
-                      <button onClick={() => setEditingShippingId(null)}>Hủy</button>
+                      <button onClick={() => setEditingShippingId(null)}>
+                        Hủy
+                      </button>
                     </>
                   ) : (
                     <>
                       <button
-                        onClick={() => setEditingShippingId(shipping.shippingID)}
+                        onClick={() =>
+                          setEditingShippingId(shipping.shippingID)
+                        }
                       >
                         Chỉnh Sửa
                       </button>
-                      <button onClick={() => handleDeleteSoft(shipping.shippingID)}>
+                      <button
+                        onClick={() => handleDeleteSoft(shipping.shippingID)}
+                      >
                         Vô hiệu hóa
                       </button>
-
                     </>
                   )}
                 </td>

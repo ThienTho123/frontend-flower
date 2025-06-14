@@ -22,20 +22,23 @@ const Chatbot = () => {
   };
   const handleSend = async () => {
     if (!input.trim()) return;
-  
+
     const userMessage = { role: "user", content: input };
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
     setInput("");
-  
+
     try {
-      const response = await axios.post("http://localhost:8080/api/chat", {
-        messages: newMessages,
-      });
-  
+      const response = await axios.post(
+        "https://deploybackend-1ta9.onrender.com/api/chat",
+        {
+          messages: newMessages,
+        }
+      );
+
       const botReply = { role: "assistant", content: response.data.reply };
       setMessages([...newMessages, botReply]);
-  
+
       // Chỉ set flowerList nếu có dữ liệu trả về
       if (response.data.flowers && response.data.flowers.length > 0) {
         setFlowerList(response.data.flowers);
@@ -44,7 +47,6 @@ const Chatbot = () => {
       console.error("Error:", error);
     }
   };
-  
 
   return (
     <div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png';
+import returnIcon from "./ImageDashboard/return-button.png";
 
 const AdminCommentType = () => {
   const [commentTypeList, setCommentTypeList] = useState([]);
@@ -8,7 +8,7 @@ const AdminCommentType = () => {
     commenttypename: "",
     status: "ENABLE",
   });
-  const [editingRow, setEditingRow] = useState(null); 
+  const [editingRow, setEditingRow] = useState(null);
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access_token");
   const navigate = useNavigate();
@@ -16,12 +16,15 @@ const AdminCommentType = () => {
   useEffect(() => {
     const fetchCommentTypes = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/admin/commenttype", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/commenttype",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
           const errorMessage = await response.text();
@@ -42,7 +45,7 @@ const AdminCommentType = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/commenttype/softdelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/commenttype/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -69,7 +72,7 @@ const AdminCommentType = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/commenttype/harddelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/commenttype/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -80,7 +83,9 @@ const AdminCommentType = () => {
       );
 
       if (response.ok) {
-        setCommentTypeList((prev) => prev.filter((type) => type.commenttypeID !== id));
+        setCommentTypeList((prev) =>
+          prev.filter((type) => type.commenttypeID !== id)
+        );
       } else {
         throw new Error("Không thể xóa loại bình luận.");
       }
@@ -95,7 +100,7 @@ const AdminCommentType = () => {
         throw new Error("Tên Loại không được để trống.");
       }
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/commenttype/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/commenttype/${id}`,
         {
           method: "PUT",
           headers: {
@@ -144,15 +149,18 @@ const AdminCommentType = () => {
       if (!newCommentType.commenttypename) {
         throw new Error("Tên Loại không được để trống.");
       }
-      const response = await fetch("http://localhost:8080/api/v1/admin/commenttype", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(newCommentType),
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/commenttype",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(newCommentType),
+        }
+      );
 
       if (response.ok) {
         const createdType = await response.json();
@@ -192,7 +200,10 @@ const AdminCommentType = () => {
           type="text"
           value={newCommentType.commenttypename}
           onChange={(e) =>
-            setNewCommentType((prev) => ({ ...prev, commenttypename: e.target.value }))
+            setNewCommentType((prev) => ({
+              ...prev,
+              commenttypename: e.target.value,
+            }))
           }
         />
 
@@ -234,7 +245,11 @@ const AdminCommentType = () => {
                       type="text"
                       value={type.commenttypename}
                       onChange={(e) =>
-                        handleFieldChange(type.commenttypeID, "commenttypename", e.target.value)
+                        handleFieldChange(
+                          type.commenttypeID,
+                          "commenttypename",
+                          e.target.value
+                        )
                       }
                     />
                   ) : (
@@ -246,7 +261,11 @@ const AdminCommentType = () => {
                     <select
                       value={type.status}
                       onChange={(e) =>
-                        handleFieldChange(type.commenttypeID, "status", e.target.value)
+                        handleFieldChange(
+                          type.commenttypeID,
+                          "status",
+                          e.target.value
+                        )
                       }
                     >
                       <option value="ENABLE">ENABLE</option>
@@ -259,13 +278,23 @@ const AdminCommentType = () => {
                 <td>
                   {editingRow === type.commenttypeID ? (
                     <>
-                      <button onClick={() => handleSave(type.commenttypeID, type)}>Lưu</button>
+                      <button
+                        onClick={() => handleSave(type.commenttypeID, type)}
+                      >
+                        Lưu
+                      </button>
                       <button onClick={handleCancelEdit}>Hủy</button>
                     </>
                   ) : (
                     <>
-                      <button onClick={() => handleEditRow(type.commenttypeID)}>Chỉnh Sửa</button>
-                      <button onClick={() => handleDeleteSoft(type.commenttypeID)}>Vô Hiệu</button>
+                      <button onClick={() => handleEditRow(type.commenttypeID)}>
+                        Chỉnh Sửa
+                      </button>
+                      <button
+                        onClick={() => handleDeleteSoft(type.commenttypeID)}
+                      >
+                        Vô Hiệu
+                      </button>
                     </>
                   )}
                 </td>

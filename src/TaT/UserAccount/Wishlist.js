@@ -16,11 +16,14 @@ const Wishlist = () => {
     setError("");
     setSuccess(""); // Reset success message trước khi tải lại danh sách
     try {
-      const response = await axios.get("http://localhost:8080/wishlist", {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
+      const response = await axios.get(
+        "https://deploybackend-1ta9.onrender.com/wishlist",
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
       setWishlists(response.data.wishlists || []); // Cập nhật danh sách sản phẩm
     } catch (err) {
       console.error("Error fetching wishlist:", err);
@@ -29,23 +32,25 @@ const Wishlist = () => {
       setLoading(false);
     }
   };
-  
-  
+
   // Delete a product from wishlist
   const handleDelete = async (id) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
       console.log("ID = " + id);
       try {
         // Gửi yêu cầu xóa sản phẩm
-        await axios.delete(`http://localhost:8080/wishlist/${id}`, {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        });
-  
+        await axios.delete(
+          `https://deploybackend-1ta9.onrender.com/wishlist/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          }
+        );
+
         // Gọi lại hàm fetchWishlist để làm mới danh sách
         fetchWishlist();
-  
+
         setSuccess("Sản phẩm đã được xóa thành công.");
       } catch (err) {
         console.error("Error deleting wishlist item:", err);
@@ -53,7 +58,6 @@ const Wishlist = () => {
       }
     }
   };
-  
 
   useEffect(() => {
     fetchWishlist();
@@ -70,7 +74,10 @@ const Wishlist = () => {
         <div className="wishlist-grid">
           {wishlists.map((item) => (
             <div key={item.wishlistID} className="wishlist-card">
-              <Link to={`/detail/${item.flower.flowerID}`} className="wishlist-link">
+              <Link
+                to={`/detail/${item.flower.flowerID}`}
+                className="wishlist-link"
+              >
                 <div className="img-wrapper">
                   <img src={item.flower.image} alt={item.flower.name} />
                 </div>
@@ -92,7 +99,6 @@ const Wishlist = () => {
       {success && <p style={{ color: "green" }}>{success}</p>}
     </div>
   );
-  
 };
 
 export default Wishlist;

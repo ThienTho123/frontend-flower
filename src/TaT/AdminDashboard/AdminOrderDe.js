@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import returnIcon from "./ImageDashboard/return-button.png"; 
+import returnIcon from "./ImageDashboard/return-button.png";
 import "./AdminOrderDe.css"; // Đảm bảo tạo file CSS tương ứng
 import { Link } from "react-router-dom";
 
@@ -23,17 +23,17 @@ const AdminOrderDe = () => {
   const [modalMessage, setModalMessage] = useState("");
   // Tab state để chuyển đổi giữa các danh sách
   const [activeTab, setActiveTab] = useState("all"); // "all", "new", "deliver", "cancel"
-  
+
   // Edit states
   const [editingOrder, setEditingOrder] = useState(null);
   const [editForm, setEditForm] = useState({
-    name: '',
-    phoneNumber: '',
-    address: '',
-    note: '',
-    start: '',
-    deliverper: '',
-    condition: ''
+    name: "",
+    phoneNumber: "",
+    address: "",
+    note: "",
+    start: "",
+    deliverper: "",
+    condition: "",
   });
 
   const translateCondition = (condition) => {
@@ -44,7 +44,7 @@ const AdminOrderDe = () => {
       REFUND_IS_WAITING: "Đang xử lý hoàn tiền",
       null: "Chờ xác nhận",
       CANCEL: "Hủy",
-      SUCCESS: "Thành Công"
+      SUCCESS: "Thành Công",
     };
     return translations[condition] || condition;
   };
@@ -67,7 +67,7 @@ const AdminOrderDe = () => {
       CANCEL_REQUEST_IS_WAITING: "Chờ xác nhận hủy",
       REFUND_IS_WAITING: "Đang xử lý hoàn tiền",
       CANCEL: "Hủy",
-      SUCCESS: "Thành Công"
+      SUCCESS: "Thành Công",
     };
     return translations[conditionName] || conditionName;
   };
@@ -85,37 +85,45 @@ const AdminOrderDe = () => {
   // Format riêng phần ngày từ mảng [year, month, day, hour, minute, second]
   const formatDate = (dateArray) => {
     if (!dateArray || !Array.isArray(dateArray)) return "Không có dữ liệu";
-    
+
     // Format theo chuẩn DD/MM/YYYY
-    return `${dateArray[2].toString().padStart(2, '0')}/${dateArray[1].toString().padStart(2, '0')}/${dateArray[0]}`;
+    return `${dateArray[2].toString().padStart(2, "0")}/${dateArray[1]
+      .toString()
+      .padStart(2, "0")}/${dateArray[0]}`;
   };
 
   // Format riêng phần giờ từ mảng [year, month, day, hour, minute, second]
   const formatTime = (dateArray) => {
     if (!dateArray || !Array.isArray(dateArray)) return "Không có dữ liệu";
-    
+
     // Format theo chuẩn HH:MM
-    return `${dateArray[3].toString().padStart(2, '0')}:${dateArray[4].toString().padStart(2, '0')}`;
+    return `${dateArray[3].toString().padStart(2, "0")}:${dateArray[4]
+      .toString()
+      .padStart(2, "0")}`;
   };
 
   // Format datetime đầy đủ từ mảng [year, month, day, hour, minute, second]
   const formatDateTime = (dateArray) => {
     if (!dateArray || !Array.isArray(dateArray)) return "Không có dữ liệu";
-    
+
     // Format theo chuẩn DD/MM/YYYY HH:MM
-    return `${dateArray[2].toString().padStart(2, '0')}/${dateArray[1].toString().padStart(2, '0')}/${dateArray[0]} ${dateArray[3].toString().padStart(2, '0')}:${dateArray[4].toString().padStart(2, '0')}`;
+    return `${dateArray[2].toString().padStart(2, "0")}/${dateArray[1]
+      .toString()
+      .padStart(2, "0")}/${dateArray[0]} ${dateArray[3]
+      .toString()
+      .padStart(2, "0")}:${dateArray[4].toString().padStart(2, "0")}`;
   };
 
   // Convert date array to ISO string for input
   const formatDateForInput = (dateArray) => {
     if (!dateArray || !Array.isArray(dateArray)) return "";
-    
+
     const year = dateArray[0];
-    const month = dateArray[1].toString().padStart(2, '0');
-    const day = dateArray[2].toString().padStart(2, '0');
-    const hour = dateArray[3].toString().padStart(2, '0');
-    const minute = dateArray[4].toString().padStart(2, '0');
-    
+    const month = dateArray[1].toString().padStart(2, "0");
+    const day = dateArray[2].toString().padStart(2, "0");
+    const hour = dateArray[3].toString().padStart(2, "0");
+    const minute = dateArray[4].toString().padStart(2, "0");
+
     return `${year}-${month}-${day}T${hour}:${minute}`;
   };
 
@@ -123,7 +131,7 @@ const AdminOrderDe = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/v1/admin/orde",
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/orde",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -154,13 +162,13 @@ const AdminOrderDe = () => {
   const handleEditOrder = (order) => {
     setEditingOrder(order.id);
     setEditForm({
-      name: order.name || '',
-      phoneNumber: order.phoneNumber || '',
-      address: order.address || '',
-      note: order.note || '',
+      name: order.name || "",
+      phoneNumber: order.phoneNumber || "",
+      address: order.address || "",
+      note: order.note || "",
       start: formatDateForInput(order.start),
-      deliverper: order.deliverper || '',
-      condition: order.condition || ''
+      deliverper: order.deliverper || "",
+      condition: order.condition || "",
     });
   };
 
@@ -168,13 +176,13 @@ const AdminOrderDe = () => {
   const handleCancelEdit = () => {
     setEditingOrder(null);
     setEditForm({
-      name: '',
-      phoneNumber: '',
-      address: '',
-      note: '',
-      start: '',
-      deliverper: '',
-      condition: ''
+      name: "",
+      phoneNumber: "",
+      address: "",
+      note: "",
+      start: "",
+      deliverper: "",
+      condition: "",
     });
   };
 
@@ -189,7 +197,7 @@ const AdminOrderDe = () => {
         startDateTime.getDate(),
         startDateTime.getHours(),
         startDateTime.getMinutes(),
-        startDateTime.getSeconds()
+        startDateTime.getSeconds(),
       ];
 
       const updateData = {
@@ -199,11 +207,11 @@ const AdminOrderDe = () => {
         note: editForm.note,
         start: startArray,
         deliverper: editForm.deliverper,
-        condition: editForm.condition
+        condition: editForm.condition,
       };
 
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/orde/${orderId}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${orderId}`,
         {
           method: "PUT",
           headers: {
@@ -228,9 +236,9 @@ const AdminOrderDe = () => {
 
   // Handle form input changes
   const handleFormChange = (field, value) => {
-    setEditForm(prev => ({
+    setEditForm((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -238,7 +246,7 @@ const AdminOrderDe = () => {
   const handleAcceptNewOrder = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/orde/${id}/acceptNew`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}/acceptNew`,
         {
           method: "POST",
           headers: {
@@ -263,7 +271,7 @@ const AdminOrderDe = () => {
   const handleDeclineNewOrder = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/orde/${id}/declineNew`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}/declineNew`,
         {
           method: "POST",
           headers: {
@@ -288,7 +296,7 @@ const AdminOrderDe = () => {
   const handleAcceptCancelRequest = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/orde/${id}/acceptCancelRequest`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}/acceptCancelRequest`,
         {
           method: "POST",
           headers: {
@@ -313,7 +321,7 @@ const AdminOrderDe = () => {
   const handleDeclineCancelRequest = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/orde/${id}/declineCancelRequest`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}/declineCancelRequest`,
         {
           method: "POST",
           headers: {
@@ -338,7 +346,7 @@ const AdminOrderDe = () => {
   const handleDeliverNow = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/orde/${id}/deli`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}/deli`,
         {
           method: "POST",
           headers: {
@@ -363,7 +371,7 @@ const AdminOrderDe = () => {
   const refreshOrderLists = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/v1/admin/orde",
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/orde",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -426,27 +434,27 @@ const AdminOrderDe = () => {
 
   // Hiển thị modal xác nhận
   const showConfirmationModal = (action, orderId) => {
-    let title = '';
-    let message = '';
-    
+    let title = "";
+    let message = "";
+
     switch (action) {
-      case 'acceptNew':
+      case "acceptNew":
         title = "Xác nhận đồng ý đơn hàng";
         message = `Bạn có chắc chắn muốn đồng ý đơn hàng #${orderId} không?`;
         break;
-      case 'declineNew':
+      case "declineNew":
         title = "Xác nhận từ chối đơn hàng";
         message = `Bạn có chắc chắn muốn từ chối đơn hàng #${orderId} không?`;
         break;
-      case 'acceptCancel':
+      case "acceptCancel":
         title = "Xác nhận đồng ý hủy đơn hàng";
         message = `Bạn có chắc chắn muốn đồng ý hủy đơn hàng #${orderId} không?`;
         break;
-      case 'declineCancel':
+      case "declineCancel":
         title = "Xác nhận từ chối hủy đơn hàng";
         message = `Bạn có chắc chắn muốn từ chối yêu cầu hủy đơn hàng #${orderId} không?`;
         break;
-      case 'deliver':
+      case "deliver":
         title = "Xác nhận giao hàng";
         message = `Bạn có chắc chắn muốn giao đơn hàng #${orderId} ngay bây giờ không?`;
         break;
@@ -463,19 +471,19 @@ const AdminOrderDe = () => {
   // Thực hiện hành động từ modal
   const executeAction = () => {
     switch (modalAction) {
-      case 'acceptNew':
+      case "acceptNew":
         handleAcceptNewOrder(modalOrderId);
         break;
-      case 'declineNew':
+      case "declineNew":
         handleDeclineNewOrder(modalOrderId);
         break;
-      case 'acceptCancel':
+      case "acceptCancel":
         handleAcceptCancelRequest(modalOrderId);
         break;
-      case 'declineCancel':
+      case "declineCancel":
         handleDeclineCancelRequest(modalOrderId);
         break;
-      case 'deliver':
+      case "deliver":
         handleDeliverNow(modalOrderId);
         break;
       default:
@@ -499,7 +507,7 @@ const AdminOrderDe = () => {
             <input
               type="text"
               value={editForm.name}
-              onChange={(e) => handleFormChange('name', e.target.value)}
+              onChange={(e) => handleFormChange("name", e.target.value)}
               className="edit-input"
             />
           </td>
@@ -507,14 +515,14 @@ const AdminOrderDe = () => {
             <input
               type="text"
               value={editForm.phoneNumber}
-              onChange={(e) => handleFormChange('phoneNumber', e.target.value)}
+              onChange={(e) => handleFormChange("phoneNumber", e.target.value)}
               className="edit-input"
             />
           </td>
           <td>
             <textarea
               value={editForm.address}
-              onChange={(e) => handleFormChange('address', e.target.value)}
+              onChange={(e) => handleFormChange("address", e.target.value)}
               className="edit-textarea"
               rows="2"
             />
@@ -522,7 +530,7 @@ const AdminOrderDe = () => {
           <td>
             <textarea
               value={editForm.note}
-              onChange={(e) => handleFormChange('note', e.target.value)}
+              onChange={(e) => handleFormChange("note", e.target.value)}
               className="edit-textarea"
               rows="2"
             />
@@ -531,10 +539,10 @@ const AdminOrderDe = () => {
           <td>
             <select
               value={editForm.deliverper}
-              onChange={(e) => handleFormChange('deliverper', e.target.value)}
+              onChange={(e) => handleFormChange("deliverper", e.target.value)}
               className="edit-select"
             >
-              {dayPer.map(dp => (
+              {dayPer.map((dp) => (
                 <option key={dp} value={dp}>
                   {translateDeliverperName(dp)}
                 </option>
@@ -545,19 +553,21 @@ const AdminOrderDe = () => {
             <input
               type="datetime-local"
               value={editForm.start}
-              onChange={(e) => handleFormChange('start', e.target.value)}
+              onChange={(e) => handleFormChange("start", e.target.value)}
               className="edit-input"
             />
           </td>
-          <td>{order.total ? order.total.toLocaleString() + " VND" : "0 VND"}</td>
+          <td>
+            {order.total ? order.total.toLocaleString() + " VND" : "0 VND"}
+          </td>
           <td>
             <select
               value={editForm.condition}
-              onChange={(e) => handleFormChange('condition', e.target.value)}
+              onChange={(e) => handleFormChange("condition", e.target.value)}
               className="edit-select"
             >
               <option value="">Chờ xác nhận</option>
-              {conditionNames.map(condition => (
+              {conditionNames.map((condition) => (
                 <option key={condition} value={condition}>
                   {translateConditionName(condition)}
                 </option>
@@ -572,10 +582,7 @@ const AdminOrderDe = () => {
               >
                 Lưu
               </button>
-              <button
-                onClick={handleCancelEdit}
-                className="cancel-button"
-              >
+              <button onClick={handleCancelEdit} className="cancel-button">
                 Hủy
               </button>
             </div>
@@ -622,13 +629,13 @@ const AdminOrderDe = () => {
         <>
           <button
             className="accept-button"
-            onClick={() => showConfirmationModal('acceptNew', order.id)}
+            onClick={() => showConfirmationModal("acceptNew", order.id)}
           >
             Đồng ý
           </button>
           <button
             className="decline-button"
-            onClick={() => showConfirmationModal('declineNew', order.id)}
+            onClick={() => showConfirmationModal("declineNew", order.id)}
           >
             Từ chối
           </button>
@@ -639,13 +646,13 @@ const AdminOrderDe = () => {
         <>
           <button
             className="accept-button"
-            onClick={() => showConfirmationModal('acceptCancel', order.id)}
+            onClick={() => showConfirmationModal("acceptCancel", order.id)}
           >
             Đồng ý hủy
           </button>
           <button
             className="decline-button"
-            onClick={() => showConfirmationModal('declineCancel', order.id)}
+            onClick={() => showConfirmationModal("declineCancel", order.id)}
           >
             Từ chối hủy
           </button>
@@ -653,20 +660,20 @@ const AdminOrderDe = () => {
       );
     } else if (order.condition === "ONGOING") {
       // Kiểm tra xem đơn hàng có trong danh sách giao hôm nay không
-      const canDeliver = haveDeliOrders.some(deli => deli.id === order.id);
-      
+      const canDeliver = haveDeliOrders.some((deli) => deli.id === order.id);
+
       if (canDeliver) {
         return (
           <button
             className="deliver-button"
-            onClick={() => showConfirmationModal('deliver', order.id)}
+            onClick={() => showConfirmationModal("deliver", order.id)}
           >
             Giao ngay
           </button>
         );
       }
     }
-    
+
     return null;
   };
 
@@ -682,7 +689,7 @@ const AdminOrderDe = () => {
         <h2>Quản Lý Đơn Đặt Hàng Theo Lịch - Admin</h2>
       </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      
+
       <div className="actions-container">
         <button onClick={handleExportExcel} className="export-btn">
           Xuất Excel
@@ -691,27 +698,27 @@ const AdminOrderDe = () => {
 
       {/* Tab Navigation */}
       <div className="tab-navigation">
-        <button 
-          className={`tab-button ${activeTab === 'all' ? 'active' : ''}`}
-          onClick={() => setActiveTab('all')}
+        <button
+          className={`tab-button ${activeTab === "all" ? "active" : ""}`}
+          onClick={() => setActiveTab("all")}
         >
           Tất cả đơn hàng ({allOrders.length})
         </button>
-        <button 
-          className={`tab-button ${activeTab === 'new' ? 'active' : ''}`}
-          onClick={() => setActiveTab('new')}
+        <button
+          className={`tab-button ${activeTab === "new" ? "active" : ""}`}
+          onClick={() => setActiveTab("new")}
         >
           Đơn hàng mới ({newOrders.length})
         </button>
-        <button 
-          className={`tab-button ${activeTab === 'deliver' ? 'active' : ''}`}
-          onClick={() => setActiveTab('deliver')}
+        <button
+          className={`tab-button ${activeTab === "deliver" ? "active" : ""}`}
+          onClick={() => setActiveTab("deliver")}
         >
           Cần giao hôm nay ({haveDeliOrders.length})
         </button>
-        <button 
-          className={`tab-button ${activeTab === 'cancel' ? 'active' : ''}`}
-          onClick={() => setActiveTab('cancel')}
+        <button
+          className={`tab-button ${activeTab === "cancel" ? "active" : ""}`}
+          onClick={() => setActiveTab("cancel")}
         >
           Yêu cầu hủy ({cancelReqOrders.length})
         </button>
@@ -720,7 +727,7 @@ const AdminOrderDe = () => {
       {/* Danh sách đơn hàng hiển thị theo tab */}
       <div className="">
         {/* Tất cả đơn hàng */}
-        {activeTab === 'all' && (
+        {activeTab === "all" && (
           <div className="order-section">
             <h3>Tất Cả Đơn Hàng</h3>
             {allOrders.length === 0 ? (
@@ -753,7 +760,7 @@ const AdminOrderDe = () => {
         )}
 
         {/* Đơn hàng mới chờ xác nhận */}
-        {activeTab === 'new' && (
+        {activeTab === "new" && (
           <div className="order-section">
             <h3>Đơn Hàng Mới Chờ Xác Nhận</h3>
             {newOrders.length === 0 ? (
@@ -791,19 +798,29 @@ const AdminOrderDe = () => {
                         <td>{order.address || "Không có"}</td>
                         <td>{order.note || "Không có"}</td>
                         <td>{order.orderDeliveryType?.type || "Không có"}</td>
-                        <td>{translateDeliverper(order.deliverper) || "Không có"}</td>
-                        <td>{order.total ? order.total.toLocaleString() + " VND" : "0 VND"}</td>
+                        <td>
+                          {translateDeliverper(order.deliverper) || "Không có"}
+                        </td>
+                        <td>
+                          {order.total
+                            ? order.total.toLocaleString() + " VND"
+                            : "0 VND"}
+                        </td>
                         <td>{translateCondition(order.condition)}</td>
                         <td>
                           <button
                             className="accept-button"
-                            onClick={() => showConfirmationModal('acceptNew', order.id)}
+                            onClick={() =>
+                              showConfirmationModal("acceptNew", order.id)
+                            }
                           >
                             Đồng ý
                           </button>
                           <button
                             className="decline-button"
-                            onClick={() => showConfirmationModal('declineNew', order.id)}
+                            onClick={() =>
+                              showConfirmationModal("declineNew", order.id)
+                            }
                           >
                             Từ chối
                           </button>
@@ -818,7 +835,7 @@ const AdminOrderDe = () => {
         )}
 
         {/* Đơn hàng cần giao hôm nay */}
-        {activeTab === 'deliver' && (
+        {activeTab === "deliver" && (
           <div className="order-section">
             <h3>Đơn Hàng Cần Giao Hôm Nay</h3>
             {haveDeliOrders.length === 0 ? (
@@ -857,14 +874,26 @@ const AdminOrderDe = () => {
                         <td>{order.address || "Không có"}</td>
                         <td>{order.note || "Không có"}</td>
                         <td>{order.orderDeliveryType?.type || "Không có"}</td>
-                        <td>{translateDeliverper(order.deliverper) || "Không có"}</td>
-                        <td>{order.start ? formatDate(order.start) : "Không có"}</td>
-                        <td>{order.start ? formatTime(order.start) : "Không có"}</td>
-                        <td>{order.total ? order.total.toLocaleString() + " VND" : "0 VND"}</td>
+                        <td>
+                          {translateDeliverper(order.deliverper) || "Không có"}
+                        </td>
+                        <td>
+                          {order.start ? formatDate(order.start) : "Không có"}
+                        </td>
+                        <td>
+                          {order.start ? formatTime(order.start) : "Không có"}
+                        </td>
+                        <td>
+                          {order.total
+                            ? order.total.toLocaleString() + " VND"
+                            : "0 VND"}
+                        </td>
                         <td>
                           <button
                             className="deliver-button"
-                            onClick={() => showConfirmationModal('deliver', order.id)}
+                            onClick={() =>
+                              showConfirmationModal("deliver", order.id)
+                            }
                           >
                             Giao ngay
                           </button>
@@ -879,7 +908,7 @@ const AdminOrderDe = () => {
         )}
 
         {/* Yêu cầu hủy đơn */}
-        {activeTab === 'cancel' && (
+        {activeTab === "cancel" && (
           <div className="order-section">
             <h3>Yêu Cầu Hủy Đơn</h3>
             {cancelReqOrders.length === 0 ? (
@@ -919,21 +948,35 @@ const AdminOrderDe = () => {
                         <td>{order.address || "Không có"}</td>
                         <td>{order.note || "Không có"}</td>
                         <td>{order.orderDeliveryType?.type || "Không có"}</td>
-                        <td>{translateDeliverper(order.deliverper) || "Không có"}</td>
-                        <td>{order.start ? formatDate(order.start) : "Không có"}</td>
-                        <td>{order.start ? formatTime(order.start) : "Không có"}</td>
-                        <td>{order.total ? order.total.toLocaleString() + " VND" : "0 VND"}</td>
+                        <td>
+                          {translateDeliverper(order.deliverper) || "Không có"}
+                        </td>
+                        <td>
+                          {order.start ? formatDate(order.start) : "Không có"}
+                        </td>
+                        <td>
+                          {order.start ? formatTime(order.start) : "Không có"}
+                        </td>
+                        <td>
+                          {order.total
+                            ? order.total.toLocaleString() + " VND"
+                            : "0 VND"}
+                        </td>
                         <td>{translateCondition(order.condition)}</td>
                         <td>
                           <button
                             className="accept-button"
-                            onClick={() => showConfirmationModal('acceptCancel', order.id)}
+                            onClick={() =>
+                              showConfirmationModal("acceptCancel", order.id)
+                            }
                           >
                             Đồng ý hủy
                           </button>
                           <button
                             className="decline-button"
-                            onClick={() => showConfirmationModal('declineCancel', order.id)}
+                            onClick={() =>
+                              showConfirmationModal("declineCancel", order.id)
+                            }
                           >
                             Từ chối hủy
                           </button>
@@ -946,7 +989,6 @@ const AdminOrderDe = () => {
             )}
           </div>
         )}
-
       </div>
 
       {/* Modal xác nhận */}
@@ -956,8 +998,8 @@ const AdminOrderDe = () => {
             <div className="stafforde-modal-header">{modalTitle}</div>
             <div className="stafforde-modal-body">{modalMessage}</div>
             <div className="stafforde-modal-footer">
-              <button 
-                className="stafforde-modal-confirm" 
+              <button
+                className="stafforde-modal-confirm"
                 onClick={() => {
                   setShowModal(false);
                   executeAction();
@@ -965,8 +1007,8 @@ const AdminOrderDe = () => {
               >
                 Xác nhận
               </button>
-              <button 
-                className="stafforde-modal-cancel" 
+              <button
+                className="stafforde-modal-cancel"
                 onClick={() => setShowModal(false)}
               >
                 Hủy

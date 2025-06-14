@@ -20,7 +20,7 @@ const StaffAccountGift = () => {
 
   const formatDate = (dateString) => {
     if (!dateString) return "Không xác định";
-    
+
     const date = new Date(dateString);
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   };
@@ -28,16 +28,16 @@ const StaffAccountGift = () => {
   const fetchAccountGifts = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/staffaccountgift",
+        "https://deploybackend-1ta9.onrender.com/staffaccountgift",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
           },
         }
       );
-      
+
       const rawAccountGifts = response.data?.accountGifts || [];
-      
+
       if (!Array.isArray(rawAccountGifts)) {
         console.error("AccountGift data is not an array:", rawAccountGifts);
         setAccountGifts([]);
@@ -49,11 +49,13 @@ const StaffAccountGift = () => {
         id: item.id,
         account: item.account ? item.account.username : "",
         // Xử lý gift là một đối tượng thay vì chuỗi
-        gift: item.gift ? (item.gift.name || `Quà #${item.gift.id}`) : "",
+        gift: item.gift ? item.gift.name || `Quà #${item.gift.id}` : "",
         giftObject: item.gift || null,
         order: item.order ? `${item.order.orderID}` : "",
         date: formatDate(item.date),
-        discount: item.discount ? `${item.discount.discountcode} (${item.discount.discountPercent}%)` : "",
+        discount: item.discount
+          ? `${item.discount.discountcode} (${item.discount.discountPercent}%)`
+          : "",
         status: item.status,
       }));
 
@@ -66,10 +68,10 @@ const StaffAccountGift = () => {
 
   const handleToggleStatus = async () => {
     if (!selectedGift) return;
-    
+
     try {
       const response = await axios.delete(
-        `http://localhost:8080/staffaccountgift/${selectedGift.id}`,
+        `https://deploybackend-1ta9.onrender.com/staffaccountgift/${selectedGift.id}`,
         {
           headers: { Authorization: `Bearer ${accesstoken}` },
         }
@@ -90,17 +92,17 @@ const StaffAccountGift = () => {
 
   const getGiftDescription = (gift) => {
     if (!gift) return "N/A";
-    
+
     // Nếu gift là đối tượng Gift, hiển thị tên của nó
     if (gift.giftName) {
       return gift.giftName;
     }
-    
+
     // Nếu không có tên, hiển thị ID
     if (gift.giftID) {
       return `Quà #${gift.giftID}`;
     }
-    
+
     // Nếu không có thông tin gì về gift, hiển thị "N/A"
     return "N/A";
   };
@@ -124,9 +126,9 @@ const StaffAccountGift = () => {
           />
         </Link>
       </div>
-      
+
       {error && <p style={{ color: "red" }}>{error}</p>}
-      
+
       {accountGifts.length === 0 ? (
         <p>Không có quà tặng nào.</p>
       ) : (
@@ -187,13 +189,15 @@ const StaffAccountGift = () => {
           </table>
         </>
       )}
-      
+
       {/* Modal Xác Nhận */}
       {confirmModal && (
         <div className="modal">
           <div className="modal-content">
             <p>
-              Bạn có chắc chắn muốn {selectedGift?.status === "ENABLE" ? "vô hiệu hóa" : "kích hoạt"} quà tặng này không?
+              Bạn có chắc chắn muốn{" "}
+              {selectedGift?.status === "ENABLE" ? "vô hiệu hóa" : "kích hoạt"}{" "}
+              quà tặng này không?
             </p>
             <button
               onClick={() => {

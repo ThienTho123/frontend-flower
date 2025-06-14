@@ -29,17 +29,17 @@ const UserVideoList = () => {
     const fetchData = async () => {
       setLoading(true);
       // Tạo URL API
-      const url = `http://localhost:8080/flowshort/account/${accountId}`;
+      const url = `https://deploybackend-1ta9.onrender.com/flowshort/account/${accountId}`;
       setApiUrl(url); // Lưu URL để hiển thị
-      
+
       try {
         // Fetch user's videos và thông tin user từ cùng một API
         const response = await axios.get(url);
         console.log("API Response:", response.data); // In response để kiểm tra
-        
+
         // Lấy thông tin user từ response
         setUserInfo(response.data.account || {});
-        
+
         // Lấy danh sách video từ response
         setVideos(response.data.videos || []);
       } catch (error) {
@@ -103,10 +103,7 @@ const UserVideoList = () => {
           </div>
 
           <div className="fs-header-actions">
-            <button
-              onClick={handleBackToVideos}
-              className="fs-toggle-btn"
-            >
+            <button onClick={handleBackToVideos} className="fs-toggle-btn">
               <ArrowLeft size={18} />
               <span>Tất cả Video</span>
             </button>
@@ -121,7 +118,6 @@ const UserVideoList = () => {
         </div>
       </header>
 
-
       {/* User Profile Banner */}
       {userInfo && (
         <div className="fs-user-profile-banner">
@@ -134,7 +130,9 @@ const UserVideoList = () => {
               )}
             </div>
             <div className="fs-profile-info">
-              <h2>{videos[0].accountID.name || videos[0].accountID.username}</h2>
+              <h2>
+                {videos[0].accountID.name || videos[0].accountID.username}
+              </h2>
               <p className="fs-profile-email">#{videos[0].accountID.email}</p>
               <p className="fs-profile-stats">
                 <span className="fs-stats-number">{videos.length}</span> video

@@ -5,7 +5,6 @@ import returnIcon from "./ImageDashboard/return-button.png";
 import "../StaffDashboard/CreateBlogForm.css";
 import "./AdminCustomOrderDetail.css"; // Đảm bảo tạo file CSS tương ứng
 
-
 const AdminCustomOrderDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -42,22 +41,25 @@ const AdminCustomOrderDetail = () => {
   const fetchOrderDetail = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:8080/api/v1/admin/custom/${id}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+      const response = await axios.get(
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/custom/${id}`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
 
-      const { customize, customDetails, flowerCustoms, otherCustoms } = response.data;
-      
+      const { customize, customDetails, flowerCustoms, otherCustoms } =
+        response.data;
+
       setOrderDetail(customize);
       setExistingDetails(customDetails || []);
       setFlowerCustoms(flowerCustoms || []);
       setOtherCustoms(otherCustoms || []);
-      
+
       // Nếu đơn đã có hình ảnh, hiển thị
       if (customize.image) {
         setImageUrl(customize.image);
       }
-      
     } catch (error) {
       console.error("Lỗi khi tải chi tiết:", error);
       showResultModal("Lỗi tải dữ liệu chi tiết!");
@@ -86,24 +88,28 @@ const AdminCustomOrderDetail = () => {
       return "Không xác định";
     }
     const [year, month, day, hour = 0, minute = 0] = dateTime;
-    return `${day}/${month}/${year} - ${hour.toString().padStart(2, "0")}:${minute
+    return `${day}/${month}/${year} - ${hour
       .toString()
-      .padStart(2, "0")}`;
+      .padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
   };
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
-    
+
     setUploading(true);
     const formData = new FormData();
     formData.append("file", file);
-    
+
     try {
-      const response = await axios.post("http://localhost:8080/api/v1/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      
+      const response = await axios.post(
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
       const uploadedImageUrl = response.data.DT;
       setImageUrl(uploadedImageUrl);
       showResultModal("Upload ảnh thành công!");
@@ -161,19 +167,21 @@ const AdminCustomOrderDetail = () => {
       showResultModal("Vui lòng tải ảnh lên!");
       return;
     }
-    
+
     if (newDetails.length === 0) {
       showResultModal("Vui lòng thêm ít nhất một detail!");
       return;
     }
-    
-    const invalidDetails = newDetails.filter(detail => !detail.id);
+
+    const invalidDetails = newDetails.filter((detail) => !detail.id);
     if (invalidDetails.length > 0) {
       showResultModal("Vui lòng chọn sản phẩm cho tất cả các detail!");
       return;
     }
-    
-    showConfirmModal(`Bạn có chắc chắn muốn CHẤP NHẬN đơn hàng này với tổng giá ${totalPrice.toLocaleString()} VND?`);
+
+    showConfirmModal(
+      `Bạn có chắc chắn muốn CHẤP NHẬN đơn hàng này với tổng giá ${totalPrice.toLocaleString()} VND?`
+    );
   };
 
   // Xử lý decline
@@ -188,7 +196,9 @@ const AdminCustomOrderDetail = () => {
 
   // Xử lý success
   const handleSuccess = () => {
-    showConfirmModal("Bạn có chắc chắn muốn đánh dấu đơn hàng này là HOÀN THÀNH? Điều này sẽ tạo đơn hàng chính thức.");
+    showConfirmModal(
+      "Bạn có chắc chắn muốn đánh dấu đơn hàng này là HOÀN THÀNH? Điều này sẽ tạo đơn hàng chính thức."
+    );
   };
 
   // Xử lý các hành động confirm
@@ -207,50 +217,48 @@ const AdminCustomOrderDetail = () => {
         };
 
         await axios.put(
-          `http://localhost:8080/api/v1/admin/custom/${id}/accept`,
+          `https://deploybackend-1ta9.onrender.com/api/v1/admin/custom/${id}/accept`,
           acceptDTO,
           { headers: { Authorization: `Bearer ${accessToken}` } }
         );
 
         setIsModalOpen(false);
         showResultModal("Đơn hàng đã được chấp nhận thành công!");
-        
       } else if (modalMessage.includes("HOÀN THÀNH")) {
         // Xử lý success
         await axios.put(
-          `http://localhost:8080/api/v1/admin/custom/${id}/success`,
+          `https://deploybackend-1ta9.onrender.com/api/v1/admin/custom/${id}/success`,
           {},
           { headers: { Authorization: `Bearer ${accessToken}` } }
         );
         setIsModalOpen(false);
-        showResultModal("Đơn hàng đã được đánh dấu hoàn thành và tạo đơn hàng chính thức!");
-        
+        showResultModal(
+          "Đơn hàng đã được đánh dấu hoàn thành và tạo đơn hàng chính thức!"
+        );
       } else if (modalMessage.includes("TỪ CHỐI")) {
         // Xử lý decline
         await axios.put(
-          `http://localhost:8080/api/v1/admin/custom/${id}/decline`,
+          `https://deploybackend-1ta9.onrender.com/api/v1/admin/custom/${id}/decline`,
           {},
           { headers: { Authorization: `Bearer ${accessToken}` } }
         );
         setIsModalOpen(false);
         showResultModal("Đơn hàng đã được từ chối!");
-        
       } else if (modalMessage.includes("HỦY")) {
         // Xử lý cancel
         await axios.put(
-          `http://localhost:8080/api/v1/admin/custom/${id}/cancel`,
+          `https://deploybackend-1ta9.onrender.com/api/v1/admin/custom/${id}/cancel`,
           {},
           { headers: { Authorization: `Bearer ${accessToken}` } }
         );
         setIsModalOpen(false);
         showResultModal("Đơn hàng đã được hủy!");
       }
-      
+
       // Tải lại dữ liệu sau khi thực hiện hành động
       setTimeout(() => {
         fetchOrderDetail();
       }, 1500);
-
     } catch (error) {
       console.error("Lỗi khi thực hiện hành động:", error);
       setIsModalOpen(false);
@@ -278,18 +286,44 @@ const AdminCustomOrderDetail = () => {
   // Render trạng thái
   const renderStatus = (condition) => {
     const statusConfig = {
-      'PENDING': { bg: 'bg-yellow-100', text: 'text-yellow-800', label: 'Chờ xử lý' },
-      'PROCESSING': { bg: 'bg-blue-100', text: 'text-blue-800', label: 'Đang xử lý' },
-      'ACCEPT': { bg: 'bg-blue-100', text: 'text-blue-800', label: 'Đã chấp nhận' },
-      'PAID': { bg: 'bg-green-100', text: 'text-green-800', label: 'Đã thanh toán' },
-      'SUCCESS': { bg: 'bg-green-200', text: 'text-green-900', label: 'Hoàn thành' },
-      'CANCEL': { bg: 'bg-red-100', text: 'text-red-800', label: 'Đã hủy' }
+      PENDING: {
+        bg: "bg-yellow-100",
+        text: "text-yellow-800",
+        label: "Chờ xử lý",
+      },
+      PROCESSING: {
+        bg: "bg-blue-100",
+        text: "text-blue-800",
+        label: "Đang xử lý",
+      },
+      ACCEPT: {
+        bg: "bg-blue-100",
+        text: "text-blue-800",
+        label: "Đã chấp nhận",
+      },
+      PAID: {
+        bg: "bg-green-100",
+        text: "text-green-800",
+        label: "Đã thanh toán",
+      },
+      SUCCESS: {
+        bg: "bg-green-200",
+        text: "text-green-900",
+        label: "Hoàn thành",
+      },
+      CANCEL: { bg: "bg-red-100", text: "text-red-800", label: "Đã hủy" },
     };
-    
-    const config = statusConfig[condition] || { bg: 'bg-gray-100', text: 'text-gray-800', label: condition };
-    
+
+    const config = statusConfig[condition] || {
+      bg: "bg-gray-100",
+      text: "text-gray-800",
+      label: condition,
+    };
+
     return (
-      <span className={`ml-2 px-3 py-1 rounded-full text-sm font-semibold ${config.bg} ${config.text}`}>
+      <span
+        className={`ml-2 px-3 py-1 rounded-full text-sm font-semibold ${config.bg} ${config.text}`}
+      >
         {config.label}
       </span>
     );
@@ -324,7 +358,7 @@ const AdminCustomOrderDetail = () => {
     );
   }
 
-return (
+  return (
     <div className="admin-custom-order-detail-container">
       <div className="admin-custom-order-detail-header">
         <img
@@ -333,40 +367,66 @@ return (
           className="admin-custom-order-detail-return-btn"
           onClick={() => navigate("/AdminCustomOrders")}
         />
-        <h2 className="admin-custom-order-detail-title">Chi Tiết Đơn Hàng Custom #{orderDetail.customID}</h2>
+        <h2 className="admin-custom-order-detail-title">
+          Chi Tiết Đơn Hàng Custom #{orderDetail.customID}
+        </h2>
       </div>
 
       {/* Thông tin đơn hàng */}
       <div className="admin-custom-order-detail-card">
-        <h3 className="admin-custom-order-detail-card-title">Thông Tin Đơn Hàng</h3>
+        <h3 className="admin-custom-order-detail-card-title">
+          Thông Tin Đơn Hàng
+        </h3>
         <div className="admin-custom-order-detail-info-grid">
           <div className="admin-custom-order-detail-info-column">
             <p className="admin-custom-order-detail-info-item">
-              <strong className="admin-custom-order-detail-info-label">Khách hàng:</strong>
-              <span className="admin-custom-order-detail-info-value">{orderDetail.name || "N/A"}</span>
+              <strong className="admin-custom-order-detail-info-label">
+                Khách hàng:
+              </strong>
+              <span className="admin-custom-order-detail-info-value">
+                {orderDetail.name || "N/A"}
+              </span>
             </p>
             <p className="admin-custom-order-detail-info-item">
-              <strong className="admin-custom-order-detail-info-label">Số điện thoại:</strong>
-              <span className="admin-custom-order-detail-info-value">{orderDetail.phoneNumber || "N/A"}</span>
+              <strong className="admin-custom-order-detail-info-label">
+                Số điện thoại:
+              </strong>
+              <span className="admin-custom-order-detail-info-value">
+                {orderDetail.phoneNumber || "N/A"}
+              </span>
             </p>
             <p className="admin-custom-order-detail-info-item">
-              <strong className="admin-custom-order-detail-info-label">Địa chỉ giao hàng:</strong>
-              <span className="admin-custom-order-detail-info-value--secondary">{orderDetail.deliveryAddress || "N/A"}</span>
+              <strong className="admin-custom-order-detail-info-label">
+                Địa chỉ giao hàng:
+              </strong>
+              <span className="admin-custom-order-detail-info-value--secondary">
+                {orderDetail.deliveryAddress || "N/A"}
+              </span>
             </p>
           </div>
           <div className="admin-custom-order-detail-info-column">
             <p className="admin-custom-order-detail-info-item">
-              <strong className="admin-custom-order-detail-info-label">Ngày đặt:</strong>
-              <span className="admin-custom-order-detail-info-value--secondary">{formatDateTime(orderDetail.date)}</span>
+              <strong className="admin-custom-order-detail-info-label">
+                Ngày đặt:
+              </strong>
+              <span className="admin-custom-order-detail-info-value--secondary">
+                {formatDateTime(orderDetail.date)}
+              </span>
             </p>
             <p className="admin-custom-order-detail-info-item">
-              <strong className="admin-custom-order-detail-info-label">Trạng thái:</strong>
+              <strong className="admin-custom-order-detail-info-label">
+                Trạng thái:
+              </strong>
               {renderStatus(orderDetail.condition)}
             </p>
             <p className="admin-custom-order-detail-info-item">
-              <strong className="admin-custom-order-detail-info-label">Tổng tiền hiện tại:</strong>
+              <strong className="admin-custom-order-detail-info-label">
+                Tổng tiền hiện tại:
+              </strong>
               <span className="admin-custom-order-detail-info-value--success">
-                {orderDetail.totalAmount ? `${orderDetail.totalAmount.toLocaleString()} VND` : "Chưa xác định"}
+                {orderDetail.totalAmount
+                  ? `${orderDetail.totalAmount.toLocaleString()} VND`
+                  : "Chưa xác định"}
               </span>
             </p>
           </div>
@@ -374,8 +434,12 @@ return (
         {orderDetail.note && (
           <div className="admin-custom-order-detail-note">
             <p>
-              <strong className="admin-custom-order-detail-note-label">Ghi chú:</strong>
-              <span className="admin-custom-order-detail-note-text">{orderDetail.note}</span>
+              <strong className="admin-custom-order-detail-note-label">
+                Ghi chú:
+              </strong>
+              <span className="admin-custom-order-detail-note-text">
+                {orderDetail.note}
+              </span>
             </p>
           </div>
         )}
@@ -384,7 +448,9 @@ return (
       {/* Hình ảnh hiện tại */}
       {orderDetail.image && (
         <div className="admin-custom-order-detail-card">
-          <h3 className="admin-custom-order-detail-card-title">Hình Ảnh Đơn Hàng</h3>
+          <h3 className="admin-custom-order-detail-card-title">
+            Hình Ảnh Đơn Hàng
+          </h3>
           <img
             src={orderDetail.image}
             alt="Đơn hàng"
@@ -396,12 +462,19 @@ return (
       {/* Chi tiết đã có */}
       {existingDetails.length > 0 && (
         <div className="admin-custom-order-detail-card">
-          <h3 className="admin-custom-order-detail-card-title">Chi Tiết Đã Được Chấp Nhận</h3>
+          <h3 className="admin-custom-order-detail-card-title">
+            Chi Tiết Đã Được Chấp Nhận
+          </h3>
           <div className="admin-custom-order-detail-existing-details">
             {existingDetails.map((detail, index) => (
-              <div key={index} className="admin-custom-order-detail-existing-item">
+              <div
+                key={index}
+                className="admin-custom-order-detail-existing-item"
+              >
                 <div className="admin-custom-order-detail-existing-dot"></div>
-                <span className="admin-custom-order-detail-existing-text">{renderDetailInfo(detail)}</span>
+                <span className="admin-custom-order-detail-existing-text">
+                  {renderDetailInfo(detail)}
+                </span>
               </div>
             ))}
           </div>
@@ -411,12 +484,15 @@ return (
       {/* Form Accept (chỉ hiển thị khi trạng thái PROCESSING) */}
       {orderDetail.condition === "PROCESSING" && (
         <div className="admin-custom-order-detail-card">
-          <h3 className="admin-custom-order-detail-card-title">Chấp Nhận Đơn Hàng</h3>
-          
+          <h3 className="admin-custom-order-detail-card-title">
+            Chấp Nhận Đơn Hàng
+          </h3>
+
           {/* Upload ảnh */}
           <div className="admin-custom-order-detail-form-section">
             <label className="admin-custom-order-detail-form-label">
-              Tải ảnh sản phẩm lên: <span className="admin-custom-order-detail-form-required">*</span>
+              Tải ảnh sản phẩm lên:{" "}
+              <span className="admin-custom-order-detail-form-required">*</span>
             </label>
             <div className="admin-custom-order-detail-upload-container">
               <input
@@ -435,17 +511,19 @@ return (
                 </button>
               )}
             </div>
-            
+
             {uploading && (
               <div className="admin-custom-order-detail-upload-status">
                 <div className="admin-custom-order-detail-upload-spinner"></div>
                 <p>Đang tải ảnh...</p>
               </div>
             )}
-            
+
             {imageUrl && (
               <div className="admin-custom-order-detail-image-preview">
-                <p className="admin-custom-order-detail-preview-label">Ảnh đã tải:</p>
+                <p className="admin-custom-order-detail-preview-label">
+                  Ảnh đã tải:
+                </p>
                 <img
                   src={imageUrl}
                   alt="Preview"
@@ -456,108 +534,138 @@ return (
           </div>
 
           {/* Chi tiết sản phẩm */}
-  <div className="admin-custom-order-detail-form-section">
-    <div className="admin-custom-order-detail-products-header">
-      <h4 className="admin-custom-order-detail-products-title">
-        Chi Tiết Sản Phẩm: <span className="admin-custom-order-detail-form-required">*</span>
-      </h4>
-      <button
-        onClick={addNewDetail}
-        className="admin-custom-order-detail-btn admin-custom-order-detail-btn--primary admin-custom-order-detail-btn--small"
-      >
-        <span>+</span>
-        <span>Thêm Detail</span>
-      </button>
-    </div>
-    
-    {newDetails.length === 0 ? (
-      <div className="admin-custom-order-detail-empty-state">
-        <p className="admin-custom-order-detail-empty-text">Chưa có detail nào. Nhấn "Thêm Detail" để bắt đầu.</p>
-      </div>
-    ) : (
-      <div className="admin-custom-order-detail-products-list">
-        {newDetails.map((detail, index) => (
-          <div key={index} className="admin-custom-order-detail-product-item">
-            {/* Loại sản phẩm */}
-            <div className="admin-custom-order-detail-type-select-container">
-              <select
-                value={detail.type}
-                onChange={(e) => handleDetailChange(index, "type", e.target.value)}
-                className="admin-custom-order-detail-product-select"
+          <div className="admin-custom-order-detail-form-section">
+            <div className="admin-custom-order-detail-products-header">
+              <h4 className="admin-custom-order-detail-products-title">
+                Chi Tiết Sản Phẩm:{" "}
+                <span className="admin-custom-order-detail-form-required">
+                  *
+                </span>
+              </h4>
+              <button
+                onClick={addNewDetail}
+                className="admin-custom-order-detail-btn admin-custom-order-detail-btn--primary admin-custom-order-detail-btn--small"
               >
-                <option value="flower">🌸 Hoa</option>
-                <option value="other">🎁 Phụ kiện</option>
-              </select>
+                <span>+</span>
+                <span>Thêm Detail</span>
+              </button>
             </div>
 
-            {/* Dropdown sản phẩm và tên sản phẩm */}
-            <div className="admin-custom-order-detail-product-select-container">
-              <select
-                value={detail.id || ""}
-                onChange={(e) => handleDetailChange(index, "id", e.target.value)}
-                className="admin-custom-order-detail-product-select admin-custom-order-detail-product-select--main"
-              >
-                <option value="">-- Chọn sản phẩm --</option>
-                {detail.type === "flower" &&
-                  flowerCustoms.map((flower) => (
-                    <option key={flower.flowerID} value={flower.flowerID}>
-                      {flower.name} - {flower.price.toLocaleString()} VND
-                    </option>
-                  ))
-                }
-                {detail.type === "other" &&
-                  otherCustoms.map((other) => (
-                    <option key={other.otherID} value={other.otherID}>
-                      {other.name} - {other.price.toLocaleString()} VND
-                    </option>
-                  ))
-                }
-              </select>
-              
-            </div>
+            {newDetails.length === 0 ? (
+              <div className="admin-custom-order-detail-empty-state">
+                <p className="admin-custom-order-detail-empty-text">
+                  Chưa có detail nào. Nhấn "Thêm Detail" để bắt đầu.
+                </p>
+              </div>
+            ) : (
+              <div className="admin-custom-order-detail-products-list">
+                {newDetails.map((detail, index) => (
+                  <div
+                    key={index}
+                    className="admin-custom-order-detail-product-item"
+                  >
+                    {/* Loại sản phẩm */}
+                    <div className="admin-custom-order-detail-type-select-container">
+                      <select
+                        value={detail.type}
+                        onChange={(e) =>
+                          handleDetailChange(index, "type", e.target.value)
+                        }
+                        className="admin-custom-order-detail-product-select"
+                      >
+                        <option value="flower">🌸 Hoa</option>
+                        <option value="other">🎁 Phụ kiện</option>
+                      </select>
+                    </div>
 
-            {/* Số lượng */}
-            <input
-              type="number"
-              min="1"
-              value={detail.quantity}
-              onChange={(e) => handleDetailChange(index, "quantity", e.target.value)}
-              className="admin-custom-order-detail-quantity-input"
-              placeholder="SL"
-            />
+                    {/* Dropdown sản phẩm và tên sản phẩm */}
+                    <div className="admin-custom-order-detail-product-select-container">
+                      <select
+                        value={detail.id || ""}
+                        onChange={(e) =>
+                          handleDetailChange(index, "id", e.target.value)
+                        }
+                        className="admin-custom-order-detail-product-select admin-custom-order-detail-product-select--main"
+                      >
+                        <option value="">-- Chọn sản phẩm --</option>
+                        {detail.type === "flower" &&
+                          flowerCustoms.map((flower) => (
+                            <option
+                              key={flower.flowerID}
+                              value={flower.flowerID}
+                            >
+                              {flower.name} - {flower.price.toLocaleString()}{" "}
+                              VND
+                            </option>
+                          ))}
+                        {detail.type === "other" &&
+                          otherCustoms.map((other) => (
+                            <option key={other.otherID} value={other.otherID}>
+                              {other.name} - {other.price.toLocaleString()} VND
+                            </option>
+                          ))}
+                      </select>
+                    </div>
 
-            {/* Hiển thị giá tiền của detail này */}
-            <div className="admin-custom-order-detail-product-price">
-              {(() => {
-                if (detail.type === "flower" && detail.id) {
-                  const flower = flowerCustoms.find(f => f.flowerID === detail.id);
-                  return flower ? `${(flower.price * detail.quantity).toLocaleString()} VND` : "0 VND";
-                } else if (detail.type === "other" && detail.id) {
-                  const other = otherCustoms.find(o => o.otherID === detail.id);
-                  return other ? `${(other.price * detail.quantity).toLocaleString()} VND` : "0 VND";
-                }
-                return "0 VND";
-              })()}
-            </div>
+                    {/* Số lượng */}
+                    <input
+                      type="number"
+                      min="1"
+                      value={detail.quantity}
+                      onChange={(e) =>
+                        handleDetailChange(index, "quantity", e.target.value)
+                      }
+                      className="admin-custom-order-detail-quantity-input"
+                      placeholder="SL"
+                    />
 
-            {/* Nút xóa */}
-            <button
-              onClick={() => removeNewDetail(index)}
-              className="admin-custom-order-detail-btn admin-custom-order-detail-btn--danger admin-custom-order-detail-btn--small"
-              title="Xóa detail này"
-            >
-              🗑️
-            </button>
+                    {/* Hiển thị giá tiền của detail này */}
+                    <div className="admin-custom-order-detail-product-price">
+                      {(() => {
+                        if (detail.type === "flower" && detail.id) {
+                          const flower = flowerCustoms.find(
+                            (f) => f.flowerID === detail.id
+                          );
+                          return flower
+                            ? `${(
+                                flower.price * detail.quantity
+                              ).toLocaleString()} VND`
+                            : "0 VND";
+                        } else if (detail.type === "other" && detail.id) {
+                          const other = otherCustoms.find(
+                            (o) => o.otherID === detail.id
+                          );
+                          return other
+                            ? `${(
+                                other.price * detail.quantity
+                              ).toLocaleString()} VND`
+                            : "0 VND";
+                        }
+                        return "0 VND";
+                      })()}
+                    </div>
+
+                    {/* Nút xóa */}
+                    <button
+                      onClick={() => removeNewDetail(index)}
+                      className="admin-custom-order-detail-btn admin-custom-order-detail-btn--danger admin-custom-order-detail-btn--small"
+                      title="Xóa detail này"
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        ))}
-      </div>
-    )}
-  </div>
 
           {/* Tổng tiền */}
           <div className="admin-custom-order-detail-total">
             <h4 className="admin-custom-order-detail-total-text">
-              💰 Tổng tiền: <span className="admin-custom-order-detail-total-amount">{totalPrice.toLocaleString()} VND</span>
+              💰 Tổng tiền:{" "}
+              <span className="admin-custom-order-detail-total-amount">
+                {totalPrice.toLocaleString()} VND
+              </span>
             </h4>
           </div>
 
@@ -582,34 +690,37 @@ return (
       )}
 
       {/* Actions cho các trạng thái khác */}
-      {orderDetail.condition !== "PROCESSING" && orderDetail.condition !== "SUCCESS" && orderDetail.condition !== "CANCEL" && (
-        <div className="admin-custom-order-detail-card">
-          <h3 className="admin-custom-order-detail-card-title">Hành Động</h3>
-          <div className="admin-custom-order-detail-actions">
-            {/* Nút Success cho đơn PAID */}
-            {orderDetail.condition === "PAID" && (
-              <button
-                onClick={handleSuccess}
-                className="admin-custom-order-detail-btn admin-custom-order-detail-btn--primary"
-              >
-                <span>🎉</span>
-                <span>Đánh Dấu Hoàn Thành</span>
-              </button>
-            )}
-            
-            {/* Nút Cancel cho đơn ACCEPT hoặc PAID */}
-            {(orderDetail.condition === "ACCEPT" || orderDetail.condition === "PAID") && (
-              <button
-                onClick={handleCancel}
-                className="admin-custom-order-detail-btn admin-custom-order-detail-btn--warning"
-              >
-                <span>🚫</span>
-                <span>Hủy Đơn</span>
-              </button>
-            )}
+      {orderDetail.condition !== "PROCESSING" &&
+        orderDetail.condition !== "SUCCESS" &&
+        orderDetail.condition !== "CANCEL" && (
+          <div className="admin-custom-order-detail-card">
+            <h3 className="admin-custom-order-detail-card-title">Hành Động</h3>
+            <div className="admin-custom-order-detail-actions">
+              {/* Nút Success cho đơn PAID */}
+              {orderDetail.condition === "PAID" && (
+                <button
+                  onClick={handleSuccess}
+                  className="admin-custom-order-detail-btn admin-custom-order-detail-btn--primary"
+                >
+                  <span>🎉</span>
+                  <span>Đánh Dấu Hoàn Thành</span>
+                </button>
+              )}
+
+              {/* Nút Cancel cho đơn ACCEPT hoặc PAID */}
+              {(orderDetail.condition === "ACCEPT" ||
+                orderDetail.condition === "PAID") && (
+                <button
+                  onClick={handleCancel}
+                  className="admin-custom-order-detail-btn admin-custom-order-detail-btn--warning"
+                >
+                  <span>🚫</span>
+                  <span>Hủy Đơn</span>
+                </button>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Modal */}
       {isModalOpen && (
@@ -629,7 +740,7 @@ return (
                 <p>{modalMessage}</p>
               </div>
             </div>
-            
+
             <div className="admin-custom-order-detail-modal-actions">
               {modalType === "confirm" ? (
                 <>

@@ -29,11 +29,14 @@ const OrderDetail = () => {
   };
   const getHistoryOrder = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/shipper/${id}`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
+      const response = await axios.get(
+        `https://deploybackend-1ta9.onrender.com/shipper/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
 
       const rawOrderHistory = response.data?.orderList || {};
       if (Object.keys(rawOrderHistory).length === 0) {
@@ -60,7 +63,7 @@ const OrderDetail = () => {
         heights: rawOrderHistory.height || [],
         widths: rawOrderHistory.width || [],
         weights: rawOrderHistory.weight || [],
-        paid: rawOrderHistory.paid|| [],
+        paid: rawOrderHistory.paid || [],
         stt: Array.from(
           { length: rawOrderHistory.FlowerName?.length || 0 },
           (_, index) => index + 1
@@ -76,7 +79,7 @@ const OrderDetail = () => {
     try {
       // Gửi yêu cầu POST với dữ liệu chuỗi thuần túy cho "note"
       const response = await axios.post(
-        `http://localhost:8080/shipper/${id}/receive`, // Đảm bảo URL không có mã hóa
+        `https://deploybackend-1ta9.onrender.com/shipper/${id}/receive`, // Đảm bảo URL không có mã hóa
         { note: note }, // Truyền chuỗi 'note' bình thường trong body JSON
         {
           headers: {
@@ -177,15 +180,12 @@ const OrderDetail = () => {
                 </td>
                 <td>{orderHistory[0]?.weights[index]}</td>
                 <td>{orderHistory[0]?.quantities[index]}</td>
-                <td>{orderHistory[0]?.price[index]/orderHistory[0]?.quantities[index]}</td>
                 <td>
-                  {
-                    orderHistory[0]?.price[index]}
+                  {orderHistory[0]?.price[index] /
+                    orderHistory[0]?.quantities[index]}
                 </td>
-                <td>
-                  {
-                    orderHistory[0]?.paid[index]}
-                </td>
+                <td>{orderHistory[0]?.price[index]}</td>
+                <td>{orderHistory[0]?.paid[index]}</td>
               </tr>
             ))}
           </tbody>

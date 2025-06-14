@@ -32,7 +32,7 @@ const StaffEvent = () => {
   const fetchEvents = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/staff/event",
+        "https://deploybackend-1ta9.onrender.com/api/v1/staff/event",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -68,7 +68,7 @@ const StaffEvent = () => {
     if (!selectedEvent) return;
     try {
       const response = await axios.delete(
-        `http://localhost:8080/api/v1/staff/event/${selectedEvent.id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/staff/event/${selectedEvent.id}`,
         {
           headers: { Authorization: `Bearer ${accesstoken}` },
         }

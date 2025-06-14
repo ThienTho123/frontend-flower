@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png';
+import returnIcon from "./ImageDashboard/return-button.png";
 
 const AdminPurpose = () => {
   const [purposes, setPurposes] = useState([]);
@@ -13,12 +13,15 @@ const AdminPurpose = () => {
   useEffect(() => {
     const fetchPurposes = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/admin/purpose", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/purpose",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Không thể lấy danh sách mục đích.");
@@ -37,7 +40,7 @@ const AdminPurpose = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/purpose/softdelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/purpose/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -50,7 +53,9 @@ const AdminPurpose = () => {
       if (response.ok) {
         setPurposes((prevPurposes) =>
           prevPurposes.map((purpose) =>
-            purpose.purposeID === id ? { ...purpose, status: "DISABLE" } : purpose
+            purpose.purposeID === id
+              ? { ...purpose, status: "DISABLE" }
+              : purpose
           )
         );
       } else {
@@ -64,7 +69,7 @@ const AdminPurpose = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/purpose/harddelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/purpose/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -88,15 +93,18 @@ const AdminPurpose = () => {
 
   const handleSave = async (id, purposeName, status) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/admin/purpose/${id}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ purposeName, status }),
-      });
+      const response = await fetch(
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/purpose/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ purposeName, status }),
+        }
+      );
 
       if (response.ok) {
         const updatedPurpose = await response.json();
@@ -116,15 +124,21 @@ const AdminPurpose = () => {
 
   const handleCreate = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/admin/purpose", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ purposeName: newPurposeName, status: "ENABLE" }),
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/purpose",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            purposeName: newPurposeName,
+            status: "ENABLE",
+          }),
+        }
+      );
 
       if (response.ok) {
         const createdPurpose = await response.json();
@@ -224,22 +238,31 @@ const AdminPurpose = () => {
                     <>
                       <button
                         onClick={() =>
-                          handleSave(purpose.purposeID, purpose.purposeName, purpose.status)
+                          handleSave(
+                            purpose.purposeID,
+                            purpose.purposeName,
+                            purpose.status
+                          )
                         }
                       >
                         Lưu
                       </button>
-                      <button onClick={() => setEditingPurposeId(null)}>Hủy</button>
+                      <button onClick={() => setEditingPurposeId(null)}>
+                        Hủy
+                      </button>
                     </>
                   ) : (
                     <>
-                      <button onClick={() => setEditingPurposeId(purpose.purposeID)}>
+                      <button
+                        onClick={() => setEditingPurposeId(purpose.purposeID)}
+                      >
                         Chỉnh Sửa
                       </button>
-                      <button onClick={() => handleDeleteSoft(purpose.purposeID)}>
+                      <button
+                        onClick={() => handleDeleteSoft(purpose.purposeID)}
+                      >
                         Vô hiệu hóa
                       </button>
- 
                     </>
                   )}
                 </td>

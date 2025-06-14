@@ -17,7 +17,7 @@ const CreateBlogForm = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/flower")
+      .get("https://deploybackend-1ta9.onrender.com/flower")
       .then((response) => setFlowers(response.data.flowers))
       .catch((error) => console.error("Error fetching flowers:", error));
   }, []);
@@ -33,7 +33,7 @@ const CreateBlogForm = () => {
 
       try {
         const response = await axios.post(
-          "http://localhost:8080/api/v1/upload",
+          "https://deploybackend-1ta9.onrender.com/api/v1/upload",
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
@@ -81,9 +81,13 @@ const CreateBlogForm = () => {
     };
 
     try {
-      await axios.post("http://localhost:8080/api/v1/staff/blog", blogData, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+      await axios.post(
+        "https://deploybackend-1ta9.onrender.com/api/v1/staff/blog",
+        blogData,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
       resetForm();
     } catch (error) {
       console.error("Error creating blog:", error);

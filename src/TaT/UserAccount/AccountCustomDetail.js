@@ -26,11 +26,14 @@ const AccountCustomDetail = () => {
   };
   const getHistoryOrder = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/acccus/${id}`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
+      const response = await axios.get(
+        `https://deploybackend-1ta9.onrender.com/acccus/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
       const rawCustomize = response.data?.customize || {};
       const rawCustomDetail = response.data?.customDetails || [];
       console.log("rawOrderHistory: ", rawCustomize);
@@ -87,7 +90,7 @@ const AccountCustomDetail = () => {
       return;
     }
 
-    const finalUrl = `http://localhost:8080/setCustomize/${orderHistory[0].id}?price=${totalAmount}`;
+    const finalUrl = `https://deploybackend-1ta9.onrender.com/setCustomize/${orderHistory[0].id}?price=${totalAmount}`;
     console.log("URL thanh toán:", finalUrl);
 
     fetch(finalUrl, {
@@ -107,12 +110,15 @@ const AccountCustomDetail = () => {
         return response.text();
       })
       .then(() => {
-        return fetch(`http://localhost:8080/pay?totalPayment=${totalAmount}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        });
+        return fetch(
+          `https://deploybackend-1ta9.onrender.com/pay?totalPayment=${totalAmount}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          }
+        );
       })
       .then((response) => {
         if (!response.ok) {

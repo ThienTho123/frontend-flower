@@ -14,9 +14,9 @@ const SendCommentDetail = () => {
   const [loading, setLoading] = useState(false); // Loading state
   const translateCondition = (stative) => {
     const translations = {
-      "Waiting": "Đang chờ xử lý",
-      "Processing": "Đang xử lý",
-      "Complete": "Đã hoàn thành",
+      Waiting: "Đang chờ xử lý",
+      Processing: "Đang xử lý",
+      Complete: "Đã hoàn thành",
     };
     return translations[stative] || stative;
   };
@@ -39,7 +39,7 @@ const SendCommentDetail = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/comment/${id}`,
+        `https://deploybackend-1ta9.onrender.com/comment/${id}`,
         repCommentDTO,
         {
           headers: {
@@ -68,7 +68,7 @@ const SendCommentDetail = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `http://localhost:8080/comment/${comment.commentID}/complete`,
+        `https://deploybackend-1ta9.onrender.com/comment/${comment.commentID}/complete`,
         {},
         {
           headers: {
@@ -98,7 +98,7 @@ const SendCommentDetail = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/upload",
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
         formData,
         {
           headers: {
@@ -120,7 +120,7 @@ const SendCommentDetail = () => {
   const getCommentDetail = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/comment/${id}`,
+        `https://deploybackend-1ta9.onrender.com/comment/${id}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -188,7 +188,8 @@ const SendCommentDetail = () => {
           <strong>Loại:</strong> {comment?.commentType}
         </p>
         <p>
-          <strong>Trạng thái:</strong> {translateCondition(comment?.commentStative)}
+          <strong>Trạng thái:</strong>{" "}
+          {translateCondition(comment?.commentStative)}
           {comment?.commentStative === "Processing" && (
             <button
               className="complete-button"

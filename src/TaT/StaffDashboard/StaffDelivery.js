@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png'; // Đảm bảo đường dẫn này chính xác
+import returnIcon from "./ImageDashboard/return-button.png"; // Đảm bảo đường dẫn này chính xác
 
 const StaffDelivery = () => {
   const [orders, setOrders] = useState([]);
@@ -13,7 +13,7 @@ const StaffDelivery = () => {
   const translateCondition = (condition) => {
     const translations = {
       "Cancel is Processing": "Hủy đang xử lý",
-      "Cancelled": "Đã hủy",
+      Cancelled: "Đã hủy",
       "In Transit": "Đang vận chuyển",
       "Shipper Delivering": "Shipper đang giao hàng",
       "First Attempt Failed": "Lần giao hàng đầu tiên thất bại",
@@ -21,9 +21,9 @@ const StaffDelivery = () => {
       "Third Attempt Failed": "Lần giao hàng thứ ba thất bại",
       "Delivered Successfully": "Giao hàng thành công",
       "Return to shop": "Trả về cửa hàng",
-      "Pending": "Đang chờ xử lý",
-      "Processing": "Đang xử lý",
-      "Prepare": "Chuẩn bị",
+      Pending: "Đang chờ xử lý",
+      Processing: "Đang xử lý",
+      Prepare: "Chuẩn bị",
     };
     return translations[condition] || condition;
   };
@@ -31,11 +31,14 @@ const StaffDelivery = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:8080/staffmanager/ordernoship", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/staffmanager/ordernoship",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Không thể lấy danh sách đơn hàng.");
@@ -61,20 +64,25 @@ const StaffDelivery = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/staffmanager/ordernoship/ship", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ orderid: orderID, accountid: shipperID }),
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/staffmanager/ordernoship/ship",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ orderid: orderID, accountid: shipperID }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Không thể giao hàng cho đơn hàng này.");
       }
 
-      setOrders((prevOrders) => prevOrders.filter((order) => order.orderID !== orderID));
+      setOrders((prevOrders) =>
+        prevOrders.filter((order) => order.orderID !== orderID)
+      );
       setSuccessMessage("Đã sắp xếp giao hàng thành công!");
       setTimeout(() => setSuccessMessage(null), 3000); // Ẩn thông báo sau 3 giây
     } catch (err) {

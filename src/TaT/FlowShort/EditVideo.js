@@ -43,7 +43,7 @@ export default function EditVideoForm() {
         if (!token) throw new Error("Không tìm thấy access token");
 
         const res = await axios.get(
-          `http://localhost:8080/user/flowshort/putVideo/${id}`,
+          `https://deploybackend-1ta9.onrender.com/user/flowshort/putVideo/${id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -131,7 +131,7 @@ export default function EditVideoForm() {
       formDataVideo.append("file", vidFile);
 
       const uploadVideoRes = await axios.post(
-        "http://localhost:8080/api/v1/upload",
+        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
         formDataVideo,
         {
           headers: {
@@ -149,7 +149,7 @@ export default function EditVideoForm() {
         const formDataThumb = new FormData();
         formDataThumb.append("file", thumbFile);
         const uploadThumbRes = await axios.post(
-          "http://localhost:8080/api/v1/upload",
+          "https://deploybackend-1ta9.onrender.com/api/v1/upload",
           formDataThumb,
           {
             headers: {
@@ -170,7 +170,7 @@ export default function EditVideoForm() {
           const formDataThumb = new FormData();
           formDataThumb.append("file", thumbFileFromVideo);
           const uploadThumbRes = await axios.post(
-            "http://localhost:8080/api/v1/upload",
+            "https://deploybackend-1ta9.onrender.com/api/v1/upload",
             formDataThumb,
             {
               headers: {
@@ -192,9 +192,13 @@ export default function EditVideoForm() {
         commentable,
       };
 
-      await axios.put(`http://localhost:8080/user/flowshort/${id}`, postData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.put(
+        `https://deploybackend-1ta9.onrender.com/user/flowshort/${id}`,
+        postData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       showModalMessage("Cập nhật video thành công!", "success");
       navigate("/flowshort");

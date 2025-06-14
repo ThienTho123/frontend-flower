@@ -13,10 +13,13 @@ const AccountShipperLayout = () => {
   // Hàm lấy thông tin người dùng từ API
   const getUserInfo = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/shipperaccount", {
-        params: { accountID },
-        headers: { Authorization: `Bearer ${access_token}` },
-      });
+      const response = await axios.get(
+        "https://deploybackend-1ta9.onrender.com/shipperaccount",
+        {
+          params: { accountID },
+          headers: { Authorization: `Bearer ${access_token}` },
+        }
+      );
       setProfileForm(response.data); // Lưu thông tin người dùng vào state
     } catch (error) {
       console.error("Lỗi khi lấy thông tin tài khoản:", error);
@@ -33,7 +36,7 @@ const AccountShipperLayout = () => {
 
   const handleLogout = () => {
     axios
-      .get("http://localhost:8080/api/v1/auth/logout", {
+      .get("https://deploybackend-1ta9.onrender.com/api/v1/auth/logout", {
         withCredentials: true,
       })
       .then((response) => {
@@ -84,9 +87,15 @@ const AccountShipperLayout = () => {
           </div>
         </h2>
         <button onClick={() => navigate("/shipperaccount")}>Tài khoản</button>
-        <button onClick={() => navigate("/shipperaccount/ordershipped")}>Đơn hàng đã giao</button>
-        <button onClick={() => navigate("/shipperaccount/allorder")}>Đơn hàng chưa được nhận</button>
-        <button onClick={() => navigate("/shipperaccount/needship")}>Đơn hàng cần được giao</button>
+        <button onClick={() => navigate("/shipperaccount/ordershipped")}>
+          Đơn hàng đã giao
+        </button>
+        <button onClick={() => navigate("/shipperaccount/allorder")}>
+          Đơn hàng chưa được nhận
+        </button>
+        <button onClick={() => navigate("/shipperaccount/needship")}>
+          Đơn hàng cần được giao
+        </button>
 
         <button onClick={() => navigate("/shipperaccount/changepassword")}>
           Đổi mật khẩu

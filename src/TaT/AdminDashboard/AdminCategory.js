@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import returnIcon from './ImageDashboard/return-button.png'; 
-
+import returnIcon from "./ImageDashboard/return-button.png";
 
 const AdminCategory = () => {
   const [categories, setCategories] = useState([]);
@@ -14,12 +13,15 @@ const AdminCategory = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/admin/category", {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://deploybackend-1ta9.onrender.com/api/v1/admin/category",
+          {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`,
+            },
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Không thể lấy danh sách loại sản phẩm.");
@@ -38,7 +40,7 @@ const AdminCategory = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/category/softdelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/category/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -47,11 +49,13 @@ const AdminCategory = () => {
           credentials: "include",
         }
       );
-  
+
       if (response.ok) {
         setCategories((prevCategories) =>
           prevCategories.map((category) =>
-            category.categoryID === id ? { ...category, status: "DISABLE" } : category
+            category.categoryID === id
+              ? { ...category, status: "DISABLE" }
+              : category
           )
         );
       } else {
@@ -61,11 +65,11 @@ const AdminCategory = () => {
       setError(err.message);
     }
   };
-  
+
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/category/harddelete/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/category/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -74,7 +78,7 @@ const AdminCategory = () => {
           credentials: "include",
         }
       );
-  
+
       if (response.ok) {
         setCategories((prevCategories) =>
           prevCategories.filter((category) => category.categoryID !== id)
@@ -86,23 +90,26 @@ const AdminCategory = () => {
       setError(err.message);
     }
   };
-  
+
   const handleSave = async (id, categoryName, status) => {
     if (!categoryName.trim()) {
       setError("Tên Danh Mục Sản Phẩm không được để trống.");
       return;
     }
-  
+
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/admin/category/${id}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ categoryName, status }),
-      });
+      const response = await fetch(
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/category/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ categoryName, status }),
+        }
+      );
 
       if (response.ok) {
         const updatedCategory = await response.json();
@@ -113,7 +120,6 @@ const AdminCategory = () => {
         );
         setEditingCategoryId(null);
         setError(null); // Xóa lỗi khi lưu thành công
-
       } else {
         throw new Error("Không thể cập nhật loại sản phẩm.");
       }
@@ -128,22 +134,27 @@ const AdminCategory = () => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:8080/api/v1/admin/category", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ categoryName: newCategoryName, status: "ENABLE" }),
-      });
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/api/v1/admin/category",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            categoryName: newCategoryName,
+            status: "ENABLE",
+          }),
+        }
+      );
 
       if (response.ok) {
         const createdCategory = await response.json();
         setCategories([...categories, createdCategory]);
         setNewCategoryName("");
         setError(null); // Xóa lỗi khi thêm thành công
-
       } else {
         throw new Error("Không thể tạo loại sản phẩm.");
       }
@@ -157,16 +168,16 @@ const AdminCategory = () => {
   };
 
   return (
-<div className="admin-ql-container">
-<div className="title-container">
-      <img 
-        src={returnIcon} 
-        alt="Quay Lại" 
-        className="return-button" 
-        onClick={handleBackToDashboard} 
-      />
-      <h2>Quản Lý Danh Mục Sản Phẩm</h2>
-    </div>
+    <div className="admin-ql-container">
+      <div className="title-container">
+        <img
+          src={returnIcon}
+          alt="Quay Lại"
+          className="return-button"
+          onClick={handleBackToDashboard}
+        />
+        <h2>Quản Lý Danh Mục Sản Phẩm</h2>
+      </div>
       <h3>Thêm Danh Mục Sản Phẩm Mới</h3>
       <div>
         <label>Tên Danh Mục Sản Phẩm: </label>
@@ -236,14 +247,36 @@ const AdminCategory = () => {
                 <td>
                   {editingCategoryId === category.categoryID ? (
                     <>
-                      <button onClick={() => handleSave(category.categoryID, category.categoryName, category.status)}>Lưu</button>
-                      <button onClick={() => setEditingCategoryId(null)}>Hủy</button>
+                      <button
+                        onClick={() =>
+                          handleSave(
+                            category.categoryID,
+                            category.categoryName,
+                            category.status
+                          )
+                        }
+                      >
+                        Lưu
+                      </button>
+                      <button onClick={() => setEditingCategoryId(null)}>
+                        Hủy
+                      </button>
                     </>
                   ) : (
                     <>
-                      <button onClick={() => setEditingCategoryId(category.categoryID)}>Chỉnh Sửa</button>
-                      <button onClick={() => handleDeleteSoft(category.categoryID)}>Vô hiệu hóa</button>
-                          </>
+                      <button
+                        onClick={() =>
+                          setEditingCategoryId(category.categoryID)
+                        }
+                      >
+                        Chỉnh Sửa
+                      </button>
+                      <button
+                        onClick={() => handleDeleteSoft(category.categoryID)}
+                      >
+                        Vô hiệu hóa
+                      </button>
+                    </>
                   )}
                 </td>
               </tr>

@@ -39,7 +39,7 @@ const AdminOrderDeDetail = () => {
     const fetchOrderDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/admin/orde/${id}`,
+          `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}`,
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -65,7 +65,7 @@ const AdminOrderDeDetail = () => {
   const handleAcceptNewOrder = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/orde/${id}/acceptNew`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}/acceptNew`,
         {
           method: "POST",
           headers: {
@@ -90,7 +90,7 @@ const AdminOrderDeDetail = () => {
   const handleDeclineNewOrder = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/orde/${id}/declineNew`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}/declineNew`,
         {
           method: "POST",
           headers: {
@@ -115,7 +115,7 @@ const AdminOrderDeDetail = () => {
   const handleAcceptCancelRequest = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/orde/${id}/acceptCancelRequest`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}/acceptCancelRequest`,
         {
           method: "POST",
           headers: {
@@ -140,7 +140,7 @@ const AdminOrderDeDetail = () => {
   const handleDeclineCancelRequest = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/orde/${id}/declineCancelRequest`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}/declineCancelRequest`,
         {
           method: "POST",
           headers: {
@@ -165,7 +165,7 @@ const AdminOrderDeDetail = () => {
   const handleDeliverNow = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/orde/${id}/deli`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}/deli`,
         {
           method: "POST",
           headers: {
@@ -190,7 +190,7 @@ const AdminOrderDeDetail = () => {
   const fetchUpdatedDetails = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/admin/orde/${id}`,
+        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}`,
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -210,19 +210,19 @@ const AdminOrderDeDetail = () => {
   };
   const executeAction = () => {
     switch (modalAction) {
-      case 'acceptNew':
+      case "acceptNew":
         handleAcceptNewOrder();
         break;
-      case 'declineNew':
+      case "declineNew":
         handleDeclineNewOrder();
         break;
-      case 'acceptCancel':
+      case "acceptCancel":
         handleAcceptCancelRequest();
         break;
-      case 'declineCancel':
+      case "declineCancel":
         handleDeclineCancelRequest();
         break;
-      case 'deliver':
+      case "deliver":
         handleDeliverNow();
         break;
       default:
@@ -230,39 +230,39 @@ const AdminOrderDeDetail = () => {
     }
   };
   const showConfirmationModal = (action) => {
-    let title = '';
-    let message = '';
-    
+    let title = "";
+    let message = "";
+
     switch (action) {
-      case 'acceptNew':
+      case "acceptNew":
         title = "Xác nhận đồng ý đơn hàng";
         message = `Bạn có chắc chắn muốn đồng ý đơn hàng #${id} không?`;
         break;
-      case 'declineNew':
+      case "declineNew":
         title = "Xác nhận từ chối đơn hàng";
         message = `Bạn có chắc chắn muốn từ chối đơn hàng #${id} không?`;
         break;
-      case 'acceptCancel':
+      case "acceptCancel":
         title = "Xác nhận đồng ý hủy đơn hàng";
         message = `Bạn có chắc chắn muốn đồng ý hủy đơn hàng #${id} không?`;
         break;
-      case 'declineCancel':
+      case "declineCancel":
         title = "Xác nhận từ chối hủy đơn hàng";
         message = `Bạn có chắc chắn muốn từ chối yêu cầu hủy đơn hàng #${id} không?`;
         break;
-      case 'deliver':
+      case "deliver":
         title = "Xác nhận giao hàng";
         message = `Bạn có chắc chắn muốn giao đơn hàng #${id} ngay bây giờ không?`;
         break;
       default:
         break;
     }
-    
+
     setModalAction(action);
     setModalTitle(title);
     setModalMessage(message);
     setShowModal(true);
-  };  
+  };
   // Quay lại trang danh sách
   const handleBack = () => {
     navigate("/AdminOrderDe");
@@ -271,9 +271,13 @@ const AdminOrderDeDetail = () => {
   // Format datetime từ mảng [năm, tháng, ngày, giờ, phút]
   const formatDateTime = (dateArray) => {
     if (!dateArray || !Array.isArray(dateArray)) return "Không có dữ liệu";
-    
+
     // Format theo chuẩn DD/MM/YYYY HH:MM
-    return `${dateArray[2].toString().padStart(2, '0')}/${dateArray[1].toString().padStart(2, '0')}/${dateArray[0]} ${dateArray[3].toString().padStart(2, '0')}:${dateArray[4].toString().padStart(2, '0')}`;
+    return `${dateArray[2].toString().padStart(2, "0")}/${dateArray[1]
+      .toString()
+      .padStart(2, "0")}/${dateArray[0]} ${dateArray[3]
+      .toString()
+      .padStart(2, "0")}:${dateArray[4].toString().padStart(2, "0")}`;
   };
 
   // Hiển thị các nút tương tác dựa trên trạng thái
@@ -283,35 +287,53 @@ const AdminOrderDeDetail = () => {
     if (orderDetails.orDeCondition === null) {
       return (
         <div className="action-buttons">
-        <button className="accept-button" onClick={() => showConfirmationModal('acceptNew')}>
-        Đồng ý
+          <button
+            className="accept-button"
+            onClick={() => showConfirmationModal("acceptNew")}
+          >
+            Đồng ý
           </button>
-          <button className="decline-button" onClick={() => showConfirmationModal('declineNew')}>
-          Từ chối
+          <button
+            className="decline-button"
+            onClick={() => showConfirmationModal("declineNew")}
+          >
+            Từ chối
           </button>
         </div>
       );
     } else if (orderDetails.orDeCondition === "CANCEL_REQUEST_IS_WAITING") {
       return (
         <div className="action-buttons">
-        <button className="accept-button" onClick={() => showConfirmationModal('acceptCancel')}>
-        Đồng ý hủy
+          <button
+            className="accept-button"
+            onClick={() => showConfirmationModal("acceptCancel")}
+          >
+            Đồng ý hủy
           </button>
-          <button className="decline-button" onClick={() => showConfirmationModal('declineCancel')}>
-          Từ chối hủy
+          <button
+            className="decline-button"
+            onClick={() => showConfirmationModal("declineCancel")}
+          >
+            Từ chối hủy
           </button>
         </div>
       );
-    } else if (orderDetails.orDeCondition === "ONGOING" && orderDetails.deliver) {
+    } else if (
+      orderDetails.orDeCondition === "ONGOING" &&
+      orderDetails.deliver
+    ) {
       return (
         <div className="action-buttons">
-        <button className="deliver-button" onClick={() => showConfirmationModal('deliver')}>
-        Giao hàng ngay
+          <button
+            className="deliver-button"
+            onClick={() => showConfirmationModal("deliver")}
+          >
+            Giao hàng ngay
           </button>
         </div>
       );
     }
-    
+
     return null;
   };
 
@@ -378,11 +400,15 @@ const AdminOrderDeDetail = () => {
           </div>
           <div className="info-item">
             <span className="label">Số điện thoại:</span>
-            <span className="value">{orderDetails.phoneNumber || "Không có"}</span>
+            <span className="value">
+              {orderDetails.phoneNumber || "Không có"}
+            </span>
           </div>
           <div className="info-item">
             <span className="label">Trạng thái:</span>
-            <span className="value">{translateCondition(orderDetails.orDeCondition)}</span>
+            <span className="value">
+              {translateCondition(orderDetails.orDeCondition)}
+            </span>
           </div>
           <div className="info-item">
             <span className="label">Loại đặt hàng:</span>
@@ -394,11 +420,17 @@ const AdminOrderDeDetail = () => {
           </div>
           <div className="info-item">
             <span className="label">Chi phí mỗi ngày:</span>
-            <span className="value">{orderDetails.costperday ? orderDetails.costperday.toLocaleString() + " VND" : "Không có"}</span>
+            <span className="value">
+              {orderDetails.costperday
+                ? orderDetails.costperday.toLocaleString() + " VND"
+                : "Không có"}
+            </span>
           </div>
           <div className="info-item">
             <span className="label">Tần suất giao hàng:</span>
-            <span className="value">{translateDeliverper(orderDetails.deliverper)}</span>
+            <span className="value">
+              {translateDeliverper(orderDetails.deliverper)}
+            </span>
           </div>
           <div className="info-item">
             <span className="label">Ngày bắt đầu:</span>
@@ -406,7 +438,11 @@ const AdminOrderDeDetail = () => {
           </div>
           <div className="info-item">
             <span className="label">Ngày kết thúc:</span>
-            <span className="value">{orderDetails.end ? formatDateTime(orderDetails.end) : "Chưa kết thúc"}</span>
+            <span className="value">
+              {orderDetails.end
+                ? formatDateTime(orderDetails.end)
+                : "Chưa kết thúc"}
+            </span>
           </div>
           <div className="info-item">
             <span className="label">Số lần đã giao:</span>
@@ -414,18 +450,25 @@ const AdminOrderDeDetail = () => {
           </div>
           <div className="info-item">
             <span className="label">Ghi chú:</span>
-            <span className="value">{orderDetails.note || "Không có ghi chú"}</span>
+            <span className="value">
+              {orderDetails.note || "Không có ghi chú"}
+            </span>
           </div>
           <div className="info-item">
             <span className="label">Tổng tiền:</span>
-            <span className="value">{orderDetails.total ? orderDetails.total.toLocaleString() + " VND" : "0 VND"}</span>
+            <span className="value">
+              {orderDetails.total
+                ? orderDetails.total.toLocaleString() + " VND"
+                : "0 VND"}
+            </span>
           </div>
         </div>
       </div>
 
       <div className="order-items-section">
         <h3>Chi Tiết Sản Phẩm</h3>
-        {orderDetails.orDeDetailDTOS && orderDetails.orDeDetailDTOS.length > 0 ? (
+        {orderDetails.orDeDetailDTOS &&
+        orderDetails.orDeDetailDTOS.length > 0 ? (
           <table border="1" cellPadding="10" cellSpacing="0">
             <thead>
               <tr>
@@ -465,30 +508,30 @@ const AdminOrderDeDetail = () => {
 
       {renderActionButtons()}
       {showModal && (
-  <div className="adminorde-modal-overlay">
-    <div className="adminorde-modal-container">
-      <div className="adminorde-modal-header">{modalTitle}</div>
-      <div className="adminorde-modal-body">{modalMessage}</div>
-      <div className="adminorde-modal-footer">
-        <button 
-          className="adminorde-modal-confirm" 
-          onClick={() => {
-            setShowModal(false);
-            executeAction();
-          }}
-        >
-          Xác nhận
-        </button>
-        <button 
-          className="adminorde-modal-cancel" 
-          onClick={() => setShowModal(false)}
-        >
-          Hủy
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+        <div className="adminorde-modal-overlay">
+          <div className="adminorde-modal-container">
+            <div className="adminorde-modal-header">{modalTitle}</div>
+            <div className="adminorde-modal-body">{modalMessage}</div>
+            <div className="adminorde-modal-footer">
+              <button
+                className="adminorde-modal-confirm"
+                onClick={() => {
+                  setShowModal(false);
+                  executeAction();
+                }}
+              >
+                Xác nhận
+              </button>
+              <button
+                className="adminorde-modal-cancel"
+                onClick={() => setShowModal(false)}
+              >
+                Hủy
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -44,7 +44,7 @@ const BlogPin = () => {
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/account/blogpin",
+        "https://deploybackend-1ta9.onrender.com/account/blogpin",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -81,27 +81,30 @@ const BlogPin = () => {
 
   const handleCancelOrder = async (order) => {
     setShowConfirm(false);
-  
+
     const requestBody = {
       blogid: order.blogid,
       commentid: null,
       comment: "",
       imageurl: [],
     };
-  
+
     try {
-      const response = await fetch("http://localhost:8080/blog/pin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${access_token}`,
-        },
-        body: JSON.stringify(requestBody),
-      });
-  
+      const response = await fetch(
+        "https://deploybackend-1ta9.onrender.com/blog/pin",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${access_token}`,
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
+
       if (response.ok) {
         console.log("Hủy ghim thành công");
-        
+
         // Gọi lại API để cập nhật danh sách
         getHistoryOrder();
       } else {
@@ -111,7 +114,6 @@ const BlogPin = () => {
       console.error("Lỗi kết nối server:", error);
     }
   };
-  
 
   useEffect(() => {
     getHistoryOrder();
