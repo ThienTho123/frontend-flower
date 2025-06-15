@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Client } from "@stomp/stompjs";
 import NotificationIcon from "../assets/notification.png";
+
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState(""); // Đồng bộ tên state là searchTerm
   const [error, setError] = useState(null);
@@ -45,7 +46,7 @@ const Header = () => {
     }
   };
 
-  const handleLoginClick = async () => {
+ const handleLoginClick = async () => {
     try {
       const response = await axios.get("https://deploybackend-1ta9.onrender.com/info", {
         headers: {
@@ -54,14 +55,20 @@ const Header = () => {
         withCredentials: true,
       });
 
-      if (response.data.redirectUrl) {
-        window.location.href = response.data.redirectUrl;
+      const redirectUrl = response.data.redirectUrl;
+
+      if (redirectUrl) {
+        if (redirectUrl.startsWith("/")) {
+          navigate(redirectUrl);
+        } else {
+          window.location.href = redirectUrl; // fallback nếu là URL ngoài
+        }
       }
     } catch (error) {
       console.log("Đăng nhập thất bại:", error);
     }
   };
-
+  
   useEffect(() => {
     const fetchCartData = async () => {
       if (accesstoken) {
@@ -174,7 +181,7 @@ const Header = () => {
       });
 
       if (response.data.redirectUrl) {
-        window.location.href = response.data.redirectUrl;
+        navigate(response.data.redirectUrl); // <-- chuyển hướng nội bộ
       }
     } catch (error) {
       console.log("Đăng nhập thất bại:", error);
@@ -269,8 +276,16 @@ const Header = () => {
         }
       );
 
-      if (response.data.redirectUrl) {
-        window.location.href = response.data.redirectUrl;
+      const redirectUrl = response.data.redirectUrl;
+
+      if (redirectUrl) {
+        // Kiểm tra nếu là link nội bộ thì dùng navigate
+        if (redirectUrl.startsWith("/")) {
+          navigate(redirectUrl);
+        } else {
+          // Nếu là link ngoài thì vẫn dùng window.location.href
+          window.location.href = redirectUrl;
+        }
       }
     } catch (error) {
       console.error("❌ Lỗi khi xử lý thông báo:", error);
