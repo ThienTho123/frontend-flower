@@ -27,7 +27,7 @@ const AccountCustomDetail = () => {
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
-        `https://deploybackend-1ta9.onrender.com/acccus/${id}`,
+        `https://deploybackend-j61h.onrender.com/acccus/${id}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -90,7 +90,7 @@ const AccountCustomDetail = () => {
       return;
     }
 
-    const finalUrl = `https://deploybackend-1ta9.onrender.com/setCustomize/${orderHistory[0].id}?price=${totalAmount}`;
+    const finalUrl = `https://deploybackend-j61h.onrender.com/setCustomize/${orderHistory[0].id}?price=${totalAmount}`;
     console.log("URL thanh toán:", finalUrl);
 
     fetch(finalUrl, {
@@ -111,7 +111,7 @@ const AccountCustomDetail = () => {
       })
       .then(() => {
         return fetch(
-          `https://deploybackend-1ta9.onrender.com/pay?totalPayment=${totalAmount}`,
+          `https://deploybackend-j61h.onrender.com/pay?totalPayment=${totalAmount}`,
           {
             method: "GET",
             headers: {

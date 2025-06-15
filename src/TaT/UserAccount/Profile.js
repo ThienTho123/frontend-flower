@@ -80,7 +80,7 @@ const Profile = () => {
   const getUserInfor = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/api/v1/auth/account",
+        "https://deploybackend-j61h.onrender.com/api/v1/auth/account",
         {
           params: {
             accountID: accountID,
@@ -119,7 +119,7 @@ const Profile = () => {
 
     try {
       const response = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         formData,
         {
           headers: {
@@ -143,7 +143,7 @@ const Profile = () => {
     try {
       console.log("SDT: " + profileForm.phonenumber);
       const response = await axios.put(
-        "https://deploybackend-1ta9.onrender.com/account/updateinfo",
+        "https://deploybackend-j61h.onrender.com/account/updateinfo",
         {
           name: profileForm.name,
           email: profileForm.email,

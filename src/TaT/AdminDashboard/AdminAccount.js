@@ -25,7 +25,7 @@ const AdminAccount = () => {
     const fetchAccounts = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/account",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/account",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -51,7 +51,7 @@ const AdminAccount = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/account/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/account/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -80,7 +80,7 @@ const AdminAccount = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/account/harddelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/account/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -112,7 +112,7 @@ const AdminAccount = () => {
 
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/account/${accountID}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/account/${accountID}`,
         {
           method: "PUT",
           headers: {
@@ -175,7 +175,7 @@ const AdminAccount = () => {
 
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/account",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/account",
         {
           method: "POST",
           headers: {

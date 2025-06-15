@@ -28,7 +28,7 @@ const AdminRollBar = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/adminrollbar",
+        "https://deploybackend-j61h.onrender.com/adminrollbar",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -81,7 +81,7 @@ const AdminRollBar = () => {
     if (!selectedRollBar) return;
     try {
       const response = await axios.delete(
-        `https://deploybackend-1ta9.onrender.com/adminrollbar/${selectedRollBar.id}`,
+        `https://deploybackend-j61h.onrender.com/adminrollbar/${selectedRollBar.id}`,
         {
           headers: { Authorization: `Bearer ${accesstoken}` },
         }

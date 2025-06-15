@@ -25,7 +25,7 @@ const AdminCustomOrders = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/custom",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/custom",
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
@@ -69,7 +69,7 @@ const AdminCustomOrders = () => {
   // Xử lý xác nhận action
   const handleConfirmAction = async () => {
     try {
-      let endpoint = `https://deploybackend-1ta9.onrender.com/api/v1/admin/custom/${selectedOrderId}/${actionType}`;
+      let endpoint = `https://deploybackend-j61h.onrender.com/api/v1/admin/custom/${selectedOrderId}/${actionType}`;
 
       await axios.put(
         endpoint,

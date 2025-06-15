@@ -48,7 +48,7 @@ const ChangeStaffPassword = () => {
   const handleChangePassword = async () => {
     try {
       const response = await axios.put(
-        "https://deploybackend-1ta9.onrender.com/staffaccount/changepassword",
+        "https://deploybackend-j61h.onrender.com/staffaccount/changepassword",
         {
           curpass: passwordForm.currentPassword,
           newpass: passwordForm.newPassword,

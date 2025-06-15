@@ -35,7 +35,7 @@ const HistoryOrder = () => {
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/account/orderHistory",
+        "https://deploybackend-j61h.onrender.com/account/orderHistory",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -75,7 +75,7 @@ const HistoryOrder = () => {
     setShowConfirm(false);
     try {
       const response = await axios.delete(
-        "https://deploybackend-1ta9.onrender.com/account/cancel",
+        "https://deploybackend-j61h.onrender.com/account/cancel",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,

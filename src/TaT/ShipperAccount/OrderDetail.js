@@ -30,7 +30,7 @@ const OrderDetail = () => {
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
-        `https://deploybackend-1ta9.onrender.com/shipper/${id}`,
+        `https://deploybackend-j61h.onrender.com/shipper/${id}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -79,7 +79,7 @@ const OrderDetail = () => {
     try {
       // Gửi yêu cầu POST với dữ liệu chuỗi thuần túy cho "note"
       const response = await axios.post(
-        `https://deploybackend-1ta9.onrender.com/shipper/${id}/receive`, // Đảm bảo URL không có mã hóa
+        `https://deploybackend-j61h.onrender.com/shipper/${id}/receive`, // Đảm bảo URL không có mã hóa
         { note: note }, // Truyền chuỗi 'note' bình thường trong body JSON
         {
           headers: {

@@ -29,7 +29,7 @@ const CommentVideo = ({ comment, onAction }) => {
 
       try {
         const response = await fetch(
-          `https://deploybackend-1ta9.onrender.com/flowshort`,
+          `https://deploybackend-j61h.onrender.com/flowshort`,
           {
             method: "GET",
             headers: {
@@ -99,7 +99,7 @@ const CommentVideo = ({ comment, onAction }) => {
 
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/user/flowshort/comment/${comment.videoComment.id}/like`,
+        `https://deploybackend-j61h.onrender.com/user/flowshort/comment/${comment.videoComment.id}/like`,
         {
           method: "POST",
           headers: {

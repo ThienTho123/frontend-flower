@@ -22,7 +22,7 @@ const HomePage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://deploybackend-1ta9.onrender.com/homepage"
+          "https://deploybackend-j61h.onrender.com/homepage"
         );
         console.log(response.data);
         setBanners(response.data.bannerList);

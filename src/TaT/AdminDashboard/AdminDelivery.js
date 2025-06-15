@@ -34,7 +34,7 @@ const AdminDelivery = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/adminmanager/ordernoship",
+          "https://deploybackend-j61h.onrender.com/adminmanager/ordernoship",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -67,7 +67,7 @@ const AdminDelivery = () => {
 
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/adminmanager/ordernoship/ship",
+        "https://deploybackend-j61h.onrender.com/adminmanager/ordernoship/ship",
         {
           method: "POST",
           headers: {

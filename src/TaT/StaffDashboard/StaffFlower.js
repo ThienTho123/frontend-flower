@@ -26,7 +26,7 @@ const StaffFlower = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/staff/flower",
+          "https://deploybackend-j61h.onrender.com/api/v1/staff/flower",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -64,7 +64,7 @@ const StaffFlower = () => {
 
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         {
           method: "POST",
           headers: {
@@ -106,7 +106,7 @@ const StaffFlower = () => {
     }
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/flower/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/flower/${id}`,
         {
           method: "PUT",
           headers: {
@@ -151,7 +151,7 @@ const StaffFlower = () => {
     try {
       const formattedData = { ...newFlower };
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/staff/flower",
+        "https://deploybackend-j61h.onrender.com/api/v1/staff/flower",
         {
           method: "POST",
           headers: {
@@ -194,7 +194,7 @@ const StaffFlower = () => {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/flower/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/flower/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {

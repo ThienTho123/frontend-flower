@@ -74,7 +74,7 @@ const Dashboard = () => {
     // Lấy thông tin tài khoản
     if (accountID && accesstoken) {
       fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/auth/account?accountID=${accountID}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/auth/account?accountID=${accountID}`,
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -101,7 +101,7 @@ const Dashboard = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/order",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/order",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -126,7 +126,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (accesstoken) {
-      fetch("https://deploybackend-1ta9.onrender.com/api/v1/admin/dashboard", {
+      fetch("https://deploybackend-j61h.onrender.com/api/v1/admin/dashboard", {
         headers: { Authorization: `Bearer ${accesstoken}` },
       })
         .then((response) => response.json())
@@ -141,7 +141,7 @@ const Dashboard = () => {
     const fetchReviews = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/review",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/review",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -254,7 +254,7 @@ const Dashboard = () => {
   };
 
   const handleLogout = () => {
-    fetch("https://deploybackend-1ta9.onrender.com/api/v1/auth/logout", {
+    fetch("https://deploybackend-j61h.onrender.com/api/v1/auth/logout", {
       method: "GET",
       credentials: "include",
     })

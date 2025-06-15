@@ -19,7 +19,7 @@ const ForgotPassword = () => {
 
     try {
       const response = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/api/v1/auth/forgot-password",
+        "https://deploybackend-j61h.onrender.com/api/v1/auth/forgot-password",
         { username }, // Send the username in the request body
         {
           headers: {

@@ -22,7 +22,7 @@ const ProcessingComment = () => {
   const getCommentInfo = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/staffaccount/commentprocess",
+        "https://deploybackend-j61h.onrender.com/staffaccount/commentprocess",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,

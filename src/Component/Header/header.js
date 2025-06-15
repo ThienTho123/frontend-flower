@@ -48,7 +48,7 @@ const Header = () => {
   const handleLoginClick = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/info",
+        "https://deploybackend-j61h.onrender.com/info",
         {
           headers: {
             "Account-ID": accountId,
@@ -70,7 +70,7 @@ const Header = () => {
       if (accesstoken) {
         try {
           const response = await axios.get(
-            "https://deploybackend-1ta9.onrender.com/prebuy",
+            "https://deploybackend-j61h.onrender.com/prebuy",
             {
               headers: {
                 Authorization: `Bearer ${accesstoken}`,
@@ -113,7 +113,7 @@ const Header = () => {
     fetchCartData();
 
     const stompClient = new Client({
-      brokerURL: "ws://https://deploybackend-1ta9.onrender.com/ws/websocket", // ✅ Đúng giao thức WebSocket
+      brokerURL: "ws://https://deploybackend-j61h.onrender.com/ws/websocket", // ✅ Đúng giao thức WebSocket
       reconnectDelay: 5000, // ✅ Tự động kết nối lại
     });
 
@@ -154,7 +154,7 @@ const Header = () => {
     if (searchTerm.trim()) {
       try {
         const response = await axios.get(
-          "https://deploybackend-1ta9.onrender.com/search",
+          "https://deploybackend-j61h.onrender.com/search",
           {
             params: { searchTerm }, // Truyền searchTerm đến backend
             headers: { "Account-ID": accountId },
@@ -176,7 +176,7 @@ const Header = () => {
   const handlePrebuy = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/cart",
+        "https://deploybackend-j61h.onrender.com/cart",
         {
           headers: {
             "Account-ID": accountId,
@@ -198,7 +198,7 @@ const Header = () => {
       if (accesstoken) {
         try {
           const response = await axios.get(
-            "https://deploybackend-1ta9.onrender.com/notification",
+            "https://deploybackend-j61h.onrender.com/notification",
             {
               headers: { Authorization: `Bearer ${accesstoken}` },
               withCredentials: true,
@@ -222,7 +222,7 @@ const Header = () => {
 
     // Kết nối WebSocket để cập nhật thông báo real-time
     const stompClient = new Client({
-      brokerURL: "ws://https://deploybackend-1ta9.onrender.com/ws/websocket",
+      brokerURL: "ws://https://deploybackend-j61h.onrender.com/ws/websocket",
       reconnectDelay: 5000,
     });
 
@@ -256,7 +256,7 @@ const Header = () => {
   const openNotifications = async () => {
     try {
       await axios.post(
-        "https://deploybackend-1ta9.onrender.com/notification/open",
+        "https://deploybackend-j61h.onrender.com/notification/open",
         {},
         {
           headers: { Authorization: `Bearer ${accesstoken}` },
@@ -274,7 +274,7 @@ const Header = () => {
   const handleNotificationClick = async (id) => {
     try {
       const response = await axios.get(
-        `https://deploybackend-1ta9.onrender.com/notification/link/${id}`,
+        `https://deploybackend-j61h.onrender.com/notification/link/${id}`,
         {
           headers: { Authorization: `Bearer ${accesstoken}` },
           withCredentials: true,

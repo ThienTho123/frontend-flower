@@ -26,7 +26,7 @@ const AdminBanner = () => {
     const fetchBanners = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/banner",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/banner",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -65,7 +65,7 @@ const AdminBanner = () => {
 
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         {
           method: "POST",
           headers: {
@@ -96,7 +96,7 @@ const AdminBanner = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/banner/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/banner/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -123,7 +123,7 @@ const AdminBanner = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/banner/harddelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/banner/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -161,7 +161,7 @@ const AdminBanner = () => {
       };
 
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/banner/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/banner/${id}`,
         {
           method: "PUT",
           headers: {
@@ -203,7 +203,7 @@ const AdminBanner = () => {
       };
 
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/banner",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/banner",
         {
           method: "POST",
           headers: {

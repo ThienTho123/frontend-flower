@@ -37,7 +37,7 @@ export default function ProductList() {
   const fetchProducts = async (initialFilterParams) => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/flower"
+        "https://deploybackend-j61h.onrender.com/flower"
       );
 
       if (response.data) {

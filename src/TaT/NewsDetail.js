@@ -11,7 +11,7 @@ export default function NewsDetail() {
     const fetchNewsDetail = async () => {
       try {
         const response = await axios.get(
-          `https://deploybackend-1ta9.onrender.com/news/${id}`
+          `https://deploybackend-j61h.onrender.com/news/${id}`
         );
         setNews(response.data);
       } catch (error) {

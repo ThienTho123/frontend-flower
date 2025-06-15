@@ -34,7 +34,7 @@ const WheelComponent = () => {
   const reloadData = () => {
     const token = localStorage.getItem("access_token");
     axios
-      .get(`https://deploybackend-1ta9.onrender.com/rollbar/${id}`, {
+      .get(`https://deploybackend-j61h.onrender.com/rollbar/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -104,7 +104,7 @@ const WheelComponent = () => {
     const token = localStorage.getItem("access_token");
     axios
       .post(
-        `https://deploybackend-1ta9.onrender.com/attendance/sendInfo/${accountgiftid}`,
+        `https://deploybackend-j61h.onrender.com/attendance/sendInfo/${accountgiftid}`,
         formData,
         {
           headers: {
@@ -129,7 +129,7 @@ const WheelComponent = () => {
     const token = localStorage.getItem("access_token");
     axios
       .post(
-        `https://deploybackend-1ta9.onrender.com/attendance/roll/${id}?giftid=${giftId}`,
+        `https://deploybackend-j61h.onrender.com/attendance/roll/${id}?giftid=${giftId}`,
         {},
         {
           headers: {

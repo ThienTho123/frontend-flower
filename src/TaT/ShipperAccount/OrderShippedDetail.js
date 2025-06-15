@@ -32,7 +32,7 @@ const OrderShippedDetail = () => {
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
-        `https://deploybackend-1ta9.onrender.com/shipperaccount/ordership/${id}`,
+        `https://deploybackend-j61h.onrender.com/shipperaccount/ordership/${id}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -96,7 +96,7 @@ const OrderShippedDetail = () => {
     try {
       const response = await axios.request({
         method: "GET",
-        url: `https://deploybackend-1ta9.onrender.com/shipperaccount/haveship/${orderHistory[0]?.id}/start`,
+        url: `https://deploybackend-j61h.onrender.com/shipperaccount/haveship/${orderHistory[0]?.id}/start`,
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
@@ -117,7 +117,7 @@ const OrderShippedDetail = () => {
       };
 
       await axios.post(
-        `https://deploybackend-1ta9.onrender.com/shipperaccount/haveship/${orderHistory[0]?.id}/${status}`,
+        `https://deploybackend-j61h.onrender.com/shipperaccount/haveship/${orderHistory[0]?.id}/${status}`,
         requestBody,
         {
           headers: {
@@ -152,7 +152,7 @@ const OrderShippedDetail = () => {
       formData.append("file", file);
 
       const response = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         formData,
         {
           headers: {

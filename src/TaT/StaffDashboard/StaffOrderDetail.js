@@ -13,7 +13,7 @@ const AdminOrderDetail = ({ orderID }) => {
     const fetchOrderDetails = async () => {
       try {
         const response = await fetch(
-          `https://deploybackend-1ta9.onrender.com/api/v1/staff/orderdetail`,
+          `https://deploybackend-j61h.onrender.com/api/v1/staff/orderdetail`,
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,

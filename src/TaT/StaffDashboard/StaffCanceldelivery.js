@@ -34,7 +34,7 @@ const StaffCancelDelivery = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/staffmanager/cancelprocessing",
+          "https://deploybackend-j61h.onrender.com/staffmanager/cancelprocessing",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -58,8 +58,8 @@ const StaffCancelDelivery = () => {
 
   const handleAction = async (orderID, isAccepted) => {
     const apiEndpoint = isAccepted
-      ? "https://deploybackend-1ta9.onrender.com/staffmanager/cancelprocessing/yes"
-      : "https://deploybackend-1ta9.onrender.com/staffmanager/cancelprocessing/no";
+      ? "https://deploybackend-j61h.onrender.com/staffmanager/cancelprocessing/yes"
+      : "https://deploybackend-j61h.onrender.com/staffmanager/cancelprocessing/no";
 
     try {
       const response = await fetch(apiEndpoint, {

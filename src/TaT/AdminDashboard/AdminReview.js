@@ -27,7 +27,7 @@ const AdminReview = () => {
     const fetchReviews = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/review",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/review",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -62,7 +62,7 @@ const AdminReview = () => {
 
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         {
           method: "POST",
           headers: { Authorization: `Bearer ${accesstoken}` },
@@ -123,7 +123,7 @@ const AdminReview = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/review/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/review/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -150,7 +150,7 @@ const AdminReview = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/review/harddelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/review/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -209,7 +209,7 @@ const AdminReview = () => {
       );
 
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/review/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/review/${id}`,
         {
           method: "PUT",
           headers: {
@@ -269,7 +269,7 @@ const AdminReview = () => {
       );
 
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/review",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/review",
         {
           method: "POST",
           headers: {

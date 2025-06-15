@@ -43,7 +43,7 @@ export default function EditVideoForm() {
         if (!token) throw new Error("Không tìm thấy access token");
 
         const res = await axios.get(
-          `https://deploybackend-1ta9.onrender.com/user/flowshort/putVideo/${id}`,
+          `https://deploybackend-j61h.onrender.com/user/flowshort/putVideo/${id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -131,7 +131,7 @@ export default function EditVideoForm() {
       formDataVideo.append("file", vidFile);
 
       const uploadVideoRes = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         formDataVideo,
         {
           headers: {
@@ -149,7 +149,7 @@ export default function EditVideoForm() {
         const formDataThumb = new FormData();
         formDataThumb.append("file", thumbFile);
         const uploadThumbRes = await axios.post(
-          "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+          "https://deploybackend-j61h.onrender.com/api/v1/upload",
           formDataThumb,
           {
             headers: {
@@ -170,7 +170,7 @@ export default function EditVideoForm() {
           const formDataThumb = new FormData();
           formDataThumb.append("file", thumbFileFromVideo);
           const uploadThumbRes = await axios.post(
-            "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+            "https://deploybackend-j61h.onrender.com/api/v1/upload",
             formDataThumb,
             {
               headers: {
@@ -193,7 +193,7 @@ export default function EditVideoForm() {
       };
 
       await axios.put(
-        `https://deploybackend-1ta9.onrender.com/user/flowshort/${id}`,
+        `https://deploybackend-j61h.onrender.com/user/flowshort/${id}`,
         postData,
         {
           headers: { Authorization: `Bearer ${token}` },

@@ -31,7 +31,7 @@ const VideoList = () => {
       try {
         // Fetch all videos
         const videosResponse = await axios.get(
-          "https://deploybackend-1ta9.onrender.com/flowshort"
+          "https://deploybackend-j61h.onrender.com/flowshort"
         );
         setVideos(videosResponse.data.videos || []);
 
@@ -40,7 +40,7 @@ const VideoList = () => {
           try {
             // Lấy thông tin người dùng từ API
             const userInfoResponse = await axios.get(
-              "https://deploybackend-1ta9.onrender.com/account/getInfo",
+              "https://deploybackend-j61h.onrender.com/account/getInfo",
               {
                 params: { accountID },
                 headers: { Authorization: `Bearer ${access_token}` },
@@ -51,7 +51,7 @@ const VideoList = () => {
 
             // Lấy video của người dùng
             const userVideosResponse = await axios.get(
-              "https://deploybackend-1ta9.onrender.com/user/flowshort/getall",
+              "https://deploybackend-j61h.onrender.com/user/flowshort/getall",
               {
                 headers: { Authorization: `Bearer ${access_token}` },
               }

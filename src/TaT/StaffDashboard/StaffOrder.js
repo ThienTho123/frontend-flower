@@ -49,7 +49,7 @@ const StaffOrder = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/staff/order",
+          "https://deploybackend-j61h.onrender.com/api/v1/staff/order",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -79,7 +79,7 @@ const StaffOrder = () => {
   const handleSoftDelete = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/order/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/order/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -106,7 +106,7 @@ const StaffOrder = () => {
   const handleHardDelete = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/order/harddelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/order/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -152,7 +152,7 @@ const StaffOrder = () => {
 
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/order/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/order/${id}`,
         {
           method: "PUT",
           headers: {

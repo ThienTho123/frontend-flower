@@ -65,7 +65,7 @@ const DetectPage = () => {
 
     try {
       const response = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/detect/upload",
+        "https://deploybackend-j61h.onrender.com/detect/upload",
         formData
       );
       setResultImage(`data:image/jpeg;base64,${response.data.image}`);

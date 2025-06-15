@@ -18,7 +18,7 @@ const WaitingComment = () => {
   const getCommentInfo = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/staff",
+        "https://deploybackend-j61h.onrender.com/staff",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,

@@ -12,7 +12,7 @@ const RollBar = () => {
     setLoading(true);
 
     axios
-      .get("https://deploybackend-1ta9.onrender.com/rollbar/info", {
+      .get("https://deploybackend-j61h.onrender.com/rollbar/info", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

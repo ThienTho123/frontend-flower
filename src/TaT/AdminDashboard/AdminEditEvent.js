@@ -30,7 +30,7 @@ const AdminEditEvent = () => {
     try {
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/event/getflowersize",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/event/getflowersize",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -49,7 +49,7 @@ const AdminEditEvent = () => {
     try {
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.get(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/event/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/event/${id}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -194,7 +194,7 @@ const AdminEditEvent = () => {
       };
 
       await axios.put(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/event/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/event/${id}`,
         eventData,
         {
           headers: { Authorization: `Bearer ${accessToken}` },

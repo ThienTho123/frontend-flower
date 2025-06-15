@@ -47,7 +47,7 @@ const StaffCommentDetail = () => {
 
     try {
       const response = await axios.post(
-        `https://deploybackend-1ta9.onrender.com/staff/${id}`, // URL API backend
+        `https://deploybackend-j61h.onrender.com/staff/${id}`, // URL API backend
         repCommentDTO,
         {
           headers: {
@@ -90,7 +90,7 @@ const StaffCommentDetail = () => {
 
     try {
       const response = await axios.post(
-        `https://deploybackend-1ta9.onrender.com/staffaccount/commentprocess/${id}`,
+        `https://deploybackend-j61h.onrender.com/staffaccount/commentprocess/${id}`,
         repCommentDTO,
         {
           headers: {
@@ -119,7 +119,7 @@ const StaffCommentDetail = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `https://deploybackend-1ta9.onrender.com/staffaccount/commentprocess/${comment.commentID}/complete`,
+        `https://deploybackend-j61h.onrender.com/staffaccount/commentprocess/${comment.commentID}/complete`,
         {},
         {
           headers: {
@@ -150,7 +150,7 @@ const StaffCommentDetail = () => {
 
     try {
       const response = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         formData,
         {
           headers: {
@@ -172,7 +172,7 @@ const StaffCommentDetail = () => {
   const getCommentDetail = async () => {
     try {
       const response = await axios.get(
-        `https://deploybackend-1ta9.onrender.com/staffaccount/comment/${id}`,
+        `https://deploybackend-j61h.onrender.com/staffaccount/comment/${id}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,

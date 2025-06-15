@@ -22,7 +22,7 @@ const StaffFlowerImage = () => {
     const fetchFlowerData = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/staff/flower",
+          "https://deploybackend-j61h.onrender.com/api/v1/staff/flower",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -43,7 +43,7 @@ const StaffFlowerImage = () => {
     const fetchFlowerImages = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/staff/flowerimage",
+          "https://deploybackend-j61h.onrender.com/api/v1/staff/flowerimage",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -76,7 +76,7 @@ const StaffFlowerImage = () => {
 
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         {
           method: "POST",
           headers: {
@@ -106,7 +106,7 @@ const StaffFlowerImage = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/flowerimage/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/flowerimage/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -132,7 +132,7 @@ const StaffFlowerImage = () => {
   const handleSave = async (id, imageData) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/flowerimage/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/flowerimage/${id}`,
         {
           method: "PUT",
           headers: {
@@ -163,7 +163,7 @@ const StaffFlowerImage = () => {
   const handleCreate = async () => {
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/staff/flowerimage",
+        "https://deploybackend-j61h.onrender.com/api/v1/staff/flowerimage",
         {
           method: "POST",
           headers: {

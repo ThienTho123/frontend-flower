@@ -27,7 +27,7 @@ const AdminDiscount = () => {
     const fetchDiscounts = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/discount",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/discount",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -58,7 +58,7 @@ const AdminDiscount = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/discount/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/discount/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -109,7 +109,7 @@ const AdminDiscount = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/discount/harddelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/discount/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -165,7 +165,7 @@ const AdminDiscount = () => {
       );
 
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/discount/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/discount/${id}`,
         {
           method: "PUT",
           headers: {
@@ -255,7 +255,7 @@ const AdminDiscount = () => {
       );
 
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/discount",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/discount",
         {
           method: "POST",
           headers: {

@@ -42,7 +42,7 @@ const StaffCustomOrderDetail = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/custom/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/custom/${id}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
@@ -103,7 +103,7 @@ const StaffCustomOrderDetail = () => {
 
     try {
       const response = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -217,7 +217,7 @@ const StaffCustomOrderDetail = () => {
         };
 
         await axios.put(
-          `https://deploybackend-1ta9.onrender.com/api/v1/staff/custom/${id}/accept`,
+          `https://deploybackend-j61h.onrender.com/api/v1/staff/custom/${id}/accept`,
           acceptDTO,
           { headers: { Authorization: `Bearer ${accessToken}` } }
         );
@@ -227,7 +227,7 @@ const StaffCustomOrderDetail = () => {
       } else if (modalMessage.includes("HOÀN THÀNH")) {
         // Xử lý success
         await axios.put(
-          `https://deploybackend-1ta9.onrender.com/api/v1/staff/custom/${id}/success`,
+          `https://deploybackend-j61h.onrender.com/api/v1/staff/custom/${id}/success`,
           {},
           { headers: { Authorization: `Bearer ${accessToken}` } }
         );
@@ -238,7 +238,7 @@ const StaffCustomOrderDetail = () => {
       } else if (modalMessage.includes("TỪ CHỐI")) {
         // Xử lý decline
         await axios.put(
-          `https://deploybackend-1ta9.onrender.com/api/v1/staff/custom/${id}/decline`,
+          `https://deploybackend-j61h.onrender.com/api/v1/staff/custom/${id}/decline`,
           {},
           { headers: { Authorization: `Bearer ${accessToken}` } }
         );
@@ -247,7 +247,7 @@ const StaffCustomOrderDetail = () => {
       } else if (modalMessage.includes("HỦY")) {
         // Xử lý cancel
         await axios.put(
-          `https://deploybackend-1ta9.onrender.com/api/v1/staff/custom/${id}/cancel`,
+          `https://deploybackend-j61h.onrender.com/api/v1/staff/custom/${id}/cancel`,
           {},
           { headers: { Authorization: `Bearer ${accessToken}` } }
         );

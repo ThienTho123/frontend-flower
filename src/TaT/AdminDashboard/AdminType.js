@@ -14,7 +14,7 @@ const AdminType = () => {
     const fetchTypes = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/type",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/type",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -40,7 +40,7 @@ const AdminType = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/type/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/type/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -67,7 +67,7 @@ const AdminType = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/type/harddelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/type/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -94,7 +94,7 @@ const AdminType = () => {
     }
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/type/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/type/${id}`,
         {
           method: "PUT",
           headers: {
@@ -127,7 +127,7 @@ const AdminType = () => {
         return;
       }
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/type",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/type",
         {
           method: "POST",
           headers: {

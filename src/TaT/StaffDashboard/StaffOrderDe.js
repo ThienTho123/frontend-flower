@@ -131,7 +131,7 @@ const StaffOrderDe = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/staff/orde",
+          "https://deploybackend-j61h.onrender.com/api/v1/staff/orde",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -211,7 +211,7 @@ const StaffOrderDe = () => {
       };
 
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/orde/${orderId}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/orde/${orderId}`,
         {
           method: "PUT",
           headers: {
@@ -246,7 +246,7 @@ const StaffOrderDe = () => {
   const handleAcceptNewOrder = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/orde/${id}/acceptNew`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/orde/${id}/acceptNew`,
         {
           method: "POST",
           headers: {
@@ -271,7 +271,7 @@ const StaffOrderDe = () => {
   const handleDeclineNewOrder = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/orde/${id}/declineNew`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/orde/${id}/declineNew`,
         {
           method: "POST",
           headers: {
@@ -296,7 +296,7 @@ const StaffOrderDe = () => {
   const handleAcceptCancelRequest = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/orde/${id}/acceptCancelRequest`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/orde/${id}/acceptCancelRequest`,
         {
           method: "POST",
           headers: {
@@ -321,7 +321,7 @@ const StaffOrderDe = () => {
   const handleDeclineCancelRequest = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/orde/${id}/declineCancelRequest`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/orde/${id}/declineCancelRequest`,
         {
           method: "POST",
           headers: {
@@ -346,7 +346,7 @@ const StaffOrderDe = () => {
   const handleDeliverNow = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/orde/${id}/deli`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/orde/${id}/deli`,
         {
           method: "POST",
           headers: {
@@ -371,7 +371,7 @@ const StaffOrderDe = () => {
   const refreshOrderLists = async () => {
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/staff/orde",
+        "https://deploybackend-j61h.onrender.com/api/v1/staff/orde",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,

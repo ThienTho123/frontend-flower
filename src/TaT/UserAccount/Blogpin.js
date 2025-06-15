@@ -44,7 +44,7 @@ const BlogPin = () => {
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/account/blogpin",
+        "https://deploybackend-j61h.onrender.com/account/blogpin",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -91,7 +91,7 @@ const BlogPin = () => {
 
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/blog/pin",
+        "https://deploybackend-j61h.onrender.com/blog/pin",
         {
           method: "POST",
           headers: {

@@ -29,7 +29,7 @@ const OrderDeliveryDetail = () => {
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
-        `https://deploybackend-1ta9.onrender.com/userorde/${id}`,
+        `https://deploybackend-j61h.onrender.com/userorde/${id}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,

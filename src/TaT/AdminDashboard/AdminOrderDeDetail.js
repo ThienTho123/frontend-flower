@@ -39,7 +39,7 @@ const AdminOrderDeDetail = () => {
     const fetchOrderDetails = async () => {
       try {
         const response = await fetch(
-          `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}`,
+          `https://deploybackend-j61h.onrender.com/api/v1/admin/orde/${id}`,
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -65,7 +65,7 @@ const AdminOrderDeDetail = () => {
   const handleAcceptNewOrder = async () => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}/acceptNew`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/orde/${id}/acceptNew`,
         {
           method: "POST",
           headers: {
@@ -90,7 +90,7 @@ const AdminOrderDeDetail = () => {
   const handleDeclineNewOrder = async () => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}/declineNew`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/orde/${id}/declineNew`,
         {
           method: "POST",
           headers: {
@@ -115,7 +115,7 @@ const AdminOrderDeDetail = () => {
   const handleAcceptCancelRequest = async () => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}/acceptCancelRequest`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/orde/${id}/acceptCancelRequest`,
         {
           method: "POST",
           headers: {
@@ -140,7 +140,7 @@ const AdminOrderDeDetail = () => {
   const handleDeclineCancelRequest = async () => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}/declineCancelRequest`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/orde/${id}/declineCancelRequest`,
         {
           method: "POST",
           headers: {
@@ -165,7 +165,7 @@ const AdminOrderDeDetail = () => {
   const handleDeliverNow = async () => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}/deli`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/orde/${id}/deli`,
         {
           method: "POST",
           headers: {
@@ -190,7 +190,7 @@ const AdminOrderDeDetail = () => {
   const fetchUpdatedDetails = async () => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/orde/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/orde/${id}`,
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,

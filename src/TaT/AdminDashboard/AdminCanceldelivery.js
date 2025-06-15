@@ -33,7 +33,7 @@ const AdminCancelDelivery = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/adminmanager/cancelprocessing",
+          "https://deploybackend-j61h.onrender.com/adminmanager/cancelprocessing",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -57,8 +57,8 @@ const AdminCancelDelivery = () => {
 
   const handleAction = async (orderID, isAccepted) => {
     const apiEndpoint = isAccepted
-      ? "https://deploybackend-1ta9.onrender.com/adminmanager/cancelprocessing/yes"
-      : "https://deploybackend-1ta9.onrender.com/adminmanager/cancelprocessing/no";
+      ? "https://deploybackend-j61h.onrender.com/adminmanager/cancelprocessing/yes"
+      : "https://deploybackend-j61h.onrender.com/adminmanager/cancelprocessing/no";
 
     try {
       const response = await fetch(apiEndpoint, {

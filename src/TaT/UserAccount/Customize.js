@@ -59,7 +59,7 @@ function CustomizeForm() {
     try {
       const token = localStorage.getItem("access_token");
       await axios.post(
-        "https://deploybackend-1ta9.onrender.com/customize/customize",
+        "https://deploybackend-j61h.onrender.com/customize/customize",
         formData,
         {
           headers: {

@@ -31,7 +31,7 @@ const PreBuy = () => {
   const [appliedDiscountData, setAppliedDiscountData] = useState(null);
   useEffect(() => {
     if (accesstoken) {
-      fetch("https://deploybackend-1ta9.onrender.com/prebuy", {
+      fetch("https://deploybackend-j61h.onrender.com/prebuy", {
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
@@ -101,7 +101,7 @@ const PreBuy = () => {
 
   useEffect(() => {
     if (accesstoken) {
-      fetch("https://deploybackend-1ta9.onrender.com/prebuy", {
+      fetch("https://deploybackend-j61h.onrender.com/prebuy", {
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
@@ -230,7 +230,7 @@ const PreBuy = () => {
       size: size.trim(),
     };
 
-    fetch(`https://deploybackend-1ta9.onrender.com/prebuy/${cartID}`, {
+    fetch(`https://deploybackend-j61h.onrender.com/prebuy/${cartID}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${accesstoken}`,
@@ -270,7 +270,7 @@ const PreBuy = () => {
   const handleDelete = () => {
     if (!selectedCartID) return;
 
-    fetch(`https://deploybackend-1ta9.onrender.com/prebuy/${selectedCartID}`, {
+    fetch(`https://deploybackend-j61h.onrender.com/prebuy/${selectedCartID}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${accesstoken}`,
@@ -334,7 +334,7 @@ const PreBuy = () => {
   };
   const deleteDiscount = (discountID) => {
     fetch(
-      `https://deploybackend-1ta9.onrender.com/api/v1/admin/discount/${discountID}`,
+      `https://deploybackend-j61h.onrender.com/api/v1/admin/discount/${discountID}`,
       {
         method: "DELETE",
         headers: {
@@ -506,7 +506,7 @@ const PreBuy = () => {
       params.append("discount", selectedDiscount);
     }
 
-    const url = `https://deploybackend-1ta9.onrender.com/prebuy/buy?${params.toString()}`;
+    const url = `https://deploybackend-j61h.onrender.com/prebuy/buy?${params.toString()}`;
 
     console.log("POST URL:", url);
     console.log("Body JSON gửi đến API:", buyInfoBody);
@@ -622,7 +622,7 @@ const PreBuy = () => {
     };
 
     // Tạo URL với discount=1 mặc định nếu không có discount
-    let baseUrl = "https://deploybackend-1ta9.onrender.com/setCart?";
+    let baseUrl = "https://deploybackend-j61h.onrender.com/setCart?";
     const cartParams = cartIDs
       .map(
         (id, index) =>
@@ -664,7 +664,7 @@ const PreBuy = () => {
         const totalPayment = prices.reduce((sum, price) => sum + price, 0);
         console.log("Tổng thanh toán (đã giảm giá):", totalPayment);
         return fetch(
-          `https://deploybackend-1ta9.onrender.com/pay?totalPayment=${totalPayment}`,
+          `https://deploybackend-j61h.onrender.com/pay?totalPayment=${totalPayment}`,
           {
             method: "GET",
             headers: {
@@ -750,7 +750,7 @@ const PreBuy = () => {
       return;
     }
 
-    fetch("https://deploybackend-1ta9.onrender.com/prebuy/checkDiscount", {
+    fetch("https://deploybackend-j61h.onrender.com/prebuy/checkDiscount", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -791,7 +791,7 @@ const PreBuy = () => {
       navigate("/login");
     } else {
       // Trước tiên gọi API /order để kiểm tra quyền và nhận URL điều hướng
-      fetch("https://deploybackend-1ta9.onrender.com/order", {
+      fetch("https://deploybackend-j61h.onrender.com/order", {
         headers: {
           "Account-ID": localStorage.getItem("user_id") || "",
           Authorization: `Bearer ${accessToken}`,
@@ -828,7 +828,7 @@ const PreBuy = () => {
               const accessToken = localStorage.getItem("access_token");
 
               const response = await axios.get(
-                "https://deploybackend-1ta9.onrender.com/order",
+                "https://deploybackend-j61h.onrender.com/order",
                 {
                   headers: {
                     "Account-ID": accountId,
@@ -846,7 +846,8 @@ const PreBuy = () => {
               // Nếu gặp lỗi 403, có thể chuyển hướng người dùng đến trang đăng nhập
               if (error.response && error.response.status === 403) {
                 alert("Vui lòng đăng nhập để sử dụng chức năng này");
-                window.location.href = "https://frontend-flower-gfc8.onrender.com//login";
+                window.location.href =
+                  "https://frontend-flower-gfc8.onrender.com//login";
               }
             }
           }}

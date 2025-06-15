@@ -30,7 +30,7 @@ const Chatbot = () => {
 
     try {
       const response = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/api/chat",
+        "https://deploybackend-j61h.onrender.com/api/chat",
         {
           messages: newMessages,
         }

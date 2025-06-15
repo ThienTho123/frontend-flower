@@ -24,7 +24,7 @@ const SendComment = () => {
   const getCommentInfo = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/comment",
+        "https://deploybackend-j61h.onrender.com/comment",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -79,7 +79,7 @@ const SendComment = () => {
 
     try {
       const response = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/comment",
+        "https://deploybackend-j61h.onrender.com/comment",
         commentData,
         {
           headers: {
@@ -111,7 +111,7 @@ const SendComment = () => {
 
     try {
       const response = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         formData,
         {
           headers: {

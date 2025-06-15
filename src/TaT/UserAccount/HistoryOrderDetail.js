@@ -33,7 +33,7 @@ const HistoryOrderDetail = () => {
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
-        `https://deploybackend-1ta9.onrender.com/account/orderHistory/${id}`,
+        `https://deploybackend-j61h.onrender.com/account/orderHistory/${id}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -104,7 +104,7 @@ const HistoryOrderDetail = () => {
   const confirmOrder = async () => {
     try {
       await axios.post(
-        "https://deploybackend-1ta9.onrender.com/account/confirm-success",
+        "https://deploybackend-j61h.onrender.com/account/confirm-success",
         { idOrder: selectedOrderId },
         {
           headers: { Authorization: `Bearer ${access_token}` },

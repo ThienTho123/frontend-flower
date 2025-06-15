@@ -28,7 +28,7 @@ const StaffAccountGift = () => {
   const fetchAccountGifts = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/staffaccountgift",
+        "https://deploybackend-j61h.onrender.com/staffaccountgift",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -71,7 +71,7 @@ const StaffAccountGift = () => {
 
     try {
       const response = await axios.delete(
-        `https://deploybackend-1ta9.onrender.com/staffaccountgift/${selectedGift.id}`,
+        `https://deploybackend-j61h.onrender.com/staffaccountgift/${selectedGift.id}`,
         {
           headers: { Authorization: `Bearer ${accesstoken}` },
         }

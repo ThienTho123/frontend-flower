@@ -27,7 +27,7 @@ const VerifyOtp = () => {
 
     try {
       const response = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/api/v1/auth/verify-otp",
+        "https://deploybackend-j61h.onrender.com/api/v1/auth/verify-otp",
         { username, otp, newPassword }, // Gửi dữ liệu trong body của request
         {
           headers: {

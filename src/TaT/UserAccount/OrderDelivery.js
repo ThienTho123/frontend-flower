@@ -86,7 +86,7 @@ const OrderDelivery = () => {
     console.log("Access token:", accesstoken);
 
     setLoading(true);
-    fetch("https://deploybackend-1ta9.onrender.com/orderdelivery", {
+    fetch("https://deploybackend-j61h.onrender.com/orderdelivery", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accesstoken}`,
@@ -347,7 +347,7 @@ const OrderDelivery = () => {
 
     // Send to API
     fetch(
-      `https://deploybackend-1ta9.onrender.com/setOrderDelivery?price=${totalPrice}`,
+      `https://deploybackend-j61h.onrender.com/setOrderDelivery?price=${totalPrice}`,
       {
         method: "POST",
         headers: {
@@ -375,7 +375,7 @@ const OrderDelivery = () => {
       .then((data) => {
         console.log("Order set successfully:", data);
         return fetch(
-          `https://deploybackend-1ta9.onrender.com/pay?totalPayment=${totalPrice}`,
+          `https://deploybackend-j61h.onrender.com/pay?totalPayment=${totalPrice}`,
           {
             method: "GET",
             headers: {

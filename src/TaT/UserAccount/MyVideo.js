@@ -49,7 +49,7 @@ const MyVideo = () => {
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
         const response = await axios.get(
-          `https://deploybackend-1ta9.onrender.com/flowshort/${id}`,
+          `https://deploybackend-j61h.onrender.com/flowshort/${id}`,
           { headers }
         );
         setAccount(response.data.account || {});
@@ -95,7 +95,7 @@ const MyVideo = () => {
         const token = localStorage.getItem("access_token");
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
         const response = await axios.get(
-          `https://deploybackend-1ta9.onrender.com/user/flowshort/getall/${id}/${directionPath}`,
+          `https://deploybackend-j61h.onrender.com/user/flowshort/getall/${id}/${directionPath}`,
           { headers }
         );
         const nextVideoDTO = response.data;
@@ -149,7 +149,7 @@ const MyVideo = () => {
   const handleVideoEnded = async () => {
     try {
       await axios.get(
-        `https://deploybackend-1ta9.onrender.com/flowshort/${id}/plusview`
+        `https://deploybackend-j61h.onrender.com/flowshort/${id}/plusview`
       );
       console.log("View count increased");
       const videoElement = videoRef.current;
@@ -245,7 +245,7 @@ const MyVideo = () => {
 
     try {
       await axios.post(
-        `https://deploybackend-1ta9.onrender.com/user/flowshort/video/${id}/like`,
+        `https://deploybackend-j61h.onrender.com/user/flowshort/video/${id}/like`,
         {},
         {
           headers: {
@@ -279,7 +279,7 @@ const MyVideo = () => {
 
     try {
       await axios.post(
-        `https://deploybackend-1ta9.onrender.com/user/flowshort/comment/${commentId}/like`,
+        `https://deploybackend-j61h.onrender.com/user/flowshort/comment/${commentId}/like`,
         {},
         {
           headers: {
@@ -342,8 +342,8 @@ const MyVideo = () => {
 
     try {
       const url = commentID
-        ? `https://deploybackend-1ta9.onrender.com/user/flowshort/comment/${commentID}/comment`
-        : `https://deploybackend-1ta9.onrender.com/user/flowshort/video/${videoDTO.video.id}/comment`;
+        ? `https://deploybackend-j61h.onrender.com/user/flowshort/comment/${commentID}/comment`
+        : `https://deploybackend-j61h.onrender.com/user/flowshort/video/${videoDTO.video.id}/comment`;
 
       await axios.post(url, commentText, {
         headers: {
@@ -410,7 +410,7 @@ const MyVideo = () => {
           return;
         }
         const response = await axios.delete(
-          `https://deploybackend-1ta9.onrender.com/user/flowshort/comment/${commentToDelete}/delete`,
+          `https://deploybackend-j61h.onrender.com/user/flowshort/comment/${commentToDelete}/delete`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -440,7 +440,7 @@ const MyVideo = () => {
     const accessToken = localStorage.getItem("access_token");
     try {
       await axios.put(
-        `https://deploybackend-1ta9.onrender.com/user/flowshort/video/${videoId}/mute`,
+        `https://deploybackend-j61h.onrender.com/user/flowshort/video/${videoId}/mute`,
         {},
         {
           headers: {
@@ -471,7 +471,7 @@ const MyVideo = () => {
     const accessToken = localStorage.getItem("access_token");
     try {
       await axios.delete(
-        `https://deploybackend-1ta9.onrender.com/user/flowshort/${videoToDelete}`,
+        `https://deploybackend-j61h.onrender.com/user/flowshort/${videoToDelete}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

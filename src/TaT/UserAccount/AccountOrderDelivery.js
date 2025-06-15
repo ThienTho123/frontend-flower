@@ -27,7 +27,7 @@ const AccountOrderDelivery = () => {
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/userorde",
+        "https://deploybackend-j61h.onrender.com/userorde",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -73,7 +73,7 @@ const AccountOrderDelivery = () => {
     setShowConfirm(false);
     try {
       const response = await axios.post(
-        `https://deploybackend-1ta9.onrender.com/userorde/${selectedOrderId}/cancel`,
+        `https://deploybackend-j61h.onrender.com/userorde/${selectedOrderId}/cancel`,
         {
           // Thêm các trường trong RefundRequest nếu cần, ví dụ:
           reason: "Người dùng yêu cầu huỷ đơn",

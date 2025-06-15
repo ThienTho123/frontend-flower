@@ -33,7 +33,7 @@ const NewRollBar = () => {
       // Gọi API để lấy dữ liệu hoa, categories, types và purposes
       // Sử dụng endpoint chính thay vì /new
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/adminrollbar",
+        "https://deploybackend-j61h.onrender.com/adminrollbar",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -162,7 +162,7 @@ const NewRollBar = () => {
       };
 
       await axios.post(
-        "https://deploybackend-1ta9.onrender.com/adminrollbar",
+        "https://deploybackend-j61h.onrender.com/adminrollbar",
         rollBarData,
         {
           headers: { Authorization: `Bearer ${accessToken}` },

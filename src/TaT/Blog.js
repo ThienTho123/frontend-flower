@@ -43,8 +43,8 @@ const BlogFeed = ({ blogId }) => {
         ? { Authorization: `Bearer ${accesstoken}` }
         : {};
       const apiUrl = blogId
-        ? `https://deploybackend-1ta9.onrender.com/blog/${blogId}`
-        : "https://deploybackend-1ta9.onrender.com/blog";
+        ? `https://deploybackend-j61h.onrender.com/blog/${blogId}`
+        : "https://deploybackend-j61h.onrender.com/blog";
 
       fetch(apiUrl, { headers })
         .then((response) => response.json())
@@ -82,7 +82,7 @@ const BlogFeed = ({ blogId }) => {
 
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/blog/like",
+        "https://deploybackend-j61h.onrender.com/blog/like",
         {
           method: "POST",
           headers: {
@@ -132,7 +132,7 @@ const BlogFeed = ({ blogId }) => {
 
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/blog/pin",
+        "https://deploybackend-j61h.onrender.com/blog/pin",
         {
           method: "POST",
           headers: {
@@ -258,7 +258,7 @@ const BlogFeed = ({ blogId }) => {
 
         try {
           const uploadResponse = await fetch(
-            "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+            "https://deploybackend-j61h.onrender.com/api/v1/upload",
             {
               method: "POST",
               headers: {
@@ -305,7 +305,7 @@ const BlogFeed = ({ blogId }) => {
 
     try {
       await axios.post(
-        "https://deploybackend-1ta9.onrender.com/blog/comment",
+        "https://deploybackend-j61h.onrender.com/blog/comment",
         requestData,
         {
           headers: {

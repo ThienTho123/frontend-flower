@@ -35,7 +35,7 @@ const AdminPreorderDetails = () => {
     const fetchPreorderDetails = async () => {
       try {
         const response = await fetch(
-          `https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder/${id}`,
+          `https://deploybackend-j61h.onrender.com/api/v1/admin/preorder/${id}`,
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -73,7 +73,7 @@ const AdminPreorderDetails = () => {
   const handleCancelableById = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder/cancelable/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/preorder/cancelable/${id}`,
         {
           method: "PUT",
           headers: {
@@ -89,7 +89,7 @@ const AdminPreorderDetails = () => {
 
       // Cập nhật lại danh sách đơn hàng sau khi thay đổi
       const updatedResponse = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/preorder",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -111,7 +111,7 @@ const AdminPreorderDetails = () => {
   const handleCompletePreorder = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder/complete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/preorder/complete/${id}`,
         {
           method: "POST", // Hoặc "PUT" nếu backend sử dụng `@PutMapping`
           headers: {
@@ -127,7 +127,7 @@ const AdminPreorderDetails = () => {
 
       // Cập nhật lại danh sách đơn hàng sau khi hoàn thành
       const updatedResponse = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/preorder",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/preorder",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,

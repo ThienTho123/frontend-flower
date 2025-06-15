@@ -14,7 +14,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/api/v1/auth/authenticate",
+        "https://deploybackend-j61h.onrender.com/api/v1/auth/authenticate",
         {
           username,
           password,
@@ -86,7 +86,7 @@ const Login = () => {
 
         // Gửi thông tin tới backend để xử lý
         const backendResponse = await axios.post(
-          "https://deploybackend-1ta9.onrender.com/api/v1/auth/viagoogle",
+          "https://deploybackend-j61h.onrender.com/api/v1/auth/viagoogle",
           googleTokenRequest,
           {
             headers: {

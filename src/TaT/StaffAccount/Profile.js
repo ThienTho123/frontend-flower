@@ -80,7 +80,7 @@ const ProfileStaff = () => {
   const getUserInfor = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/api/v1/auth/account",
+        "https://deploybackend-j61h.onrender.com/api/v1/auth/account",
         {
           params: {
             accountID: accountID,
@@ -110,7 +110,7 @@ const ProfileStaff = () => {
 
     try {
       const response = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         formData,
         {
           headers: {
@@ -133,7 +133,7 @@ const ProfileStaff = () => {
     console.log("avatarLink" + avatarLink);
     try {
       const response = await axios.put(
-        "https://deploybackend-1ta9.onrender.com/staffaccount/updateinfo",
+        "https://deploybackend-j61h.onrender.com/staffaccount/updateinfo",
         {
           name: profileForm.name,
           email: profileForm.email,

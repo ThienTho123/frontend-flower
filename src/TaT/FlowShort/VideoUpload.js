@@ -106,7 +106,7 @@ export default function PostVideoForm() {
       formDataVideo.append("file", vidFile);
 
       const uploadVideoRes = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         formDataVideo,
         {
           headers: {
@@ -124,7 +124,7 @@ export default function PostVideoForm() {
         const formDataThumb = new FormData();
         formDataThumb.append("file", thumbFile);
         const uploadThumbRes = await axios.post(
-          "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+          "https://deploybackend-j61h.onrender.com/api/v1/upload",
           formDataThumb,
           {
             headers: {
@@ -145,7 +145,7 @@ export default function PostVideoForm() {
           const formDataThumb = new FormData();
           formDataThumb.append("file", thumbFileFromVideo);
           const uploadThumbRes = await axios.post(
-            "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+            "https://deploybackend-j61h.onrender.com/api/v1/upload",
             formDataThumb,
             {
               headers: {
@@ -168,7 +168,7 @@ export default function PostVideoForm() {
       };
 
       const postRes = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/user/flowshort",
+        "https://deploybackend-j61h.onrender.com/user/flowshort",
         postData,
         {
           headers: {

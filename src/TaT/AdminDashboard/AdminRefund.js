@@ -17,7 +17,7 @@ const AdminRefund = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/refund",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/refund",
           {
             headers: { Authorization: `Bearer ${accesstoken}` },
           }
@@ -39,7 +39,7 @@ const AdminRefund = () => {
   const handleRefund = async () => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/refund/${selectedOrderId}/complete`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/refund/${selectedOrderId}/complete`,
         {
           method: "PUT",
           headers: { Authorization: `Bearer ${accesstoken}` },

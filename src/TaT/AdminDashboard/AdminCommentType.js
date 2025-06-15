@@ -17,7 +17,7 @@ const AdminCommentType = () => {
     const fetchCommentTypes = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/commenttype",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/commenttype",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -45,7 +45,7 @@ const AdminCommentType = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/commenttype/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/commenttype/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -72,7 +72,7 @@ const AdminCommentType = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/commenttype/harddelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/commenttype/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -100,7 +100,7 @@ const AdminCommentType = () => {
         throw new Error("Tên Loại không được để trống.");
       }
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/commenttype/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/commenttype/${id}`,
         {
           method: "PUT",
           headers: {
@@ -150,7 +150,7 @@ const AdminCommentType = () => {
         throw new Error("Tên Loại không được để trống.");
       }
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/commenttype",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/commenttype",
         {
           method: "POST",
           headers: {

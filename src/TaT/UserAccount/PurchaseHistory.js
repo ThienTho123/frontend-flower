@@ -18,7 +18,7 @@ const PurchaseHistory = () => {
   const getPurchaseHistory = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/account/bought",
+        "https://deploybackend-j61h.onrender.com/account/bought",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -62,7 +62,7 @@ const PurchaseHistory = () => {
       }
 
       await axios.post(
-        "https://deploybackend-1ta9.onrender.com/review",
+        "https://deploybackend-j61h.onrender.com/review",
         {
           flower: { flowerID: selectedProductId },
           comment,
@@ -90,7 +90,7 @@ const PurchaseHistory = () => {
       }
 
       await axios.post(
-        "https://deploybackend-1ta9.onrender.com/review",
+        "https://deploybackend-j61h.onrender.com/review",
         {
           flower: { flowerID: selectedProductId },
           comment,
@@ -116,7 +116,7 @@ const PurchaseHistory = () => {
 
     try {
       const response = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         formData,
         {
           headers: {
@@ -164,7 +164,7 @@ const PurchaseHistory = () => {
   const handleDeleteReview = async (reviewId) => {
     try {
       await axios.delete(
-        `https://deploybackend-1ta9.onrender.com/review/${reviewId}`,
+        `https://deploybackend-j61h.onrender.com/review/${reviewId}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,

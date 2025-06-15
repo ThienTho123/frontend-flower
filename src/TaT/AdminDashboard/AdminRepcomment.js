@@ -26,7 +26,7 @@ const AdminRepcomment = () => {
     const fetchRepComments = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/repcomment",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/repcomment",
           {
             headers: { Authorization: `Bearer ${accesstoken}` },
             credentials: "include",
@@ -62,7 +62,7 @@ const AdminRepcomment = () => {
 
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         {
           method: "POST",
           headers: { Authorization: `Bearer ${accesstoken}` },
@@ -88,7 +88,7 @@ const AdminRepcomment = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/repcomment/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/repcomment/softdelete/${id}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${accesstoken}` },
@@ -115,7 +115,7 @@ const AdminRepcomment = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/repcomment/harddelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/repcomment/harddelete/${id}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${accesstoken}` },
@@ -192,7 +192,7 @@ const AdminRepcomment = () => {
       );
 
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/repcomment/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/repcomment/${id}`,
         {
           method: "PUT",
           headers: {
@@ -246,7 +246,7 @@ const AdminRepcomment = () => {
         JSON.stringify(payload, null, 2)
       );
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/repcomment",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/repcomment",
         {
           method: "POST",
           headers: {

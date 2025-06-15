@@ -21,7 +21,7 @@ const AdminShipping = () => {
     const fetchShippings = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/shipping",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/shipping",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -52,7 +52,7 @@ const AdminShipping = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/shipping/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/shipping/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -81,7 +81,7 @@ const AdminShipping = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/shipping/harddelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/shipping/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -145,7 +145,7 @@ const AdminShipping = () => {
 
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/shipping/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/shipping/${id}`,
         {
           method: "PUT",
           headers: {
@@ -209,7 +209,7 @@ const AdminShipping = () => {
 
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/shipping",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/shipping",
         {
           method: "POST",
           headers: {

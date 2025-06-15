@@ -26,7 +26,7 @@ const Preorder = () => {
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/account/preorder",
+        "https://deploybackend-j61h.onrender.com/account/preorder",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -72,7 +72,7 @@ const Preorder = () => {
 
     try {
       const response = await axios.delete(
-        "https://deploybackend-1ta9.onrender.com/account/preorder/cancel",
+        "https://deploybackend-j61h.onrender.com/account/preorder/cancel",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,

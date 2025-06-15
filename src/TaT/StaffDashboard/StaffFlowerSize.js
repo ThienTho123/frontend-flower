@@ -29,7 +29,7 @@ const StaffFlowerSize = () => {
     const fetchFlowerSizes = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/staff/flowersize",
+          "https://deploybackend-j61h.onrender.com/api/v1/staff/flowersize",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -56,7 +56,7 @@ const StaffFlowerSize = () => {
     const fetchFlowerOptions = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/staff/flower",
+          "https://deploybackend-j61h.onrender.com/api/v1/staff/flower",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -120,7 +120,7 @@ const StaffFlowerSize = () => {
       }
 
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/staff/flowersize",
+        "https://deploybackend-j61h.onrender.com/api/v1/staff/flowersize",
         {
           method: "POST",
           headers: {
@@ -159,7 +159,7 @@ const StaffFlowerSize = () => {
   const handlePreorder = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/flowersize/preorderable/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/flowersize/preorderable/${id}`,
         {
           method: "PUT", // Hoặc "POST" nếu backend yêu cầu
           headers: {
@@ -216,7 +216,7 @@ const StaffFlowerSize = () => {
     }
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/flowersize/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/flowersize/${id}`,
         {
           method: "PUT",
           headers: {
@@ -252,7 +252,7 @@ const StaffFlowerSize = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/flowersize/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/flowersize/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -285,7 +285,7 @@ const StaffFlowerSize = () => {
   const handleToggleAllPreorder = async () => {
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/staff/flowersize/preorderable",
+        "https://deploybackend-j61h.onrender.com/api/v1/staff/flowersize/preorderable",
         {
           method: "PUT",
           headers: {

@@ -28,7 +28,7 @@ const AdminFlower = () => {
     const fetchFlowers = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/flower",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/flower",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -67,7 +67,7 @@ const AdminFlower = () => {
 
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         {
           method: "POST",
           headers: {
@@ -98,7 +98,7 @@ const AdminFlower = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/flower/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/flower/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -125,7 +125,7 @@ const AdminFlower = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/flower/harddelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/flower/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -155,7 +155,7 @@ const AdminFlower = () => {
       console.log("Data to be saved (Edit):", JSON.stringify(formattedData));
 
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/flower/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/flower/${id}`,
         {
           method: "PUT",
           headers: {
@@ -196,7 +196,7 @@ const AdminFlower = () => {
       );
 
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/flower",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/flower",
         {
           method: "POST",
           headers: {

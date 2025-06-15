@@ -32,7 +32,7 @@ const AdminEvent = () => {
   const fetchEvents = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/event",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/event",
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -68,7 +68,7 @@ const AdminEvent = () => {
     if (!selectedEvent) return;
     try {
       const response = await axios.delete(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/event/${selectedEvent.id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/event/${selectedEvent.id}`,
         {
           headers: { Authorization: `Bearer ${accesstoken}` },
         }

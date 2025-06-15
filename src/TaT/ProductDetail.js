@@ -41,7 +41,7 @@ const ProductDetail = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://deploybackend-1ta9.onrender.com/detail/${id}`
+          `https://deploybackend-j61h.onrender.com/detail/${id}`
         );
         if (response.status === 200) {
           const {
@@ -114,7 +114,7 @@ const ProductDetail = () => {
       }
 
       const response = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/addToPrebuy",
+        "https://deploybackend-j61h.onrender.com/addToPrebuy",
         {
           productSizeID: productSizeID,
           accountID: accountID,
@@ -172,7 +172,7 @@ const ProductDetail = () => {
       console.log(productSizes[selectedSizeIndex]); // Kiểm tra dữ liệu ở đây
 
       const response = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/addToPrebuy",
+        "https://deploybackend-j61h.onrender.com/addToPrebuy",
         {
           productSizeID: productSizeID,
           accountID: null,
@@ -219,7 +219,7 @@ const ProductDetail = () => {
         if (!token) return;
 
         const response = await axios.get(
-          "https://deploybackend-1ta9.onrender.com/wishlist",
+          "https://deploybackend-j61h.onrender.com/wishlist",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -363,7 +363,7 @@ const ProductDetail = () => {
       }
 
       await axios.post(
-        "https://deploybackend-1ta9.onrender.com/addPreorder",
+        "https://deploybackend-j61h.onrender.com/addPreorder",
         {
           productSizeID: productSizeID,
           number: quantity,
@@ -395,7 +395,7 @@ const ProductDetail = () => {
         // Xóa sản phẩm khỏi wishlist
         try {
           await axios.delete(
-            `https://deploybackend-1ta9.onrender.com/wishlist/${wishlistID}`,
+            `https://deploybackend-j61h.onrender.com/wishlist/${wishlistID}`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -417,7 +417,7 @@ const ProductDetail = () => {
         // Thêm sản phẩm vào wishlist
         try {
           const response = await axios.post(
-            "https://deploybackend-1ta9.onrender.com/addToWishlist",
+            "https://deploybackend-j61h.onrender.com/addToWishlist",
             { flowerID: product.flowerID },
             {
               headers: { Authorization: `Bearer ${token}` },

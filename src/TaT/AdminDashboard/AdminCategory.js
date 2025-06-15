@@ -14,7 +14,7 @@ const AdminCategory = () => {
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/category",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/category",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -40,7 +40,7 @@ const AdminCategory = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/category/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/category/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -69,7 +69,7 @@ const AdminCategory = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/category/harddelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/category/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -99,7 +99,7 @@ const AdminCategory = () => {
 
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/category/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/category/${id}`,
         {
           method: "PUT",
           headers: {
@@ -135,7 +135,7 @@ const AdminCategory = () => {
     }
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/category",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/category",
         {
           method: "POST",
           headers: {

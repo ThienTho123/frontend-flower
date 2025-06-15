@@ -28,7 +28,7 @@ const AdminFlowerSize = () => {
     const fetchFlowerSizesAndFlowers = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/flowersize",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/flowersize",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -82,7 +82,7 @@ const AdminFlowerSize = () => {
         return;
       }
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/flowersize",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/flowersize",
         {
           method: "POST",
           headers: {
@@ -134,7 +134,7 @@ const AdminFlowerSize = () => {
     }
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/flowersize/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/flowersize/${id}`,
         {
           method: "PUT",
           headers: {
@@ -167,7 +167,7 @@ const AdminFlowerSize = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/flowersize/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/flowersize/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -194,7 +194,7 @@ const AdminFlowerSize = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/flowersize/harddelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/flowersize/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {

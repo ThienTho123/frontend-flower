@@ -70,7 +70,7 @@ const SignUp = () => {
 
     try {
       const response = await axios.post(
-        "https://deploybackend-1ta9.onrender.com/api/v1/auth/register",
+        "https://deploybackend-j61h.onrender.com/api/v1/auth/register",
         formData
       );
       console.log("User registered:", response.data);

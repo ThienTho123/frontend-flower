@@ -17,7 +17,7 @@ const Wishlist = () => {
     setSuccess(""); // Reset success message trước khi tải lại danh sách
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/wishlist",
+        "https://deploybackend-j61h.onrender.com/wishlist",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -40,7 +40,7 @@ const Wishlist = () => {
       try {
         // Gửi yêu cầu xóa sản phẩm
         await axios.delete(
-          `https://deploybackend-1ta9.onrender.com/wishlist/${id}`,
+          `https://deploybackend-j61h.onrender.com/wishlist/${id}`,
           {
             headers: {
               Authorization: `Bearer ${access_token}`,

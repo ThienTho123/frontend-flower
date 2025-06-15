@@ -32,7 +32,7 @@ const StaffDelivery = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/staffmanager/ordernoship",
+          "https://deploybackend-j61h.onrender.com/staffmanager/ordernoship",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -65,7 +65,7 @@ const StaffDelivery = () => {
 
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/staffmanager/ordernoship/ship",
+        "https://deploybackend-j61h.onrender.com/staffmanager/ordernoship/ship",
         {
           method: "POST",
           headers: {

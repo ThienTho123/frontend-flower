@@ -37,7 +37,7 @@ const EditAccountGift = () => {
       setLoading(true);
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/adminaccountgift",
+        "https://deploybackend-j61h.onrender.com/adminaccountgift",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -65,7 +65,7 @@ const EditAccountGift = () => {
     try {
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.get(
-        `https://deploybackend-1ta9.onrender.com/adminaccountgift/${id}`,
+        `https://deploybackend-j61h.onrender.com/adminaccountgift/${id}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -180,7 +180,7 @@ const EditAccountGift = () => {
       console.log("Sending data:", JSON.stringify(dataToSend, null, 2));
 
       await axios.put(
-        `https://deploybackend-1ta9.onrender.com/adminaccountgift/${id}`,
+        `https://deploybackend-j61h.onrender.com/adminaccountgift/${id}`,
         dataToSend,
         {
           headers: {

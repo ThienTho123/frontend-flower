@@ -13,7 +13,7 @@ export default function NewsList() {
     const fetchNews = async () => {
       try {
         const response = await axios.get(
-          "https://deploybackend-1ta9.onrender.com/news"
+          "https://deploybackend-j61h.onrender.com/news"
         );
         setAllNews(response.data.News);
         setNewsList(response.data.News.slice(0, visibleCount));

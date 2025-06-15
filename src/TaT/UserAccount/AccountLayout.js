@@ -14,7 +14,7 @@ const AccountLayout = () => {
   const getUserInfo = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/account",
+        "https://deploybackend-j61h.onrender.com/account",
         {
           params: { accountID },
           headers: { Authorization: `Bearer ${access_token}` },
@@ -36,7 +36,7 @@ const AccountLayout = () => {
 
   const handleLogout = () => {
     axios
-      .get("https://deploybackend-1ta9.onrender.com/api/v1/auth/logout", {
+      .get("https://deploybackend-j61h.onrender.com/api/v1/auth/logout", {
         withCredentials: true,
       })
       .then((response) => {

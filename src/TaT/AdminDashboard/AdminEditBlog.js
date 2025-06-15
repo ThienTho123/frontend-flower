@@ -23,7 +23,7 @@ const AdminEditBlogForm = () => {
   useEffect(() => {
     // Lấy danh sách hoa
     axios
-      .get("https://deploybackend-1ta9.onrender.com/flower")
+      .get("https://deploybackend-j61h.onrender.com/flower")
       .then((response) => setFlowers(response.data.flowers))
       .catch((error) => console.error("Error fetching flowers:", error));
   }, []);
@@ -32,7 +32,7 @@ const AdminEditBlogForm = () => {
     // Lấy dữ liệu blog từ backend
     const accessToken = localStorage.getItem("access_token");
     axios
-      .get(`https://deploybackend-1ta9.onrender.com/api/v1/admin/blog/${id}`, {
+      .get(`https://deploybackend-j61h.onrender.com/api/v1/admin/blog/${id}`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
@@ -60,7 +60,7 @@ const AdminEditBlogForm = () => {
 
       try {
         const response = await axios.post(
-          "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+          "https://deploybackend-j61h.onrender.com/api/v1/upload",
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
@@ -140,7 +140,7 @@ const AdminEditBlogForm = () => {
 
     axios
       .put(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/blog/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/blog/${id}`,
         updatedBlog,
         {
           headers: { Authorization: `Bearer ${accessToken}` },

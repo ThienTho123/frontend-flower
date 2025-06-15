@@ -15,7 +15,7 @@ const CommentPage = () => {
     const fetchComments = async () => {
       try {
         const response = await axios.get(
-          `https://deploybackend-1ta9.onrender.com/blog/comment/${id}`,
+          `https://deploybackend-j61h.onrender.com/blog/comment/${id}`,
           {
             headers: {
               "Content-Type": "application/json",

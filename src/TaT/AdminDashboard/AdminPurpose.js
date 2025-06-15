@@ -14,7 +14,7 @@ const AdminPurpose = () => {
     const fetchPurposes = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/purpose",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/purpose",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -40,7 +40,7 @@ const AdminPurpose = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/purpose/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/purpose/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -69,7 +69,7 @@ const AdminPurpose = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/purpose/harddelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/purpose/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -94,7 +94,7 @@ const AdminPurpose = () => {
   const handleSave = async (id, purposeName, status) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/purpose/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/purpose/${id}`,
         {
           method: "PUT",
           headers: {
@@ -125,7 +125,7 @@ const AdminPurpose = () => {
   const handleCreate = async () => {
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/purpose",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/purpose",
         {
           method: "POST",
           headers: {

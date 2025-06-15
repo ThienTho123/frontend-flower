@@ -27,7 +27,7 @@ const NewEvent = () => {
     try {
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/api/v1/staff/event/getflowersize",
+        "https://deploybackend-j61h.onrender.com/api/v1/staff/event/getflowersize",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -118,7 +118,7 @@ const NewEvent = () => {
       };
 
       await axios.post(
-        "https://deploybackend-1ta9.onrender.com/api/v1/staff/event",
+        "https://deploybackend-j61h.onrender.com/api/v1/staff/event",
         eventData,
         {
           headers: { Authorization: `Bearer ${accessToken}` },

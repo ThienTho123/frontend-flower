@@ -22,7 +22,7 @@ const AdminNews = () => {
     const fetchNews = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/news",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/news",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -58,7 +58,7 @@ const AdminNews = () => {
 
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         {
           method: "POST",
           headers: {
@@ -89,7 +89,7 @@ const AdminNews = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/news/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/news/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -116,7 +116,7 @@ const AdminNews = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/news/harddelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/news/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -141,7 +141,7 @@ const AdminNews = () => {
   const handleSave = async (id, newsData) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/news/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/news/${id}`,
         {
           method: "PUT",
           headers: {
@@ -183,7 +183,7 @@ const AdminNews = () => {
       ); // In ra JSON để kiểm tra
 
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/news",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/news",
         {
           method: "POST",
           headers: {

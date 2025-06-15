@@ -26,7 +26,7 @@ const AdminOtherFlower = () => {
   const fetchData = async () => {
     try {
       const res = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/floother",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/floother",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -55,7 +55,7 @@ const AdminOtherFlower = () => {
 
   const handleCreateOrUpdate = async () => {
     const method = editingIndex !== null ? "PUT" : "POST";
-    const url = "https://deploybackend-1ta9.onrender.com/api/v1/admin/floother";
+    const url = "https://deploybackend-j61h.onrender.com/api/v1/admin/floother";
 
     try {
       const res = await fetch(url, {
@@ -97,7 +97,7 @@ const AdminOtherFlower = () => {
   const handleDelete = async (item) => {
     try {
       const res = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/floother",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/floother",
         {
           method: "DELETE",
           headers: {

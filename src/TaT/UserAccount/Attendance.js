@@ -23,7 +23,7 @@ const Attendance = () => {
     const token = localStorage.getItem("access_token");
 
     axios
-      .get("https://deploybackend-1ta9.onrender.com/attendance", {
+      .get("https://deploybackend-j61h.onrender.com/attendance", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -48,7 +48,7 @@ const Attendance = () => {
     const token = localStorage.getItem("access_token");
 
     axios
-      .get("https://deploybackend-1ta9.onrender.com/attendance/gift", {
+      .get("https://deploybackend-j61h.onrender.com/attendance/gift", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -105,7 +105,7 @@ const Attendance = () => {
 
     axios
       .post(
-        "https://deploybackend-1ta9.onrender.com/attendance/check",
+        "https://deploybackend-j61h.onrender.com/attendance/check",
         {},
         {
           headers: {
@@ -151,7 +151,7 @@ const Attendance = () => {
 
     axios
       .post(
-        `https://deploybackend-1ta9.onrender.com/attendance/sendInfo/${giftId}`,
+        `https://deploybackend-j61h.onrender.com/attendance/sendInfo/${giftId}`,
         formData,
         {
           headers: { Authorization: `Bearer ${token}` },

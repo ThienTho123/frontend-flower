@@ -32,7 +32,7 @@ const StaffDashboard = () => {
     // Lấy thông tin tài khoản
     if (accountID && accesstoken) {
       fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/auth/account?accountID=${accountID}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/auth/account?accountID=${accountID}`,
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,

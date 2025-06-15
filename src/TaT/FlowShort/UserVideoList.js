@@ -29,7 +29,7 @@ const UserVideoList = () => {
     const fetchData = async () => {
       setLoading(true);
       // Tạo URL API
-      const url = `https://deploybackend-1ta9.onrender.com/flowshort/account/${accountId}`;
+      const url = `https://deploybackend-j61h.onrender.com/flowshort/account/${accountId}`;
       setApiUrl(url); // Lưu URL để hiển thị
 
       try {

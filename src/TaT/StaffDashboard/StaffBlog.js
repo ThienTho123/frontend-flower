@@ -44,7 +44,7 @@ const StaffBlog = () => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          "https://deploybackend-1ta9.onrender.com/api/v1/staff/blog",
+          "https://deploybackend-j61h.onrender.com/api/v1/staff/blog",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -80,7 +80,7 @@ const StaffBlog = () => {
   const handleSoftDelete = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/order/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/order/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -105,7 +105,7 @@ const StaffBlog = () => {
   const handleToggleStatus = async (id, currentStatus) => {
     try {
       const response = await axios.delete(
-        `https://deploybackend-1ta9.onrender.com/api/v1/staff/blog/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/staff/blog/${id}`,
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,

@@ -33,7 +33,7 @@ const EditRollBar = () => {
     try {
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.get(
-        `https://deploybackend-1ta9.onrender.com/staffrollbar/${id}`,
+        `https://deploybackend-j61h.onrender.com/staffrollbar/${id}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -225,7 +225,7 @@ const EditRollBar = () => {
       };
 
       await axios.put(
-        `https://deploybackend-1ta9.onrender.com/staffrollbar/${id}`,
+        `https://deploybackend-j61h.onrender.com/staffrollbar/${id}`,
         rollBarData,
         {
           headers: { Authorization: `Bearer ${accessToken}` },

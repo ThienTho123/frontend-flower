@@ -30,7 +30,7 @@ const CommentItem = ({ comment, onAction }) => {
 
       try {
         const response = await fetch(
-          `https://deploybackend-1ta9.onrender.com/blog`,
+          `https://deploybackend-j61h.onrender.com/blog`,
           {
             method: "GET",
             headers: {
@@ -109,7 +109,7 @@ const CommentItem = ({ comment, onAction }) => {
 
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/blog/like",
+        "https://deploybackend-j61h.onrender.com/blog/like",
         {
           method: "POST",
           headers: {

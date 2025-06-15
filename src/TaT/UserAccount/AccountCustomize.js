@@ -26,7 +26,7 @@ const AccountCustomize = () => {
   const getHistoryOrder = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/acccus",
+        "https://deploybackend-j61h.onrender.com/acccus",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,

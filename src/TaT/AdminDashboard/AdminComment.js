@@ -27,7 +27,7 @@ const AdminComment = () => {
     const fetchComments = async () => {
       try {
         const response = await fetch(
-          "https://deploybackend-1ta9.onrender.com/api/v1/admin/comment",
+          "https://deploybackend-j61h.onrender.com/api/v1/admin/comment",
           {
             headers: {
               Authorization: `Bearer ${accesstoken}`,
@@ -65,7 +65,7 @@ const AdminComment = () => {
 
     try {
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/upload",
+        "https://deploybackend-j61h.onrender.com/api/v1/upload",
         {
           method: "POST",
           headers: {
@@ -96,7 +96,7 @@ const AdminComment = () => {
   const handleDeleteSoft = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/comment/softdelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/comment/softdelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -125,7 +125,7 @@ const AdminComment = () => {
   const handleDeleteHard = async (id) => {
     try {
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/comment/harddelete/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/comment/harddelete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -162,7 +162,7 @@ const AdminComment = () => {
       };
 
       const response = await fetch(
-        `https://deploybackend-1ta9.onrender.com/api/v1/admin/comment/${id}`,
+        `https://deploybackend-j61h.onrender.com/api/v1/admin/comment/${id}`,
         {
           method: "PUT",
           headers: {
@@ -205,7 +205,7 @@ const AdminComment = () => {
       };
 
       const response = await fetch(
-        "https://deploybackend-1ta9.onrender.com/api/v1/admin/comment",
+        "https://deploybackend-j61h.onrender.com/api/v1/admin/comment",
         {
           method: "POST",
           headers: {

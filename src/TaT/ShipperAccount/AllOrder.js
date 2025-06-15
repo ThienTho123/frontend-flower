@@ -31,7 +31,7 @@ const AllOrder = () => {
   const getCommentInfo = async () => {
     try {
       const response = await axios.get(
-        "https://deploybackend-1ta9.onrender.com/shipper",
+        "https://deploybackend-j61h.onrender.com/shipper",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,

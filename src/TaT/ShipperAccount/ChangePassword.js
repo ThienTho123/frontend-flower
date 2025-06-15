@@ -49,7 +49,7 @@ const ChangeShipperPassword = () => {
   const handleChangePassword = async () => {
     try {
       const response = await axios.put(
-        "https://deploybackend-1ta9.onrender.com/shipperaccount/changepassword",
+        "https://deploybackend-j61h.onrender.com/shipperaccount/changepassword",
         {
           curpass: passwordForm.currentPassword,
           newpass: passwordForm.newPassword,
