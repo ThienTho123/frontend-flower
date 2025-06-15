@@ -47,14 +47,17 @@ const Header = () => {
 
   const handleLoginClick = async () => {
     try {
-      const response = await axios.get("https://deploybackend-1ta9.onrender.com/info", {
-        headers: {
-          "Account-ID": accountId,
-        },
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        "https://deploybackend-1ta9.onrender.com/info",
+        {
+          headers: {
+            "Account-ID": accountId,
+          },
+          withCredentials: true,
+        }
+      );
 
-       if (response.data.redirectUrl) {
+      if (response.data.redirectUrl) {
         navigate(response.data.redirectUrl);
       }
     } catch (error) {
@@ -66,13 +69,16 @@ const Header = () => {
     const fetchCartData = async () => {
       if (accesstoken) {
         try {
-          const response = await axios.get("https://deploybackend-1ta9.onrender.com/prebuy", {
-            headers: {
-              Authorization: `Bearer ${accesstoken}`,
-              "Account-ID": accountId,
-            },
-            withCredentials: true,
-          });
+          const response = await axios.get(
+            "https://deploybackend-1ta9.onrender.com/prebuy",
+            {
+              headers: {
+                Authorization: `Bearer ${accesstoken}`,
+                "Account-ID": accountId,
+              },
+              withCredentials: true,
+            }
+          );
 
           if (response.status === 200) {
             const { cartorder, cartpreorder } = response.data;
@@ -147,10 +153,13 @@ const Header = () => {
   const handleSearch = async () => {
     if (searchTerm.trim()) {
       try {
-        const response = await axios.get("https://deploybackend-1ta9.onrender.com/search", {
-          params: { searchTerm }, // Truyền searchTerm đến backend
-          headers: { "Account-ID": accountId },
-        });
+        const response = await axios.get(
+          "https://deploybackend-1ta9.onrender.com/search",
+          {
+            params: { searchTerm }, // Truyền searchTerm đến backend
+            headers: { "Account-ID": accountId },
+          }
+        );
 
         navigate("/find", { state: { results: response.data } }); // Chuyển hướng với kết quả
         setError(null); // Xóa lỗi nếu có
@@ -166,14 +175,17 @@ const Header = () => {
 
   const handlePrebuy = async () => {
     try {
-      const response = await axios.get("https://deploybackend-1ta9.onrender.com/cart", {
-        headers: {
-          "Account-ID": accountId,
-        },
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        "https://deploybackend-1ta9.onrender.com/cart",
+        {
+          headers: {
+            "Account-ID": accountId,
+          },
+          withCredentials: true,
+        }
+      );
 
-       if (response.data.redirectUrl) {
+      if (response.data.redirectUrl) {
         navigate(response.data.redirectUrl);
       }
     } catch (error) {
@@ -332,7 +344,7 @@ const Header = () => {
           <Link to="/detect" className="header-link">
             Nhận diện hoa
           </Link>
-           <Link to="/custom" className="header-link">
+          <Link to="/custom" className="header-link">
             Đặt hoa theo yêu cầu
           </Link>
         </div>
