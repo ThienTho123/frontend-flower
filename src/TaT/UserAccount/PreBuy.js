@@ -846,7 +846,7 @@ const PreBuy = () => {
               // Nếu gặp lỗi 403, có thể chuyển hướng người dùng đến trang đăng nhập
               if (error.response && error.response.status === 403) {
                 alert("Vui lòng đăng nhập để sử dụng chức năng này");
-                window.location.href = "http://localhost:8000/login";
+                window.location.href = "https://frontend-flower-gfc8.onrender.com//login";
               }
             }
           }}
